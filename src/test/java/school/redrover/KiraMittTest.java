@@ -14,7 +14,7 @@ import java.time.Duration;
 
 public class KiraMittTest {
     public static final String URL = "https://demoqa.com/alerts";
-    public static final String testName = "Ivan";
+    public static final String TEST_NAME = "Ivan";
 
     @Test
     public void testSimpleAlert() {
@@ -87,10 +87,10 @@ public class KiraMittTest {
         Alert promptAlert = driver.switchTo().alert();
         Assert.assertTrue(promptAlert.getText().contains("Please enter your name"),
                 "Отсутствует сообщение в окне с просьбой ввести имя");
-        promptAlert.sendKeys(testName);
+        promptAlert.sendKeys(TEST_NAME);
         promptAlert.accept();
         Assert.assertEquals(driver.findElement(By.id("promptResult")).getText(),
-                "You entered " + testName,
+                "You entered " + TEST_NAME,
                 "Отсутствует отметка о введенном имени");
         driver.quit();
     }
@@ -104,7 +104,7 @@ public class KiraMittTest {
         Alert promptAlertCancel = driver.switchTo().alert();
         Assert.assertTrue(promptAlertCancel.getText().contains("Please enter your name"),
                 "Отсутствует сообщение в окне с просьбой ввести имя");
-        promptAlertCancel.sendKeys(testName);
+        promptAlertCancel.sendKeys(TEST_NAME);
         promptAlertCancel.dismiss();
         boolean promptResultPresent;
         try {
