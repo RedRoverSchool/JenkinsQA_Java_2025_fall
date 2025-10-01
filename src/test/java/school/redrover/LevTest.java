@@ -16,7 +16,7 @@ public class LevTest {
 
         driver.get("https://demoqa.com/text-box");
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
 
         WebElement textBox = driver.findElement(By.id("userName"));
         WebElement submitButton = driver.findElement(By.cssSelector("button"));
