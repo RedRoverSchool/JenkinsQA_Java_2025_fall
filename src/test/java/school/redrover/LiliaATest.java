@@ -29,7 +29,8 @@ public class LiliaATest {
         Assert.assertEquals(driver.findElement(By.cssSelector("p#currentAddress")).getText(), "Current Address :Current Address");
         Assert.assertEquals(driver.findElement(By.cssSelector("p#permanentAddress")).getText(), "Permananet Address :Permanent Address");
 
-        driver.close();
+        // driver.close(); // не рекомендуется использовать
+        driver.quit(); // рекомендуется использовать для корректного закрытия браузера
     }
 
 }
