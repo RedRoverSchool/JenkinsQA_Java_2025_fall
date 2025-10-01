@@ -19,11 +19,8 @@ public class SergeyDTest {
 
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        WebElement textBox = driver.findElement(By.name("my-text"));
-        WebElement submitButton = driver.findElement(By.cssSelector("button"));
-
-        textBox.sendKeys("Selenium");
-        submitButton.click();
+        driver.findElement(By.name("my-text")).sendKeys("Selenium");
+        driver.findElement(By.cssSelector("button")).click();
 
         WebElement message = driver.findElement(By.id("message"));
 
