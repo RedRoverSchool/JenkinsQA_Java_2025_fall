@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 public class LevTest {
-    // Это тренировочный тест
 
     @Test
     public void myAssert() {
@@ -32,5 +31,6 @@ public class LevTest {
 
 
         //driver.quit();
+
     }
 }
