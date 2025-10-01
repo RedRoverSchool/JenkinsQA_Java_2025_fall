@@ -13,7 +13,7 @@ import java.time.Duration;
 
 public class SaucedemoTest {
     private WebDriver driver;
-    public static final String BASE_URL = "https://www.saucedemo.com/";
+    private static final String BASE_URL = "https://www.saucedemo.com/";
 
     @BeforeMethod
     public void setUp() {
