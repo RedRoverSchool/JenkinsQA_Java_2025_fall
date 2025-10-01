@@ -41,6 +41,6 @@ public class SergeyDTest {
 
         Assert.assertEquals(message.getText(), "Received!");
 
-        driver.quit();
+        driver.close();
     }
 }
