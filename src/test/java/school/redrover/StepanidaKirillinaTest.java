@@ -37,7 +37,7 @@ public class StepanidaKirillinaTest {
         return new Object[][]{
                 {"standard_user", PASSWORD},
                 {"performance_glitch_user", PASSWORD},
-                {"error_user", PASSWORD}
+                {"visual_user", PASSWORD}
         };
     }
 
