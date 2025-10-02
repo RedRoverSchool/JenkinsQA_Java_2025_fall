@@ -34,7 +34,7 @@ public class ElenaGTest {
     }
 
     @Test
-    public void correctProductNameTest() throws InterruptedException {
+    public void correctProductNameTest() {
 
         loginStandartUserTest();
 
