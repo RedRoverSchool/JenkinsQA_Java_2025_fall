@@ -11,6 +11,7 @@ import java.time.Duration;
 public class VladimirSitTest {
 
     static String host = "https://demoqa.com/text-box";
+
     static By fullNameInput = By.id("userName");
     static By emailInput = By.id("userEmail");
     static By currentAddressInput = By.id("currentAddress");
