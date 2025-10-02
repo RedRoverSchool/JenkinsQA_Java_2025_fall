@@ -1,25 +1,27 @@
 package school.redrover;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class KiraMittTest {
-    public static final String URL = "https://demoqa.com/alerts";
+    
+    public static final String ALERT_URL = "https://demoqa.com/alerts";
     public static final String TEST_NAME = "Ivan";
+    public static final String DATE_PICKER_URL = "https://demoqa.com/date-picker";
 
     @Test
     public void testSimpleAlert() {
         WebDriver driver = new ChromeDriver();
-        driver.get(URL);
+        driver.get(ALERT_URL);
 
         driver.findElement(By.id("alertButton")).click();
         Alert alert = driver.switchTo().alert();
@@ -32,7 +34,7 @@ public class KiraMittTest {
     @Test
     public void testTimeDelayAlert() {
         WebDriver driver = new ChromeDriver();
-        driver.get(URL);
+        driver.get(ALERT_URL);
 
         driver.findElement(By.id("timerAlertButton")).click();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -47,7 +49,7 @@ public class KiraMittTest {
     @Test
     public void testConfirmBoxSelectOkAlert() {
         WebDriver driver = new ChromeDriver();
-        driver.get(URL);
+        driver.get(ALERT_URL);
 
         driver.findElement(By.id("confirmButton")).click();
         Alert alertOk = driver.switchTo().alert();
@@ -64,7 +66,7 @@ public class KiraMittTest {
     @Test
     public void testConfirmBoxSelectCancelAlert() {
         WebDriver driver = new ChromeDriver();
-        driver.get(URL);
+        driver.get(ALERT_URL);
 
         driver.findElement(By.id("confirmButton")).click();
         Alert alertCancel = driver.switchTo().alert();
@@ -81,7 +83,7 @@ public class KiraMittTest {
     @Test
     public void testPromptBoxSelectOkAlert() {
         WebDriver driver = new ChromeDriver();
-        driver.get(URL);
+        driver.get(ALERT_URL);
 
         driver.findElement(By.id("promtButton")).click();
         Alert promptAlert = driver.switchTo().alert();
@@ -98,7 +100,7 @@ public class KiraMittTest {
     @Test
     public void testPromptBoxSelectCancelAlert() {
         WebDriver driver = new ChromeDriver();
-        driver.get(URL);
+        driver.get(ALERT_URL);
 
         driver.findElement(By.id("promtButton")).click();
         Alert promptAlertCancel = driver.switchTo().alert();
@@ -115,6 +117,65 @@ public class KiraMittTest {
         }
         Assert.assertFalse(promptResultPresent,
                 "Элемент для отметки имени должен отсутствовать");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testSelectDateWithScrollingArrows() {
+        WebDriver driver = new ChromeDriver();
+        driver.get(DATE_PICKER_URL);
+
+        WebElement inputField = driver.findElement(By.id("datePickerMonthYearInput"));
+        inputField.click();
+        driver.findElement(By.className("react-datepicker__navigation--next")).click();
+        driver.findElement(By.className("react-datepicker__day--024")).click();
+        Assert.assertEquals(inputField.getAttribute("value"),
+                LocalDate.now().plusMonths(1).withDayOfMonth(24)
+                        .format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
+                "Неверно указана выбранная дата");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testSelectDateWithDropdownList() {
+        WebDriver driver = new ChromeDriver();
+        driver.get(DATE_PICKER_URL);
+
+        WebElement inputField = driver.findElement(By.id("datePickerMonthYearInput"));
+        inputField.click();
+        Select selectMonth = new Select(driver.findElement(By.className("react-datepicker__month-select")));
+        selectMonth.selectByVisibleText("March");
+        Select selectYear = new Select(driver.findElement(By.className("react-datepicker__year-select")));
+        selectYear.selectByVisibleText("1999");
+        driver.findElement(By.className("react-datepicker__day--024")).click();
+        Assert.assertEquals(inputField.getAttribute("value"),
+                "03/24/1999",
+                "Неверно указана выбранная дата");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testSelectDateAndTime() {
+        WebDriver driver = new ChromeDriver();
+        driver.get(DATE_PICKER_URL);
+
+        WebElement inputField = driver.findElement(By.id("dateAndTimePickerInput"));
+        inputField.click();
+        driver.findElement(By.className("react-datepicker__month-read-view--down-arrow")).click();
+        driver.findElement(By.xpath(
+                "//div[contains(@class,'react-datepicker__month-option') and text()='March']")).click();
+        driver.findElement(By.className("react-datepicker__year-read-view--down-arrow")).click();
+        driver.findElement(By.xpath(
+                "//div[contains(@class,'react-datepicker__year-option') and text()='2028']")).click();
+        driver.findElement(By.xpath(
+                "//div[contains(@aria-label,'Choose Wednesday, March 15th, 2028')]")).click();
+        driver.findElement(By.xpath("//li[normalize-space()='21:00']")).click();
+        Assert.assertEquals(inputField.getAttribute("value"),
+                "March 15, 2028 9:00 PM",
+                "Неверно указаны выбранные дата и время");
 
         driver.quit();
     }
