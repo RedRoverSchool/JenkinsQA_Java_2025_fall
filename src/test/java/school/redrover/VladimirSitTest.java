@@ -10,21 +10,21 @@ import java.time.Duration;
 
 public class VladimirSitTest {
 
-    static String host = "https://demoqa.com/text-box";
+    private final static String host = "https://demoqa.com/text-box";
 
-    static By fullNameInput = By.id("userName");
-    static By emailInput = By.id("userEmail");
-    static By currentAddressInput = By.id("currentAddress");
-    static By permanentAddressInput = By.id("permanentAddress");
-    static By submitButtonInput = By.id("submit");
+    private final static By fullNameInput = By.id("userName");
+    private final static By emailInput = By.id("userEmail");
+    private final static By currentAddressInput = By.id("currentAddress");
+    private final static By permanentAddressInput = By.id("permanentAddress");
+    private final static By submitButtonInput = By.id("submit");
 
-    static String fullName = "Ivanov Ivan";
-    static String email= "123@gmail.com";
-    static String currentAddress = "Moscow";
-    static String permanentAddress = "Samara";
+    private final static String fullName = "Ivanov Ivan";
+    private final static String email= "123@gmail.com";
+    private final static String currentAddress = "Moscow";
+    private final static String permanentAddress = "Samara";
 
     @Test
-    public static void testDemoQA() {
+    private static void testDemoQA() {
 
         WebDriver driver = new ChromeDriver();
 
