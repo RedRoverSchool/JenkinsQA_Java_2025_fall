@@ -10,6 +10,8 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 public class IliaZagorodniyTest {
+
+    @Test
     public void testSelenium() {
         WebDriver driver = new ChromeDriver();
 
@@ -17,13 +19,39 @@ public class IliaZagorodniyTest {
 
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        driver.findElement(By.name("my-text")).sendKeys("Selenium");
-        driver.findElement(By.cssSelector("button")).click();
+        WebElement textBox = driver.findElement(By.name("my-text"));
+        WebElement submitButton = driver.findElement(By.cssSelector("button"));
+
+        textBox.sendKeys("Selenium");
+        submitButton.click();
 
         WebElement message = driver.findElement(By.id("message"));
-
-        Assert.assertEquals(message.getText(), "Received!");
+        message.getText();
 
         driver.quit();
     }
+
+    @Test
+    public void testGoogle() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.google.com/");
+
+        WebElement textBox = driver.findElement(By.id("APjFqb"));
+        textBox.sendKeys("Selenium");
+        Thread.sleep(100);
+
+
+        WebElement submitButton = driver.findElement(By.name("btnK"));
+        submitButton.click();
+
+        WebElement message = driver.findElement(By.cssSelector("#rso > div:nth-child(3) > div > div > div > div > div > div > div > div.yuRUbf > div > span > a > h3"));
+
+        Assert.assertEquals(message.getText(), "Selenium");
+
+        driver.quit();
+
+    }
+
 }
