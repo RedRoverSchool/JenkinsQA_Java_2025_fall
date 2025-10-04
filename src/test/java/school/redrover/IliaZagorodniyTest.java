@@ -19,7 +19,7 @@ public class IliaZagorodniyTest {
 
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        WebElement textName = driver.findElement(By.name("my-text"));
+        WebElement textName = driver.findElement(By.xpath("//*[@id=\"my-text-id\"]"));
         WebElement textPass = driver.findElement(By.name("my-password"));
         WebElement submitButton = driver.findElement(By.cssSelector("button"));
 
