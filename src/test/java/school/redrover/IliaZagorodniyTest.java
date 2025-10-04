@@ -19,10 +19,12 @@ public class IliaZagorodniyTest {
 
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        WebElement textBox = driver.findElement(By.name("my-text"));
+        WebElement textName = driver.findElement(By.name("my-text"));
+        WebElement textPass = driver.findElement(By.name("my-password"));
         WebElement submitButton = driver.findElement(By.cssSelector("button"));
 
-        textBox.sendKeys("Selenium");
+        textName.sendKeys("Selenium");
+        textPass.sendKeys("Qwe123");
         submitButton.click();
 
         WebElement message = driver.findElement(By.id("message"));
