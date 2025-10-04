@@ -22,7 +22,7 @@ public class MayaTest {
         driver.findElement(By.xpath("//*[@id='loginpassword']")).sendKeys("45784okng_75()");
         driver.findElement(By.xpath("//*[@id='logInModal']/div/div/div[3]/button[2]")).click();
 
-        Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\"logout2\"]")).isDisplayed(),
+        Assert.assertTrue(driver.findElement(By.xpath("//*[@id='logout2']")).isDisplayed(),
                 "Success");
 
         driver.quit();
