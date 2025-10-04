@@ -105,7 +105,7 @@ public class MikhailOTest {
 
         WebElement accountCreated = driver.findElement(By.cssSelector("[data-qa='account-created']"));
         Assert.assertEquals(accountCreated.getText().toLowerCase(), "account created!");
-
+        
         // Click 'Continue' button
 
         driver.findElement(By.cssSelector("[data-qa='continue-button']")).click();
