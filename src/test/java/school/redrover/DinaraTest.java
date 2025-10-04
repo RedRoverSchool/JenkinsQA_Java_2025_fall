@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 public class DinaraTest {
 
@@ -59,11 +60,15 @@ public class DinaraTest {
         //act
         Actions actions = new Actions(driver);
         actions.moveToElement(hoverDropdown).perform();
-        //assert
         WebElement dropdownMenu = driver.findElement(By.className("dropdown-content"));
-        assert dropdownMenu.getText().contains("Link One");
-        assert dropdownMenu.getText().contains("Link Two");
-        assert dropdownMenu.getText().contains("Link Three");
+        //assert
+        SoftAssert softAssert = new SoftAssert();
+
+        softAssert.assertTrue(dropdownMenu.getText().contains("Link One"));
+        softAssert.assertTrue(dropdownMenu.getText().contains("Link Two"));
+        softAssert.assertTrue(dropdownMenu.getText().contains("Link Three"));
+        softAssert.assertAll();
+
         driver.quit();
     }
 
