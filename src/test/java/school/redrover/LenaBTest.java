@@ -7,7 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class LenaB {
+public class LenaBTest {
     @Test
     public void testFullNameBox(){
         WebDriver driver = new ChromeDriver();
