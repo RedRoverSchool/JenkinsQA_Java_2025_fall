@@ -19,5 +19,7 @@ public class SergeiButorinTest{
 
         Assert.assertEquals(hhdriver.findElement(By.cssSelector("a[data-qa='vacancy-company-name']")).getText(),
                 "Филиал ФКУ Налог-Сервис ФНС России по ЦОД в г.Москве");
+
+        hhdriver.quit();
     }
 }
