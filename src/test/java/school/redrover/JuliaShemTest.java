@@ -32,7 +32,6 @@ public class JuliaShemTest {
     @Test
     public void checkBoxesTest() {
         WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.get("https://the-internet.herokuapp.com/checkboxes");
 
         WebElement checkbox1 = driver.findElement(By.xpath("//form[@id='checkboxes']/input[1]"));
