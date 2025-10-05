@@ -6,29 +6,39 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 public class DinaraTest {
+    private final String baseUrl = "https://seleniumbase.io/demo_page";
+    private static WebDriver driver;
+
+    @BeforeMethod
+    public void setUp(){
+        driver = new ChromeDriver();
+    }
+    @AfterMethod
+    public void tearDown(){
+        if (driver!= null) driver.quit();
+    }
 
     @Test
     public void placeholderTextFieldTest() {
         //arrange
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://seleniumbase.io/demo_page");
+        driver.get(baseUrl);
         WebElement placeholderField = driver.findElement(By.id("placeholderText"));
         //act
         var text = placeholderField.getAttribute("placeholder");
         //assert
         Assert.assertEquals(text, "Placeholder Text Field");
-        driver.quit();
     }
 
     @Test
     public void radioButtonSelectedTest(){
         //arrange
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://seleniumbase.io/demo_page");
+        driver.get(baseUrl);
         WebElement radioButton = driver.findElement(By.id("radioButton2"));
         //assert 1
         Assert.assertFalse(radioButton.isSelected());
@@ -36,26 +46,22 @@ public class DinaraTest {
         radioButton.click();
         //assert 2
         Assert.assertTrue(radioButton.isEnabled());
-        driver.quit();
     }
     @Test
     public void progressBarStatusTest(){
         //arrange
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://seleniumbase.io/demo_page");
+        driver.get(baseUrl);
         WebElement progressBarStatus = driver.findElement(By.id("progressBar"));
         WebElement progressBarLabel = driver.findElement(By.id("progressLabel"));
         //assert
         Assert.assertEquals(progressBarLabel.getText(), "Progress Bar: (50%)");
         Assert.assertEquals(progressBarStatus.getAttribute("value"), "50");
-        driver.quit();
     }
 
     @Test
     public void dropdownMenuOnHoverTest(){
         //arrange
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://seleniumbase.io/demo_page");
+        driver.get(baseUrl);
         WebElement hoverDropdown = driver.findElement(By.id("myDropdown"));
         //act
         Actions actions = new Actions(driver);
@@ -68,8 +74,6 @@ public class DinaraTest {
         softAssert.assertTrue(dropdownMenu.getText().contains("Link Two"));
         softAssert.assertTrue(dropdownMenu.getText().contains("Link Three"));
         softAssert.assertAll();
-
-        driver.quit();
     }
 
 
