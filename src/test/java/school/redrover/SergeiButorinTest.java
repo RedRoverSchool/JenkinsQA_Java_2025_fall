@@ -13,7 +13,7 @@ public class SergeiButorinTest{
     public static void testHeadhunter(){
         WebDriver hhdriver = new ChromeDriver();
         hhdriver.get("https://www.hh.ru/vacancy/122718353");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        hhdriver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
         Assert.assertEquals(hhdriver.findElement(By.cssSelector("h1[data-qa='vacancy-title']")).getText(), "UX-Исследователь (Junior)");
 
