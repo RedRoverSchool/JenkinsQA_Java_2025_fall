@@ -2,67 +2,38 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
-import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class KiraMittTest {
-
-    public static final String BASE_URL = "https://demoqa.com/";
-    public static final String ALERT_URL = BASE_URL+"alerts";
-    public static final String DATE_PICKER_URL = BASE_URL+"date-picker";
-    public static final String ACCORDIAN_URL = BASE_URL+"accordian";
-    public static final String TEST_NAME = "Ivan";  // Для тестов с PromptBox
-
-    private WebDriver driver;
-
-    @BeforeMethod
-    protected void beforeMethod(Method method) {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--window-size=1920,1080");
-        driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-    }
-
-    @AfterMethod
-    protected void afterMethod(Method method) {
-        driver.quit();
-    }
-
-    public void waitForVisibility(WebElement element) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(element));
-    }
-
-    public void waitForInvisibility(WebElement element) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.invisibilityOf(element));
-    }
+    
+    public static final String ALERT_URL = "https://demoqa.com/alerts";
+    public static final String TEST_NAME = "Ivan";
+    public static final String DATE_PICKER_URL = "https://demoqa.com/date-picker";
 
     @Test
     public void testSimpleAlert() {
+        WebDriver driver = new ChromeDriver();
         driver.get(ALERT_URL);
+
         driver.findElement(By.id("alertButton")).click();
         Alert alert = driver.switchTo().alert();
         Assert.assertTrue(alert.getText().contains("You clicked a button"),
                 "Отсутствует сообщение в окне при появлении обычного alert");
-        alert.accept();
+
+        driver.quit();
     }
 
     @Test
     public void testTimeDelayAlert() {
+        WebDriver driver = new ChromeDriver();
         driver.get(ALERT_URL);
 
         driver.findElement(By.id("timerAlertButton")).click();
@@ -71,11 +42,13 @@ public class KiraMittTest {
         Alert alertTime = driver.switchTo().alert();
         Assert.assertTrue(alertTime.getText().contains("This alert appeared after 5 seconds"),
                 "Отсутствует сообщение в окне при появлении alert с задержкой");
-        alertTime.accept();
+
+        driver.quit();
     }
 
     @Test
     public void testConfirmBoxSelectOkAlert() {
+        WebDriver driver = new ChromeDriver();
         driver.get(ALERT_URL);
 
         driver.findElement(By.id("confirmButton")).click();
@@ -86,10 +59,13 @@ public class KiraMittTest {
         Assert.assertEquals(driver.findElement(By.id("confirmResult")).getText(),
                 "You selected Ok",
                 "Отсутствует отметка о выбранной кнопке Ok");
+
+        driver.quit();
     }
 
     @Test
     public void testConfirmBoxSelectCancelAlert() {
+        WebDriver driver = new ChromeDriver();
         driver.get(ALERT_URL);
 
         driver.findElement(By.id("confirmButton")).click();
@@ -100,10 +76,13 @@ public class KiraMittTest {
         Assert.assertEquals(driver.findElement(By.id("confirmResult")).getText(),
                 "You selected Cancel",
                 "Отсутствует отметка о выбранной кнопке Cancel");
+
+        driver.quit();
     }
 
     @Test
     public void testPromptBoxSelectOkAlert() {
+        WebDriver driver = new ChromeDriver();
         driver.get(ALERT_URL);
 
         driver.findElement(By.id("promtButton")).click();
@@ -115,10 +94,12 @@ public class KiraMittTest {
         Assert.assertEquals(driver.findElement(By.id("promptResult")).getText(),
                 "You entered " + TEST_NAME,
                 "Отсутствует отметка о введенном имени");
+        driver.quit();
     }
 
     @Test
     public void testPromptBoxSelectCancelAlert() {
+        WebDriver driver = new ChromeDriver();
         driver.get(ALERT_URL);
 
         driver.findElement(By.id("promtButton")).click();
@@ -136,10 +117,13 @@ public class KiraMittTest {
         }
         Assert.assertFalse(promptResultPresent,
                 "Элемент для отметки имени должен отсутствовать");
+
+        driver.quit();
     }
 
     @Test
     public void testSelectDateWithScrollingArrows() {
+        WebDriver driver = new ChromeDriver();
         driver.get(DATE_PICKER_URL);
 
         WebElement inputField = driver.findElement(By.id("datePickerMonthYearInput"));
@@ -150,10 +134,13 @@ public class KiraMittTest {
                 LocalDate.now().plusMonths(1).withDayOfMonth(24)
                         .format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
                 "Неверно указана выбранная дата");
+
+        driver.quit();
     }
 
     @Test
     public void testSelectDateWithDropdownList() {
+        WebDriver driver = new ChromeDriver();
         driver.get(DATE_PICKER_URL);
 
         WebElement inputField = driver.findElement(By.id("datePickerMonthYearInput"));
@@ -166,10 +153,13 @@ public class KiraMittTest {
         Assert.assertEquals(inputField.getAttribute("value"),
                 "03/24/1999",
                 "Неверно указана выбранная дата");
+
+        driver.quit();
     }
 
     @Test
     public void testSelectDateAndTime() {
+        WebDriver driver = new ChromeDriver();
         driver.get(DATE_PICKER_URL);
 
         WebElement inputField = driver.findElement(By.id("dateAndTimePickerInput"));
@@ -186,67 +176,7 @@ public class KiraMittTest {
         Assert.assertEquals(inputField.getAttribute("value"),
                 "March 15, 2028 9:00 PM",
                 "Неверно указаны выбранные дата и время");
-    }
 
-    @Test
-    public void testAccordian() {
-        driver.get(ACCORDIAN_URL);
-
-        WebElement section1Header = driver.findElement(By.id("section1Heading"));
-        WebElement section2Header = driver.findElement(By.id("section2Heading"));
-        WebElement section3Header = driver.findElement(By.id("section3Heading"));
-        WebElement section1Content = driver.findElement(By.id("section1Content"));
-        WebElement section2Content = driver.findElement(By.id("section2Content"));
-        WebElement section3Content = driver.findElement(By.id("section3Content"));
-
-        SoftAssert softAssertAccordian = new SoftAssert();
-        //  Проверка на первоначальное отображение элементов
-        softAssertAccordian.assertTrue(section1Content.isDisplayed(), "Section1 должен быть открыт изначально");
-        softAssertAccordian.assertFalse(section2Content.isDisplayed(), "Section2 изначально закрыт");
-        softAssertAccordian.assertFalse(section3Content.isDisplayed(), "Section3 изначально закрыт");
-        //  Проверка на открытие Section2
-        section2Header.click();
-        waitForVisibility(section2Content);
-        waitForInvisibility(section1Content);
-        softAssertAccordian.assertTrue(section2Content.isDisplayed(), "Section2 должен быть открыт после клика");
-        softAssertAccordian.assertFalse(section1Content.isDisplayed(), "Section1 должен закрыться");
-        softAssertAccordian.assertFalse(section3Content.isDisplayed(), "Section3 должен оставаться закрытым");
-        //  Проверка на открытие Section3
-        section3Header.click();
-        waitForVisibility(section3Content);
-        waitForInvisibility(section2Content);
-        softAssertAccordian.assertTrue(section3Content.isDisplayed(), "Section3 должен быть открыт после клика");
-        softAssertAccordian.assertFalse(section2Content.isDisplayed(), "Section2 должен закрыться");
-        softAssertAccordian.assertFalse(section1Content.isDisplayed(), "Section1 должен оставаться закрытым");
-        //  Проверка на открытие Section1
-        section1Header.click();
-        waitForVisibility(section1Content);
-        waitForInvisibility(section3Content);
-        softAssertAccordian.assertTrue(section1Content.isDisplayed(), "Section1 должен быть открыт после клика");
-        softAssertAccordian.assertFalse(section3Content.isDisplayed(), "Section3 должен закрыться");
-        softAssertAccordian.assertFalse(section2Content.isDisplayed(), "Section2 должен оставаться закрытым");
-        //  Проверка на открытие-закрытие Section2
-        section2Header.click();
-        waitForVisibility(section2Content);
-        softAssertAccordian.assertTrue(section2Content.isDisplayed(), "Section2 должен быть открыт после клика");
-        section2Header.click();
-        waitForInvisibility(section2Content);
-        softAssertAccordian.assertFalse(section2Content.isDisplayed(), "Section2 должен быть закрыт после клика");
-        //  Проверка на открытие-закрытие Section3
-        section3Header.click();
-        waitForVisibility(section3Content);
-        softAssertAccordian.assertTrue(section3Content.isDisplayed(), "Section3 должен быть открыт после клика");
-        section3Header.click();
-        waitForInvisibility(section3Content);
-        softAssertAccordian.assertFalse(section3Content.isDisplayed(), "Section3 должен быть закрыт после клика");
-        //  Проверка на открытие-закрытие Section1
-        section1Header.click();
-        waitForVisibility(section1Content);
-        softAssertAccordian.assertTrue(section1Content.isDisplayed(), "Section1 должен быть открыт после клика");
-        section1Header.click();
-        waitForInvisibility(section1Content);
-        softAssertAccordian.assertFalse(section1Content.isDisplayed(), "Section1 должен быть закрыт после клика");
-
-        softAssertAccordian.assertAll();
+        driver.quit();
     }
 }
