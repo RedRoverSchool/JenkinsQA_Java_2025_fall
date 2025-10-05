@@ -25,7 +25,6 @@ public class KMakaravaTest {
         submitButton.click();
 
         WebElement message = driver.findElement(By.id("message"));
-        message.getText();
         Assert.assertEquals(message.getText(), "Received!");
         driver.quit();
     }
@@ -38,7 +37,6 @@ public class KMakaravaTest {
         driver.findElement(By.id("password")).sendKeys("secret_sauce");
         driver.findElement(By.name("login-button")).click();
         Assert.assertEquals(driver.getTitle(), "Swag Labs");
-        driver.findElement(By.id("add-to-cart-sauce-labs-backpack")).click();
 
         driver.quit();
     }
