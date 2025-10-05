@@ -56,4 +56,58 @@ public class BelyaevVTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testCheckOpenNewBrowserWindow() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+        String demoqaWindow = driver.getWindowHandle();
+
+        driver.findElement(By.xpath("//*[@id='app']/div/div/div[2]/div/div[3]")).click();
+
+        driver.findElement(By.xpath("//span[text()='Browser Windows']")).click();
+
+        driver.findElement(By.id("windowButton")).click();
+
+        for (String handle : driver.getWindowHandles()) {
+            if (!handle.equals(demoqaWindow)) {
+                driver.switchTo().window(handle);
+                break;
+            }
+        }
+
+        String urlNewWindow =  driver.findElement(By.id("sampleHeading")).getText();
+
+        Assert.assertEquals(urlNewWindow, "This is a sample page");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testFullOrderProduct() throws InterruptedException{
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com/v1/inventory.html");
+
+        driver.findElement(By.linkText("Sauce Labs Backpack")).click();
+
+        driver.findElement(By.className("btn_primary")).click();
+        driver.findElement(By.className("shopping_cart_container")).click();
+        driver.findElement(By.className("checkout_button")).click();
+
+        driver.findElement(By.id("first-name")).sendKeys("John");
+        driver.findElement(By.id("last-name")).sendKeys("Smith");
+        driver.findElement(By.id("postal-code")).sendKeys("123456");
+
+        driver.findElement(By.className("cart_button")).click();
+        driver.findElement(By.className("btn_action")).click();
+
+        String orderMessage = driver.findElement(By.className("complete-header")).getText();
+
+        Assert.assertEquals(orderMessage, "THANK YOU FOR YOUR ORDER");
+
+        driver.quit();
+    }
+
 }
