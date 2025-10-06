@@ -29,38 +29,27 @@ public class UlianaSTest {
         }
 
         WebElement flagRu = wait.until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//img[@src='/images/Flags/ru-MD.gif']"))
-        );
+                ExpectedConditions.elementToBeClickable(By.xpath("//img[@src='/images/Flags/ru-MD.gif']")));
         flagRu.click();
-        wait.until(ExpectedConditions.urlContains("/ru"));
         Assert.assertTrue(driver.getCurrentUrl().contains("/ru"));
 
-
         WebElement models = wait.until(
-                ExpectedConditions.elementToBeClickable(By.xpath("(//a[normalize-space()='Модели'])[2]"))
-        );
+                ExpectedConditions.elementToBeClickable(By.xpath("(//a[normalize-space()='Модели'])[2]")));
         models.click();
-        WebElement modelsPageTitle = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='l-view__title']//h2"))
-        );
+        WebElement modelsPageTitle = driver.findElement(By.xpath("//div[@class='l-view__title']//h2"));
         Assert.assertTrue(modelsPageTitle.isDisplayed());
-
 
         WebElement offers = wait.until(
                 ExpectedConditions.elementToBeClickable(
                         By.xpath("//a[contains(@class, 'c-item__link') and contains(text(), 'ПРЕДЛОЖЕНИЯ')][1]"))
         );
         offers.click();
-        WebElement offersPageTitle = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//*[@id='Form']/header/section[2]/div/div/div/div/ul/li/a"))
-        );
+        WebElement offersPageTitle = driver.findElement(By.xpath("//*[@id='Form']/header/section[2]/div/div/div/div/ul/li/a"));
         Assert.assertTrue(offersPageTitle.isDisplayed());
 
         WebElement logo = wait.until(
                 ExpectedConditions.elementToBeClickable(By.id("dnn_dnnLOGOHeader_imgLogo")));
         logo.click();
-        wait.until(ExpectedConditions.urlContains("/ru/home"));
         Assert.assertTrue(driver.getCurrentUrl().contains("/ru/home"));
 
         driver.quit();
