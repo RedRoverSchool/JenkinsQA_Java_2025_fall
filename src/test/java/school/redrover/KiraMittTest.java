@@ -183,11 +183,11 @@ public class KiraMittTest {
         String id = sectionContent.getAttribute("id");
         try {
             if (shouldBeVisible) {
-                boolean isVisible = wait.until(ExpectedConditions.visibilityOf(sectionContent)).isDisplayed();
-                softAssert.assertTrue(isVisible, id + " должен быть открыт" + actionDescription);
+                softAssert.assertTrue(wait.until(ExpectedConditions.visibilityOf(sectionContent)).isDisplayed(),
+                        id + " должен быть открыт" + actionDescription);
             } else {
-                boolean isInvisible = wait.until(ExpectedConditions.invisibilityOf(sectionContent));
-                softAssert.assertTrue(isInvisible, id + " должен быть закрыт" + actionDescription);
+                softAssert.assertTrue(wait.until(ExpectedConditions.invisibilityOf(sectionContent)),
+                        id + " должен быть закрыт" + actionDescription);
             }
         } catch (TimeoutException e) {
             softAssert.fail("Время ожидания вышло для " + id + " при " + actionDescription);
