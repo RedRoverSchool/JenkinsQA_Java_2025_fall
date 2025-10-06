@@ -22,5 +22,6 @@ public class RinatTest {
         Assert.assertTrue(driver.findElement(By.xpath("//h2[text()='Login to your account']")).isDisplayed());
 
         driver.quit();
+
     }
 }
