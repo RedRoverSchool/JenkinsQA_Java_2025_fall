@@ -15,12 +15,11 @@ public class SvetaDTest {
         driver.get("https://www.target.com");
         Thread.sleep(1000);
 
-        WebElement searchButton = driver.findElement(By.id("search"));
+        WebElement inputField = driver.findElement(By.id("search"));
         Thread.sleep(1000);
-        searchButton.click();
-        searchButton.sendKeys("coat");
+        inputField.sendKeys("coat");
         Thread.sleep(1000);
-        searchButton.sendKeys(Keys.RETURN);
+        inputField.sendKeys(Keys.RETURN);
         Thread.sleep(1000);
 
         WebElement item = driver.findElement(By.cssSelector("[data-test='product-title"));
