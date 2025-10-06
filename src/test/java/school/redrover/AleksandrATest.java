@@ -19,9 +19,9 @@ public class AleksandrATest {
         WebElement login = driver.findElement(By.id("user-name"));
         login.sendKeys("standard_user");
 
-        WebElement password = driver.findElement(By.id("password")).click();
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
 
-        password.sendKeys("secret_sauce");
+
 
         WebElement loginButton = driver.findElement(By.id("login-button"));
         loginButton.click();
