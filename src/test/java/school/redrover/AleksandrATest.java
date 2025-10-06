@@ -12,6 +12,7 @@ public class AleksandrATest {
     public void getTitleFromSecondPage() {
 
 
+
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.saucedemo.com");
