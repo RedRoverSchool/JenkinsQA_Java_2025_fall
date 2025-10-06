@@ -16,6 +16,7 @@ public class YaroslavaTest {
         WebElement products = driver.findElement(By.xpath("//a[@href='/products']"));
         System.out.println(products.getText());
 
+
         Assert.assertEquals(products.getText(), " Products");
 
         driver.quit();
