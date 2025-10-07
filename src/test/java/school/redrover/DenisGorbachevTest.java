@@ -37,11 +37,10 @@ public class DenisGorbachevTest {
         searchButton.click();
         WebElement textBox = driver.findElement(By.cssSelector("[class*='tm-search__input tm-input-text-decorated__input']"));
         WebElement submitButton = driver.findElement(By.cssSelector("[class*='tm-search__icon']"));
-
         textBox.sendKeys("Selenium Test");
         submitButton.click();
         WebElement message = driver.findElement(By.className("searched-item"));
         Assert.assertEquals(message.getText(), "Selenium Tests");
-            driver.quit();
+        driver.quit();
     }
 }
