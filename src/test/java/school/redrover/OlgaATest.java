@@ -4,21 +4,19 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.time.Duration;
 
 public class OlgaATest {
 
     @Test
-public void testSelenium(){
+public void testSelenium() throws InterruptedException{
     WebDriver driver = new ChromeDriver();
 
     driver.get("https://www.selenium.dev/selenium/web/web-form.html");
 
-    driver.getTitle();
-
-    driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+   Thread.sleep(1000);
 
     WebElement textBox = driver.findElement(By.name("my-password"));
     WebElement submitButton = driver.findElement(By.cssSelector("button"));
@@ -27,19 +25,18 @@ public void testSelenium(){
     submitButton.click();
 
     WebElement message = driver.findElement(By.id("message"));
-    message.getText();
+
+    Assert.assertEquals(message.getText(),"Received!");
 
     driver.quit();
 }
     @Test
-    public void testSelenium1(){
+    public void testSelenium1() throws InterruptedException{
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
 
-        driver.getTitle();
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        Thread.sleep(1000);
 
         WebElement textBox = driver.findElement(By.name("my-textarea"));
         WebElement submitButton = driver.findElement(By.cssSelector("button"));
@@ -48,7 +45,8 @@ public void testSelenium(){
         submitButton.click();
 
         WebElement message = driver.findElement(By.id("message"));
-        message.getText();
+
+        Assert.assertEquals(message.getText(),"Received!");
 
         driver.quit();}
 }
