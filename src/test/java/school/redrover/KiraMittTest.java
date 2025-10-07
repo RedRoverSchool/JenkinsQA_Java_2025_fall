@@ -1,6 +1,11 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -12,43 +17,32 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class KiraMittTest {
 
-    public static final String BASE_URL = "https://demoqa.com/";
-    public static final String ALERT_URL = BASE_URL+"alerts";
-    public static final String DATE_PICKER_URL = BASE_URL+"date-picker";
-    public static final String ACCORDIAN_URL = BASE_URL+"accordian";
-    public static final String TEST_NAME = "Ivan";  // Для тестов с PromptBox
+    private static final String BASE_URL = "https://demoqa.com/";
+    private static final String ALERT_URL = BASE_URL + "alerts";
+    private static final String DATE_PICKER_URL = BASE_URL + "date-picker";
+    private static final String ACCORDION_URL = BASE_URL + "accordian";
+    private static final String TEST_NAME = "Ivan";  // Для тестов с PromptBox
 
     private WebDriver driver;
 
     @BeforeMethod
-    protected void beforeMethod(Method method) {
+    protected void beforeMethod() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("--window-size=1920,1080");
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     }
 
     @AfterMethod
-    protected void afterMethod(Method method) {
+    protected void afterMethod() {
         driver.quit();
-    }
-
-    public void waitForVisibility(WebElement element) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(element));
-    }
-
-    public void waitForInvisibility(WebElement element) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
     @Test
@@ -188,9 +182,26 @@ public class KiraMittTest {
                 "Неверно указаны выбранные дата и время");
     }
 
+    // Для теста с аккордеоном:
+    public void assertSectionVisibility(SoftAssert softAssert, WebElement sectionContent, boolean shouldBeVisible, String actionDescription) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        String id = sectionContent.getAttribute("id");
+        try {
+            if (shouldBeVisible) {
+                softAssert.assertTrue(wait.until(ExpectedConditions.visibilityOf(sectionContent)).isDisplayed(),
+                        id + " должен быть открыт" + actionDescription);
+            } else {
+                softAssert.assertTrue(wait.until(ExpectedConditions.invisibilityOf(sectionContent)),
+                        id + " должен быть закрыт" + actionDescription);
+            }
+        } catch (TimeoutException e) {
+            softAssert.fail("Время ожидания вышло для " + id + " при " + actionDescription);
+        }
+    }
+
     @Test
-    public void testAccordian() {
-        driver.get(ACCORDIAN_URL);
+    public void testAccordion() {
+        driver.get(ACCORDION_URL);
 
         WebElement section1Header = driver.findElement(By.id("section1Heading"));
         WebElement section2Header = driver.findElement(By.id("section2Heading"));
@@ -199,54 +210,38 @@ public class KiraMittTest {
         WebElement section2Content = driver.findElement(By.id("section2Content"));
         WebElement section3Content = driver.findElement(By.id("section3Content"));
 
-        SoftAssert softAssertAccordian = new SoftAssert();
+        SoftAssert softAssertAccordion = new SoftAssert();
         //  Проверка на первоначальное отображение элементов
-        softAssertAccordian.assertTrue(section1Content.isDisplayed(), "Section1 должен быть открыт изначально");
-        softAssertAccordian.assertFalse(section2Content.isDisplayed(), "Section2 изначально закрыт");
-        softAssertAccordian.assertFalse(section3Content.isDisplayed(), "Section3 изначально закрыт");
-        //  Проверка на открытие Section2
+        softAssertAccordion.assertTrue(section1Content.isDisplayed(), "Section1 должен быть открыт изначально");
+        softAssertAccordion.assertFalse(section2Content.isDisplayed(), "Section2 изначально закрыт");
+        softAssertAccordion.assertFalse(section3Content.isDisplayed(), "Section3 изначально закрыт");
+        //  Проверка на открытие-закрытие блоков при нажатии Section2
         section2Header.click();
-        waitForVisibility(section2Content);
-        waitForInvisibility(section1Content);
-        softAssertAccordian.assertTrue(section2Content.isDisplayed(), "Section2 должен быть открыт после клика");
-        softAssertAccordian.assertFalse(section1Content.isDisplayed(), "Section1 должен закрыться");
-        softAssertAccordian.assertFalse(section3Content.isDisplayed(), "Section3 должен оставаться закрытым");
-        //  Проверка на открытие Section3
-        section3Header.click();
-        waitForVisibility(section3Content);
-        waitForInvisibility(section2Content);
-        softAssertAccordian.assertTrue(section3Content.isDisplayed(), "Section3 должен быть открыт после клика");
-        softAssertAccordian.assertFalse(section2Content.isDisplayed(), "Section2 должен закрыться");
-        softAssertAccordian.assertFalse(section1Content.isDisplayed(), "Section1 должен оставаться закрытым");
-        //  Проверка на открытие Section1
-        section1Header.click();
-        waitForVisibility(section1Content);
-        waitForInvisibility(section3Content);
-        softAssertAccordian.assertTrue(section1Content.isDisplayed(), "Section1 должен быть открыт после клика");
-        softAssertAccordian.assertFalse(section3Content.isDisplayed(), "Section3 должен закрыться");
-        softAssertAccordian.assertFalse(section2Content.isDisplayed(), "Section2 должен оставаться закрытым");
-        //  Проверка на открытие-закрытие Section2
+        assertSectionVisibility(softAssertAccordion, section2Content, true, "открытии Section2");
+        assertSectionVisibility(softAssertAccordion, section1Content, false, "открытии Section2");
+        assertSectionVisibility(softAssertAccordion, section3Content, false, "открытии Section2");
         section2Header.click();
-        waitForVisibility(section2Content);
-        softAssertAccordian.assertTrue(section2Content.isDisplayed(), "Section2 должен быть открыт после клика");
-        section2Header.click();
-        waitForInvisibility(section2Content);
-        softAssertAccordian.assertFalse(section2Content.isDisplayed(), "Section2 должен быть закрыт после клика");
-        //  Проверка на открытие-закрытие Section3
+        assertSectionVisibility(softAssertAccordion, section1Content, false, "закрытии Section2");
+        assertSectionVisibility(softAssertAccordion, section2Content, false, "закрытии Section2");
+        assertSectionVisibility(softAssertAccordion, section3Content, false, "закрытии Section2");
+        //  Проверка на открытие-закрытие блоков при нажатии Section3
         section3Header.click();
-        waitForVisibility(section3Content);
-        softAssertAccordian.assertTrue(section3Content.isDisplayed(), "Section3 должен быть открыт после клика");
+        assertSectionVisibility(softAssertAccordion, section3Content, true, "открытии Section3");
+        assertSectionVisibility(softAssertAccordion, section1Content, false, "открытии Section3");
+        assertSectionVisibility(softAssertAccordion, section2Content, false, "открытии Section3");
         section3Header.click();
-        waitForInvisibility(section3Content);
-        softAssertAccordian.assertFalse(section3Content.isDisplayed(), "Section3 должен быть закрыт после клика");
-        //  Проверка на открытие-закрытие Section1
+        assertSectionVisibility(softAssertAccordion, section1Content, false, "закрытии Section3");
+        assertSectionVisibility(softAssertAccordion, section2Content, false, "закрытии Section3");
+        assertSectionVisibility(softAssertAccordion, section3Content, false, "закрытии Section3");
+        //  Проверка на открытие-закрытие блоков при нажатии Section1
         section1Header.click();
-        waitForVisibility(section1Content);
-        softAssertAccordian.assertTrue(section1Content.isDisplayed(), "Section1 должен быть открыт после клика");
+        assertSectionVisibility(softAssertAccordion, section1Content, true, "открытии Section1");
+        assertSectionVisibility(softAssertAccordion, section2Content, false, "открытии Section1");
+        assertSectionVisibility(softAssertAccordion, section3Content, false, "открытии Section1");
         section1Header.click();
-        waitForInvisibility(section1Content);
-        softAssertAccordian.assertFalse(section1Content.isDisplayed(), "Section1 должен быть закрыт после клика");
-
-        softAssertAccordian.assertAll();
+        assertSectionVisibility(softAssertAccordion, section1Content, false, "закрытии Section1");
+        assertSectionVisibility(softAssertAccordion, section2Content, false, "закрытии Section1");
+        assertSectionVisibility(softAssertAccordion, section3Content, false, "закрытии Section1");
+        softAssertAccordion.assertAll();
     }
 }
