@@ -24,9 +24,6 @@ public class YaroslavaTest {
 
     @Test
     public void testProductsButton() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://automationexercise.com/");
-
         WebElement products = driver.findElement(By.xpath("//a[@href='/products']"));
 
         Assert.assertEquals(products.getText(), " Products");
@@ -34,9 +31,6 @@ public class YaroslavaTest {
 
     @Test
     public void testEmail() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://automationexercise.com/");
-
         WebElement cart = driver.findElement(By.xpath("//a[@href='/view_cart']"));
         cart.click();
 
