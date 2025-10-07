@@ -11,10 +11,8 @@ import java.time.Duration;
 
 public class VladimirTarasovTest {
 
-        public class OpenLoginPageTest {
-
             @Test
-            public void openLoginPage(){
+            public void openLoginPageTest(){
                 WebDriver driver = new ChromeDriver();
                 driver.get("https://demo.realworld.io/#/");
 
@@ -35,4 +33,3 @@ public class VladimirTarasovTest {
                 driver.quit();
             }
         }
-    }
