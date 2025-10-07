@@ -12,6 +12,7 @@ package school.redrover;
       <version>2.5.1</version>
   </dependency>
  */
+
 import net.datafaker.Faker;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
