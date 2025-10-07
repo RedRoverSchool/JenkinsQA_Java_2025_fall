@@ -15,35 +15,35 @@ public class SashaCorageTest {
 
 
     @Test
-    public void niveaTest() throws InterruptedException {
+    public void niveaTest() {
         WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
+        try {
+            driver.manage().window().maximize();
+            driver.get("https://www.nivea.co.uk/");
 
-        driver.get("https://www.nivea.co.uk/");
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+            WebElement accept = driver.findElement(By.xpath("//*[@id=\"cmpbntyestxt\"]"));
+            accept.click();
 
-        WebElement accept = driver.findElement(By.xpath("//*[@id=\"cmpbntyestxt\"]"));
-        accept.click();
+            WebElement arrow1 = driver.findElement(By.xpath("//*[@id=\"main\"]/div[2]/section[1]/div[2]/button[2]"));
+            arrow1.click();
+            arrow1.click();
 
-        WebElement arrow1 = driver.findElement(By.xpath("//*[@id=\"main\"]/div[2]/section[1]/div[2]/button[2]"));
-        arrow1.click();
+            WebElement hoverBody = driver.findElement(By.xpath("/html/body/header/div[2]/div/nav/ul/li[3]/a"));
+            new Actions(driver).moveToElement(hoverBody).perform();
 
-        arrow1.click();
+            WebElement w1click = driver.findElement(By.xpath("/html/body/header/div[2]/div/nav/ul/li[3]/div/div[1]/ul/li[2]/ul/li[2]/a"));
+            w1click.click();
 
-        WebElement hoverBody = driver.findElement(By.xpath("/html/body/header/div[2]/div/nav/ul/li[3]/a"));
-        new Actions(driver).moveToElement(hoverBody).perform();
+            WebElement text1 = driver.findElement(By.xpath("/html/body/section[2]/div[2]/div/div/h1"));
+            Assert.assertEquals(text1.getText(), "SHOP SPRAY DEODORANTS");
 
-        WebElement w1click = driver.findElement(By.xpath("/html/body/header/div[2]/div/nav/ul/li[3]/div/div[1]/ul/li[2]/ul/li[2]/a"));
-        w1click.click();
+            ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 1500);");
+            ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 1500);");
 
-        WebElement text1 = driver.findElement(By.xpath("/html/body/section[2]/div[2]/div/div/h1"));
-        Assert.assertEquals(text1.getText(), "SHOP SPRAY DEODORANTS");
-
-        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 1500);");
-        Thread.sleep(1000);
-        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 1500);");
-
-
+        } finally {
+            driver.quit(); // гарантированно закроется
+        }
     }
 }
