@@ -30,7 +30,7 @@ public class YaroslavaTest {
     }
 
     @Test
-    public void testEmail() {
+    public void testEmail () {
         WebElement cart = driver.findElement(By.xpath("//a[@href='/view_cart']"));
         cart.click();
 
