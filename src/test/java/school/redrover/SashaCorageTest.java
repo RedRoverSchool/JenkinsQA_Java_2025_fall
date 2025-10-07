@@ -14,9 +14,9 @@ import java.time.Duration;
 public class SashaCorageTest {
 
 
-@Test
+    @Test
     public void niveaTest() throws InterruptedException {
-    WebDriver driver = new ChromeDriver();
+        WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
 
         driver.get("https://www.nivea.co.uk/");
@@ -26,30 +26,24 @@ public class SashaCorageTest {
         WebElement accept = driver.findElement(By.xpath("//*[@id=\"cmpbntyestxt\"]"));
         accept.click();
 
-    WebElement arrow1 = driver.findElement(By.xpath("//*[@id=\"main\"]/div[2]/section[1]/div[2]/button[2]"));
-    arrow1.click();
-//    Thread.sleep(1000);
-    arrow1.click();
+        WebElement arrow1 = driver.findElement(By.xpath("//*[@id=\"main\"]/div[2]/section[1]/div[2]/button[2]"));
+        arrow1.click();
 
-//    Thread.sleep(2000);
-    WebElement hoverBody = driver.findElement(By.xpath("/html/body/header/div[2]/div/nav/ul/li[3]/a"));
+        arrow1.click();
+
+        WebElement hoverBody = driver.findElement(By.xpath("/html/body/header/div[2]/div/nav/ul/li[3]/a"));
         new Actions(driver).moveToElement(hoverBody).perform();
 
-    WebElement w1click = driver.findElement(By.xpath("/html/body/header/div[2]/div/nav/ul/li[3]/div/div[1]/ul/li[2]/ul/li[2]/a"));
-    w1click.click();
+        WebElement w1click = driver.findElement(By.xpath("/html/body/header/div[2]/div/nav/ul/li[3]/div/div[1]/ul/li[2]/ul/li[2]/a"));
+        w1click.click();
 
-//    WebElement submitButton = driver.findElement(By.cssSelector("button"));
+        WebElement text1 = driver.findElement(By.xpath("/html/body/section[2]/div[2]/div/div/h1"));
+        Assert.assertEquals(text1.getText(), "SHOP SPRAY DEODORANTS");
 
-//        textBox.sendKeys("Selenium");
-//        submitButton.click();
-//
-    WebElement text1 = driver.findElement(By.xpath("/html/body/section[2]/div[2]/div/div/h1"));
-    Assert.assertEquals(text1.getText(), "SHOP SPRAY DEODORANTS");
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 1500);");
+        Thread.sleep(1000);
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 1500);");
 
-    ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 1500);");
-    Thread.sleep(1000); // просто захотел
-    ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 1500);");
 
-//        driver.quit(); // не хочу выходить
-}
+    }
 }
