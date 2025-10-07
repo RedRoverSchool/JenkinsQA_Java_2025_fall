@@ -13,7 +13,7 @@ public class YuliyaTest {
             WebDriver driver = new ChromeDriver();
             driver.get("https://dev.trexer.ru/auth/login");
             System.out.println(driver.getTitle());
-            //driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
             Thread.sleep(500);
             WebElement emailLabel = driver.findElement(By.cssSelector("input"));
             emailLabel.sendKeys("prodigy@mail.ru");
