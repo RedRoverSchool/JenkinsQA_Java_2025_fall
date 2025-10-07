@@ -7,27 +7,30 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class YaroslavaTest{
+public class YaroslavaTest {
+    private WebDriver driver;
+
+    @BeforeMethod
+    public void startBeforeTest() {
+        driver = new ChromeDriver();
+        driver.get("https://automationexercise.com/");
+    }
+
     @Test
     public void testProductsButton() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://automationexercise.com/");
-
         WebElement products = driver.findElement(By.xpath("//a[@href='/products']"));
 
         Assert.assertEquals(products.getText(), " Products");
-
-        driver.quit();
     }
-    @Test
-    public void testEmail(){
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://automationexercise.com/");
 
+    @Test
+    public void testEmail() {
         WebElement cart = driver.findElement(By.xpath("//a[@href='/view_cart']"));
         cart.click();
 
@@ -38,11 +41,16 @@ public class YaroslavaTest{
         go.click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement succsessfully = wait.until(ExpectedConditions.visibilityOfElementLocated(
+        WebElement successfulMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.cssSelector(".alert-success.alert")));
 
-        Assert.assertEquals(succsessfully.getText(), "You have been successfully subscribed!");
+        Assert.assertEquals(successfulMessage.getText(), "You have been successfully subscribed!");
+    }
 
-        driver.quit();
+    @AfterMethod
+    public void quitDriver() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
