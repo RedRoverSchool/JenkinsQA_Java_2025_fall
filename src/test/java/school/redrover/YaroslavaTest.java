@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class YaroslavaTest {
+public class YaroslavaTest{
     @Test
     public void testProductsButton() {
         WebDriver driver = new ChromeDriver();
