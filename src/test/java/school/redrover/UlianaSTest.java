@@ -54,4 +54,19 @@ public class UlianaSTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testToolsQATitle() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://demoqa.com/");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        WebElement title = driver.findElement(By.xpath("//header/a/img"));
+
+        Assert.assertTrue(title.isDisplayed());
+
+        driver.quit();
+    }
 }
