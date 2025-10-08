@@ -14,16 +14,12 @@ public class AlexeyKLoginPageTest {
     @Test
     public void testSuccessfulLoginPos() {
         WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 
         driver.findElement(By.xpath("//input[@name='username']")).sendKeys("Admin");
         driver.findElement(By.xpath("//input[@name='password']")).sendKeys("admin123");
         driver.findElement(By.xpath("//button[@type='submit']")).click();
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
-
 
         Assert.assertEquals(driver.findElement(By.xpath("//h6[text()='Dashboard']")).getText(),
                 "Dashboard");
