@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 
-public class CjCityTest {
+public class IVOsinnykhTest {
 
     @Test
     public void testCjCity() throws InterruptedException {
