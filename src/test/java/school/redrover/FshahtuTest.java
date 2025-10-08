@@ -10,60 +10,114 @@ import org.testng.annotations.Test;
 public class FshahtuTest {
     @Test
     public void testautomationexercise() {
+
         WebDriver driver = new ChromeDriver();
         driver.get("https://automationexercise.com/");
         Assert.assertEquals(driver.getTitle(), "Automation Exercise");
+        WebElement homeButton = driver.findElement(By.cssSelector(".shop-menu li > a[href=\"/\"]"));
+        //подумать
+        String color = homeButton.getAttribute("style");  // color: orange;
+        System.out.println(homeButton.getAttribute("style"));
+        Assert.assertTrue(color.contains("color: orange;"), "Кнопка не оранжевая");
 
-        driver.findElement(By.cssSelector("#header > div > div > div > div.col-sm-8 > div > ul > li:nth-child(4) > a")).click();
+        driver.findElement(By.cssSelector(".shop-menu li > a[href=\"/login\"")).click();
+        Assert.assertEquals(driver.findElement(By.cssSelector(".signup-form h2")).getText(), "New User Signup!");
 
-        Assert.assertEquals(driver.getTitle(), "Automation Exercise - Signup / Login");
-
-        String namelogin = "Kirill Bohenek";
-        WebElement loginname = driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[3]/div/form/input[2]"));
+        String namelogin = "newuser";
+        WebElement loginname = driver.findElement(By.cssSelector("[data-qa='signup-name']"));
         loginname.sendKeys(namelogin);
-        driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[3]/div/form/input[3]")).sendKeys("kirill.bohenek@gmail.com");
-        driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[3]/div/form/button")).click();
-        Assert.assertEquals(driver.getTitle(), "Automation Exercise - Signup");
+        driver.findElement(By.cssSelector("[data-qa='signup-email']")).sendKeys("newuser@supermail.com");
+        driver.findElement(By.cssSelector("[data-qa='signup-button']")).click();
+        Assert.assertEquals(driver.findElement(By.cssSelector("div.login-form > h2 > b")).getText().toLowerCase(), "enter account information");
 
-        driver.findElement(By.xpath("//*[@id=\"id_gender1\"]")).click();
-        driver.findElement(By.xpath("//*[@id=\"password\"]")).sendKeys("1234567890");
-        driver.findElement(By.xpath("//*[@id=\"days\"]/option[20]")).click();
-        driver.findElement(By.xpath("//*[@id=\"months\"]/option[9]")).click();
-        driver.findElement(By.xpath("//*[@id=\"years\"]/option[41]")).click();
-        driver.findElement(By.xpath("//*[@id=\"newsletter\"]")).click();
-        driver.findElement(By.xpath("//*[@id=\"optin\"]")).click();
+        driver.findElement(By.id("id_gender1")).click();
+        driver.findElement(By.id("password")).sendKeys("dvdsgfsdfsd987654321");
+        driver.findElement(By.cssSelector("[data-qa='days'] :nth-child(19)")).click();
+        driver.findElement(By.cssSelector("[data-qa='months'] :nth-child(8)")).click();
+        driver.findElement(By.cssSelector("[data-qa='years'] :nth-child(40)")).click();
+        driver.findElement(By.id("newsletter")).click();
 
-        WebElement name = driver.findElement(By.xpath("//*[@id=\"first_name\"]"));
-        name.sendKeys("Kirill");
-        WebElement surname = driver.findElement(By.xpath("//*[@id=\"last_name\"]"));
-        surname.sendKeys("Bohenek");
-        driver.findElement(By.xpath("//*[@id=\"company\"]")).sendKeys("Unknown");
-        driver.findElement(By.xpath("//*[@id=\"address1\"]")).sendKeys("Street, 33, 12345, Unknown");
-        driver.findElement(By.xpath("//*[@id=\"address2\"]")).sendKeys("Null");
-        driver.findElement(By.xpath("//*[@id=\"country\"]/option[5]")).click();
-        driver.findElement(By.xpath("//*[@id=\"state\"]")).sendKeys("North");
-        driver.findElement(By.xpath("//*[@id=\"city\"]")).sendKeys("Capital");
-        driver.findElement(By.xpath("//*[@id=\"zipcode\"]")).sendKeys("12345");
-        driver.findElement(By.xpath("//*[@id=\"mobile_number\"]")).sendKeys("1234567890");
-        driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div/div[1]/form/button")).click();
+        driver.findElement((By.id("first_name"))).sendKeys("User");
+        driver.findElement((By.id("last_name"))).sendKeys("User");
+        driver.findElement((By.id("company"))).sendKeys("Company");
+        driver.findElement((By.id("address1"))).sendKeys("Street, 33, 12345, Unknown");
+        driver.findElement((By.id("address2"))).sendKeys("Unknown");
+        driver.findElement(By.cssSelector("[data-qa='country'] :nth-child(3)")).click();
+        driver.findElement((By.id("state"))).sendKeys("Unknown");
+        driver.findElement((By.id("city"))).sendKeys("Unknown");
+        driver.findElement((By.id("zipcode"))).sendKeys("12345");
+        driver.findElement((By.id("mobile_number"))).sendKeys("+12322245");
+        driver.findElement(By.cssSelector("[data-qa='create-account']")).click();
 
-        WebElement account = driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div/h2/b"));
-        Assert.assertEquals(account.getText(), "ACCOUNT CREATED!"); // <b>Account Created!</b>
+        Assert.assertEquals(driver.findElement((By.cssSelector("[data-qa='account-created'] :nth-child(1)"))).getText(), "ACCOUNT CREATED!");
 
-        driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div/div/a")).click();
+        driver.findElement(By.cssSelector("[data-qa='continue-button']")).click();
 
-        WebElement checkname = driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[10]/a/b"));
-        System.out.println(checkname.getText());
+        Assert.assertEquals(driver.findElement(By.cssSelector(".shop-menu > ul > :nth-child(10) > a > b")).getText(), namelogin);
+        driver.findElement(By.cssSelector(".shop-menu > ul > :nth-child(5)")).click();
 
-        Assert.assertEquals(checkname.getText(), namelogin);
-
-        driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[5]/a")).click();
-        WebElement logout = driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div/h2/b"));
-        Assert.assertEquals(logout.getText(), "ACCOUNT DELETED!"); // <b>Account Deleted!</b>
-        driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div/div/a")).click();
+        Assert.assertEquals(driver.findElement(By.cssSelector("[data-qa='account-deleted'] > b")).getText(), "ACCOUNT DELETED!");
+        driver.findElement(By.cssSelector("[data-qa='continue-button']")).click();
 
         driver.quit();
     }
+
+    @Test
+    public void testautomationexercise_case2() {
+        String namelogin = "newuser";
+        String email = "newuser@supermail.com";
+        String password = "dvdsgfsdfsd987654321";
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://automationexercise.com/");
+        Assert.assertEquals(driver.getTitle(), "Automation Exercise");
+        WebElement homeButton = driver.findElement(By.cssSelector(".shop-menu li > a[href=\"/\"]"));
+        String color = homeButton.getAttribute("style");  // color: orange;
+        System.out.println(homeButton.getAttribute("style"));
+        Assert.assertTrue(color.contains("color: orange;"), "Кнопка не оранжевая");
+        driver.findElement(By.cssSelector(".shop-menu li > a[href=\"/login\"")).click();
+        Assert.assertEquals(driver.findElement(By.cssSelector(".signup-form h2")).getText(), "New User Signup!");
+// make account
+        driver.findElement(By.cssSelector(".shop-menu li > a[href=\"/login\"")).click();
+        Assert.assertEquals(driver.findElement(By.cssSelector(".signup-form h2")).getText(), "New User Signup!");
+        WebElement loginname = driver.findElement(By.cssSelector("[data-qa='signup-name']"));
+        loginname.sendKeys(namelogin);
+        driver.findElement(By.cssSelector("[data-qa='signup-email']")).sendKeys(email);
+        driver.findElement(By.cssSelector("[data-qa='signup-button']")).click();
+        Assert.assertEquals(driver.findElement(By.cssSelector("div.login-form > h2 > b")).getText().toLowerCase(), "enter account information");
+        driver.findElement(By.id("id_gender1")).click();
+        driver.findElement(By.id("password")).sendKeys(password);
+        driver.findElement(By.cssSelector("[data-qa='days'] :nth-child(19)")).click();
+        driver.findElement(By.cssSelector("[data-qa='months'] :nth-child(8)")).click();
+        driver.findElement(By.cssSelector("[data-qa='years'] :nth-child(40)")).click();
+        driver.findElement(By.id("newsletter")).click();
+        driver.findElement((By.id("first_name"))).sendKeys("User");
+        driver.findElement((By.id("last_name"))).sendKeys("User");
+        driver.findElement((By.id("company"))).sendKeys("Company");
+        driver.findElement((By.id("address1"))).sendKeys("Street, 33, 12345, Unknown");
+        driver.findElement((By.id("address2"))).sendKeys("Unknown");
+        driver.findElement(By.cssSelector("[data-qa='country'] :nth-child(3)")).click();
+        driver.findElement((By.id("state"))).sendKeys("Unknown");
+        driver.findElement((By.id("city"))).sendKeys("Unknown");
+        driver.findElement((By.id("zipcode"))).sendKeys("12345");
+        driver.findElement((By.id("mobile_number"))).sendKeys("+12322245");
+        driver.findElement(By.cssSelector("[data-qa='create-account']")).click();
+        driver.findElement(By.cssSelector("[data-qa='continue-button']")).click();
+        //logout
+        driver.findElement(By.cssSelector(".shop-menu  > ul > :nth-child(4)")).click();
+//login
+        driver.findElement(By.cssSelector(".shop-menu li > a[href=\"/login\"")).click();
+        driver.findElement(By.cssSelector("[data-qa='login-email']")).sendKeys(email);
+        driver.findElement(By.cssSelector("[data-qa='login-password']")).sendKeys(password);
+        driver.findElement(By.cssSelector("[data-qa='login-button']")).click();
+        Assert.assertEquals(driver.findElement(By.cssSelector(".shop-menu > ul > :nth-child(10) > a > b")).getText(), namelogin);
+        driver.findElement(By.cssSelector(".shop-menu > ul > :nth-child(5)")).click();
+
+        Assert.assertEquals(driver.findElement(By.cssSelector("[data-qa='account-deleted'] > b")).getText(), "ACCOUNT DELETED!");
+        driver.findElement(By.cssSelector("[data-qa='continue-button']")).click();
+
+        driver.quit();
+    }
+
     @Test
     public void testDelenium() {
         WebDriver driver = new ChromeDriver();
