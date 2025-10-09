@@ -29,6 +29,7 @@ public class SashaCorageTest {
             WebElement arrow1 = driver.findElement(By.xpath("//*[@id=\"main\"]/div[2]/section[1]/div[2]/button[2]"));
             arrow1.click();
             arrow1.click();
+            arrow1.click();
 
             WebElement hoverBody = driver.findElement(By.xpath("/html/body/header/div[2]/div/nav/ul/li[3]/a"));
             new Actions(driver).moveToElement(hoverBody).perform();
