@@ -18,31 +18,29 @@ public class MoonElfieTest {
 
         driver.get("https://the-internet.herokuapp.com/");
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
 
-        WebElement step1 = driver.findElement(By.xpath("/html/body/div[2]/div/ul/li[21]/a"));
-        step1.click();
-        WebElement step2 = driver.findElement(By.xpath("//*[@id=\"username\"]"));
-        step2.sendKeys("tomsmith");
-        WebElement step3 = driver.findElement(By.xpath("//*[@id=\"password\"]"));
-        step3.sendKeys("SuperSecretPassword!");
-        WebElement step4 = driver.findElement(By.xpath("//*[@id=\"login\"]/button/i"));
-        step4.click();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1500));
+        WebElement searchAuth = driver.findElement(By.xpath("//*[@id=\"content\"]/ul/li[21]/a"));
+        searchAuth.click();
+        WebElement writeLogin = driver.findElement(By.xpath("//*[@id=\"username\"]"));
+        writeLogin.sendKeys("tomsmith");
+        WebElement writePass = driver.findElement(By.xpath("//*[@id=\"password\"]"));
+        writePass.sendKeys("SuperSecretPassword!");
+        WebElement pressButton1 = driver.findElement(By.xpath("//*[@id=\"login\"]/button/i"));
+        pressButton1.click();
 
-        WebElement check1 = driver.findElement(By.xpath("/html/body/div[2]/div/div/h4"));
-        Assert.assertEquals(check1.getText(),"Welcome to the Secure Area. When you are done click logout below.");
+        WebElement checkWelcome = driver.findElement(By.xpath("//*[@id=\"content\"]/div/h4"));
+        Assert.assertEquals(checkWelcome.getText(),"Welcome to the Secure Area. When you are done click logout below.");
 
-        WebElement check2 = driver.findElement(By.xpath("/html/body/div[2]/div/div/h2"));
-        Assert.assertEquals(check2.getText(),"Secure Area");
+        WebElement checkSecArea = driver.findElement(By.xpath("//*[@id=\"content\"]/div/h2"));
+        Assert.assertEquals(checkSecArea.getText(),"Secure Area");
 
-        WebElement check3 = driver.findElement(By.xpath("//*[@id=\"page-footer\"]/div/div"));
-        Assert.assertEquals(check3.getText(),"Powered by Elemental Selenium");
+        WebElement checkPowerEl = driver.findElement(By.xpath("//*[@id=\"page-footer\"]/div/div"));
+        Assert.assertEquals(checkPowerEl.getText(),"Powered by Elemental Selenium");
 
-        WebElement step5 = driver.findElement(By.xpath("//*[@id=\"page-footer\"]/div/div/a"));
-        step5.click();
+        WebElement pressElementSel = driver.findElement(By.xpath("//*[@id=\"page-footer\"]/div/div/a"));
+        pressElementSel.click();
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(4000));
 
         String originalWindow = driver.getWindowHandle();
         for (String windowHandle : driver.getWindowHandles()) {
@@ -52,14 +50,14 @@ public class MoonElfieTest {
             }
         }
 
-        WebElement check4 = driver.findElement(By.xpath("//*[@id=\"__docusaurus_skipToContent_fallback\"]/header/div/h1"));
-        Assert.assertEquals(check4.getText(),"Elemental Selenium");
+        WebElement checkElSel = driver.findElement(By.xpath("//*[@id=\"__docusaurus_skipToContent_fallback\"]/header/div/h1"));
+        Assert.assertEquals(checkElSel.getText(),"Elemental Selenium");
 
-        WebElement step6 = driver.findElement(By.xpath("//*[@id=\"__docusaurus_skipToContent_fallback\"]/main/div/div/div/div/div/a/button"));
-        step6.click();
+        WebElement pressTmttt = driver.findElement(By.xpath("//*[@id=\"__docusaurus_skipToContent_fallback\"]/main/div/div/div/div/div/a/button"));
+        pressTmttt.click();
 
-        WebElement check5 = driver.findElement(By.xpath("//*[@id=\"__docusaurus_skipToContent_fallback\"]/main/div/div[2]/div[2]/div/div[1]/div/div/button[2]/small"));
-        Assert.assertEquals(check5.getText(),"RESOURCES");
+        WebElement checkResources = driver.findElement(By.xpath("//*[@id=\"__docusaurus_skipToContent_fallback\"]/main/div/div[2]/div[2]/div/div[1]/div/div/button[2]/small"));
+        Assert.assertEquals(checkResources.getText(),"RESOURCES");
 
         driver.quit();
     }
