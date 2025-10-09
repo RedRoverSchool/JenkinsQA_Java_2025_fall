@@ -75,6 +75,17 @@ public class DinaraTest {
         softAssert.assertTrue(dropdownMenu.getText().contains("Link Three"));
         softAssert.assertAll();
     }
+    @Test
+    public void testCasesPageClicableTest() {
+        driver.get("https://automationexercise.com");
+        String homePageTitle = driver.getTitle();
+        Assert.assertEquals("Automation Exercise", homePageTitle);
+
+        WebElement testCasesButton = driver.findElement(By.xpath("//a[contains(text(),'Test Cases')]"));
+        testCasesButton.click();
+
+        Assert.assertEquals("Automation Practice Website for UI Testing - Test Cases", driver.getTitle());
+    }
 
 
 }
