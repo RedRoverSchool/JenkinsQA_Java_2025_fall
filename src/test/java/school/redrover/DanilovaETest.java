@@ -43,8 +43,6 @@ public class DanilovaETest {
         wait = new WebDriverWait(driver, Duration.ofSeconds(6));
     }
 
-    @BeforeGroups
-
     @AfterClass
     void tearDown() {
         driver.quit();
