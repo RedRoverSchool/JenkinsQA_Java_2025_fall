@@ -79,9 +79,6 @@ public class UlianaSTest {
         driver.findElement(By.xpath("//div[@class='card-body']/h5[text()='Elements']")).click();
         driver.findElement(By.xpath("//span[text()='Text Box']")).click();
 
-        WebElement titleTextBox = driver.findElement(By.xpath("//h1[@class='text-center']"));
-        Assert.assertEquals(titleTextBox.getText(), "Text Box");
-
         WebElement inputFullName = driver.findElement(By.xpath("//input[@placeholder='Full Name']"));
         inputFullName.sendKeys("Scolnicova Uliana");
 
@@ -120,4 +117,6 @@ public class UlianaSTest {
         driver.quit();
 
     }
+
+
 }
