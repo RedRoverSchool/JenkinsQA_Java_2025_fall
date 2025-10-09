@@ -1,10 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -66,6 +64,76 @@ public class UlianaSTest {
         WebElement title = driver.findElement(By.xpath("//header/a/img"));
 
         Assert.assertTrue(title.isDisplayed());
+
+        driver.quit();
+    }
+
+    @Test
+    public void testTextBox() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://demoqa.com/");
+
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+
+        driver.findElement(By.xpath("//div[@class='card-body']/h5[text()='Elements']")).click();
+        driver.findElement(By.xpath("//span[text()='Text Box']")).click();
+
+        WebElement inputFullName = driver.findElement(By.xpath("//input[@placeholder='Full Name']"));
+        inputFullName.sendKeys("Scolnicova Uliana");
+
+        WebElement inputEmail = driver.findElement(By.xpath("//input[@placeholder='name@example.com']"));
+        inputEmail.sendKeys("uliana@gmail.com");
+
+        WebElement inputCurrentAddress = driver.findElement(By.xpath("//textarea[@placeholder='Current Address']"));
+        inputCurrentAddress.sendKeys("Chisinau");
+
+        WebElement inputPermanentAddress = driver.findElement(By.xpath("//textarea[@id='permanentAddress']"));
+        inputPermanentAddress.sendKeys("Chisinau");
+
+        WebElement buttonSubmit = driver.findElement(By.xpath("//button[@id='submit']"));
+        new Actions(driver)
+                .scrollToElement(buttonSubmit)
+                .perform();
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", buttonSubmit);
+
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("output")));
+
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//p[@id='name']")).getText(), "Name:Scolnicova Uliana"
+        );
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//p[@id='email']")).getText(), "Email:uliana@gmail.com"
+        );
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//p[@id='currentAddress']")).getText(), "Current Address :Chisinau"
+        );
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//p[@id='permanentAddress']")).getText(), "Permananet Address :Chisinau"
+        );
+
+        driver.quit();
+
+    }
+
+    @Test
+    public void testRadioButton() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://demoqa.com/elements");
+
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+
+        WebElement radioButtonMenu = driver.findElement(By.xpath("//span[text()='Radio Button']"));
+        radioButtonMenu.click();
+
+        WebElement yesRadioButton = driver.findElement(By.xpath("//label[@for='yesRadio']"));
+        yesRadioButton.click();
+
+        WebElement result = driver.findElement(By.xpath("//p[@class='mt-3']"));
+        Assert.assertEquals(result.getText(), "You have selected Yes");
 
         driver.quit();
     }
