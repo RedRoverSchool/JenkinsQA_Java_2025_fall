@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -20,6 +21,7 @@ import org.testng.asserts.SoftAssert;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class KiraMittTest {
 
@@ -27,9 +29,14 @@ public class KiraMittTest {
     private static final String ALERT_URL = BASE_URL + "alerts";
     private static final String DATE_PICKER_URL = BASE_URL + "date-picker";
     private static final String ACCORDION_URL = BASE_URL + "accordian";
+    private static final String BUTTONS_URL = BASE_URL + "buttons";
+    private static final String BROWSER_WINDOWS_URL = BASE_URL + "browser-windows";
+    private static final String TOOLTIPS_URL = BASE_URL + "tool-tips";
+    private static final String MENU_URL = BASE_URL + "menu";
     private static final String TEST_NAME = "Ivan";  // Для тестов с PromptBox
 
     private WebDriver driver;
+    private Actions action;
 
     @BeforeMethod
     protected void beforeMethod() {
@@ -38,6 +45,7 @@ public class KiraMittTest {
         options.addArguments("--window-size=1920,1080");
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        action = new Actions(driver);
     }
 
     @AfterMethod
@@ -183,7 +191,7 @@ public class KiraMittTest {
     }
 
     // Для теста с аккордеоном:
-    public void assertSectionVisibility(SoftAssert softAssert, WebElement sectionContent, boolean shouldBeVisible, String actionDescription) {
+    protected void assertSectionVisibility(SoftAssert softAssert, WebElement sectionContent, boolean shouldBeVisible, String actionDescription) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         String id = sectionContent.getAttribute("id");
         try {
@@ -243,5 +251,131 @@ public class KiraMittTest {
         assertSectionVisibility(softAssertAccordion, section2Content, false, "закрытии Section1");
         assertSectionVisibility(softAssertAccordion, section3Content, false, "закрытии Section1");
         softAssertAccordion.assertAll();
+    }
+
+    @Test
+    public void testDoubleClickButton() {
+        driver.get(BUTTONS_URL);
+
+        action.moveToElement(driver.findElement(By.id("doubleClickBtn"))).doubleClick().perform();
+        Assert.assertEquals(driver.findElement(By.id("doubleClickMessage")).getText(), "You have done a double click");
+    }
+
+    @Test
+    public void testRightClickButton() {
+        driver.get(BUTTONS_URL);
+
+        action.contextClick(driver.findElement(By.id("rightClickBtn"))).build().perform();
+        Assert.assertEquals(driver.findElement(By.id("rightClickMessage")).getText(), "You have done a right click");
+    }
+
+    @Test
+    public void testDynamicClickButton() {
+        driver.get(BUTTONS_URL);
+
+        driver.findElement(By.xpath("//button[text()='Click Me']")).click();
+        Assert.assertEquals(driver.findElement(By.id("dynamicClickMessage")).getText(), "You have done a dynamic click");
+    }
+
+    @Test
+    public void testNewTab() {
+        driver.get(BROWSER_WINDOWS_URL);
+
+        driver.findElement(By.id("tabButton")).click();
+        Assert.assertEquals(driver.getWindowHandles().size(), 2);
+        Object[] windowHandles = driver.getWindowHandles().toArray();
+        driver.switchTo().window((String) windowHandles[1]);
+        Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/sample");
+    }
+
+    @Test
+    public void testNewWindow() {
+        driver.get(BROWSER_WINDOWS_URL);
+
+        driver.findElement(By.id("windowButton")).click(); //Нет разницы в открытии нового окна и вкладки
+        Assert.assertEquals(driver.getWindowHandles().size(), 2);
+        Object[] windowHandles = driver.getWindowHandles().toArray();
+        driver.switchTo().window((String) windowHandles[1]);
+        Assert.assertEquals(driver.findElement(By.tagName("body")).getCssValue("background-color"),
+                "rgba(169, 169, 169, 1)");
+    }
+
+    @Test
+    public void testTooltipButton() {
+        driver.get(TOOLTIPS_URL);
+
+        WebElement button = driver.findElement(By.id("toolTipButton"));
+        action.moveToElement(button).perform();
+        Assert.assertTrue(driver.findElement(By.xpath("//*[text()='You hovered over the Button']")).isDisplayed(),
+                "Отсутствует/неверное всплывающее уведомление у кнопки");
+        Assert.assertEquals(button.getAttribute("aria-describedby"), "buttonToolTip",
+                "Нет необходимого атрибута у кнопки");
+    }
+
+    @Test
+    public void testTooltipTextField() {
+        driver.get(TOOLTIPS_URL);
+
+        action.moveToElement(driver.findElement(By.id("toolTipTextField"))).perform();
+        Assert.assertEquals(driver.findElement(By.id("textFieldToolTip")).getText(), "You hovered over the text field",
+                "Неверное всплывающее уведомление у текстового поля");
+    }
+
+    @Test
+    public void testTooltipContraryInText() {
+        driver.get(TOOLTIPS_URL);
+
+        String text = "Contrary";
+        action.moveToElement(driver.findElement(By.xpath("//div[@id='texToolTopContainer']//a[text()='" + text + "']"))).perform();
+        Assert.assertEquals(driver.findElement(By.id(text.toLowerCase() + "TexToolTip")).getText(), "You hovered over the " + text,
+                "Неверное всплывающее уведомление у слова Contrary");
+    }
+
+    @Test
+    public void testTooltipNumberInText() {
+        driver.get(TOOLTIPS_URL);
+
+        String number = "1.10.32";
+        action.moveToElement(driver.findElement(By.xpath("//div[@id='texToolTopContainer']//a[text()='" + number + "']"))).perform();
+        Assert.assertEquals(driver.findElement(By.id("sectionToolTip")).getText(), "You hovered over the " + number,
+                "Неверное всплывающее уведомление у чисел 1.10.32");
+    }
+
+    protected void verifyColorChangeOnHover(String elementXpath, int numberOfSubs) {
+        WebElement elementParent = driver.findElement(By.xpath(elementXpath + "/parent::li"));
+        String colorBefore = elementParent.getCssValue("background-color");
+        String itemText = elementParent.getText();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        action.moveToElement(elementParent).perform();
+        try {
+            wait.until(driver -> !elementParent.getCssValue("background-color").equals(colorBefore));
+        } catch (TimeoutException e) {
+            Assert.fail("Время ожидания изменения цвета вышло для " + itemText);
+        }
+        try {
+            List<WebElement> subItems = driver.findElements(By.xpath(elementXpath + "/following-sibling::ul/li"));
+            if (numberOfSubs > 0) {
+                Assert.assertEquals(numberOfSubs, subItems.size(), "Количество элементов подменю отличается для " + itemText);
+            } else {
+                if (!subItems.isEmpty()) {
+                    Assert.fail("Подменю должно отсутствовать для " + itemText);
+                }
+            }
+        } catch (TimeoutException e) {
+            Assert.fail("Время ожидания появление подменю вышло для " + itemText);
+        }
+    }
+
+    @Test
+    public void testMenu() {
+        driver.get(MENU_URL);
+
+        verifyColorChangeOnHover("//ul[@id='nav']//a[text()='Main Item 1']", 0);
+        verifyColorChangeOnHover("//ul[@id='nav']//a[text()='Main Item 3']", 0);
+        verifyColorChangeOnHover("//ul[@id='nav']//a[text()='Main Item 2']", 3);
+        verifyColorChangeOnHover("//ul[@id='nav']//li[a[text()='Sub Item']][1]/a", 0);
+        verifyColorChangeOnHover("//ul[@id='nav']//li[a[text()='Sub Item']][2]/a", 0);
+        verifyColorChangeOnHover("//ul[@id='nav']//a[text()='SUB SUB LIST »']", 2);
+
     }
 }
