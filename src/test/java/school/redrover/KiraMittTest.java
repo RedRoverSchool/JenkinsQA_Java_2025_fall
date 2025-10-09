@@ -352,17 +352,14 @@ public class KiraMittTest {
         } catch (TimeoutException e) {
             Assert.fail("Время ожидания изменения цвета вышло для " + itemText);
         }
-        try {
-            List<WebElement> subItems = driver.findElements(By.xpath(elementXpath + "/following-sibling::ul/li"));
-            if (numberOfSubs > 0) {
-                Assert.assertEquals(numberOfSubs, subItems.size(), "Количество элементов подменю отличается для " + itemText);
-            } else {
-                if (!subItems.isEmpty()) {
-                    Assert.fail("Подменю должно отсутствовать для " + itemText);
-                }
+
+        List<WebElement> subItems = driver.findElements(By.xpath(elementXpath + "/following-sibling::ul/li"));
+        if (numberOfSubs > 0) {
+            Assert.assertEquals(numberOfSubs, subItems.size(), "Количество элементов подменю отличается для " + itemText);
+        } else {
+            if (!subItems.isEmpty()) {
+                Assert.fail("Подменю должно отсутствовать для " + itemText);
             }
-        } catch (TimeoutException e) {
-            Assert.fail("Время ожидания появление подменю вышло для " + itemText);
         }
     }
 
