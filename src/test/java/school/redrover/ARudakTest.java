@@ -9,14 +9,14 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.assertEquals;
 
 public class ARudakTest {
+
     @Test
     public void demoQATest() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/elements");
 
         String title = driver.getTitle();
-        assertEquals("DEMOQA", title);
-
+        assertEquals(title, "DEMOQA");
 
         WebElement textBoxButton = driver.findElement(By.id("item-0"));
         textBoxButton.click();
