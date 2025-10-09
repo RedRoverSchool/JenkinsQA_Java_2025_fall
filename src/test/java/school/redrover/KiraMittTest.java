@@ -278,7 +278,7 @@ public class KiraMittTest {
     }
 
     @Test
-    public void testNewTab() {
+    public void testOpenURLInNewTab() {
         driver.get(BROWSER_WINDOWS_URL);
 
         driver.findElement(By.id("tabButton")).click();
@@ -289,7 +289,7 @@ public class KiraMittTest {
     }
 
     @Test
-    public void testNewWindow() {
+    public void testOpenNewWindowVerifyBackgroundColor() {
         driver.get(BROWSER_WINDOWS_URL);
 
         driver.findElement(By.id("windowButton")).click(); //Нет разницы в открытии нового окна и вкладки
@@ -364,7 +364,7 @@ public class KiraMittTest {
     }
 
     @Test
-    public void testMenu() {
+    public void testMenuHoverColorAndSubmenuVisibility() {
         driver.get(MENU_URL);
 
         verifyColorChangeOnHover("//ul[@id='nav']//a[text()='Main Item 1']", 0);
@@ -373,6 +373,5 @@ public class KiraMittTest {
         verifyColorChangeOnHover("//ul[@id='nav']//li[a[text()='Sub Item']][1]/a", 0);
         verifyColorChangeOnHover("//ul[@id='nav']//li[a[text()='Sub Item']][2]/a", 0);
         verifyColorChangeOnHover("//ul[@id='nav']//a[text()='SUB SUB LIST »']", 2);
-
     }
 }
