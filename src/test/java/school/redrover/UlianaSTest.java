@@ -118,5 +118,23 @@ public class UlianaSTest {
 
     }
 
+    @Test
+    public void testRadioButton() {
+        WebDriver driver = new ChromeDriver();
 
+        driver.get("https://demoqa.com/elements");
+
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+
+        WebElement radioButtonMenu = driver.findElement(By.xpath("//span[text()='Radio Button']"));
+        radioButtonMenu.click();
+
+        WebElement yesRadioButton = driver.findElement(By.xpath("//label[@for='yesRadio']"));
+        yesRadioButton.click();
+
+        WebElement result = driver.findElement(By.xpath("//p[@class='mt-3']"));
+        Assert.assertEquals(result.getText(), "You have selected Yes");
+
+        driver.quit();
+    }
 }
