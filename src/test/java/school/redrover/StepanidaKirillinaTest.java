@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -15,21 +16,29 @@ import java.time.Duration;
 
 public class StepanidaKirillinaTest {
     private WebDriver driver;
-    private static final String BASE_URL = "https://www.saucedemo.com/";
     private static final String PASSWORD = "secret_sauce";
 
     @BeforeMethod
     public void setUp() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.get(BASE_URL);
+        driver.get("https://www.saucedemo.com/");
+    }
+
+    @AfterMethod
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 
     @Test
     public void testHomePageTitle() {
         waitForLogoToBeVisible();
 
-        Assert.assertEquals(driver.getTitle(), "Swag Labs");
+        String actualTitle = driver.getTitle();
+
+        Assert.assertEquals(actualTitle, "Swag Labs");
     }
 
     @DataProvider(name = "userCredentials")
@@ -51,7 +60,9 @@ public class StepanidaKirillinaTest {
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='title']")));
 
-        Assert.assertEquals(driver.findElement(By.className("app_logo")).getText(), "Swag Labs");
+        WebElement appLogo = driver.findElement(By.className("app_logo"));
+
+        Assert.assertEquals(appLogo.getText(), "Swag Labs");
     }
 
     private WebDriverWait getWait5() {
@@ -60,12 +71,5 @@ public class StepanidaKirillinaTest {
 
     private void waitForLogoToBeVisible() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("login_logo")));
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
     }
 }
