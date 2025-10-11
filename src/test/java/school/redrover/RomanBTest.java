@@ -70,6 +70,7 @@ public class RomanBTest {
         @FindBy(xpath = "//a[@href='/dynamicid']")
         WebElement dynamicIdLink;
 
+
         public <T> T goToPage(String name, T page) {
             getDriver().findElement(By.xpath(String.format("//h3//a[text()= '%s']", name))).click();
 
