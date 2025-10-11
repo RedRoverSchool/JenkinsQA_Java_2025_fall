@@ -148,6 +148,87 @@ public class ElenaGalinaTest {
         Assert.assertEquals(namesList, currentNamesList);
     }
 
+    // Проверка наличия кнопки "Add to cart" на странице товара
+    @Test
+    public void checkOfAddButton() {
+        loginStandartUserTest();
+
+        List<WebElement> products = driver.findElements(By.xpath(".//div[@class=\"inventory_item\"]"));
+
+        List<String> addButtonsNameList = new ArrayList<>();
+        List<String> currentAddButtonsNameList = new ArrayList<>();
+
+        for (int i = 0; i < products.size(); i++) {
+            products = driver.findElements(By.xpath(".//div[@class =\"inventory_item\"]"));
+
+            WebElement addButtonName = products.get(i).findElement(By.cssSelector(".btn.btn_primary"));
+
+            if (addButtonName.getText().equals("Add to cart")) {
+                addButtonsNameList.add(addButtonName.getText());
+            } else {
+                System.out.println("Наименование кнопки " + addButtonName.getText() + " не соответствует \"Add to cart\"");
+            }
+
+            WebElement nameForClick = products.get(i).findElement(allProducts);
+            nameForClick.click();
+
+            WebElement currentButtonName = driver.findElement(By.id("add-to-cart"));
+            currentAddButtonsNameList.add(currentButtonName.getText());
+
+            driver.findElement(backToProductsButton).click();
+        }
+
+        for (String button : currentAddButtonsNameList) {
+            Assert.assertEquals(button, "Add to cart");
+        }
+
+        Assert.assertEquals(addButtonsNameList, currentAddButtonsNameList);
+    }
+
+    //Проверка наличия кнопки "Remove" на странице товара, который добавлен в корзину через каталог Products
+    @Test
+    public void checkOfRemoveButton() {
+        loginStandartUserTest();
+
+        List<WebElement> products = driver.findElements(By.xpath(".//div[@class=\"inventory_item\"]"));
+
+        List<String> removeButtonsNamesList = new ArrayList<>();
+        List<String> currentRemoveButtonsNameList = new ArrayList<>();
+
+        for (int i = 0; i < products.size(); i++) {
+            products = driver.findElements(By.xpath(".//div[@class=\"inventory_item\"]"));
+
+            WebElement addButton = products.get(i).findElement(By.cssSelector(".btn.btn_primary"));
+            addButton.click();
+
+            try {
+                WebElement removeButtonName = products.get(i).findElement(By.cssSelector(".btn.btn_secondary"));
+
+                if (removeButtonName.getText().equals("Remove")) {
+                    removeButtonsNamesList.add(removeButtonName.getText());
+                } else {
+                    System.out.println("Наименование кнопки " + removeButtonName.getText() + " не соответствует \"Remove\"");
+                }
+
+                WebElement nameForClick = products.get(i).findElement(allProducts);
+                nameForClick.click();
+
+                WebElement currentButtonName = driver.findElement(By.id("remove"));
+                currentRemoveButtonsNameList.add(currentButtonName.getText());
+
+                driver.findElement(backToProductsButton).click();
+
+            } catch (Exception e) {
+                System.out.println("Кнопка Remove не найдена");
+            }
+        }
+        for (String button : currentRemoveButtonsNameList) {
+            Assert.assertEquals(button, "Remove");
+        }
+
+        Assert.assertEquals(removeButtonsNamesList, currentRemoveButtonsNameList);
+    }
+
     @AfterMethod
     public void tearDown() {
         driver.quit();
