@@ -137,5 +137,34 @@ public class DinaraTest {
         Assert.assertEquals( driver.getTitle(), "Automation Exercise");
     }
 
+    @Test
+    public void testPriceOfBooking() throws InterruptedException {
+        driver.manage().window().maximize();
+        driver.get("https://automationintesting.online/");
+
+        Thread.sleep(3000);
+        final int numDays = 3;
+        final int expectedTotal = 100 * (numDays + 1) + 25 + 15;
+
+        //JavascriptExecutor js = (JavascriptExecutor) driver;
+        Actions actions = new Actions(driver);
+        WebElement calendarCheckOut = driver.findElement(By.xpath("//label[@for='checkout']/following::input[1]"));
+        //js.executeScript("arguments[0].scrollIntoView(true);", calendarCheckOut);
+        actions.moveToElement(calendarCheckOut).click().perform();
+
+        driver.findElement(By.xpath("//div[contains(@class,'day--selected')]/following-sibling::*[%d]".formatted(numDays))).click();
+        Thread.sleep(2000);
+
+        WebElement checkAvailability = driver.findElement(By.xpath("//button[text()='Check Availability']"));
+        actions.moveToElement(checkAvailability).click().perform();
+
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("(//a[text()='Book now'])[1]")).click();
+        Thread.sleep(2000);
+        String totalText = driver.findElement(By.xpath("//span[text()='Total']/following-sibling::span")).getText();
+        //assert
+        Assert.assertEquals(expectedTotal, Integer.parseInt(totalText.substring(1)));
+    }
+
 
 }
