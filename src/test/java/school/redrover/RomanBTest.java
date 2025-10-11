@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.apache.commons.exec.util.StringUtils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -19,7 +18,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
-import java.util.concurrent.locks.Condition;
+
 
 
 public class RomanBTest {
