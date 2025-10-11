@@ -3,15 +3,18 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import java.time.Duration;
 import java.util.List;
 
 
 public class NickyTest {
 
     @Test
-    public void Test_book_choose_demoQA() {
+    public void TestBookChooseDemoQA() {
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
@@ -21,38 +24,42 @@ public class NickyTest {
         String baseURL =  "https://demoqa.com/";
         driver.get(baseURL);
 
-        //WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         // Try to get rid of the ad banner preventing click on a tile
         ((JavascriptExecutor) driver).executeScript(
-                "var ad = document.getElementById('fixedban');" +
-                        "if (ad) ad.remove();"
+                "var ad = document.getElementById('fixedban'); if (ad) ad.remove();"
         );
 
-        WebElement BookStoreApp_tile = driver.findElement(By.xpath("//div[contains(@class,'card-body')][.//h5[text()='Book Store Application']]"));
+        WebElement BookStoreAppTile = driver.findElement(By.xpath("//div[contains(@class,'card-body')][.//h5[text()='Book Store Application']]"));
 
         //Wait for element to be clickable
-        //WebElement BookStoreApp_tile_wait = wait.until(ExpectedConditions.visibilityOf(BookStoreApp_tile));
+        wait.until(ExpectedConditions.visibilityOf(BookStoreAppTile));
 
         //// Scroll the tile into view to allow for clicking
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", BookStoreApp_tile);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", BookStoreAppTile);
 
-        BookStoreApp_tile.click();
+        BookStoreAppTile.click();
 
-        String booksURL = driver.getCurrentUrl();
-        Assert.assertEquals(booksURL, "https://demoqa.com/books");
+        String booksUrl = driver.getCurrentUrl();
+        Assert.assertEquals(booksUrl, "https://demoqa.com/books");
 
-        WebElement searchbox = driver.findElement(By.id("searchBox"));
-        searchbox.sendKeys("el");
+        WebElement searchBox = driver.findElement(By.id("searchBox"));
 
-        List<WebElement> search_results_grid = driver.findElements (By.cssSelector(".rt-tr-group .rt-tr:not(.-padRow)"));
-        int count = search_results_grid.size();
+        //Wait for element to be clickable
+        wait.until(ExpectedConditions.visibilityOf(searchBox));
+
+        searchBox.sendKeys("el");
+
+        List <WebElement> searchResultsGrid = driver.findElements (By.cssSelector(".rt-tr-group .rt-tr:not(.-padRow)"));
+        int count = searchResultsGrid.size();
         System.out.println(count);
 
-        WebElement book_title = driver.findElement(By.id("see-book-Eloquent JavaScript, Second Edition"));
-        book_title.click();
-        String book_title_url = driver.getCurrentUrl();
-        Assert.assertEquals(book_title_url, "https://demoqa.com/books?book=9781593275846");
+        WebElement bookTitle = driver.findElement(By.id("see-book-Eloquent JavaScript, Second Edition"));
+        bookTitle.click();
+
+        String bookTitleUrl = driver.getCurrentUrl();
+        Assert.assertEquals(bookTitleUrl, "https://demoqa.com/books?book=9781593275846");
 
         driver.quit();
     }
