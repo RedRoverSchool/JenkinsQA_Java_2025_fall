@@ -72,7 +72,7 @@ public class RomanBTest {
 
         public <T> T goToPage(String name, T page) {
             getDriver().findElement(By.xpath(String.format("//h3//a[text()= '%s']", name))).click();
-            wait4();
+
             return page;
         }
     }
