@@ -90,4 +90,43 @@ public class NatPTest {
 
         driver.quit();
     }
+
+    //Test Case 3: Login User with incorrect email and password
+
+    @Test
+    public void loginUserIncorrect(){
+
+//        1. Launch browser
+        WebDriver driver = new ChromeDriver();
+
+//        2. Navigate to url 'http://automationexercise.com'
+        driver.get("http://automationexercise.com");
+
+//        3. Verify that home page is visible successfully
+        WebElement consent = driver.findElement(By.xpath("//button[@aria-label='Consent']"));
+        consent.click();
+        Assert.assertEquals(driver.getTitle(),"Automation Exercise");
+
+//        4. Click on 'Signup / Login' button
+        driver.findElement(By.xpath("//a[@href='/login']")).click();
+
+//        5. Verify 'Login to your account' is visible
+        WebElement message = driver.findElement(By.cssSelector("#form h2"));
+        Assert.assertEquals(message.getText(), "Login to your account");
+
+//        6. Enter incorrect email address and password
+        driver.findElement(By.xpath("//input[@data-qa='login-email']")).sendKeys("123@email");
+        driver.findElement(By.name("password")).sendKeys("#$");
+
+//        7. Click 'login' button
+        driver.findElement(By.xpath("//button[@data-qa='login-button']")).click();
+
+//        8. Verify error 'Your email or password is incorrect!' is visible
+        WebElement error = driver.findElement(By.xpath("//*[@id='form']//div[1]//p"));
+        Assert.assertEquals(error.getText(), "Your email or password is incorrect!");
+
+        driver.quit();
+
+    }
+
 }
