@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,8 +11,10 @@ import org.testng.annotations.Test;
 
 public class BelyaevVTest {
 
+    private static final String BASE_URL = "https://demoqa.com/";
+
     @Test
-    public void testTasksArea() {
+    public void testDoubleClick() {
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://thecode.media/");
@@ -61,7 +64,8 @@ public class BelyaevVTest {
     public void testCheckOpenNewBrowserWindow() {
 
         WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/");
+        driver.manage().window().maximize();
+        driver.get(BASE_URL);
         String demoqaWindow = driver.getWindowHandle();
 
         driver.findElement(By.xpath("//*[@id='app']/div/div/div[2]/div/div[3]")).click();
@@ -85,7 +89,47 @@ public class BelyaevVTest {
     }
 
     @Test
-    public void testFullOrderProduct() throws InterruptedException{
+    public void testCheckOpenAlertOK() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get(BASE_URL);
+
+        driver.findElement(By.xpath("//*[@id='app']/div/div/div[2]/div/div[3]")).click();
+        driver.findElement(By.xpath("//span[text()='Alerts']")).click();
+        driver.findElement(By.id("confirmButton")).click();
+
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+
+        String confirmOK = driver.findElement(By.id("confirmResult")).getText();
+
+        Assert.assertEquals(confirmOK, "You selected Ok");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testClickRightMouseButton(){
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get(BASE_URL);
+
+        driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]")).click();
+        driver.findElement(By.xpath("//span[text()='Buttons']")).click();
+
+        WebElement rightClickButton = driver.findElement(By.id("rightClickBtn"));
+        new Actions(driver).contextClick(rightClickButton).perform();
+
+        String textMessage = driver.findElement(By.id("rightClickMessage")).getText();
+        Assert.assertTrue(textMessage.contains("right click"));
+
+        driver.quit();
+    }
+
+    @Test
+    public void testFullOrderProduct(){
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/v1/inventory.html");
