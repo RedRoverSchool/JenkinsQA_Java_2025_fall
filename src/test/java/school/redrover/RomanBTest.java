@@ -1,25 +1,20 @@
 package school.redrover;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.*;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 import java.time.Duration;
 
+import org.testng.annotations.Test;
 
-
+@Listeners(RomanBTest.TestListener.class)
 public class RomanBTest {
     protected WebDriver driver;
 
@@ -33,16 +28,61 @@ public class RomanBTest {
         driver.get("http://uitestingplayground.com/");
     }
 
-    @AfterMethod
-    public void tearDown(ITestResult testResult) {
+    @AfterMethod(alwaysRun = true)
+    public void tearDown() {
         if (driver != null) {
-            if (testResult.isSuccess()) {
-                driver.quit();
-            } else {
-                System.out.println("Test failed: " + testResult.getName());
-                driver.quit();
+            driver.quit();
+        }
+    }
+
+    public static class TestListener implements ITestListener {
+        String message = "";
+        @Override
+        public void onTestStart(ITestResult result) {
+            message = "🚀 TEST STARTED: " + result.getName() ;
+            Reporter.log(message + "<br>");
+            System.out.println(message);
+        }
+
+        @Override
+        public void onTestSuccess(ITestResult result) {
+            message = "✅ TEST PASSED: " + result.getName();
+            Reporter.log(message + "<br>");
+            System.out.println(message);
+        }
+
+        @Override
+        public void onTestFailure(ITestResult result) {
+            Reporter.log("<b>❌ FAILED:</b> " + result.getName() + "<br>");
+            Reporter.log("Cause: " + result.getThrowable() + "<br>");
+            message = "❌ TEST FAILED: " + result.getName();
+            System.out.println(message);
+
+            Object testClass = result.getInstance();
+            try {
+                WebDriver driver = (WebDriver) testClass
+                        .getClass()
+                        .getDeclaredField("driver")
+                        .get(testClass);
+
+                if (driver != null) {
+                    TakesScreenshot ts = (TakesScreenshot) driver;
+                    String base64 = ts.getScreenshotAs(OutputType.BASE64);
+                    String imgTag = "<img src='data:image/png;base64," + base64 + "' height='200'/>";
+                    Reporter.log(imgTag + "<br>");
+                }
+            } catch (Exception e) {
+                Reporter.log("⚠️ Не удалось получить WebDriver: " + e.getMessage());
             }
         }
+
+        @Override
+        public void onTestSkipped(ITestResult result) {
+            Reporter.log("<b>⏩ SKIPPED:</b> " + result.getName() + "<br>");
+            message = "⏩ TEST SKIPPED: " + result.getName();
+            System.out.println(message);
+        }
+
     }
 
     public static class BasePage {
@@ -72,8 +112,8 @@ public class RomanBTest {
 
 
         public <T> T goToPage(String name, T page) {
-            getDriver().findElement(By.xpath(String.format("//h3//a[text()= '%s']", name))).click();
-
+            getDriver().findElement(By.xpath(String.format("//h3//a[text()='%s']", name))).click();
+            Reporter.log("Title is : " + page.toString());
             return page;
         }
     }
@@ -113,6 +153,29 @@ public class RomanBTest {
         }
     }
 
+    public static class HiddenLayersPage extends BasePage {
+        public HiddenLayersPage(WebDriver driver) {
+            super(driver);
+        }
+
+
+
+        public String notAllowedClickMoreThanOne() {
+            String message = "";
+            boolean clickable = true;
+            WebElement enableButton = wait4().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id = 'greenButton']")));
+            try {
+                enableButton.click();
+                message = "Green button visible and  clicked. Click : ";
+            }
+            catch (ElementClickInterceptedException e) {
+                message = "Green button is hidden. Click : " ;
+                clickable = false;
+            }
+            return  message + Boolean.toString(clickable);
+        }
+    }
+
     @Test
     public void testDynamicId() {
         String id = new HomePage(driver)
@@ -139,4 +202,19 @@ public class RomanBTest {
         softAssert.assertTrue(attributeClassButton.contains("btn-primary"));
         softAssert.assertAll();
     }
+
+    @Test
+    public  void testHiddenLayers() {
+        String firstClick = new HomePage(driver)
+                .goToPage("Hidden Layers", new HiddenLayersPage(driver))
+                .notAllowedClickMoreThanOne();
+        String secondClick = new HiddenLayersPage(driver)
+                .notAllowedClickMoreThanOne();
+
+        softAssert.assertEquals(firstClick, "Green button visible and  clicked. Click : true");
+        softAssert.assertEquals(secondClick, "Green button is hidden. Click : false");
+        softAssert.assertAll();
+    }
 }
+
+

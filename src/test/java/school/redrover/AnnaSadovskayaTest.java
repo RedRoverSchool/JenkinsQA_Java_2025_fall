@@ -4,8 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
 
 
 public class AnnaSadovskayaTest {
@@ -123,6 +127,43 @@ public class AnnaSadovskayaTest {
         Thread.sleep(5000);
 
         Assert.assertEquals(driver.findElement(By.xpath("//p[@class='ng-star-inserted']")).getText(), "The cart is empty. Nothing to display.");
+
+        driver.quit();
+    }
+
+    @Test
+    public void searchProduct() {
+        /*
+         Launch browser
+        2. Navigate to url 'http://automationexercise.com'
+        3. Verify that home page is visible successfully
+        4. Click on 'Products' button
+        5. Verify user is navigated to ALL PRODUCTS page successfully
+        6. Enter product name in search input and click search button
+        7. Verify 'SEARCHED PRODUCTS' is visible
+        8. Verify all the products related to search are visible
+         */
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://automationexercise.com/");
+
+        Assert.assertEquals(driver.getTitle(), "Automation Exercise");
+        driver.findElement(By.xpath("//a[text()=' Products']")).click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.titleIs("Automation Exercise - All Products"));
+
+        Assert.assertEquals(driver.getTitle(),"Automation Exercise - All Products");
+
+        driver.findElement(By.xpath("//input[@id='search_product']")).sendKeys("Blue Top");
+        driver.findElement(By.xpath("//button[@id='submit_search']")).click();
+
+        WebElement textResult = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(text(),'Searched Products')]")));
+
+        Assert.assertEquals(textResult.getText().toLowerCase(), "searched products");
+
+        Assert.assertEquals(driver.findElement(By.xpath("//div[@class='productinfo text-center']/p")).getText(), "Blue Top");
 
         driver.quit();
     }
