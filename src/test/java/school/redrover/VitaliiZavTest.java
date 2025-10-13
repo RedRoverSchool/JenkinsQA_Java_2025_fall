@@ -32,7 +32,7 @@ public class VitaliiZavTest {
                 ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#header .shop-menu li > a[href=\"/\"]"))
         );
         // У найденого элемента есть атрибут 'style' ?
-        Assert.assertNull(homeButton.getAttribute("style"), "'homeButton' doesn't have attribute 'style'");
+        Assert.assertNotNull(homeButton.getAttribute("style"), "'homeButton' doesn't have attribute 'style'");
         // Элемент окрашен в оранжевый цвет ?
         Assert.assertTrue(homeButton.getAttribute("style").contains("color: orange;"), "Button isn`t orange");
 
