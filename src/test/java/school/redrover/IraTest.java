@@ -48,7 +48,6 @@ public class IraTest {
         Assert.assertEquals(basket,"1");
         }
 
-
         @Test
     public void logoutTest()  {
             WebDriver driver = new ChromeDriver();
@@ -66,52 +65,4 @@ public class IraTest {
             Assert.assertTrue(driver.findElement(By.id("user-name")).getAttribute("value").isEmpty());
             Assert.assertTrue(driver.findElement(By.id("user-name")).getAttribute("placeholder").equals("Username"));
         }
-
-        package jenkinsTest;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import java.time.Duration;
-
-    public class FirstTestJenkins {
-
-        @Test
-        public void logintest(){
-            WebDriver driver = new ChromeDriver();
-            driver.manage().window().maximize();
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-            driver.get("http://localhost:8081/");
-            WebElement login = driver.findElement(By.name("j_username"));
-            WebElement password = driver.findElement(By.name("j_password"));
-            WebElement singIn = driver.findElement(By.name("Submit"));
-            login.sendKeys("admin");
-            password.sendKeys("admin");
-            singIn.click();
-            WebElement wellCome = driver.findElement(By.xpath("//h1"));
-            Assert.assertEquals(wellCome.getText(),"Добро пожаловать в Jenkins!");
-        }
-        @Test
-        public void logintestInvalidCredentions(){
-            WebDriver driver = new ChromeDriver();
-            driver.manage().window().maximize();
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-            driver.get("http://localhost:8081/");
-            WebElement login = driver.findElement(By.name("j_username"));
-            WebElement password = driver.findElement(By.name("j_password"));
-            WebElement singIn = driver.findElement(By.name("Submit"));
-            login.sendKeys("admin1");
-            password.sendKeys("admin1");
-            singIn.click();
-            WebElement error = driver.findElement(By.cssSelector(".app-sign-in-register__error"));
-            Assert.assertEquals(error.getText(),"Invalid username or password");
-            WebElement login2 = driver.findElement(By.name("j_username"));
-            Assert.assertTrue(login2.getAttribute("class").contains("jenkins-input--error"));
-        }
-    }
-
 }
