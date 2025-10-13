@@ -4,24 +4,33 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 public class SergeyVyshkvarokTest {
-    @Test
-    public void testPositiveLogin() {
+    private WebDriver driver;
 
-        WebDriver driver = new ChromeDriver();
+    @BeforeSuite
+    public void setup() {
+        driver = new ChromeDriver();
         driver.get("https://www.automationexercise.com/");
         driver.manage().window().maximize();
+    }
 
-        driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a")).click();
-
-        driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[2]")).sendKeys("veshkvarok@mail.ru");
-        driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[3]")).sendKeys("Questiov!#13");
-        driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/button")).click();
-
-        Assert.assertEquals(driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a")).getText(), "Logout");
-
+    @AfterSuite
+    public void exit() {
         driver.quit();
+    }
+
+    @Test
+    public void testPositiveLogin() {
+        driver.findElement(By.xpath("//a[@href='/login']")).click();
+        driver.findElement(By.name("email")).sendKeys("veshkvarok@mail.ru");
+        driver.findElement(By.name("password")).sendKeys("Questiov!#13");
+        driver.findElement(By.xpath("//button[text()='Login']")).click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("//a[@href='/logout']")).getText(), "Logout");
     }
 }
