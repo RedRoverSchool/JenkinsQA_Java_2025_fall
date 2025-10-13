@@ -66,16 +66,14 @@ public class IraTest {
             Assert.assertTrue(driver.findElement(By.id("user-name")).getAttribute("value").isEmpty());
             Assert.assertTrue(driver.findElement(By.id("user-name")).getAttribute("placeholder").equals("Username"));
         }
-// The commented out code is redundant. Try to compile (run) your code prior creating a commit.
-        //package jenkinsTest;
-
-//import org.openqa.selenium.By;
-//import org.openqa.selenium.WebDriver;
-//import org.openqa.selenium.WebElement;
-//import org.openqa.selenium.chrome.ChromeDriver;
-//import org.testng.Assert;
-//import org.testng.annotations.Test;
-//import java.time.Duration;
+        package jenkinsTest;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import java.time.Duration;
 
     public class FirstTestJenkins {
 
