@@ -1,23 +1,24 @@
 package school.redrover;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
 
 public class BelyaevVTest {
 
     private static final String BASE_URL = "https://demoqa.com/";
+    private static final String THECODE_URL ="https://thecode.media/";
 
     @Test
     public void testDoubleClick() {
 
         WebDriver driver = new ChromeDriver();
-        driver.get("https://thecode.media/");
+        driver.get(THECODE_URL);
 
         WebElement searchArea = driver.findElement(By.className("tab-questions"));
 
@@ -31,7 +32,7 @@ public class BelyaevVTest {
     }
 
     @Test
-    public void testAddCompareProduct() throws InterruptedException {
+    public void testAddCompareProduct() {
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://naveenautomationlabs.com/opencart/");
@@ -41,12 +42,12 @@ public class BelyaevVTest {
         WebElement cameraCanon = driver.findElement(By.cssSelector("[onclick*='compare.add'][onclick*='30']"));
         cameraCanon.click();
 
-        Thread.sleep(1000);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 
         WebElement cameraNikon = driver.findElement(By.cssSelector("[onclick*='compare.add'][onclick*='31']"));
         cameraNikon.click();
 
-        Thread.sleep(1000);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 
         driver.findElement(By.linkText("Product Compare (2)")).click();
 
@@ -59,6 +60,8 @@ public class BelyaevVTest {
 
         driver.quit();
     }
+
+    //    checks switch between tabs and windows
 
     @Test
     public void testCheckOpenNewBrowserWindow() {
@@ -81,12 +84,77 @@ public class BelyaevVTest {
             }
         }
 
-        String urlNewWindow =  driver.findElement(By.id("sampleHeading")).getText();
+        String newWindow =  driver.findElement(By.id("sampleHeading")).getText();
 
-        Assert.assertEquals(urlNewWindow, "This is a sample page");
+        Assert.assertEquals(newWindow, "This is a sample page");
 
         driver.quit();
     }
+
+    @Test
+    public void testCheckSwitchNewTab() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+        driver.get(BASE_URL);
+
+        driver.findElement(By.xpath("//*[@id='app']/div/div/div[2]/div/div[3]")).click();
+        driver.findElement(By.xpath("//span[text()='Browser Windows']")).click();
+        driver.findElement(By.id("tabButton")).click();
+
+        Object[] windowHandles=driver.getWindowHandles().toArray();
+        driver.switchTo().window((String) windowHandles[1]);
+
+        String newTab =  driver.findElement(By.id("sampleHeading")).getText();
+
+        Assert.assertEquals(newTab, "This is a sample page");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testCheckSwitchBackToMainWindow() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+        driver.get(BASE_URL);
+
+        driver.findElement(By.xpath("//*[@id='app']/div/div/div[2]/div/div[3]")).click();
+        driver.findElement(By.xpath("//span[text()='Browser Windows']")).click();
+        driver.findElement(By.id("tabButton")).click();
+
+        Object[] windowHandles=driver.getWindowHandles().toArray();
+        driver.switchTo().window((String) windowHandles[1]);
+        driver.close();
+        driver.switchTo().window((String) windowHandles[0]);
+
+        String titleMainSite = driver.getTitle();
+
+        Assert.assertEquals(titleMainSite, "DEMOQA");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testCheckSwitchNewTabUseTab() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+        driver.get(THECODE_URL);
+        String thecodeWindow = driver.getWindowHandle();
+
+        driver.switchTo().newWindow(WindowType.TAB);
+        driver.get(THECODE_URL + "howto/");
+
+        String titleOpenTab =  driver.findElement(By.className("search__title")).getText();
+
+        Assert.assertEquals(titleOpenTab, "Это как");
+
+        driver.close();
+        driver.switchTo().window((thecodeWindow));
+        driver.quit();
+    }
+
 
     @Test
     public void testCheckOpenAlertOK() {
@@ -116,7 +184,7 @@ public class BelyaevVTest {
         driver.manage().window().maximize();
         driver.get(BASE_URL);
 
-        driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]")).click();
+        driver.findElement(By.xpath("//*[@id='app']/div/div/div[2]/div/div[1]")).click();
         driver.findElement(By.xpath("//span[text()='Buttons']")).click();
 
         WebElement rightClickButton = driver.findElement(By.id("rightClickBtn"));
@@ -124,6 +192,31 @@ public class BelyaevVTest {
 
         String textMessage = driver.findElement(By.id("rightClickMessage")).getText();
         Assert.assertTrue(textMessage.contains("right click"));
+
+        driver.quit();
+    }
+
+    @Test
+    public void testCheckFieldToolTip() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+        driver.get(BASE_URL);
+
+        driver.findElement(By.xpath("//*[@id='app']/div/div/div[2]/div/div[4]")).click();
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollTo(0, document.documentElement.scrollHeight/2);");
+
+        driver.findElement(By.xpath("//span[text()='Tool Tips']")).click();
+
+        new Actions(driver).moveToElement(driver.findElement(By.id("toolTipTextField"))).perform();
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+
+        String hoverText = driver.findElement(By.id("textFieldToolTip")).getText();
+
+        Assert.assertEquals(hoverText, "You hovered over the text field");
 
         driver.quit();
     }
