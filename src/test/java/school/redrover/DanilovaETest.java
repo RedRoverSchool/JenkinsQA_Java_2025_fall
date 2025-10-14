@@ -40,7 +40,6 @@ public class DanilovaETest {
     @BeforeGroups("Chapter3_WebForm")
     void openWebForm() {
         driver.findElement(By.xpath(WEB_FORM_PAGE)).click();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(6));
     }
 
     @AfterClass
@@ -102,7 +101,6 @@ public class DanilovaETest {
         Assert.assertEquals(driver.getCurrentUrl(), WEB_FORM_URL, "Unexpected link!");
         String filePath = "src/resources/DanilovaE/TextField.txt";
         WebElement textAreaInput = driver.findElement(By.xpath("//textarea[@name='my-textarea']"));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
         String expected = readTextFileUtils(filePath);
         textAreaInput.sendKeys(expected);
@@ -164,8 +162,6 @@ public class DanilovaETest {
         Assert.assertEquals(driver.getCurrentUrl(), WEB_FORM_URL, "Unexpected link!");
 
         List<WebElement> optionsSelect = driver.findElements(By.xpath("//select[@class='form-select']/option[@value]"));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
         String actual = optionsSelect.get(index).getText().trim();
         Assert.assertEquals(actual, expectedName, "option select name doesn't much");
     }
@@ -282,7 +278,7 @@ public class DanilovaETest {
 
     @Test(groups = "Chapter3_WebForm", priority = 15)
     @Ignore
-    void changeColorPickerTest(){
+    void changeColorPickerTest() {
         WebElement host = driver.findElement(By.cssSelector("input[type='color']"));
         WebElement colorPickerButton = host.getShadowRoot().findElement(By.cssSelector("div > div"));
         Rectangle rect = colorPickerButton.getRect();
@@ -310,11 +306,10 @@ public class DanilovaETest {
                 .moveToLocation(rightX, downY)
                 .click()
                 .perform();
-
     }
 
     @Test(groups = "Chapter3_WebForm", priority = 16)
-    void DataPickerTest(){
+    void DataPickerTest() {
         WebElement host = driver.findElement(By.cssSelector("input[name='my-date']"));
         WebElement dataResult = host.getShadowRoot().findElement(By.cssSelector("div"));
         String actual = dataResult.getText();
