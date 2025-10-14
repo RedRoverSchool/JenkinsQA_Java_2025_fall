@@ -77,107 +77,101 @@ public class RenataBoichenkoTest {
         Assert.assertEquals(actualValue, "Java! Forever !!");
     }
 
-    @Test
-    public void testDisabledInput() {
-        WebElement disabled = driver.findElement(By.name("my-disabled"));
-        disabled.click();
-        if (!disabled.isDisplayed()) {
-            System.out.println("Кнопка задизейблена");
+        @Test
+        public void testDisabledInput() {
+            WebElement disabled = driver.findElement(By.name("my-disabled"));
+            disabled.click();
+
+            Assert.assertTrue(disabled.isDisplayed(), "Поле не задизейблено");
         }
-    }
 
-    @Test
-    public void testReadonlyInput() {
-        WebDriver driver = new ChromeDriver();
+        @Test
+        public void testReadonlyInput() {
+            WebElement readOnlyInput = driver.findElement(By.name("my-readonly"));
+            readOnlyInput.click();
 
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-        WebElement textBox = driver.findElement(By.xpath("//a[text()='Web form']"));
-        textBox.click();
-
-        WebElement message = driver.findElement(By.xpath("//h1[text()='Web form']"));
-
-        Assert.assertEquals(message.getText(), "Web form");
-
-        WebElement textBox1 = driver.findElement(By.name("my-readonly"));
-        textBox1.click();
-        if (!textBox1.isEnabled()) {
-            System.out.println("Кнопка не задизейблена");
+            String expectedPlaceholder = "Readonly input";
+            String actualPlaceholder = readOnlyInput.getAttribute("value");
+            Assert.assertEquals(actualPlaceholder, expectedPlaceholder, "Текст должен быть 'Readonly input'");
         }
-    }
 
     @Test
     public void testDropdownSelect() {
 
-        WebElement select = driver.findElement(By.name("my-select"));
-        select.click();
+            WebElement select = driver.findElement(By.name("my-select"));
+            select.click();
 
-        List<WebElement> options = select.findElements(By.tagName("option"));
+            List<WebElement> options = select.findElements(By.tagName("option"));
 
-        Random random = new Random();
-        WebElement randomOption = options.get(random.nextInt(options.size()));
+            Random random = new Random();
+            WebElement randomOption = options.get(random.nextInt(options.size()));
 
-        String expectedText = randomOption.getText().trim();
+            String expectedText = randomOption.getText().trim();
 
-        randomOption.click();
+            randomOption.click();
 
-        WebElement selectedOption = select.findElement(By.cssSelector("option:checked"));
-        String actualText = selectedOption.getText().trim();
+            WebElement selectedOption = select.findElement(By.cssSelector("option:checked"));
+            String actualText = selectedOption.getText().trim();
 
-        Assert.assertEquals(actualText, expectedText, "Выбран неправильный элемент");
-    }
+            Assert.assertEquals(actualText, expectedText, "Выбран неправильный элемент");
+        }
 
-    @Test
-    public void testDropdownDatalist() {
-        WebElement datalist = driver.findElement(By.name("my-datalist"));
-        datalist.click();
+        @Test
+        public void testDropdownDatalist() {
+            WebElement datalist = driver.findElement(By.name("my-datalist"));
+            datalist.click();
 
-        WebElement shadowHost = driver.findElement(By.cssSelector("select[name='my-select']"));
+            WebElement shadowHost = driver.findElement(By.cssSelector("select[name='my-select']"));
 
-        SearchContext shadowRoot = shadowHost.getShadowRoot();
+            SearchContext shadowRoot = shadowHost.getShadowRoot();
 
-        List<String> options = List.of(
-                "San Francisco", "New York", "Seattle", "Los Angeles", "Chicago"
-        );
+            List<String> options = List.of(
+                    "San Francisco", "New York", "Seattle", "Los Angeles", "Chicago"
+            );
 
-        Random random = new Random();
+            Random random = new Random();
 
-        String expectedValue = options.get(random.nextInt(options.size()));
+            String expectedValue = options.get(random.nextInt(options.size()));
 
-        datalist.sendKeys(expectedValue);
+            datalist.sendKeys(expectedValue);
 
-        String actualValue = datalist.getAttribute("value");
-        Assert.assertEquals(actualValue, expectedValue, "Error");
-    }
+            String actualValue  = datalist.getAttribute("value");
+            Assert.assertEquals(actualValue , expectedValue, "Error");
+        }
 
-    @Test
-    public void testChexBox() {
-        List<WebElement> chexBoxList = driver.findElements(By.xpath("//input[@type='checkbox']"));
+        @Test
+        public void testChexBox() {
+            List<WebElement> chexBoxList = driver.findElements(By.xpath("//input[@type='checkbox']"));
 
-        Assert.assertTrue(chexBoxList.size() == 2, "Not == 2");
-        Assert.assertTrue(chexBoxList.get(0).isSelected(), "checkbox d't checked");
+            Assert.assertTrue(chexBoxList.size() == 2, "Not == 2");
+            Assert.assertTrue(chexBoxList.get(0).isSelected(), "checkbox d't checked");
 
-        WebElement checkbox = driver.findElement(By.xpath("//input[@id='my-check-1']"));
-        WebElement checkbox2 = driver.findElement(By.xpath("//input[@id='my-check-2']"));
+            WebElement checkbox = driver.findElement(By.xpath("//input[@id='my-check-1']"));
+            WebElement checkbox2 = driver.findElement(By.xpath("//input[@id='my-check-2']"));
 
-        checkbox.click();
-        Assert.assertFalse(checkbox.isSelected(), "checkbox didn't checked");
+            checkbox.click();
+            Assert.assertFalse(checkbox.isSelected(), "checkbox didn't checked");
 
-        checkbox.click();
-        Assert.assertTrue(checkbox.isSelected(), "checkbox else checked");
+            checkbox.click();
+            Assert.assertTrue(checkbox.isSelected(), "checkbox else checked");
 
-        checkbox2.click();
-        Assert.assertTrue(checkbox2.isSelected(), "checkbox2 didn't checked");
-    }
+            checkbox2.click();
+            Assert.assertTrue(checkbox2.isSelected(), "checkbox2 didn't checked");
+        }
 
-    @Test
-    public void testButton() {
-        WebElement radio1 = driver.findElement(By.id("my-radio-1"));
-        radio1.click();
-        WebElement radio2 = driver.findElement(By.id("my-radio-2"));
-        radio2.click();
-    }
+        @Test
+        public void testButton() {
+            List<WebElement> radios = driver.findElements(By.xpath("//input[@type='radio']"));
+            Assert.assertEquals(radios.size(), 2, "Нет 2 кнопок");
+            Assert.assertTrue(radios.get(0).isSelected(), "Кнопка не выбрана");
+
+            WebElement radio1 = driver.findElement(By.id("my-radio-1"));
+            WebElement radio2 = driver.findElement(By.id("my-radio-2"));
+            radio2.click();
+
+            Assert.assertFalse(radio1.isSelected(), "Кнопка1 не выбрана");
+            Assert.assertTrue(radio2.isSelected(), "Кнопка2 не выбрана");
+        }
 
     @Test
     public void testAllPageSubmit() {
