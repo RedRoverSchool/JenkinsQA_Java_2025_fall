@@ -33,6 +33,7 @@ public class KiraMittTest {
     private static final String BROWSER_WINDOWS_URL = BASE_URL + "browser-windows";
     private static final String TOOLTIPS_URL = BASE_URL + "tool-tips";
     private static final String MENU_URL = BASE_URL + "menu";
+    private static final String MODAL_DIALOGS_URL = BASE_URL + "modal-dialogs";
     private static final String TEST_NAME = "Ivan";  // Для тестов с PromptBox
 
     private WebDriver driver;
@@ -373,5 +374,33 @@ public class KiraMittTest {
         verifyColorChangeOnHover("//ul[@id='nav']//li[a[text()='Sub Item']][1]/a", 0);
         verifyColorChangeOnHover("//ul[@id='nav']//li[a[text()='Sub Item']][2]/a", 0);
         verifyColorChangeOnHover("//ul[@id='nav']//a[text()='SUB SUB LIST »']", 2);
+    }
+
+    @Test
+    public void testOpenSmallModalDialogAndCloseWithCloseButton() {
+        driver.get(MODAL_DIALOGS_URL);
+
+        driver.findElement(By.id("showSmallModal")).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement modalDialog = driver.findElement(By.xpath("//div[@role='dialog' and contains(@class, 'show')]"));
+        Assert.assertTrue(wait.until(ExpectedConditions.visibilityOf(modalDialog)).isDisplayed());
+        Assert.assertEquals(driver.findElement(By.id("example-modal-sizes-title-sm")).getText(),"Small Modal");
+        Assert.assertEquals(driver.findElement(By.className("modal-body")).getText(),"This is a small modal. It has very less content");
+        driver.findElement(By.id("closeSmallModal")).click();
+        Assert.assertTrue(wait.until(ExpectedConditions.invisibilityOf(modalDialog)));
+    }
+
+    @Test
+    public void testOpenLargeModalDialogAndCloseWithXButton() {
+        driver.get(MODAL_DIALOGS_URL);
+
+        driver.findElement(By.id("showLargeModal")).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement modalDialog = driver.findElement(By.xpath("//div[@role='dialog' and contains(@class, 'show')]"));
+        Assert.assertTrue(wait.until(ExpectedConditions.visibilityOf(modalDialog)).isDisplayed());
+        Assert.assertEquals(driver.findElement(By.id("example-modal-sizes-title-lg")).getText(),"Large Modal");
+        Assert.assertTrue(driver.findElement(By.className("modal-body")).getText().contains("It has survived not only five centuries"));
+        driver.findElement(By.xpath("//button[contains(@class, 'close')]")).click();
+        Assert.assertTrue(wait.until(ExpectedConditions.invisibilityOf(modalDialog)));
     }
 }
