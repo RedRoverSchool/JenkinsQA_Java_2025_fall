@@ -163,6 +163,7 @@ public class DanilovaETest {
 
         List<WebElement> optionsSelect = driver.findElements(By.xpath("//select[@class='form-select']/option[@value]"));
         String actual = optionsSelect.get(index).getText().trim();
+
         Assert.assertEquals(actual, expectedName, "option select name doesn't much");
     }
 
