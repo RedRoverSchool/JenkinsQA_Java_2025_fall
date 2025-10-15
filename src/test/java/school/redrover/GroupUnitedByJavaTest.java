@@ -74,6 +74,7 @@ public class GroupUnitedByJavaTest {
                 "Logout button should be displayed after successful login");
 
         driver.quit();
+       
         @Test
         public void testBackToMainPageLink() {
             WebDriver driver = new ChromeDriver();
