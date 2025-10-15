@@ -75,55 +75,67 @@ public class GroupUnitedByJavaTest {
 
         driver.quit();
     }
-     
-        @Test
-        public void testBackToMainPageLink() {
-            WebDriver driver = new ChromeDriver();
-            driver.get("https://www.saucedemo.com/v1/inventory.html");
-            driver.manage().window().maximize();
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+    @Test
+    public void testBackToMainPageLink() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com/v1/inventory.html");
+        driver.manage().window().maximize();
 
-            driver.findElement(By.xpath("//div[@class = 'inventory_item_name'][1]")).click();
-            driver.findElement(By.xpath("//button[@class = 'inventory_details_back_button']")).click();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
 
-            Assert.assertEquals(driver.findElement(By.xpath("//div[@class = 'product_label']")).getText(),
-                    "Products");
+        driver.findElement(By.xpath("//div[@class = 'inventory_item_name'][1]")).click();
+        driver.findElement(By.xpath("//button[@class = 'inventory_details_back_button']")).click();
 
-            driver.quit();
-        }
+        Assert.assertEquals(driver.findElement(By.xpath("//div[@class = 'product_label']")).getText(),
+                "Products");
 
-        @Test
-        public void testChangeButtonTextAtAdding() {
-            WebDriver driver = new ChromeDriver();
-            driver.get("https://www.saucedemo.com/v1/inventory.html");
-            driver.manage().window().maximize();
+        driver.quit();
+    }
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+    @Test
+    public void testChangeButtonTextAtAdding() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com/v1/inventory.html");
+        driver.manage().window().maximize();
 
-            driver.findElement(By.xpath("(//button[@class='btn_primary btn_inventory'])[1]")).click();
-            Assert.assertEquals(driver.findElement(By.xpath("(//button[@class='btn_secondary btn_inventory'])[1]"))
-                    .getText(), "REMOVE");
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
 
-            driver.quit();
-        }
+        driver.findElement(By.xpath("(//button[@class='btn_primary btn_inventory'])[1]")).click();
+        Assert.assertEquals(driver.findElement(By.xpath("(//button[@class='btn_secondary btn_inventory'])[1]"))
+                .getText(), "REMOVE");
 
-        @Test
-        public void testChangeBasketCounterAtAdding() {
-            WebDriver driver = new ChromeDriver();
-            driver.get("https://www.saucedemo.com/v1/inventory.html");
-            driver.manage().window().maximize();
+        driver.quit();
+    }
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+    @Test
+    public void testChangeBasketCounterAtAdding() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com/v1/inventory.html");
+        driver.manage().window().maximize();
 
-            String basketCounterSelector = "//span[@class = 'fa-layers-counter shopping_cart_badge']";
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
 
-            Assert.assertTrue(driver.findElements(By.xpath(basketCounterSelector)).isEmpty());
+        String basketCounterSelector = "//span[@class = 'fa-layers-counter shopping_cart_badge']";
 
-            driver.findElement(By.xpath("(//button[@class='btn_primary btn_inventory'])[1]")).click();
-            Assert.assertEquals(driver.findElement(By.xpath(basketCounterSelector)).getText(), "1");
+        Assert.assertTrue(driver.findElements(By.xpath(basketCounterSelector)).isEmpty());
 
-            driver.quit();
+        driver.findElement(By.xpath("(//button[@class='btn_primary btn_inventory'])[1]")).click();
+        Assert.assertEquals(driver.findElement(By.xpath(basketCounterSelector)).getText(), "1");
+
+        driver.quit();
+    }
+
+    @Test
+    public static void testHeadhunterVacancyName() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.hh.ru/vacancy/122718353");
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
+
+        Assert.assertEquals(driver.findElement(By.cssSelector("h1[data-qa='vacancy-title']")).getText(), "UX-Исследователь (Junior)");
+
+        driver.quit();
     }
 }
 
