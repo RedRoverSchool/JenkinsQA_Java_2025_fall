@@ -15,6 +15,9 @@ import java.time.Duration;
 
 public class GroupUnitedByJavaTest {
 
+    private static final String LOGIN = "admin@admin.com";
+    private static final String PASSWORD = "admin123";
+
     @Test
     public void testDoubleClick() {
         ChromeOptions chromeOptions = new ChromeOptions();
@@ -57,6 +60,22 @@ public class GroupUnitedByJavaTest {
         driver.quit();
     }
 
+    @Test
+    public void testPositiveLogin() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://qa-practice.netlify.app/auth_ecommerce");
+
+        driver.findElement(By.name("emailAddress")).sendKeys(LOGIN);
+        driver.findElement(By.name("password")).sendKeys(PASSWORD);
+        driver.findElement(By.id("submitLoginBtn")).click();
+
+        Assert.assertTrue(driver.findElement(By.id("logout")).isDisplayed(),
+                "Logout button should be displayed after successful login");
+
+        driver.quit();
+    }
+     
         @Test
         public void testBackToMainPageLink() {
             WebDriver driver = new ChromeDriver();
@@ -107,3 +126,4 @@ public class GroupUnitedByJavaTest {
             driver.quit();
     }
 }
+
