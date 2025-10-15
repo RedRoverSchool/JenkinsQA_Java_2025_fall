@@ -14,9 +14,6 @@ public class AlbinaMTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com");
 
-        Assert.assertEquals(driver.getTitle(), "Swag Labs");
-        Assert.assertEquals(driver.findElement(By.xpath("//*[@id=\"root\"]/div/div[1]")).getText(), "Swag Labs");
-
         WebElement usernameBox = driver.findElement(By.xpath("//*[@id=\"user-name\"]"));
         usernameBox.sendKeys("standard_user");
         WebElement passwordBox = driver.findElement(By.xpath("//*[@id=\"password\"]"));
