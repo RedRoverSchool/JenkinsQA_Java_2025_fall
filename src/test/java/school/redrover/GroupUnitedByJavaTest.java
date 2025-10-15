@@ -38,6 +38,7 @@ public class GroupUnitedByJavaTest {
 
         driver.quit();
     }
+
     @Test
     public void testFirstTest() throws InterruptedException {
 
@@ -53,5 +54,4 @@ public class GroupUnitedByJavaTest {
 
         driver.quit();
     }
-
 }
