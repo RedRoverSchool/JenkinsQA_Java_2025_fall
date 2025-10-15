@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -13,7 +14,7 @@ import java.time.Duration;
 
 public class BitByBitGroupTest {
 
-    WebDriver driver = new ChromeDriver();
+    private WebDriver driver = new ChromeDriver();
 
     @Test
     public void testButton() {
@@ -213,7 +214,36 @@ public class BitByBitGroupTest {
         Assert.assertEquals(textResult.getText().toLowerCase(), "searched products");
 
         Assert.assertEquals(driver.findElement(By.xpath("//div[@class='productinfo text-center']/p")).getText(), "Blue Top");
+      
+        driver.quit();
+      }
+  
+    @Test
+    public void testPriceOfBooking()  {
+        final int numDays = 3;
+        final int expectedTotal = 100 * (numDays + 1) + 25 + 15;
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+
+        driver.get("https://automationintesting.online/");
+
+        wait.until(ExpectedConditions
+                .elementToBeClickable(By.xpath("//label[@for='checkout']/following::input[1]"))).click();
+
+        wait.until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//div[contains(@class, 'day--selected')]/following-sibling::div[%d]".formatted(numDays)))).click();
+
+        driver.findElement(By.xpath("//button[text()='Check Availability']")).click();
+
+        WebElement bookButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[text()='Book now'])[1]")));
+
+        Actions actions = new Actions(driver);
+        actions.moveToElement(bookButton).click().perform();
+
+        String totalText = wait.until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//span[text()='Total']/following-sibling::span"))).getText();
+
+        Assert.assertEquals(expectedTotal, Integer.parseInt(totalText.substring(1)));
         driver.quit();
     }
 }
