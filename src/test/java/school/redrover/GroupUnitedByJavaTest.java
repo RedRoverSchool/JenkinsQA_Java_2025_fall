@@ -12,6 +12,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class GroupUnitedByJavaTest {
+    
+    private static final String LOGIN = "admin@admin.com";
+    private static final String PASSWORD = "admin123";
 
     @Test
     public void testDoubleClick() {
@@ -53,5 +56,21 @@ public class GroupUnitedByJavaTest {
         Assert.assertEquals(driver.findElement(By.xpath("/html/body/section/div/div[2]/table/tbody/tr/td[2]/h4/a")).getText(), "Sleeveless Dress");
 
         driver.quit();
+    }
+
+    @Test
+    public void testPositiveLogin() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://qa-practice.netlify.app/auth_ecommerce");
+
+        driver.findElement(By.name("emailAddress")).sendKeys(LOGIN);
+        driver.findElement(By.name("password")).sendKeys(PASSWORD);
+        driver.findElement(By.id("submitLoginBtn")).click();
+
+        Assert.assertTrue(driver.findElement(By.id("logout")).isDisplayed(),
+                "Logout button should be displayed after successful login");
+
+        driver.close();
     }
 }
