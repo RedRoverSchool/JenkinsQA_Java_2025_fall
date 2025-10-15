@@ -127,7 +127,7 @@ public class GroupUnitedByJavaTest {
     }
 
     @Test
-    public static void testHeadhunterVacancyName() {
+    public void testHeadhunterVacancyName() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.hh.ru/vacancy/122718353");
         driver.manage().window().setSize(new Dimension(1920, 1080));
