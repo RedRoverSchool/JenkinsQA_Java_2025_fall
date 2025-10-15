@@ -5,11 +5,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class BitByBitGroupTest {
 
-    WebDriver driver = new ChromeDriver();
+    private WebDriver driver;
+
+    @BeforeMethod
+    public void startBeforeTest() {
+        driver = new ChromeDriver();
+    }
 
     @Test
     public void testButton() {
@@ -51,12 +57,6 @@ public class BitByBitGroupTest {
 
     @Test
     public void testVisible() {
-
-        //1. Launch browser
-        //2. Navigate to url 'http://automationexercise.com'
-        //3. Verify that home page is visible successfully
-        //4. Click on 'Test Cases' button
-        //5. Verify user is navigated to test cases page successfully
 
         driver.get("http://automationexercise.com");
 
