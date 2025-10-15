@@ -15,7 +15,7 @@ public class AkikoTest {
     public void testPositiveLogin() {
 
         WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
+        //driver.manage().window().maximize();
         driver.get("https://qa-practice.netlify.app/auth_ecommerce");
 
         driver.findElement(By.name("emailAddress")).sendKeys(LOGIN);
