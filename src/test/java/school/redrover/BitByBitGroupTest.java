@@ -8,13 +8,19 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
 public class BitByBitGroupTest {
 
-    private WebDriver driver = new ChromeDriver();
+    private WebDriver driver;
+
+    @BeforeMethod
+    public void startBeforeTest() {
+        driver = new ChromeDriver();
+    }
 
     @Test
     public void testButton() {
@@ -214,10 +220,10 @@ public class BitByBitGroupTest {
         Assert.assertEquals(textResult.getText().toLowerCase(), "searched products");
 
         Assert.assertEquals(driver.findElement(By.xpath("//div[@class='productinfo text-center']/p")).getText(), "Blue Top");
-      
+
         driver.quit();
       }
-  
+
     @Test
     public void testPriceOfBooking()  {
         final int numDays = 3;
