@@ -7,7 +7,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class AlexeyVTest {
+public class BitByBitGroupTest {
+
     WebDriver driver = new ChromeDriver();
 
     @Test
