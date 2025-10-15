@@ -65,7 +65,8 @@ public class GroupUnitedByJavaTest {
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://qa-practice.netlify.app/auth_ecommerce");
-
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+        
         driver.findElement(By.name("emailAddress")).sendKeys(LOGIN);
         driver.findElement(By.name("password")).sendKeys(PASSWORD);
         driver.findElement(By.id("submitLoginBtn")).click();
