@@ -11,6 +11,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
+
 public class GroupUnitedByJavaTest {
 
     @Test
@@ -53,5 +55,55 @@ public class GroupUnitedByJavaTest {
         Assert.assertEquals(driver.findElement(By.xpath("/html/body/section/div/div[2]/table/tbody/tr/td[2]/h4/a")).getText(), "Sleeveless Dress");
 
         driver.quit();
+    }
+
+        @Test
+        public void testBackToMainPageLink() {
+            WebDriver driver = new ChromeDriver();
+            driver.get("https://www.saucedemo.com/v1/inventory.html");
+            driver.manage().window().maximize();
+
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+
+            driver.findElement(By.xpath("//div[@class = 'inventory_item_name'][1]")).click();
+            driver.findElement(By.xpath("//button[@class = 'inventory_details_back_button']")).click();
+
+            Assert.assertEquals(driver.findElement(By.xpath("//div[@class = 'product_label']")).getText(),
+                    "Products");
+
+            driver.quit();
+        }
+
+        @Test
+        public void testChangeButtonTextAtAdding() {
+            WebDriver driver = new ChromeDriver();
+            driver.get("https://www.saucedemo.com/v1/inventory.html");
+            driver.manage().window().maximize();
+
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+
+            driver.findElement(By.xpath("(//button[@class='btn_primary btn_inventory'])[1]")).click();
+            Assert.assertEquals(driver.findElement(By.xpath("(//button[@class='btn_secondary btn_inventory'])[1]"))
+                    .getText(), "REMOVE");
+
+            driver.quit();
+        }
+
+        @Test
+        public void testChangeBasketCounterAtAdding() {
+            WebDriver driver = new ChromeDriver();
+            driver.get("https://www.saucedemo.com/v1/inventory.html");
+            driver.manage().window().maximize();
+
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+
+            String basketCounterSelector = "//span[@class = 'fa-layers-counter shopping_cart_badge']";
+
+            Assert.assertTrue(driver.findElements(By.xpath(basketCounterSelector)).isEmpty());
+
+            driver.findElement(By.xpath("(//button[@class='btn_primary btn_inventory'])[1]")).click();
+            Assert.assertEquals(driver.findElement(By.xpath(basketCounterSelector)).getText(), "1");
+
+            driver.quit();
     }
 }
