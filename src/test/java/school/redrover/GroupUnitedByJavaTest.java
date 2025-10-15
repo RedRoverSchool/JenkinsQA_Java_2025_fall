@@ -12,7 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class GroupUnitedByJavaTest {
-    
+
     private static final String LOGIN = "admin@admin.com";
     private static final String PASSWORD = "admin123";
 
@@ -71,6 +71,6 @@ public class GroupUnitedByJavaTest {
         Assert.assertTrue(driver.findElement(By.id("logout")).isDisplayed(),
                 "Logout button should be displayed after successful login");
 
-        driver.close();
+        driver.quit();
     }
 }
