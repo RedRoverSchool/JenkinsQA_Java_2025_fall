@@ -15,8 +15,8 @@ import static org.openqa.selenium.By.name;
 public class LimatovaRTest {
 
     WebDriver driver;
-    public static final String LOGIN = "standard_user";
-    public static final String PASSWORD = "secret_sauce";
+    private static final String LOGIN = "standard_user";
+    private static final String PASSWORD = "secret_sauce";
 
     @BeforeTest
     public void setUp() {
@@ -26,7 +26,7 @@ public class LimatovaRTest {
     }
 
     @Test
-    public void LoginTest() {
+    public void testLogin() {
 
         driver.get("https://www.saucedemo.com/");
 
@@ -39,7 +39,7 @@ public class LimatovaRTest {
     }
 
     @Test
-    public void NegativeTest() {
+    public void testNegative() {
 
         driver.get("https://www.saucedemo.com/");
 
