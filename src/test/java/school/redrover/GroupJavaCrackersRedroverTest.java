@@ -8,7 +8,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class MariannaKlimenkoTest {
+public class GroupJavaCrackersRedroverTest {
+
     @Test
     public void testAddToCart() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
