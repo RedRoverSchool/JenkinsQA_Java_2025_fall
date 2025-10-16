@@ -57,7 +57,9 @@ public class GroupTheBugStopsHereTest {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://automationexercise.com/test_cases");
-        driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/button[1]/p")).click();
+        if(driver.findElement(By.xpath("//button[p[text()='Consent']]")).isDisplayed()){
+            driver.findElement(By.xpath("//button[p[text()='Consent']]")).click();
+        }
         driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a")).click();
         driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[2]")).sendKeys("ememdems@hotmail.com");
         driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[3]")).sendKeys("8XbTY@zG@wYg2hg");
