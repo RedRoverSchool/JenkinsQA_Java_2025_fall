@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 public class GroupJavaCrackersRedroverTest {
 
-    public static void scrollAndClick(WebDriver driver, Actions actions, WebElement element) {
+    public static void scrollAndClick(Actions actions, WebElement element) {
         actions.scrollToElement(element).perform();
         actions.scrollByAmount(0, 200).perform();
         if (element.isDisplayed() && element.isEnabled()) {
@@ -62,13 +62,13 @@ public class GroupJavaCrackersRedroverTest {
         driver.get("https://demoqa.com/");
 
         WebElement appPage = driver.findElement(By.xpath("//h5[text()='Book Store Application']"));
-        scrollAndClick(driver, actions, appPage);
+        scrollAndClick(actions, appPage);
 
         WebElement login = driver.findElement(By.xpath("//span[text()='Login']"));
-        scrollAndClick(driver, actions, login);
+        scrollAndClick(actions, login);
 
         WebElement newUser = driver.findElement(By.id("newUser"));
-        scrollAndClick(driver, actions, newUser);
+        scrollAndClick(actions, newUser);
 
         driver.findElement(By.id("firstname")).sendKeys("Roman");
         driver.findElement(By.id("lastname")).sendKeys("T");
@@ -76,7 +76,7 @@ public class GroupJavaCrackersRedroverTest {
         driver.findElement(By.id("password")).sendKeys("123456");
 
         WebElement register = driver.findElement(By.id("register"));
-        scrollAndClick(driver, actions, register);
+        scrollAndClick(actions, register);
 
         WebElement message = driver.findElement(By.id("output"));
         Assert.assertTrue(message.isDisplayed(), "Please verify reCaptcha to register!");
