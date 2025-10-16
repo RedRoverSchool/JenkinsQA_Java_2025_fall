@@ -51,6 +51,7 @@ public class GroupTheBugStopsHereTest {
 
         driver.quit();
     }
+
     @Test
     public void testAutomationExercise() {
         WebDriver driver = new ChromeDriver();
@@ -66,7 +67,6 @@ public class GroupTheBugStopsHereTest {
 
         driver.quit();
     }
-
 
     @Test
     public void registerUserTest(){
@@ -134,6 +134,23 @@ public class GroupTheBugStopsHereTest {
                 By.xpath("//b[contains(text(),'Account Deleted!')]")));
         Assert.assertTrue(accountDeleted.isDisplayed(), "'ACCOUNT DELETED!' is not visible");
         driver.findElement(By.xpath("//a[@data-qa='continue-button']")).click();
+
+        driver.quit();
+    }
+
+    @Test
+    public void testPositiveLogin() {
+        WebDriver driver = new ChromeDriver();
+        driver = new ChromeDriver();
+        driver.get("https://www.automationexercise.com/");
+        driver.manage().window().maximize();
+
+        driver.findElement(By.xpath("//a[@href='/login']")).click();
+        driver.findElement(By.name("email")).sendKeys("veshkvarok@mail.ru");
+        driver.findElement(By.name("password")).sendKeys("Questiov!#13");
+        driver.findElement(By.xpath("//button[text()='Login']")).click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("//a[@href='/logout']")).getText(), "Logout");
 
         driver.quit();
     }
