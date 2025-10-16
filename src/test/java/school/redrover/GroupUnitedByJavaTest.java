@@ -4,19 +4,26 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.PageLoadStrategy;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class GroupUnitedByJavaTest {
 
@@ -24,6 +31,15 @@ public class GroupUnitedByJavaTest {
     private static final String PASSWORD = "admin123";
     private static final String DEMOQA_URL = "https://demoqa.com/";
     private static final String THECODE_URL ="https://thecode.media/";
+    private static final String ALERT_URL = DEMOQA_URL + "alerts";
+    private static final String DATE_PICKER_URL = DEMOQA_URL + "date-picker";
+    private static final String ACCORDION_URL = DEMOQA_URL + "accordian";
+    private static final String BUTTONS_URL = DEMOQA_URL + "buttons";
+    private static final String BROWSER_WINDOWS_URL = DEMOQA_URL + "browser-windows";
+    private static final String TOOLTIPS_URL = DEMOQA_URL + "tool-tips";
+    private static final String MENU_URL = DEMOQA_URL + "menu";
+    private static final String MODAL_DIALOGS_URL = DEMOQA_URL + "modal-dialogs";
+    private static final String TEST_NAME = "Ivan";  // Для тестов с PromptBox
 
     @Test
     public void testDoubleClick() {
@@ -482,5 +498,441 @@ public class GroupUnitedByJavaTest {
 
     }
 
+    private static WebDriver driverKM;
+
+    public static void createDriver() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--window-size=1920,1080");
+        driverKM = new ChromeDriver(options);
+        driverKM.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+    }
+
+    public static void closeDriver() {
+        driverKM.quit();
+    }
+
+    @Test
+    public void testSimpleAlert() {
+        createDriver();
+        driverKM.get(ALERT_URL);
+        driverKM.findElement(By.id("alertButton")).click();
+        Alert alert = driverKM.switchTo().alert();
+        Assert.assertTrue(alert.getText().contains("You clicked a button"),
+                "Отсутствует сообщение в окне при появлении обычного alert");
+        alert.accept();
+
+        closeDriver();
+    }
+
+    @Test
+    public void testTimeDelayAlert() {
+        createDriver();
+        driverKM.get(ALERT_URL);
+
+        driverKM.findElement(By.id("timerAlertButton")).click();
+        WebDriverWait wait = new WebDriverWait(driverKM, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.alertIsPresent());
+        Alert alertTime = driverKM.switchTo().alert();
+        Assert.assertTrue(alertTime.getText().contains("This alert appeared after 5 seconds"),
+                "Отсутствует сообщение в окне при появлении alert с задержкой");
+        alertTime.accept();
+
+        closeDriver();
+    }
+
+    @Test
+    public void testConfirmBoxSelectOkAlert() {
+        createDriver();
+        driverKM.get(ALERT_URL);
+
+        driverKM.findElement(By.id("confirmButton")).click();
+        Alert alertOk = driverKM.switchTo().alert();
+        Assert.assertTrue(alertOk.getText().contains("Do you confirm action?"),
+                "Отсутствует сообщение в окне при появлении выбора действий");
+        alertOk.accept();
+        Assert.assertEquals(driverKM.findElement(By.id("confirmResult")).getText(),
+                "You selected Ok",
+                "Отсутствует отметка о выбранной кнопке Ok");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testConfirmBoxSelectCancelAlert() {
+        createDriver();
+        driverKM.get(ALERT_URL);
+
+        driverKM.findElement(By.id("confirmButton")).click();
+        Alert alertCancel = driverKM.switchTo().alert();
+        Assert.assertTrue(alertCancel.getText().contains("Do you confirm action?"),
+                "Отсутствует сообщение в окне при появлении выбора действий");
+        alertCancel.dismiss();
+        Assert.assertEquals(driverKM.findElement(By.id("confirmResult")).getText(),
+                "You selected Cancel",
+                "Отсутствует отметка о выбранной кнопке Cancel");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testPromptBoxSelectOkAlert() {
+        createDriver();
+        driverKM.get(ALERT_URL);
+
+        driverKM.findElement(By.id("promtButton")).click();
+        Alert promptAlert = driverKM.switchTo().alert();
+        Assert.assertTrue(promptAlert.getText().contains("Please enter your name"),
+                "Отсутствует сообщение в окне с просьбой ввести имя");
+        promptAlert.sendKeys(TEST_NAME);
+        promptAlert.accept();
+        Assert.assertEquals(driverKM.findElement(By.id("promptResult")).getText(),
+                "You entered " + TEST_NAME,
+                "Отсутствует отметка о введенном имени");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testPromptBoxSelectCancelAlert() {
+        createDriver();
+        driverKM.get(ALERT_URL);
+
+        driverKM.findElement(By.id("promtButton")).click();
+        Alert promptAlertCancel = driverKM.switchTo().alert();
+        Assert.assertTrue(promptAlertCancel.getText().contains("Please enter your name"),
+                "Отсутствует сообщение в окне с просьбой ввести имя");
+        promptAlertCancel.sendKeys(TEST_NAME);
+        promptAlertCancel.dismiss();
+        boolean promptResultPresent;
+        try {
+            driverKM.findElement(By.id("promptResult"));
+            promptResultPresent = true;
+        } catch (NoSuchElementException e) {
+            promptResultPresent = false;
+        }
+        Assert.assertFalse(promptResultPresent,
+                "Элемент для отметки имени должен отсутствовать");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testSelectDateWithScrollingArrows() {
+        createDriver();
+        driverKM.get(DATE_PICKER_URL);
+
+        WebElement inputField = driverKM.findElement(By.id("datePickerMonthYearInput"));
+        inputField.click();
+        driverKM.findElement(By.className("react-datepicker__navigation--next")).click();
+        driverKM.findElement(By.className("react-datepicker__day--024")).click();
+        Assert.assertEquals(inputField.getAttribute("value"),
+                LocalDate.now().plusMonths(1).withDayOfMonth(24)
+                        .format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
+                "Неверно указана выбранная дата");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testSelectDateWithDropdownList() {
+        createDriver();
+        driverKM.get(DATE_PICKER_URL);
+
+        WebElement inputField = driverKM.findElement(By.id("datePickerMonthYearInput"));
+        inputField.click();
+        Select selectMonth = new Select(driverKM.findElement(By.className("react-datepicker__month-select")));
+        selectMonth.selectByVisibleText("March");
+        Select selectYear = new Select(driverKM.findElement(By.className("react-datepicker__year-select")));
+        selectYear.selectByVisibleText("1999");
+        driverKM.findElement(By.className("react-datepicker__day--024")).click();
+        Assert.assertEquals(inputField.getAttribute("value"),
+                "03/24/1999",
+                "Неверно указана выбранная дата");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testSelectDateAndTime() {
+        createDriver();
+        driverKM.get(DATE_PICKER_URL);
+
+        WebElement inputField = driverKM.findElement(By.id("dateAndTimePickerInput"));
+        inputField.click();
+        driverKM.findElement(By.className("react-datepicker__month-read-view--down-arrow")).click();
+        driverKM.findElement(By.xpath(
+                "//div[contains(@class,'react-datepicker__month-option') and text()='March']")).click();
+        driverKM.findElement(By.className("react-datepicker__year-read-view--down-arrow")).click();
+        driverKM.findElement(By.xpath(
+                "//div[contains(@class,'react-datepicker__year-option') and text()='2028']")).click();
+        driverKM.findElement(By.xpath(
+                "//div[contains(@aria-label,'Choose Wednesday, March 15th, 2028')]")).click();
+        driverKM.findElement(By.xpath("//li[normalize-space()='21:00']")).click();
+        Assert.assertEquals(inputField.getAttribute("value"),
+                "March 15, 2028 9:00 PM",
+                "Неверно указаны выбранные дата и время");
+
+        closeDriver();
+    }
+
+    // Для теста с аккордеоном:
+    protected void assertSectionVisibility(SoftAssert softAssert, WebElement sectionContent, boolean shouldBeVisible, String actionDescription, WebDriver driverKM) {
+        WebDriverWait wait = new WebDriverWait(driverKM, Duration.ofSeconds(10));
+        String id = sectionContent.getAttribute("id");
+        try {
+            if (shouldBeVisible) {
+                softAssert.assertTrue(wait.until(ExpectedConditions.visibilityOf(sectionContent)).isDisplayed(),
+                        id + " должен быть открыт" + actionDescription);
+            } else {
+                softAssert.assertTrue(wait.until(ExpectedConditions.invisibilityOf(sectionContent)),
+                        id + " должен быть закрыт" + actionDescription);
+            }
+        } catch (TimeoutException e) {
+            softAssert.fail("Время ожидания вышло для " + id + " при " + actionDescription);
+        }
+    }
+
+    @Test
+    public void testAccordion() {
+        createDriver();
+        driverKM.get(ACCORDION_URL);
+
+        WebElement section1Header = driverKM.findElement(By.id("section1Heading"));
+        WebElement section2Header = driverKM.findElement(By.id("section2Heading"));
+        WebElement section3Header = driverKM.findElement(By.id("section3Heading"));
+        WebElement section1Content = driverKM.findElement(By.id("section1Content"));
+        WebElement section2Content = driverKM.findElement(By.id("section2Content"));
+        WebElement section3Content = driverKM.findElement(By.id("section3Content"));
+
+        SoftAssert softAssertAccordion = new SoftAssert();
+        //  Проверка на первоначальное отображение элементов
+        softAssertAccordion.assertTrue(section1Content.isDisplayed(), "Section1 должен быть открыт изначально");
+        softAssertAccordion.assertFalse(section2Content.isDisplayed(), "Section2 изначально закрыт");
+        softAssertAccordion.assertFalse(section3Content.isDisplayed(), "Section3 изначально закрыт");
+        //  Проверка на открытие-закрытие блоков при нажатии Section2
+        section2Header.click();
+        assertSectionVisibility(softAssertAccordion, section2Content, true, "открытии Section2", driverKM);
+        assertSectionVisibility(softAssertAccordion, section1Content, false, "открытии Section2", driverKM);
+        assertSectionVisibility(softAssertAccordion, section3Content, false, "открытии Section2", driverKM);
+        section2Header.click();
+        assertSectionVisibility(softAssertAccordion, section1Content, false, "закрытии Section2", driverKM);
+        assertSectionVisibility(softAssertAccordion, section2Content, false, "закрытии Section2", driverKM);
+        assertSectionVisibility(softAssertAccordion, section3Content, false, "закрытии Section2", driverKM);
+        //  Проверка на открытие-закрытие блоков при нажатии Section3
+        section3Header.click();
+        assertSectionVisibility(softAssertAccordion, section3Content, true, "открытии Section3", driverKM);
+        assertSectionVisibility(softAssertAccordion, section1Content, false, "открытии Section3", driverKM);
+        assertSectionVisibility(softAssertAccordion, section2Content, false, "открытии Section3", driverKM);
+        section3Header.click();
+        assertSectionVisibility(softAssertAccordion, section1Content, false, "закрытии Section3", driverKM);
+        assertSectionVisibility(softAssertAccordion, section2Content, false, "закрытии Section3", driverKM);
+        assertSectionVisibility(softAssertAccordion, section3Content, false, "закрытии Section3", driverKM);
+        //  Проверка на открытие-закрытие блоков при нажатии Section1
+        section1Header.click();
+        assertSectionVisibility(softAssertAccordion, section1Content, true, "открытии Section1", driverKM);
+        assertSectionVisibility(softAssertAccordion, section2Content, false, "открытии Section1", driverKM);
+        assertSectionVisibility(softAssertAccordion, section3Content, false, "открытии Section1", driverKM);
+        section1Header.click();
+        assertSectionVisibility(softAssertAccordion, section1Content, false, "закрытии Section1", driverKM);
+        assertSectionVisibility(softAssertAccordion, section2Content, false, "закрытии Section1", driverKM);
+        assertSectionVisibility(softAssertAccordion, section3Content, false, "закрытии Section1", driverKM);
+        softAssertAccordion.assertAll();
+
+        closeDriver();
+    }
+
+    @Test
+    public void testDoubleClickButton() {
+        createDriver();
+        Actions action = new Actions(driverKM);
+        driverKM.get(BUTTONS_URL);
+
+        action.moveToElement(driverKM.findElement(By.id("doubleClickBtn"))).doubleClick().perform();
+        Assert.assertEquals(driverKM.findElement(By.id("doubleClickMessage")).getText(), "You have done a double click");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testRightClickButton() {
+        createDriver();
+        Actions action = new Actions(driverKM);
+        driverKM.get(BUTTONS_URL);
+
+        action.contextClick(driverKM.findElement(By.id("rightClickBtn"))).build().perform();
+        Assert.assertEquals(driverKM.findElement(By.id("rightClickMessage")).getText(), "You have done a right click");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testDynamicClickButton() {
+        createDriver();
+        driverKM.get(BUTTONS_URL);
+
+        driverKM.findElement(By.xpath("//button[text()='Click Me']")).click();
+        Assert.assertEquals(driverKM.findElement(By.id("dynamicClickMessage")).getText(), "You have done a dynamic click");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testOpenURLInNewTab() {
+        createDriver();
+        driverKM.get(BROWSER_WINDOWS_URL);
+
+        driverKM.findElement(By.id("tabButton")).click();
+        Assert.assertEquals(driverKM.getWindowHandles().size(), 2);
+        Object[] windowHandles = driverKM.getWindowHandles().toArray();
+        driverKM.switchTo().window((String) windowHandles[1]);
+        Assert.assertEquals(driverKM.getCurrentUrl(), "https://demoqa.com/sample");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testOpenNewWindowVerifyBackgroundColor() {
+        createDriver();
+        driverKM.get(BROWSER_WINDOWS_URL);
+
+        driverKM.findElement(By.id("windowButton")).click(); //Нет разницы в открытии нового окна и вкладки
+        Assert.assertEquals(driverKM.getWindowHandles().size(), 2);
+        Object[] windowHandles = driverKM.getWindowHandles().toArray();
+        driverKM.switchTo().window((String) windowHandles[1]);
+        Assert.assertEquals(driverKM.findElement(By.tagName("body")).getCssValue("background-color"),
+                "rgba(169, 169, 169, 1)");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testTooltipButton() {
+        createDriver();
+        Actions action = new Actions(driverKM);
+        driverKM.get(TOOLTIPS_URL);
+
+        WebElement button = driverKM.findElement(By.id("toolTipButton"));
+        action.moveToElement(button).perform();
+        Assert.assertTrue(driverKM.findElement(By.xpath("//*[text()='You hovered over the Button']")).isDisplayed(),
+                "Отсутствует/неверное всплывающее уведомление у кнопки");
+        Assert.assertEquals(button.getAttribute("aria-describedby"), "buttonToolTip",
+                "Нет необходимого атрибута у кнопки");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testTooltipTextField() {
+        createDriver();
+        Actions action = new Actions(driverKM);
+        driverKM.get(TOOLTIPS_URL);
+
+        action.moveToElement(driverKM.findElement(By.id("toolTipTextField"))).perform();
+        Assert.assertEquals(driverKM.findElement(By.id("textFieldToolTip")).getText(), "You hovered over the text field",
+                "Неверное всплывающее уведомление у текстового поля");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testTooltipContraryInText() {
+        createDriver();
+        Actions action = new Actions(driverKM);
+        driverKM.get(TOOLTIPS_URL);
+
+        String text = "Contrary";
+        action.moveToElement(driverKM.findElement(By.xpath("//div[@id='texToolTopContainer']//a[text()='" + text + "']"))).perform();
+        Assert.assertEquals(driverKM.findElement(By.id(text.toLowerCase() + "TexToolTip")).getText(), "You hovered over the " + text,
+                "Неверное всплывающее уведомление у слова Contrary");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testTooltipNumberInText() {
+        createDriver();
+        Actions action = new Actions(driverKM);
+        driverKM.get(TOOLTIPS_URL);
+
+        String number = "1.10.32";
+        action.moveToElement(driverKM.findElement(By.xpath("//div[@id='texToolTopContainer']//a[text()='" + number + "']"))).perform();
+        Assert.assertEquals(driverKM.findElement(By.id("sectionToolTip")).getText(), "You hovered over the " + number,
+                "Неверное всплывающее уведомление у чисел 1.10.32");
+
+        closeDriver();
+    }
+
+    protected void verifyColorChangeOnHover(String elementXpath, int numberOfSubs, WebDriver driverKM, Actions action) {
+        WebElement elementParent = driverKM.findElement(By.xpath(elementXpath + "/parent::li"));
+        String colorBefore = elementParent.getCssValue("background-color");
+        String itemText = elementParent.getText();
+        WebDriverWait wait = new WebDriverWait(driverKM, Duration.ofSeconds(10));
+        action.moveToElement(elementParent).perform();
+        try {
+            wait.until(drv -> !elementParent.getCssValue("background-color").equals(colorBefore));
+        } catch (TimeoutException e) {
+            Assert.fail("Время ожидания изменения цвета вышло для " + itemText);
+        }
+
+        List<WebElement> subItems = driverKM.findElements(By.xpath(elementXpath + "/following-sibling::ul/li"));
+        if (numberOfSubs > 0) {
+            Assert.assertEquals(numberOfSubs, subItems.size(), "Количество элементов подменю отличается для " + itemText);
+        } else {
+            if (!subItems.isEmpty()) {
+                Assert.fail("Подменю должно отсутствовать для " + itemText);
+            }
+        }
+    }
+
+    @Test
+    public void testMenuHoverColorAndSubmenuVisibility() {
+        createDriver();
+        Actions action = new Actions(driverKM);
+        driverKM.get(MENU_URL);
+
+        verifyColorChangeOnHover("//ul[@id='nav']//a[text()='Main Item 1']", 0, driverKM, action);
+        verifyColorChangeOnHover("//ul[@id='nav']//a[text()='Main Item 3']", 0, driverKM, action);
+        verifyColorChangeOnHover("//ul[@id='nav']//a[text()='Main Item 2']", 3, driverKM, action);
+        verifyColorChangeOnHover("//ul[@id='nav']//li[a[text()='Sub Item']][1]/a", 0, driverKM, action);
+        verifyColorChangeOnHover("//ul[@id='nav']//li[a[text()='Sub Item']][2]/a", 0, driverKM, action);
+        verifyColorChangeOnHover("//ul[@id='nav']//a[text()='SUB SUB LIST »']", 2, driverKM, action);
+
+        closeDriver();
+    }
+
+    @Test
+    public void testOpenSmallModalDialogAndCloseWithCloseButton() {
+        createDriver();
+        driverKM.get(MODAL_DIALOGS_URL);
+
+        driverKM.findElement(By.id("showSmallModal")).click();
+        WebDriverWait wait = new WebDriverWait(driverKM, Duration.ofSeconds(10));
+        WebElement modalDialog = driverKM.findElement(By.xpath("//div[@role='dialog' and contains(@class, 'show')]"));
+        Assert.assertTrue(wait.until(ExpectedConditions.visibilityOf(modalDialog)).isDisplayed());
+        Assert.assertEquals(driverKM.findElement(By.id("example-modal-sizes-title-sm")).getText(), "Small Modal");
+        Assert.assertEquals(driverKM.findElement(By.className("modal-body")).getText(), "This is a small modal. It has very less content");
+        driverKM.findElement(By.id("closeSmallModal")).click();
+        Assert.assertTrue(wait.until(ExpectedConditions.invisibilityOf(modalDialog)));
+
+        closeDriver();
+    }
+
+    @Test
+    public void testOpenLargeModalDialogAndCloseWithXButton() {
+        createDriver();
+        driverKM.get(MODAL_DIALOGS_URL);
+
+        driverKM.findElement(By.id("showLargeModal")).click();
+        WebDriverWait wait = new WebDriverWait(driverKM, Duration.ofSeconds(10));
+        WebElement modalDialog = driverKM.findElement(By.xpath("//div[@role='dialog' and contains(@class, 'show')]"));
+        Assert.assertTrue(wait.until(ExpectedConditions.visibilityOf(modalDialog)).isDisplayed());
+        Assert.assertEquals(driverKM.findElement(By.id("example-modal-sizes-title-lg")).getText(), "Large Modal");
+        Assert.assertTrue(driverKM.findElement(By.className("modal-body")).getText().contains("It has survived not only five centuries"));
+        driverKM.findElement(By.xpath("//button[contains(@class, 'close')]")).click();
+        Assert.assertTrue(wait.until(ExpectedConditions.invisibilityOf(modalDialog)));
+
+        closeDriver();
+    }
 }
 
