@@ -32,19 +32,6 @@ public class GroupUnitedByJavaTest {
     private static final String LOGIN_SECRET_SAUCE = "standard_user";
     private static final String PASSWORD_SECRET_SAUCE = "secret_sauce";
 
-    WebDriver driver;
-
-    @BeforeTest
-    public void setUp() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-    }
-
-    @AfterTest
-    private void close() {
-        driver.quit();
-    }
-
     @Test
     public void testDoubleClick() {
         ChromeOptions chromeOptions = new ChromeOptions();
@@ -504,6 +491,7 @@ public class GroupUnitedByJavaTest {
 
     @Test
     public void testLogin() {
+        WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(ofMillis(3000));
 
         driver.get("https://www.saucedemo.com/");
@@ -514,10 +502,13 @@ public class GroupUnitedByJavaTest {
 
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
         Assert.assertEquals(driver.getTitle(), "Swag Labs");
+
+        driver.quit();
     }
 
     @Test
     public void testNegative() {
+        WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(ofMillis(3000));
 
         driver.get("https://www.saucedemo.com/");
@@ -532,6 +523,8 @@ public class GroupUnitedByJavaTest {
                 "Username and password do not match any user in this service']"));
 
         Assert.assertNotNull(errorNotification);
+
+        driver.quit();
     }
 
 }
