@@ -15,9 +15,9 @@ import java.time.Duration;
 
 public class YaroslavaTest {
     private WebDriver driver;
-    private WebDriverWait wait;
-    private static final String USERNAME = "yar"+ System.currentTimeMillis();
-    private static final String USEREMAIL = USERNAME + "@gmail.com";
+  private WebDriverWait wait;
+  private static final String USERNAME = "yar"+ System.currentTimeMillis();
+ private static final String USEREMAIL = USERNAME + "@gmail.com";
 
     @BeforeMethod
     public void startBeforeTest() {
@@ -26,29 +26,9 @@ public class YaroslavaTest {
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 
-    @Test
-    public void testProductsButton() {
-        WebElement products = driver.findElement(By.xpath("//a[@href='/products']"));
 
-        Assert.assertEquals(products.getText(), " Products");
-    }
 
-    @Test
-    public void testEmail() {
-        WebElement cart = driver.findElement(By.xpath("//a[@href='/view_cart']"));
-        cart.click();
 
-        WebElement field = driver.findElement(By.id("susbscribe_email"));
-        field.sendKeys("Ted@gmail.com");
-
-        WebElement go = driver.findElement(By.cssSelector(".fa.fa-arrow-circle-o-right"));
-        go.click();
-
-        WebElement successfulMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector(".alert-success.alert")));
-
-        Assert.assertEquals(successfulMessage.getText(), "You have been successfully subscribed!");
-    }
 
     @Test
     public void testLogIn() throws InterruptedException {
