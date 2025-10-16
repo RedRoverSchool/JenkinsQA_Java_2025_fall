@@ -13,10 +13,15 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
+
+import static java.time.Duration.ofMillis;
+import static org.openqa.selenium.By.name;
 
 public class GroupUnitedByJavaTest {
 
@@ -24,6 +29,21 @@ public class GroupUnitedByJavaTest {
     private static final String PASSWORD = "admin123";
     private static final String DEMOQA_URL = "https://demoqa.com/";
     private static final String THECODE_URL ="https://thecode.media/";
+    private static final String LOGIN_SECRET_SAUCE = "standard_user";
+    private static final String PASSWORD_SECRET_SAUCE = "secret_sauce";
+
+    WebDriver driver;
+
+    @BeforeTest
+    public void setUp() {
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+    }
+
+    @AfterTest
+    private void close() {
+        driver.quit();
+    }
 
     @Test
     public void testDoubleClick() {
@@ -480,6 +500,38 @@ public class GroupUnitedByJavaTest {
 
         driver.quit();
 
+    }
+
+    @Test
+    public void testLogin() {
+        driver.manage().timeouts().implicitlyWait(ofMillis(3000));
+
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(name("user-name")).sendKeys(LOGIN_SECRET_SAUCE);
+        driver.findElement(name("password")).sendKeys(PASSWORD_SECRET_SAUCE);
+        driver.findElement(name("login-button")).click();
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
+        Assert.assertEquals(driver.getTitle(), "Swag Labs");
+    }
+
+    @Test
+    public void testNegative() {
+        driver.manage().timeouts().implicitlyWait(ofMillis(3000));
+
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(By.xpath("//input[@id='user-name']"))
+                .sendKeys("123");
+        driver.findElement(By.xpath("//input[@id='password']"))
+                .sendKeys("123");
+        driver.findElement(By.xpath("//input[@id='login-button']")).click();
+
+        WebElement errorNotification = driver.findElement(By.xpath("//h3[text()='Epic sadface: " +
+                "Username and password do not match any user in this service']"));
+
+        Assert.assertNotNull(errorNotification);
     }
 
 }
