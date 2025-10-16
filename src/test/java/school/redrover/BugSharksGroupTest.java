@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 public class BugSharksGroupTest {
+
     private WebDriver driver;
     private static final String PASSWORD = "secret_sauce";
 
