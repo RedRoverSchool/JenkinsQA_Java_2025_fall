@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -115,5 +116,22 @@ public class BugSharksGroupTest {
         WebElement products = driver.findElement(By.xpath("//a[@href='/products']"));
 
         Assert.assertEquals(products.getText(), " Products");
+    }
+    @Test
+    public void testEmail() {
+        automationexercise();
+        WebElement cart = driver.findElement(By.xpath("//a[@href='/view_cart']"));
+        cart.click();
+
+        WebElement field = driver.findElement(By.id("susbscribe_email"));
+        field.sendKeys("Ted@gmail.com");
+
+        WebElement go = driver.findElement(By.cssSelector(".fa.fa-arrow-circle-o-right"));
+        go.click();
+
+        WebElement successfulMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector(".alert-success.alert")));
+
+        Assert.assertEquals(successfulMessage.getText(), "You have been successfully subscribed!");
     }
 }
