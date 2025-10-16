@@ -7,12 +7,27 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.openqa.selenium.JavascriptExecutor;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
 public class GroupTheBugStopsHereTest {
     private WebDriverWait wait;
+    private void handleCookies(WebDriver driver) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            WebElement cookieAcceptButton = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//button[p[contains(text(),'Consent')] or contains(.,'Consent') or contains(.,'Accept') or contains(.,'Agree')]")
+            ));
+            cookieAcceptButton.click();
+            System.out.println("✅ Cookie consent accepted.");
+            wait.until(ExpectedConditions.invisibilityOf(cookieAcceptButton));
+        } catch (Exception e) {
+            System.out.println("ℹ️ No cookie consent dialog found. Continuing test.");
+        }
+    }
+
 
     @Test
     public void testAddReview() {
@@ -20,6 +35,7 @@ public class GroupTheBugStopsHereTest {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.automationexercise.com/");
+        handleCookies(driver);
 
         WebElement submitProductsButton = driver.findElement(By.cssSelector("a[href='/products']"));
         submitProductsButton.click();
@@ -57,15 +73,18 @@ public class GroupTheBugStopsHereTest {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://automationexercise.com/test_cases");
-        if(driver.findElement(By.xpath("//button[p[text()='Consent']]")).isDisplayed()){
-            driver.findElement(By.xpath("//button[p[text()='Consent']]")).click();
-        }
+        handleCookies(driver);
+
         driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a")).click();
         driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[2]")).sendKeys("ememdems@hotmail.com");
         driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[3]")).sendKeys("8XbTY@zG@wYg2hg");
         driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/button")).click();
 
-        Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a")).isDisplayed());
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement logoutLink = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a")));
+        Assert.assertTrue(logoutLink.isDisplayed(), "Logout link should be visible after login");
+
 
         driver.quit();
     }
@@ -78,6 +97,7 @@ public class GroupTheBugStopsHereTest {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.get("https://www.automationexercise.com");
+        handleCookies(driver);
 
         Assert.assertEquals(driver.getTitle(), "Automation Exercise");
 
@@ -118,7 +138,18 @@ public class GroupTheBugStopsHereTest {
         driver.findElement(By.id("zipcode")).sendKeys("A1B2C3");
         driver.findElement(By.id("mobile_number")).sendKeys("1234567890");
 
-        driver.findElement(By.xpath("//button[@data-qa='create-account']")).click();
+        // 🧹 Удаляем рекламные iframe, чтобы не мешали клику
+        ((JavascriptExecutor) driver).executeScript(
+                "document.querySelectorAll('iframe').forEach(e => e.remove());"
+        );
+
+// 🧭 Находим кнопку и прокручиваем до неё
+        WebElement createAccountButton = driver.findElement(By.xpath("//button[@data-qa='create-account']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", createAccountButton);
+
+// 🖱️ Кликаем через JavaScript, чтобы реклама или баннер не перехватывали клик
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", createAccountButton);
+
 
         WebElement accountCreated = wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//b[contains(text(),'Account Created!')]")));
@@ -145,6 +176,7 @@ public class GroupTheBugStopsHereTest {
         WebDriver driver = new ChromeDriver();
         driver = new ChromeDriver();
         driver.get("https://www.automationexercise.com/");
+        handleCookies(driver);
         driver.manage().window().maximize();
 
         driver.findElement(By.xpath("//a[@href='/login']")).click();
