@@ -11,8 +11,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class BitByBitGroupTest {
 
@@ -238,8 +239,8 @@ public class BitByBitGroupTest {
 
     @Test
     public void testPriceOfBooking()  {
-        final int numDays = 3;
-        final int expectedTotal = 100 * (numDays + 1) + 25 + 15;
+        final int numDays = 15;
+        final int expectedTotal = 100 * numDays + 25 + 15;
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -248,8 +249,7 @@ public class BitByBitGroupTest {
         wait.until(ExpectedConditions
                 .elementToBeClickable(By.xpath("//label[@for='checkout']/following::input[1]"))).click();
 
-        wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//div[contains(@class, 'day--selected')]/following-sibling::div[%d]".formatted(numDays)))).click();
+        selectDate(numDays);
 
         driver.findElement(By.xpath("//button[text()='Check Availability']")).click();
 
@@ -263,5 +263,25 @@ public class BitByBitGroupTest {
 
         Assert.assertEquals(expectedTotal, Integer.parseInt(totalText.substring(1)));
         driver.quit();
+    }
+
+    private void selectDate(int daysToAdd) {
+        LocalDate today = LocalDate.now();
+        LocalDate targetDay = today.plusDays(daysToAdd);
+
+        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern(("d"));
+
+        while(true) {
+            String currentMonth = driver.findElement(By.className("react-datepicker__current-month")).getText();
+
+            if (targetDay.format(monthFormatter).equalsIgnoreCase(currentMonth)) {
+                String targetDayString = targetDay.format(dayFormatter);
+                driver.findElement(By.className("react-datepicker__day--0%s".formatted(targetDayString))).click();
+                break;
+            } else {
+                driver.findElement(By.className("react-datepicker__navigation--next")).click();
+            }
+        }
     }
 }
