@@ -51,6 +51,7 @@ public class GroupTheBugStopsHereTest {
 
         driver.quit();
     }
+
     @Test
     public void testAutomationExercise() {
         WebDriver driver = new ChromeDriver();
