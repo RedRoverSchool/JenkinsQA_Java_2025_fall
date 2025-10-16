@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -15,12 +16,14 @@ import java.time.Duration;
 public class BugSharksGroupTest {
 
     private WebDriver driver;
+    private WebDriverWait wait;
     private static final String PASSWORD = "secret_sauce";
 
     @BeforeMethod
     public void setUp() {
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 
     @AfterMethod
@@ -28,6 +31,10 @@ public class BugSharksGroupTest {
         if (driver != null) {
             driver.quit();
         }
+    }
+
+    private void automationexercise(){
+        driver.get("https://automationexercise.com/");
     }
 
     @Test
@@ -100,5 +107,13 @@ public class BugSharksGroupTest {
 
     private void openSauceDemoHomePage() {
         driver.get("https://www.saucedemo.com/");
+    }
+
+    @Test
+    public void testProductsButton () {
+        automationexercise();
+        WebElement products = driver.findElement(By.xpath("//a[@href='/products']"));
+
+        Assert.assertEquals(products.getText(), " Products");
     }
 }
