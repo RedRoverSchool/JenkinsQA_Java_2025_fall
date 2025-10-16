@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.testng.annotations.Test;
-
 import java.time.Duration;
 
 public class GroupTheBugStopsHereTest {
@@ -27,9 +26,20 @@ public class GroupTheBugStopsHereTest {
             System.out.println("ℹ️ No cookie consent dialog found. Continuing test.");
         }
     }
+    private void closeAllWindows(WebDriver driver) {
+        try {
+            for (String handle : driver.getWindowHandles()) {
+                driver.switchTo().window(handle);
+                driver.close();
+            }
+            driver.quit(); // окончательное завершение драйвера
+            System.out.println("✅ Все окна браузера и драйвер закрыты успешно.");
+        } catch (Exception e) {
+            System.out.println("⚠️ Ошибка при закрытии окон: " + e.getMessage());
+        }
+    }
 
-
-    @Test
+    @Test(priority = 1)
     public void testAddReview() {
 
         WebDriver driver = new ChromeDriver();
@@ -65,10 +75,11 @@ public class GroupTheBugStopsHereTest {
         WebElement element = driver.findElement(By.cssSelector("#review-section .alert-success.alert"));
         Assert.assertTrue(element.isDisplayed(), "The element should be visible on the page.");
 
-        driver.quit();
+        closeAllWindows(driver);
+
     }
 
-    @Test
+    @Test(priority = 2)
     public void testAutomationExercise() {
         WebDriver driver = new ChromeDriver();
 
@@ -85,11 +96,10 @@ public class GroupTheBugStopsHereTest {
                 By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a")));
         Assert.assertTrue(logoutLink.isDisplayed(), "Logout link should be visible after login");
 
-
-        driver.quit();
+        closeAllWindows(driver);
     }
 
-    @Test
+    @Test(priority = 3)
     public void registerUserTest(){
 
         WebDriver driver = new ChromeDriver();
@@ -168,13 +178,12 @@ public class GroupTheBugStopsHereTest {
         Assert.assertTrue(accountDeleted.isDisplayed(), "'ACCOUNT DELETED!' is not visible");
         driver.findElement(By.xpath("//a[@data-qa='continue-button']")).click();
 
-        driver.quit();
+        closeAllWindows(driver);
     }
 
-    @Test
+    @Test(priority = 4)
     public void testPositiveLogin() {
         WebDriver driver = new ChromeDriver();
-        driver = new ChromeDriver();
         driver.get("https://www.automationexercise.com/");
         handleCookies(driver);
         driver.manage().window().maximize();
@@ -186,6 +195,6 @@ public class GroupTheBugStopsHereTest {
 
         Assert.assertEquals(driver.findElement(By.xpath("//a[@href='/logout']")).getText(), "Logout");
 
-        driver.quit();
+        closeAllWindows(driver);
     }
 }
