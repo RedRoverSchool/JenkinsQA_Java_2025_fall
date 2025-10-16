@@ -20,6 +20,7 @@ public class GroupFutureJavaExpertsTest {
 
         WebElement resultMSG = driver.findElement(By.id("result"));
         Assert.assertTrue(resultMSG.isDisplayed());
+
         driver.quit();
     }
 }
