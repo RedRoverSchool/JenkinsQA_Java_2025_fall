@@ -110,7 +110,7 @@ public class BugSharksGroupTest {
     }
 
     @Test
-    public void testProductsButton() {
+    public void testProductsButton () {
         automationexercise();
         WebElement products = driver.findElement(By.xpath("//a[@href='/products']"));
 
