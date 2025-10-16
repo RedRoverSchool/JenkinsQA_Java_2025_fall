@@ -370,6 +370,22 @@ public class GroupLoopCoreTest {
 
         Assert.assertEquals(actualTitle, expectedTitle, "Title is wrong!");
     }
+
+    @Test
+    public void testWebForm() {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+
+        driver.findElement(By.xpath("//a[text()='Web form']")).click();
+
+        String currentUrl = driver.getCurrentUrl();
+
+        Assert.assertTrue(currentUrl.contains("web-form"), "ссылка должна содержать 'web-form'");
+
+        driver.quit();
+    }
 }
 
 
