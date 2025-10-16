@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,6 +17,12 @@ import java.time.Duration;
 public class BitByBitGroupTest {
 
     private WebDriver driver;
+    private static final String AUTOEX_URL = "https://automationexercise.com";
+    private static final String USERNAME = "User_1";
+    private static final String EMAIL = "user@gmail.com";
+    private static final String SUBJECT = "subject";
+    private static final String MESSAGE = "Hello World";
+
 
     @BeforeMethod
     public void startBeforeTest() {
@@ -23,23 +30,34 @@ public class BitByBitGroupTest {
     }
 
     @Test
-    public void testButton() {
-        driver.get("https://seleniumbase.io/demo_page");
+    public void testContactUsSubmit() {
+        driver.get(AUTOEX_URL);
+        driver.manage().window().maximize();
 
-        WebElement button = driver.findElement(By.id("myButton"));
+        driver.findElement(By.xpath("//a[text()=' Contact us']")).click();
 
-        button.click();
+        driver.findElement(By.name("name")).sendKeys(USERNAME);
+        driver.findElement(By.name("email")).sendKeys(EMAIL);
+        driver.findElement(By.name("subject")).sendKeys(SUBJECT);
+        driver.findElement(By.name("message")).sendKeys(MESSAGE);
 
-        String clcolore = button.getAttribute("style");
+        // Remove all **iframes**, **popups**, **overlays**, and **ads**.
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("document.querySelectorAll('iframe, .popup, .overlay, .ads').forEach(e => e.remove());");
 
-        Assert.assertEquals(clcolore, "color: purple;");
+
+        driver.findElement(By.name("submit")).click();
+        driver.switchTo().alert().accept();
+
+        WebElement alertSuccess = driver.findElement(By.xpath("//div[contains(@class, 'alert-success')]"));
+        Assert.assertEquals(alertSuccess.getText(),"Success! Your details have been submitted successfully.");
 
         driver.quit();
     }
 
     @Test
     public void testLoginFielld() {
-        driver.get("http://automationexercise.com");
+        driver.get(AUTOEX_URL);
 
         WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a/i"));
 
@@ -63,13 +81,7 @@ public class BitByBitGroupTest {
     @Test
     public void testVisible() {
 
-        //1. Launch browser
-        //2. Navigate to url 'http://automationexercise.com'
-        //3. Verify that home page is visible successfully
-        //4. Click on 'Test Cases' button
-        //5. Verify user is navigated to test cases page successfully
-
-        driver.get("http://automationexercise.com");
+        driver.get(AUTOEX_URL);
 
         Assert.assertTrue(driver.getTitle().equals("Automation Exercise"));
 
