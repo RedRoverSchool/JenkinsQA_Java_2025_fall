@@ -1,5 +1,62 @@
 package school.redrover;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import java.time.Duration;
+
 public class BugSharksGroupTest {
 
+    @Test
+    public void testSuccessfulLoginPos() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+        driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+
+        driver.findElement(By.xpath("//input[@name='username']")).sendKeys("Admin");
+        driver.findElement(By.xpath("//input[@name='password']")).sendKeys("admin123");
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("//h6[text()='Dashboard']")).getText(),
+                "Dashboard");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testWrongCredentialsLoginNeg() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+        driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+
+        driver.findElement(By.xpath("//input[@name='username']")).sendKeys("wrongLogin");
+        driver.findElement(By.xpath("//input[@name='password']")).sendKeys("wrongPassword");
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("//p[text()='Invalid credentials']"))
+                .getText(), "Invalid credentials");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testEmptyCredentialsLoginNeg() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+        driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+
+        Assert.assertEquals(driver.findElement(By
+                        .xpath("//label[text()='Username']/ancestor::div/span[text()='Required']")).getText(),
+                "Required");
+        Assert.assertEquals(driver.findElement(By
+                        .xpath("//label[text()='Password']/ancestor::div/span[text()='Required']")).getText(),
+                "Required");
+
+        driver.quit();
+    }
 }
