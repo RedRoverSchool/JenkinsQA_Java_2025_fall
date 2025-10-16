@@ -10,6 +10,14 @@ import org.testng.annotations.Test;
 
 public class GroupJavaCrackersRedroverTest {
 
+    public static void scrollAndClick(Actions actions, WebElement element) {
+        actions.scrollToElement(element).perform();
+        actions.scrollByAmount(0, 200).perform();
+        if (element.isDisplayed() && element.isEnabled()) {
+            actions.moveToElement(element).click().perform();
+        }
+    }
+
     @Test
     public void testAddToCart() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -42,6 +50,36 @@ public class GroupJavaCrackersRedroverTest {
         Thread.sleep(300);
         WebElement message = driver.findElement(By.xpath("//*[@id=\"cartModal\"]/div/div/div[2]/p[1]"));
         Assert.assertEquals(message.getText(), "Your product has been added to cart.");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testRecaptchaValidationMessage() {
+        WebDriver driver = new ChromeDriver();
+        Actions actions = new Actions(driver);
+
+        driver.get("https://demoqa.com/");
+
+        WebElement appPage = driver.findElement(By.xpath("//h5[text()='Book Store Application']"));
+        scrollAndClick(actions, appPage);
+
+        WebElement login = driver.findElement(By.xpath("//span[text()='Login']"));
+        scrollAndClick(actions, login);
+
+        WebElement newUser = driver.findElement(By.id("newUser"));
+        scrollAndClick(actions, newUser);
+
+        driver.findElement(By.id("firstname")).sendKeys("Roman");
+        driver.findElement(By.id("lastname")).sendKeys("T");
+        driver.findElement(By.id("userName")).sendKeys("romant");
+        driver.findElement(By.id("password")).sendKeys("123456");
+
+        WebElement register = driver.findElement(By.id("register"));
+        scrollAndClick(actions, register);
+
+        WebElement message = driver.findElement(By.id("output"));
+        Assert.assertTrue(message.isDisplayed(), "Please verify reCaptcha to register!");
 
         driver.quit();
     }
