@@ -68,7 +68,7 @@ public class Breadcrumbs {
     }
 
     @Test
-    public void testautomationexercise_case2() {
+    public void kirill_testcase2() {
         String namelogin = "newuser";
         String email = "newuser@supermail.com";
         String password = "dvdsgfsdfsd987654321";
@@ -121,7 +121,7 @@ public class Breadcrumbs {
     }
 
     @Test
-    public void testautomationexercise_case3() {
+    public void kirill_testcase3() {
         String namelogin = "newuser";
         String email = "newuser@supermail.com";
         String password = "dvdsgfsdfsd987654dgdfgdfgfsgd321";
@@ -137,7 +137,7 @@ public class Breadcrumbs {
     }
 
     @Test
-    public void testautomationexercise_4() {
+    public void kirill_testcase4() {
         String namelogin = "gygygy";
         String email = "gygygy@supermail.com";
         String password = "dvdsgfsdfsd987654321";
@@ -153,7 +153,7 @@ public class Breadcrumbs {
     }
 
     @Test
-    public void testautomationexercise_5() {
+    public void kirill_testcase5() {
         String namelogin = "gygygy";
         String email = "gygygy@supermail.com";
 
