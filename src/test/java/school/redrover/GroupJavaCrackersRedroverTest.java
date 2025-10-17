@@ -136,4 +136,28 @@ public class GroupJavaCrackersRedroverTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testButtons() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.get("https://demoqa.com/buttons");
+
+        Actions actions = new Actions(driver);
+
+        actions.doubleClick(driver.findElement(By.xpath("//button [@id='doubleClickBtn']"))).perform();
+        actions.contextClick(driver.findElement(By.xpath("//button [@id='rightClickBtn']"))).perform();
+        driver.findElement(By.xpath("//button [text()='Click Me']")).click();
+
+        WebElement doubleClick = driver.findElement(By.xpath("//p [@id='doubleClickMessage']"));
+        Assert.assertEquals(doubleClick.getText(), "You have done a double click");
+
+        WebElement rightClick = driver.findElement(By.xpath("//p [@id='rightClickMessage']"));
+        Assert.assertEquals(rightClick.getText(),"You have done a right click");
+
+        WebElement clickMe = driver.findElement(By.xpath("//p [@id='dynamicClickMessage']"));
+        Assert.assertEquals(clickMe.getText(), "You have done a dynamic click");
+
+        driver.quit();
+    }
 }
