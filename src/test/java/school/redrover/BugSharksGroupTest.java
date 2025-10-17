@@ -22,7 +22,8 @@ public class BugSharksGroupTest {
     private WebDriver driver;
     private WebDriverWait wait;
     private static final String PASSWORD = "secret_sauce";
-    private static final String PRODUCT_PAGE_URL = "https://www.saucedemo.com/inventory.html";
+    private static final String BASE_URL_SD = "https://www.saucedemo.com";
+    private static final String PRODUCT_PAGE_URL_SD = BASE_URL_SD + "/inventory.html";
 
     @BeforeMethod
     public void setUp() {
@@ -40,11 +41,12 @@ public class BugSharksGroupTest {
             driver.quit();
         }
     }
+
     private void openSauceDemoHomePage() {
-        driver.get("https://www.saucedemo.com/");
+        driver.get(BASE_URL_SD);
     }
 
-    private void automationexercise(){
+    private void automationexercise() {
         driver.get("https://automationexercise.com/");
     }
 
@@ -117,12 +119,13 @@ public class BugSharksGroupTest {
     }
 
     @Test
-    public void testProductsButton () {
+    public void testProductsButton() {
         automationexercise();
         WebElement products = driver.findElement(By.xpath("//a[@href='/products']"));
 
         Assert.assertEquals(products.getText(), " Products");
     }
+
     @Test
     public void testEmail() {
         automationexercise();
@@ -145,7 +148,7 @@ public class BugSharksGroupTest {
         openSauceDemoHomePage();
 
         driver.findElement(By.id("user-name")).sendKeys("standard_user");
-        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("password")).sendKeys(PASSWORD);
         driver.findElement(By.id("login-button")).click();
     }
 
@@ -156,7 +159,7 @@ public class BugSharksGroupTest {
         WebElement titleProductPage = driver.findElement(By.xpath(".//div[@id=\"header_container\"]/div[2]/span"));
 
         Assert.assertEquals(driver.getTitle(), "Swag Labs");
-        Assert.assertEquals(driver.getCurrentUrl(), PRODUCT_PAGE_URL);
+        Assert.assertEquals(driver.getCurrentUrl(), PRODUCT_PAGE_URL_SD);
         Assert.assertEquals(titleProductPage.getText(), "Products");
     }
 
@@ -172,7 +175,7 @@ public class BugSharksGroupTest {
 
         backToProductsButton.click();
 
-        Assert.assertEquals(driver.getCurrentUrl(), PRODUCT_PAGE_URL);
+        Assert.assertEquals(driver.getCurrentUrl(), PRODUCT_PAGE_URL_SD);
     }
 
     @Test
@@ -181,20 +184,20 @@ public class BugSharksGroupTest {
 
         List<WebElement> productNamesList = driver.findElements(By.xpath(".//div[@class=\"inventory_item_name \"]"));
 
-        List<String> namesList = new ArrayList<>();
+        List<String> namesList = productNamesList.stream()
+                .map(product -> product.getText())
+                .toList();
+
         List<String> currentNamesList = new ArrayList<>();
 
         for (int i = 0; i < productNamesList.size(); i++) {
             productNamesList = driver.findElements(By.xpath(".//div[@class=\"inventory_item_name \"]"));
+            productNamesList.get(i).click();
 
-            WebElement nameForClick = productNamesList.get(i);
-            namesList.add(nameForClick.getText());
-
-            nameForClick.click();
             WebElement currentName = driver.findElement(By.xpath(".//div[@class=\"inventory_details_desc_container\"]/div"));
             currentNamesList.add(currentName.getText());
 
-            driver.findElement(By.id("back-to-products")).click(); // назад на страницу Products
+            driver.findElement(By.id("back-to-products")).click();
         }
         Assert.assertEquals(namesList, currentNamesList);
     }
