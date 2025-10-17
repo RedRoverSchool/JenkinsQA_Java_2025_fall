@@ -175,6 +175,7 @@ public class GroupTheBugStopsHereTest {
         driver.quit();
     }
 
+    @Test
     public void loginUserIncorrect(){
 
         WebDriver driver = new ChromeDriver();
@@ -193,6 +194,5 @@ public class GroupTheBugStopsHereTest {
         Assert.assertEquals(message.getText(), "Your email or password is incorrect!");
 
         driver.quit();
-
     }
 }
