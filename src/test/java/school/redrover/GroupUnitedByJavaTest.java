@@ -1004,7 +1004,7 @@ public class GroupUnitedByJavaTest {
     }
 
     @Test
-    public void testBookChooseDemoQA() {
+    public void testBookChooseDemoQA() throws InterruptedException {
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
@@ -1015,22 +1015,22 @@ public class GroupUnitedByJavaTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Try to get rid of the ad banner preventing click on a tile
         ((JavascriptExecutor) driver).executeScript(
                 "var ad = document.getElementById('fixedban'); if (ad) ad.remove();"
         );
 
         WebElement BookStoreAppTile = driver.findElement(By.xpath("//div[contains(@class,'card-body')][.//h5[text()='Book Store Application']]"));
-        //Wait for element to be clickable
         wait.until(ExpectedConditions.visibilityOf(BookStoreAppTile));
-        //// Scroll the tile into view to allow for clicking
+
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", BookStoreAppTile);
         BookStoreAppTile.click();
         String booksUrl = driver.getCurrentUrl();
 
         Assert.assertEquals(booksUrl, "https://demoqa.com/books");
+
+        Thread.sleep(2000);
         WebElement searchBox = driver.findElement(By.id("searchBox"));
-        //Wait for element to be clickable
+
         wait.until(ExpectedConditions.visibilityOf(searchBox));
         searchBox.sendKeys("el");
 
