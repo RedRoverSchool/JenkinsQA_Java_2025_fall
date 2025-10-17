@@ -173,6 +173,8 @@ public class GroupTheBugStopsHereTest {
                 "Success");
 
         driver.quit();
+    }
+
     public void loginUserIncorrect(){
 
         WebDriver driver = new ChromeDriver();
