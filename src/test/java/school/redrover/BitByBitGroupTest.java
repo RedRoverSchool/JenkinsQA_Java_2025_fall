@@ -37,6 +37,10 @@ public class BitByBitGroupTest {
         driver = new ChromeDriver();
     }
 
+    private WebDriverWait getWait5() {
+        return new WebDriverWait(driver, Duration.ofSeconds(5));
+    }
+
     @Test
     public void testContactUsSubmit() {
         driver.get(AUTOEX_URL);
@@ -231,26 +235,24 @@ public class BitByBitGroupTest {
 
     @Test
     public void testPriceOfBooking()  {
-        final int numDays = 15;
+        final int numDays = 3;
         final int expectedTotal = 100 * numDays + 25 + 15;
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
         driver.get("https://automationintesting.online/");
 
-        wait.until(ExpectedConditions
+        getWait5().until(ExpectedConditions
                 .elementToBeClickable(By.xpath("//label[@for='checkout']/following::input[1]"))).click();
 
         selectDate(numDays);
 
         driver.findElement(By.xpath("//button[text()='Check Availability']")).click();
 
-        WebElement bookButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[text()='Book now'])[1]")));
+        WebElement bookButton = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[text()='Book now'])[1]")));
 
         Actions actions = new Actions(driver);
         actions.moveToElement(bookButton).click().perform();
 
-        String totalText = wait.until(ExpectedConditions
+        String totalText = getWait5().until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//span[text()='Total']/following-sibling::span"))).getText();
 
         Assert.assertEquals(expectedTotal, Integer.parseInt(totalText.substring(1)));
@@ -389,4 +391,5 @@ public class BitByBitGroupTest {
 
         driver.quit();
     }
+
 }
