@@ -100,19 +100,19 @@ public class BugSharksGroupTest {
     }
 
     @DataProvider(name = "userCredentials")
-    public Object[][] provideUserCredentials() {
-        return new Object[][]{
-                {"standard_user", PASSWORD},
-                {"performance_glitch_user", PASSWORD}
+    public String[] provideUserCredentials() {
+        return new String[]{
+                "standard_user",
+                "performance_glitch_user"
         };
     }
 
     @Test(dataProvider = "userCredentials")
-    public void testSauceDemoSuccessfulLogin(String username, String password) {
+    public void testSauceDemoSuccessfulLogin(String username) {
         openSauceDemoHomePage();
 
         driver.findElement(By.id("user-name")).sendKeys(username);
-        driver.findElement(By.id("password")).sendKeys(password);
+        driver.findElement(By.id("password")).sendKeys(PASSWORD);
         driver.findElement(By.id("login-button")).click();
 
         WebElement appLogo = driver.findElement(By.className("app_logo"));
