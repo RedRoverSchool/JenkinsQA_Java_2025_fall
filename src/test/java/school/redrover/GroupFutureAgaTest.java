@@ -4,23 +4,23 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
-public class PetriukATest {
+public class GroupFutureAgaTest {
 
     private WebDriver driver;
 
-    /**
-     * URL главной страницы сайта
-     */
-    private static final String MAIN_PAGE_URL = "https://demoqa.com/";
+    private static final String DEMOQA_URL = "https://demoqa.com/";
 
     private static final String TEST_ADDRESS = """
             c. Moscow
@@ -28,82 +28,87 @@ public class PetriukATest {
             house Kolotushkin
             """;
 
-    @BeforeTest
+    @BeforeMethod
     public void setUp() {
         driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
     }
 
-    @Test(testName = "Проверка количества карточек на главной странице с использованием cssSelector")
-    public void check_cards_by_selector() {
-        driver.get(MAIN_PAGE_URL);
+    @AfterMethod
+    public void closeAll() {
+        if (nonNull(driver)) {
+            driver.quit();
+        }
+    }
 
-        //получение списка элементов по селектору
+    @Test
+    public void testSelenium() throws InterruptedException{
+        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+        Thread.sleep(1000);
+
+        driver.findElement(By.name("my-password")).sendKeys("123");
+        driver.findElement(By.cssSelector("button")).click();
+
+        WebElement message = driver.findElement(By.id("message"));
+        Assert.assertEquals(message.getText(),"Received!");
+    }
+
+    @Test
+    public void testSelenium1() throws InterruptedException{
+        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+        Thread.sleep(1000);
+
+        driver.findElement(By.name("my-textarea")).sendKeys("Hello world");
+        driver.findElement(By.cssSelector("button")).click();
+
+
+        WebElement message = driver.findElement(By.id("message"));
+        Assert.assertEquals(message.getText(),"Received!");
+    }
+
+    @Test(testName = "Проверка количества карточек на странице через cssSelector/xPath")
+    public void check_cards_by_xPath() {
+        driver.get(DEMOQA_URL);
+
+        List<WebElement> elementsByXPath = driver.findElements(By.xpath("//div[@class='card mt-4 top-card']"));
         List<WebElement> elementsBySelector = driver.findElements(By.cssSelector(".card.mt-4.top-card"));
 
         assertEquals(elementsBySelector.size(), 6);
-    }
-
-    @Test(testName = "Проверка количества карточек на главной странице с использованием xPath")
-    public void check_cards_by_xPath() {
-        driver.get(MAIN_PAGE_URL);
-
-        //получение списка элементов по xPath
-        List<WebElement> elementsByXPath = driver.findElements(By.xpath("//div[@class='card mt-4 top-card']"));
-
         assertEquals(elementsByXPath.size(), 6);
     }
 
-    @Test(testName = "Проверка количества и видов элементов при входе в меню elements")
+    @Test(testName = "Проверка карточек во вкладке elements")
     public void check_elements() {
-        driver.get(MAIN_PAGE_URL + "elements");
+        driver.get(DEMOQA_URL + "elements");
 
-        //проверяем, что есть раскрытое меню с 9 элементами
         List<WebElement> elementsShowMenu = driver.findElements(By.xpath("//div[@class='element-list collapse show']//li"));
         assertEquals(elementsShowMenu.size(), 9);
 
-        //Проверяем последовательность и тип элементов
         assertNotNull(elementsShowMenu.get(0).findElement(By.xpath("//span[text()='Text Box']")));
         assertNotNull(elementsShowMenu.get(4).findElement(By.xpath("//span[text()='Buttons']")));
         assertNotNull(elementsShowMenu.get(8).findElement(By.xpath("//span[text()='Dynamic Properties']")));
     }
 
-    @Test(testName = "Позитивная проверка text-box")
+    @Test(testName = "Проверка работы text-box")
     public void check_textBox_positive() throws InterruptedException {
-        driver.get(MAIN_PAGE_URL + "text-box");
+        driver.get(DEMOQA_URL + "text-box");
 
-        //проверка строки ввода FullName
         WebElement fullNameBox = driver.findElement(By.xpath("//input[@id='userName']"));
-        assertNotNull(fullNameBox);
-        assertNotNull(fullNameBox.getAttribute("placeholder"), "Full Name");
-
-        //проверка строки ввода email
         WebElement emailBox = driver.findElement(By.xpath("//input[@id='userEmail']"));
-        assertNotNull(emailBox);
-        assertNotNull(emailBox.getAttribute("placeholder"), "name@example.com");
-
-        //проверка строки ввода current address
         WebElement currentAddressBox = driver.findElement(By.xpath("//textarea[@id='currentAddress']"));
-        assertNotNull(currentAddressBox);
-        assertNotNull(currentAddressBox.getAttribute("placeholder"), "Current Address");
-
-        //проверка строки ввода permanent address
         WebElement permanentAddressBox = driver.findElement(By.xpath("//textarea[@id='permanentAddress']"));
-        assertNotNull(permanentAddressBox);
 
-        //заполнение строк ввода
         fullNameBox.sendKeys("Ivanov Ivan Ivanovich");
         emailBox.sendKeys("ivanovii@test.ru");
         currentAddressBox.sendKeys(TEST_ADDRESS);
         permanentAddressBox.sendKeys(TEST_ADDRESS);
 
-        //нажатие на кнопку
         WebElement submitButton = driver.findElement(By.xpath("//button[@id='submit' and @class='btn btn-primary']"));
         submitButton.click();
 
-        //на всякий случай
         Thread.sleep(500);
 
-        //проверка результатов
         WebElement responseName = driver.findElement(By.xpath("//div[@id='output']//p[@id='name']"));
         assertEquals("Name:Ivanov Ivan Ivanovich", responseName.getText());
 
@@ -115,12 +120,7 @@ public class PetriukATest {
 
         WebElement responsePermanentAddress = driver.findElement(By.xpath("//div[@id='output']//p[@id='permanentAddress']"));
         assertEquals("Permananet Address :c. Moscow str. Pushkin house Kolotushkin", responsePermanentAddress.getText());
-
     }
-
-    @AfterTest
-    public void closeAll() {
-        driver.quit();
-    }
-
 }
+
+
