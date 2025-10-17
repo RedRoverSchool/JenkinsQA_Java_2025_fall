@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -10,12 +11,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class BitByBitGroupTest {
 
     private WebDriver driver;
+    private static final String AUTOEX_URL = "https://automationexercise.com";
+    private static final String USERNAME = "User_1";
+    private static final String EMAIL = "user@gmail.com";
+    private static final String SUBJECT = "subject";
+    private static final String MESSAGE = "Hello World";
+
 
     @BeforeMethod
     public void startBeforeTest() {
@@ -23,23 +31,34 @@ public class BitByBitGroupTest {
     }
 
     @Test
-    public void testButton() {
-        driver.get("https://seleniumbase.io/demo_page");
+    public void testContactUsSubmit() {
+        driver.get(AUTOEX_URL);
+        driver.manage().window().maximize();
 
-        WebElement button = driver.findElement(By.id("myButton"));
+        driver.findElement(By.xpath("//a[text()=' Contact us']")).click();
 
-        button.click();
+        driver.findElement(By.name("name")).sendKeys(USERNAME);
+        driver.findElement(By.name("email")).sendKeys(EMAIL);
+        driver.findElement(By.name("subject")).sendKeys(SUBJECT);
+        driver.findElement(By.name("message")).sendKeys(MESSAGE);
 
-        String clcolore = button.getAttribute("style");
+        // Remove all **iframes**, **popups**, **overlays**, and **ads**.
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("document.querySelectorAll('iframe, .popup, .overlay, .ads').forEach(e => e.remove());");
 
-        Assert.assertEquals(clcolore, "color: purple;");
+
+        driver.findElement(By.name("submit")).click();
+        driver.switchTo().alert().accept();
+
+        WebElement alertSuccess = driver.findElement(By.xpath("//div[contains(@class, 'alert-success')]"));
+        Assert.assertEquals(alertSuccess.getText(),"Success! Your details have been submitted successfully.");
 
         driver.quit();
     }
 
     @Test
     public void testLoginFielld() {
-        driver.get("http://automationexercise.com");
+        driver.get(AUTOEX_URL);
 
         WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a/i"));
 
@@ -63,13 +82,7 @@ public class BitByBitGroupTest {
     @Test
     public void testVisible() {
 
-        //1. Launch browser
-        //2. Navigate to url 'http://automationexercise.com'
-        //3. Verify that home page is visible successfully
-        //4. Click on 'Test Cases' button
-        //5. Verify user is navigated to test cases page successfully
-
-        driver.get("http://automationexercise.com");
+        driver.get(AUTOEX_URL);
 
         Assert.assertTrue(driver.getTitle().equals("Automation Exercise"));
 
@@ -226,8 +239,8 @@ public class BitByBitGroupTest {
 
     @Test
     public void testPriceOfBooking()  {
-        final int numDays = 3;
-        final int expectedTotal = 100 * (numDays + 1) + 25 + 15;
+        final int numDays = 15;
+        final int expectedTotal = 100 * numDays + 25 + 15;
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -236,8 +249,7 @@ public class BitByBitGroupTest {
         wait.until(ExpectedConditions
                 .elementToBeClickable(By.xpath("//label[@for='checkout']/following::input[1]"))).click();
 
-        wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//div[contains(@class, 'day--selected')]/following-sibling::div[%d]".formatted(numDays)))).click();
+        selectDate(numDays);
 
         driver.findElement(By.xpath("//button[text()='Check Availability']")).click();
 
@@ -251,5 +263,25 @@ public class BitByBitGroupTest {
 
         Assert.assertEquals(expectedTotal, Integer.parseInt(totalText.substring(1)));
         driver.quit();
+    }
+
+    private void selectDate(int daysToAdd) {
+        LocalDate today = LocalDate.now();
+        LocalDate targetDay = today.plusDays(daysToAdd);
+
+        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern(("d"));
+
+        while(true) {
+            String currentMonth = driver.findElement(By.className("react-datepicker__current-month")).getText();
+
+            if (targetDay.format(monthFormatter).equalsIgnoreCase(currentMonth)) {
+                String targetDayString = targetDay.format(dayFormatter);
+                driver.findElement(By.className("react-datepicker__day--0%s".formatted(targetDayString))).click();
+                break;
+            } else {
+                driver.findElement(By.className("react-datepicker__navigation--next")).click();
+            }
+        }
     }
 }

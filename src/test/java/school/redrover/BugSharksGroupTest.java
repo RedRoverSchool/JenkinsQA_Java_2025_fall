@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -13,16 +14,22 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BugSharksGroupTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
     private static final String PASSWORD = "secret_sauce";
+    private static final String PRODUCT_PAGE_URL = "https://www.saucedemo.com/inventory.html";
 
     @BeforeMethod
     public void setUp() {
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--incognito");
+
+        driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
@@ -32,6 +39,9 @@ public class BugSharksGroupTest {
         if (driver != null) {
             driver.quit();
         }
+    }
+    private void openSauceDemoHomePage() {
+        driver.get("https://www.saucedemo.com/");
     }
 
     private void automationexercise(){
@@ -106,10 +116,6 @@ public class BugSharksGroupTest {
         Assert.assertEquals(appLogo.getText(), "Swag Labs");
     }
 
-    private void openSauceDemoHomePage() {
-        driver.get("https://www.saucedemo.com/");
-    }
-
     @Test
     public void testProductsButton () {
         automationexercise();
@@ -134,4 +140,99 @@ public class BugSharksGroupTest {
 
         Assert.assertEquals(successfulMessage.getText(), "You have been successfully subscribed!");
     }
+
+    public void loginStandartUser() {
+        openSauceDemoHomePage();
+
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("login-button")).click();
+    }
+
+    @Test
+    public void testCorrectProductsPage() {
+        loginStandartUser();
+
+        WebElement titleProductPage = driver.findElement(By.xpath(".//div[@id=\"header_container\"]/div[2]/span"));
+
+        Assert.assertEquals(driver.getTitle(), "Swag Labs");
+        Assert.assertEquals(driver.getCurrentUrl(), PRODUCT_PAGE_URL);
+        Assert.assertEquals(titleProductPage.getText(), "Products");
+    }
+
+    @Test
+    public void testBackToProductsButton() {
+        loginStandartUser();
+
+        WebElement productName = driver.findElement(By.xpath(".//*[@id=\"item_2_title_link\"]/div"));
+        productName.click();
+
+        WebElement backToProductsButton = driver.findElement(By.id("back-to-products"));
+        Assert.assertEquals(backToProductsButton.getText(), "Back to products");
+
+        backToProductsButton.click();
+
+        Assert.assertEquals(driver.getCurrentUrl(), PRODUCT_PAGE_URL);
+    }
+
+    @Test
+    public void testCorrectAllProductName() {
+        loginStandartUser();
+
+        List<WebElement> productNamesList = driver.findElements(By.xpath(".//div[@class=\"inventory_item_name \"]"));
+
+        List<String> namesList = new ArrayList<>();
+        List<String> currentNamesList = new ArrayList<>();
+
+        for (int i = 0; i < productNamesList.size(); i++) {
+            productNamesList = driver.findElements(By.xpath(".//div[@class=\"inventory_item_name \"]"));
+
+            WebElement nameForClick = productNamesList.get(i);
+            namesList.add(nameForClick.getText());
+
+            nameForClick.click();
+            WebElement currentName = driver.findElement(By.xpath(".//div[@class=\"inventory_details_desc_container\"]/div"));
+            currentNamesList.add(currentName.getText());
+
+            driver.findElement(By.id("back-to-products")).click(); // назад на страницу Products
+        }
+        Assert.assertEquals(namesList, currentNamesList);
+    }
+
+    @Test
+    public void testCorrectProductPrice() {
+        loginStandartUser();
+
+        String priceByProductPage = driver.findElement(By
+                        .xpath(".//*[@id=\"item_2_title_link\"]/ancestor::div[@class=\"inventory_item_description\"]//div[@class=\"pricebar\"]/div"))
+                .getText();
+
+        WebElement productName = driver.findElement(By.xpath(".//*[@id=\"item_2_title_link\"]/div"));
+        productName.click();
+
+        String priceByItemPage = driver.findElement(By
+                        .xpath(".//div[@class=\"inventory_details_price\"]"))
+                .getText();
+
+        Assert.assertEquals(priceByItemPage, priceByProductPage);
+    }
+
+    @Test
+    public void testCorrectProductImageTest() {
+        loginStandartUser();
+
+        String imageByProductPage = driver.findElement(By
+                        .xpath(".//*[@id=\"item_2_img_link\"]/img"))
+                .getAttribute("src");
+
+        WebElement productName = driver.findElement(By.xpath(".//*[@id=\"item_2_title_link\"]/div"));
+        productName.click();
+
+        String imageByItemPage = driver.findElement(By
+                        .xpath(".//div[@class=\"inventory_details_img_container\"]/img"))
+                .getAttribute("src");
+
+        Assert.assertEquals(imageByItemPage, imageByProductPage);
+    }
+
 }
