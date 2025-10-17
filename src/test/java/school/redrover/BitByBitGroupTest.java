@@ -8,13 +8,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.Array;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BitByBitGroupTest {
 
@@ -324,6 +329,19 @@ public class BitByBitGroupTest {
     }
 
     @Test
+    public void testDropDown(){
+
+        driver.get("https://the-internet.herokuapp.com/");
+        driver.manage().window().maximize();
+
+        driver.findElement(By.xpath("//a[contains(@href, 'dropdown')]")).click();
+        Select dropdown = new Select(driver.findElement(By.id("dropdown")));
+
+        List<String> expectedValues = List.of("Please select an option", "Option 1", "Option 2");
+        List<String> actualValues = dropdown.getOptions()
+                .stream().map(WebElement::getText).map(String::trim).toList();
+
+        Assert.assertEquals(actualValues, expectedValues);
     public void getConcerts() throws InterruptedException {
 
         WebDriver driver = new ChromeDriver();
