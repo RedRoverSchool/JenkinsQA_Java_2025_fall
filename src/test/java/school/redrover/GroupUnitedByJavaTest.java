@@ -25,6 +25,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static java.time.Duration.ofMillis;
+import static org.openqa.selenium.By.name;
+
 public class GroupUnitedByJavaTest {
 
     private static final String LOGIN = "admin@admin.com";
@@ -40,6 +43,8 @@ public class GroupUnitedByJavaTest {
     private static final String MENU_URL = DEMOQA_URL + "menu";
     private static final String MODAL_DIALOGS_URL = DEMOQA_URL + "modal-dialogs";
     private static final String TEST_NAME = "Ivan";  // Для тестов с PromptBox
+    private static final String LOGIN_SECRET_SAUCE = "standard_user";
+    private static final String PASSWORD_SECRET_SAUCE = "secret_sauce";
 
     @Test
     public void testDoubleClick() {
@@ -496,6 +501,44 @@ public class GroupUnitedByJavaTest {
 
         driver.quit();
 
+    }
+
+    @Test
+    public void testLogin() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(ofMillis(3000));
+
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(name("user-name")).sendKeys(LOGIN_SECRET_SAUCE);
+        driver.findElement(name("password")).sendKeys(PASSWORD_SECRET_SAUCE);
+        driver.findElement(name("login-button")).click();
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
+        Assert.assertEquals(driver.getTitle(), "Swag Labs");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testNegative() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(ofMillis(3000));
+
+        driver.get("https://www.saucedemo.com/");
+
+        driver.findElement(By.xpath("//input[@id='user-name']"))
+                .sendKeys("123");
+        driver.findElement(By.xpath("//input[@id='password']"))
+                .sendKeys("123");
+        driver.findElement(By.xpath("//input[@id='login-button']")).click();
+
+        WebElement errorNotification = driver.findElement(By.xpath("//h3[text()='Epic sadface: " +
+                "Username and password do not match any user in this service']"));
+
+        Assert.assertNotNull(errorNotification);
+
+        driver.quit();
     }
 
     private static WebDriver driverKM;
