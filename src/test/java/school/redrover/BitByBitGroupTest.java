@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -264,6 +265,43 @@ public class BitByBitGroupTest {
         Assert.assertEquals(expectedTotal, Integer.parseInt(totalText.substring(1)));
         driver.quit();
     }
+
+    @Test
+    public void testAddElement(){
+
+        driver.get("https://the-internet.herokuapp.com/");
+        driver.manage().window().maximize();
+
+        driver.findElement(By.xpath("//a[contains(text(), 'Add/Remove Elements')]")).click();
+        driver.findElement(By.xpath("//button[@onclick='addElement()']")).click();
+
+        String result = driver.findElement(By.xpath("//div[@id=\"elements\"]")).getText();
+
+        Assert.assertTrue(result.contains("Delete"), "Text is not found");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testContextMenu(){
+
+        driver.get("https://the-internet.herokuapp.com/");
+        driver.manage().window().maximize();
+        Actions actions = new Actions(driver);
+
+        driver.findElement(By.xpath("//a[contains(@href, 'context')]")).click();
+
+        WebElement boxToCallContextMenu = driver.findElement(By.id("hot-spot"));
+        actions.contextClick(boxToCallContextMenu).perform();
+
+        Alert alert = driver.switchTo().alert();
+
+        Assert.assertEquals(alert.getText(), "You selected a context menu",
+                "Context menu did not show up");
+
+        driver.quit();
+    }
+
 
     private void selectDate(int daysToAdd) {
         LocalDate today = LocalDate.now();
