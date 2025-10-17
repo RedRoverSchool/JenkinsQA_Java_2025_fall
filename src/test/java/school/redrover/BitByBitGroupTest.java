@@ -389,25 +389,4 @@ public class BitByBitGroupTest {
 
         driver.quit();
     }
-    @Test
-    public void testSearchProductForConflict() {
-
-        driver.get(AUTOEX_URL);
-
-        driver.findElement(By.xpath("//a[text()=' Products']")).click();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.titleIs("Automation Exercise - All Products"));
-
-        driver.findElement(By.xpath("//input[@id='search_product']")).sendKeys("Blue Top");
-        driver.findElement(By.xpath("//button[@id='submit_search']")).click();
-
-        WebElement textResult = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(text(),'Searched Products')]")));
-
-        Assert.assertEquals(textResult.getText().toLowerCase(), "searched products");
-
-        Assert.assertEquals(driver.findElement(By.xpath("//div[@class='productinfo text-center']/p")).getText(), "Blue Top");
-
-        driver.quit();
-    }
 }
