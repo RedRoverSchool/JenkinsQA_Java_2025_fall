@@ -389,4 +389,5 @@ public class BitByBitGroupTest {
 
         driver.quit();
     }
+    @Test
 }
