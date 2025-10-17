@@ -173,5 +173,24 @@ public class GroupTheBugStopsHereTest {
                 "Success");
 
         driver.quit();
+    public void loginUserIncorrect(){
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("http://automationexercise.com");
+
+        driver.findElement(By.xpath("//button[@aria-label='Consent']")).click();
+
+        driver.findElement(By.xpath("//a[@href='/login']")).click();
+        driver.findElement(By.xpath("//input[@data-qa='login-email']")).sendKeys("123@email");
+        driver.findElement(By.name("password")).sendKeys("#$");
+
+        driver.findElement(By.xpath("//button[@data-qa='login-button']")).click();
+
+        WebElement message = driver.findElement(By.xpath("//*[@id='form']//div[1]//p"));
+        Assert.assertEquals(message.getText(), "Your email or password is incorrect!");
+
+        driver.quit();
+
     }
 }
