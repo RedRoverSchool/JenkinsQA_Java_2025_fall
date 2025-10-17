@@ -67,16 +67,16 @@ public class BitByBitGroupTest {
     public void testLoginFielld() {
         driver.get(AUTOEX_URL);
 
-        WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a/i"));
+        WebElement loginButton = driver.findElement(By.xpath("//*[@id='header']/div/div/div/div[2]/div/ul/li[4]/a/i"));
 
         loginButton.click();
 
-        WebElement loginField = driver.findElement(By.cssSelector("[data-qa=\"login-email\"]"));
+        WebElement loginField = driver.findElement(By.cssSelector("[data-qa='login-email']"));
         loginField.sendKeys("hellomail.com");
 
         String validationMessage = loginField.getAttribute("validationMessage");
 
-        WebElement loginButton2 = driver.findElement(By.cssSelector("[data-qa=\"login-button\"]"));
+        WebElement loginButton2 = driver.findElement(By.cssSelector("[data-qa='login-button']"));
         loginButton2.click();
 
         Assert.assertTrue(validationMessage.contains("Please include an '@'"),
