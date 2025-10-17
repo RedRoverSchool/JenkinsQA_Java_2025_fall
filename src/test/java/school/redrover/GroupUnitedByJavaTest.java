@@ -1036,6 +1036,7 @@ public class GroupUnitedByJavaTest {
 
         List <WebElement> searchResultsGrid = driver.findElements (By.cssSelector(".rt-tr-group .rt-tr:not(.-padRow)"));
         int count = searchResultsGrid.size();
+        Assert.assertTrue(count>=1);
 
         WebElement bookTitle = driver.findElement(By.id("see-book-Eloquent JavaScript, Second Edition"));
         bookTitle.click();
