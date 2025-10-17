@@ -15,6 +15,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Array;
+import java.sql.Driver;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -103,7 +104,6 @@ public class BitByBitGroupTest {
 
     @Test
     public void testCategoriesDropdownMenuLinks() {
-        WebDriver driver = new ChromeDriver();
 
         driver.get("https://practicesoftwaretesting.com/");
 
@@ -129,7 +129,6 @@ public class BitByBitGroupTest {
 
     @Test
     public void testHandToolsCheckbox() {
-        WebDriver driver = new ChromeDriver();
 
         driver.get("https://practicesoftwaretesting.com/");
 
@@ -159,7 +158,6 @@ public class BitByBitGroupTest {
 
     @Test
     public void testHammerAddToCart() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
 
         driver.get("https://practicesoftwaretesting.com/");
 
@@ -188,31 +186,21 @@ public class BitByBitGroupTest {
 
     @Test
     public void testDeleteHandSawFromCart() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
 
         driver.get("https://practicesoftwaretesting.com/");
 
-        Thread.sleep(2000);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(), ' Hand Saw ')]"))).click();
 
-        driver.findElement(By.xpath("//label[contains(text(), ' Hand Saw ')]")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h5[contains(text(), ' Wood Saw ')]"))).click();
 
-        Thread.sleep(2000);
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='btn-add-to-cart']"))).click();
 
-        driver.findElement(By.xpath("//h5[contains(text(), ' Wood Saw ')]")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-test='nav-cart']"))).click();
 
-        Thread.sleep(2000);
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='btn btn-danger']"))).click();
 
-        driver.findElement(By.xpath("//button[@id='btn-add-to-cart']")).click();
-
-        Thread.sleep(5000);
-
-        driver.findElement(By.xpath("//a[@data-test='nav-cart']")).click();
-
-        Thread.sleep(2000);
-
-        driver.findElement(By.xpath("//a[@class='btn btn-danger']")).click();
-
-        Thread.sleep(5000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@class='ng-star-inserted']")));
 
         Assert.assertEquals(driver.findElement(By.xpath("//p[@class='ng-star-inserted']")).getText(), "The cart is empty. Nothing to display.");
 
@@ -222,9 +210,7 @@ public class BitByBitGroupTest {
     @Test
     public void searchProduct() {
 
-        WebDriver driver = new ChromeDriver();
-
-        driver.get("https://automationexercise.com/");
+        driver.get(AUTOEX_URL);
 
         driver.findElement(By.xpath("//a[text()=' Products']")).click();
 
@@ -329,7 +315,7 @@ public class BitByBitGroupTest {
     }
 
     @Test
-    public void testDropDown(){
+    public void testDropDown() {
 
         driver.get("https://the-internet.herokuapp.com/");
         driver.manage().window().maximize();
@@ -342,7 +328,13 @@ public class BitByBitGroupTest {
                 .stream().map(WebElement::getText).map(String::trim).toList();
 
         Assert.assertEquals(actualValues, expectedValues);
-    public void getConcerts() throws InterruptedException {
+
+        driver.quit();
+
+    }
+
+    @Test
+    public void testGetConcerts() throws InterruptedException {
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.ticketmaster.com/discover/washington-dc");
@@ -359,6 +351,7 @@ public class BitByBitGroupTest {
 
         driver.quit();
     }
+
 
     @Test
     public void filterWork() throws InterruptedException {
