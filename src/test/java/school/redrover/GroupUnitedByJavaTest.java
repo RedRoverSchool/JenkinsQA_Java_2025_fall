@@ -1015,7 +1015,7 @@ public class GroupUnitedByJavaTest {
         logo.click();
         Assert.assertTrue(driver.getCurrentUrl().contains("/ru/home"));
 
-        closeDriver();
+        driver.quit();
     }
 
     @Test
@@ -1030,7 +1030,7 @@ public class GroupUnitedByJavaTest {
 
         Assert.assertTrue(title.isDisplayed());
 
-        closeDriver();
+        driver.quit();
     }
 
     @Test
@@ -1079,7 +1079,7 @@ public class GroupUnitedByJavaTest {
                 driver.findElement(By.xpath("//p[@id='permanentAddress']")).getText(), "Permananet Address :Chisinau"
         );
 
-        closeDriver();
+        driver.quit();
 
     }
 
@@ -1100,7 +1100,7 @@ public class GroupUnitedByJavaTest {
         WebElement result = driver.findElement(By.xpath("//p[@class='mt-3']"));
         Assert.assertEquals(result.getText(), "You have selected Yes");
 
-        closeDriver();
+        driver.quit();
     }
 }
 
