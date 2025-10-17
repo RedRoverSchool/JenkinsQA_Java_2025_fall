@@ -208,7 +208,7 @@ public class BitByBitGroupTest {
     }
 
     @Test
-    public void searchProduct() {
+    public void testSearchProduct() {
 
         driver.get(AUTOEX_URL);
 
@@ -389,5 +389,4 @@ public class BitByBitGroupTest {
 
         driver.quit();
     }
-    @Test
 }
