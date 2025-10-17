@@ -4,17 +4,30 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
 
-public class OksanaKTest {
+public class GroupFutureJavaExpertsTest {
+    @Test
+    public void testCheckBox(){
+        WebDriver driver = new FirefoxDriver();
+        driver.manage().window().maximize();
+        driver.get("https://demoqa.com/checkbox");
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        driver.findElement(By.cssSelector(".rct-checkbox svg")).click();
 
-    /* Тест проверяет названия radio buttons */
+        WebElement resultMSG = driver.findElement(By.id("result"));
+        Assert.assertTrue(resultMSG.isDisplayed());
+
+        driver.quit();
+    }
 
     @Test
-    public void testRadioLabels() {
+    public void testRadioBtnLabels() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/radio-button#google_vignette");
 

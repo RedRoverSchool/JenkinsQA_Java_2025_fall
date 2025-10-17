@@ -57,7 +57,9 @@ public class GroupTheBugStopsHereTest {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://automationexercise.com/test_cases");
-        driver.findElement(By.xpath("/html/body/div/div[2]/div[2]/div[2]/div[2]/button[1]/p")).click();
+        if(driver.findElement(By.xpath("//button[p[text()='Consent']]")).isDisplayed()){
+            driver.findElement(By.xpath("//button[p[text()='Consent']]")).click();
+        }
         driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a")).click();
         driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[2]")).sendKeys("ememdems@hotmail.com");
         driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[3]")).sendKeys("8XbTY@zG@wYg2hg");
@@ -153,5 +155,44 @@ public class GroupTheBugStopsHereTest {
         Assert.assertEquals(driver.findElement(By.xpath("//a[@href='/logout']")).getText(), "Logout");
 
         driver.quit();
+    }
+
+    @Test
+    public void testLogin() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.demoblaze.com/");
+        driver.manage().window().maximize();
+
+        driver.findElement(By.id("login2")).click();
+        driver.findElement(By.xpath("//*[@id='loginusername']")).sendKeys("mTest@gmail.com");
+        driver.findElement(By.xpath("//*[@id='loginpassword']")).sendKeys("45784okng_75()");
+        driver.findElement(By.xpath("//button[text()='Log in']")).click();
+
+        Assert.assertTrue(driver.findElement(By.xpath("//*[@id='logout2']")).isDisplayed(),
+                "Success");
+
+        driver.quit();
+    }
+
+    public void loginUserIncorrect(){
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("http://automationexercise.com");
+
+        driver.findElement(By.xpath("//button[@aria-label='Consent']")).click();
+
+        driver.findElement(By.xpath("//a[@href='/login']")).click();
+        driver.findElement(By.xpath("//input[@data-qa='login-email']")).sendKeys("123@email");
+        driver.findElement(By.name("password")).sendKeys("#$");
+
+        driver.findElement(By.xpath("//button[@data-qa='login-button']")).click();
+
+        WebElement message = driver.findElement(By.xpath("//*[@id='form']//div[1]//p"));
+        Assert.assertEquals(message.getText(), "Your email or password is incorrect!");
+
+        driver.quit();
+
     }
 }
