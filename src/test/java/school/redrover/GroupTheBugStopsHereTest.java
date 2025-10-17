@@ -158,7 +158,7 @@ public class GroupTheBugStopsHereTest {
     }
 
     @Test
-    public void testPositiveLogin() {
+    public void testLogin() {
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.demoblaze.com/");
