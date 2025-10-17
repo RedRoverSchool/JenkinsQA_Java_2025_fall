@@ -24,6 +24,8 @@ public class BugSharksGroupTest {
     private static final String PASSWORD = "secret_sauce";
     private static final String BASE_URL_SD = "https://www.saucedemo.com";
     private static final String PRODUCT_PAGE_URL_SD = BASE_URL_SD + "/inventory.html";
+    private static final String USERNAME = "yar"+ System.currentTimeMillis();
+    private static final String USEREMAIL = USERNAME + "@gmail.com";
 
     @BeforeMethod
     public void setUp() {
@@ -142,6 +144,28 @@ public class BugSharksGroupTest {
                 By.cssSelector(".alert-success.alert")));
 
         Assert.assertEquals(successfulMessage.getText(), "You have been successfully subscribed!");
+    }
+    @Test
+    public void testLogIn() throws InterruptedException {
+        automationexercise();
+        Thread.sleep(100);
+        WebElement signUplogInButton = driver.findElement(By.xpath("//a[@href='/login']"));
+        signUplogInButton.click();
+
+        WebElement loginField = wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//form//input[@data-qa='signup-name']")));
+        loginField.sendKeys(USERNAME);
+
+        WebElement userPassword = driver.findElement(By.xpath("//form//input[@data-qa='signup-email']"));
+        userPassword.sendKeys(USEREMAIL);
+
+        WebElement signUpButton = driver.findElement(By.xpath("//form//button[@data-qa='signup-button']"));
+        signUpButton.click();
+
+        WebElement createButton = wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//form//button[@data-qa='create-account']")));
+
+        Assert.assertEquals(createButton.getText(),"Create Account");
     }
 
     public void loginStandartUser() {
