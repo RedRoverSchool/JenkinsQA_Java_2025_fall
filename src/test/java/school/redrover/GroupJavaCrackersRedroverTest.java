@@ -150,7 +150,7 @@ public class GroupJavaCrackersRedroverTest {
         driver.findElement(By.xpath("//button [text()='Click Me']")).click();
 
         WebElement doubleClick = driver.findElement(By.xpath("//p [@id='doubleClickMessage']"));
-
+        Assert.assertEquals(doubleClick.getText(), "You have done a double click");
 
         WebElement rightClick = driver.findElement(By.xpath("//p [@id='rightClickMessage']"));
         Assert.assertEquals(rightClick.getText(),"You have done a right click");
