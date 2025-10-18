@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -23,6 +24,13 @@ public class GroupCodeCoffeeJavaTest {
     private static final Logger logger = Logger.getGlobal();
     private int time;
     WebDriverWait wait4 = new WebDriverWait(driver, Duration.ofSeconds(4));
+
+
+    public void getActionsScroll() {
+        Actions actions = new Actions(driver);
+        actions.scrollByAmount(600,600);
+        actions.perform();
+    }
 
     @BeforeMethod
     public void setUp() {
@@ -53,7 +61,7 @@ public class GroupCodeCoffeeJavaTest {
     }
 
     @Test
-    public void testDemoQa() throws InterruptedException {
+    public void testDemoQa() {
         WebElement elements = driver.findElement(By.xpath("(//div[@class = 'card-up'])[1]"));
         wait4.until(ExpectedConditions.visibilityOf(elements)).click();
 
@@ -68,6 +76,8 @@ public class GroupCodeCoffeeJavaTest {
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         WebElement submitButton = driver.findElement(By.cssSelector("#submit"));
+        // Боремся со всплывающими окнами с помощью actions
+        getActionsScroll();
         submitButton.click();
 
         WebElement resultName = driver.findElement(By.cssSelector("#name"));
