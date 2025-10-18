@@ -40,13 +40,13 @@ public class FoxHelperTest {
 
         WebDriverWait w8 = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        WebElement input = driver.findElement(By.xpath("//form[@id=\"homepageForm\"]/input"));
+        WebElement input = driver.findElement(By.xpath("//form[@id='homepageForm']/input"));
         input.sendKeys("kain4ra");
 
         w8.until(ExpectedConditions.visibilityOfElementLocated(By.id("autocomplete-area-homepage")));
 
-        driver.findElement(By.xpath("//*[@id=\"autocomplete-area-homepage\"]/table/tbody/tr[3]/td/a")).click();
-        WebElement games = driver.findElement(By.xpath("//div[@id=\"graphDD4\"]"));
+        driver.findElement(By.xpath("//*[@id='autocomplete-area-homepage']/table/tbody/tr[3]/td/a")).click();
+        WebElement games = driver.findElement(By.xpath("//div[@id='graphDD4']"));
         Assert.assertEquals(games.getText(), "146");
         driver.close();
     }
