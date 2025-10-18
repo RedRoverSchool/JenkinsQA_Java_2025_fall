@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -27,6 +28,20 @@ public class GroupBitByBitTest {
     private static final String SUBJECT = "subject";
     private static final String MESSAGE = "Hello World";
 
+    static private class JSUtils {
+        /**
+         * Removes all iframes, popups, overlays, and ads from the current page.
+         * Useful for clearing obstructive UI elements before interacting with elements.
+         */
+        public static void removeIframesAndAds(WebDriver driver) {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("document.querySelectorAll('iframe, .popup, .overlay, .ads').forEach(e => e.remove());");
+        }
+
+        public static void scrollToBottom(WebDriver driver) {
+            ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
+        }
+    }
 
     @BeforeMethod
     public void startBeforeTest() {
@@ -36,7 +51,6 @@ public class GroupBitByBitTest {
     private WebDriverWait getWait5() {
         return new WebDriverWait(driver, Duration.ofSeconds(5));
     }
-
     @Test
     public void testContactUsSubmit() {
         driver.get(AUTOEX_URL);
@@ -49,18 +63,34 @@ public class GroupBitByBitTest {
         driver.findElement(By.name("subject")).sendKeys(SUBJECT);
         driver.findElement(By.name("message")).sendKeys(MESSAGE);
 
-        // Remove all **iframes**, **popups**, **overlays**, and **ads**.
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("document.querySelectorAll('iframe, .popup, .overlay, .ads').forEach(e => e.remove());");
-
+        JSUtils.removeIframesAndAds(driver);
 
         driver.findElement(By.name("submit")).click();
         driver.switchTo().alert().accept();
 
         WebElement alertSuccess = driver.findElement(By.xpath("//div[contains(@class, 'alert-success')]"));
-        Assert.assertEquals(alertSuccess.getText(),"Success! Your details have been submitted successfully.");
+        Assert.assertEquals(alertSuccess.getText(), "Success! Your details have been submitted successfully.");
 
         driver.quit();
+    }
+
+    @Test
+    public void testScrollUpButton() throws InterruptedException {
+        driver.get(AUTOEX_URL);
+        driver.manage().window().maximize();
+
+        JSUtils.scrollToBottom(driver);
+        JSUtils.removeIframesAndAds(driver);
+
+        driver.findElement(By.id("scrollUp")).click();
+
+        // getWait здесь почему то не работает
+        Thread.sleep(2000);
+
+        // проверяем, что страница вверху
+        long scrollY = (long) ((JavascriptExecutor) driver)
+                .executeScript("return window.pageYOffset;");
+        Assert.assertTrue(scrollY <= 5, "Страница не прокрутилась вверх. scrollY=" + scrollY);
     }
 
     @Test
@@ -118,10 +148,10 @@ public class GroupBitByBitTest {
         WebElement specialTools = driver.findElement(By.xpath("//a[contains(text(),'Special Tools')]"));
         WebElement retails = driver.findElement(By.xpath("//a[contains(text(),'Rentals')]"));
 
-        Assert.assertEquals(handTools.getAttribute("href"),"https://practicesoftwaretesting.com/category/hand-tools");
-        Assert.assertEquals(powerTools.getAttribute("href"),"https://practicesoftwaretesting.com/category/power-tools");
-        Assert.assertEquals(otherTools.getAttribute("href"),"https://practicesoftwaretesting.com/category/other");
-        Assert.assertEquals(specialTools.getAttribute("href"),"https://practicesoftwaretesting.com/category/special-tools");
+        Assert.assertEquals(handTools.getAttribute("href"), "https://practicesoftwaretesting.com/category/hand-tools");
+        Assert.assertEquals(powerTools.getAttribute("href"), "https://practicesoftwaretesting.com/category/power-tools");
+        Assert.assertEquals(otherTools.getAttribute("href"), "https://practicesoftwaretesting.com/category/other");
+        Assert.assertEquals(specialTools.getAttribute("href"), "https://practicesoftwaretesting.com/category/special-tools");
         Assert.assertEquals(retails.getAttribute("href"), "https://practicesoftwaretesting.com/rentals");
 
         driver.quit();
@@ -227,10 +257,10 @@ public class GroupBitByBitTest {
         Assert.assertEquals(driver.findElement(By.xpath("//div[@class='productinfo text-center']/p")).getText(), "Blue Top");
 
         driver.quit();
-      }
+    }
 
     @Test
-    public void testPriceOfBooking()  {
+    public void testPriceOfBooking() {
         final int numDays = 3;
         final int expectedTotal = 100 * numDays + 25 + 15;
 
@@ -256,7 +286,7 @@ public class GroupBitByBitTest {
     }
 
     @Test
-    public void testAddElement(){
+    public void testAddElement() {
 
         driver.get("https://the-internet.herokuapp.com/");
         driver.manage().window().maximize();
@@ -272,7 +302,7 @@ public class GroupBitByBitTest {
     }
 
     @Test
-    public void testContextMenu(){
+    public void testContextMenu() {
 
         driver.get("https://the-internet.herokuapp.com/");
         driver.manage().window().maximize();
@@ -299,7 +329,7 @@ public class GroupBitByBitTest {
         DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern(("d"));
 
-        while(true) {
+        while (true) {
             String currentMonth = driver.findElement(By.className("react-datepicker__current-month")).getText();
 
             if (targetDay.format(monthFormatter).equalsIgnoreCase(currentMonth)) {
