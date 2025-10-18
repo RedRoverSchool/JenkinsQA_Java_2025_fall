@@ -13,13 +13,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.lang.reflect.Array;
-import java.sql.Driver;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BitByBitGroupTest {
@@ -110,9 +106,9 @@ public class BitByBitGroupTest {
     public void testCategoriesDropdownMenuLinks() {
 
         driver.get("https://practicesoftwaretesting.com/");
+        driver.manage().window().maximize();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-test='nav-categories']")));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-test='nav-categories']")));
 
         driver.findElement(By.xpath("//a[@data-test='nav-categories']")).click();
 
@@ -135,9 +131,9 @@ public class BitByBitGroupTest {
     public void testHandToolsCheckbox() {
 
         driver.get("https://practicesoftwaretesting.com/");
+        driver.manage().window().maximize();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[contains(text(),' Hand Tools ')]")));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[contains(text(),' Hand Tools ')]")));
 
         driver.findElement(By.xpath("//*[contains(text(),' Hand Tools ')]")).click();
 
@@ -164,22 +160,22 @@ public class BitByBitGroupTest {
     public void testHammerAddToCart() throws InterruptedException {
 
         driver.get("https://practicesoftwaretesting.com/");
+        driver.manage().window().maximize();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(),' Hammer ')]")));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(),' Hammer ')]")));
 
         driver.findElement(By.xpath("//label[contains(text(),' Hammer ')]")).click();
         driver.findElement(By.xpath("//h5[contains(text(), ' Thor Hammer ')]")).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("btn-add-to-cart")));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("btn-add-to-cart")));
 
         driver.findElement(By.id("btn-add-to-cart")).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-test='nav-cart']")));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-test='nav-cart']")));
 
         driver.findElement(By.xpath("//a[@data-test='nav-cart']")).click();
 
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//span[@class='product-title']"), "Thor Hammer "));
+        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//span[@class='product-title']"), "Thor Hammer "));
 
         Assert.assertEquals(driver.findElement(By.xpath("//span[@class='product-title']")).getText(), "Thor Hammer ");
         Assert.assertEquals(driver.findElement(By.xpath("//input[@data-test='product-quantity']")).getAttribute("min"), "1");
@@ -192,19 +188,19 @@ public class BitByBitGroupTest {
     public void testDeleteHandSawFromCart() throws InterruptedException {
 
         driver.get("https://practicesoftwaretesting.com/");
+        driver.manage().window().maximize();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(), ' Hand Saw ')]"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(), ' Hand Saw ')]"))).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h5[contains(text(), ' Wood Saw ')]"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//h5[contains(text(), ' Wood Saw ')]"))).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='btn-add-to-cart']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='btn-add-to-cart']"))).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-test='nav-cart']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-test='nav-cart']"))).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='btn btn-danger']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='btn btn-danger']"))).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@class='ng-star-inserted']")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@class='ng-star-inserted']")));
 
         Assert.assertEquals(driver.findElement(By.xpath("//p[@class='ng-star-inserted']")).getText(), "The cart is empty. Nothing to display.");
 
@@ -215,16 +211,16 @@ public class BitByBitGroupTest {
     public void testSearchProduct() {
 
         driver.get(AUTOEX_URL);
+        driver.manage().window().maximize();
 
         driver.findElement(By.xpath("//a[text()=' Products']")).click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.titleIs("Automation Exercise - All Products"));
+        getWait5().until(ExpectedConditions.titleIs("Automation Exercise - All Products"));
 
         driver.findElement(By.xpath("//input[@id='search_product']")).sendKeys("Blue Top");
         driver.findElement(By.xpath("//button[@id='submit_search']")).click();
 
-        WebElement textResult = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(text(),'Searched Products')]")));
+        WebElement textResult = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(text(),'Searched Products')]")));
 
         Assert.assertEquals(textResult.getText().toLowerCase(), "searched products");
 
