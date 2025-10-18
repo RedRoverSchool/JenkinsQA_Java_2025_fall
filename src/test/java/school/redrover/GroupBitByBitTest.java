@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class BitByBitGroupTest {
+public class GroupBitByBitTest {
 
     private WebDriver driver;
     private static final String AUTOEX_URL = "https://automationexercise.com";
