@@ -17,7 +17,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BugSharksGroupTest {
+public class GroupBugSharksTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
