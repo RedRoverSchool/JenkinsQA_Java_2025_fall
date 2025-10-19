@@ -7,7 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class Yuliya14OneTest {
+public class GroupApexTeamTest {
 
     @Test
     public void testSearchBook(){
@@ -24,4 +24,3 @@ public class Yuliya14OneTest {
         driver.close();
     }
 }
-
