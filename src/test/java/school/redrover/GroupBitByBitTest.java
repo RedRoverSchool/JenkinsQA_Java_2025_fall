@@ -75,6 +75,35 @@ public class GroupBitByBitTest {
     }
 
     @Test
+    public void testAddToCart() {
+        driver.get(AUTOEX_URL);
+        driver.manage().window().maximize();
+
+        JSUtils.removeIframesAndAds(driver);
+
+        // Find Better XPath
+        WebElement addToCart = driver.findElement(By.xpath("(//h2[text() ='Features Items']/../../..//p[text() = 'Blue Top']/../a[text() = 'Add to cart'][@data-product-id=\"1\"])[1]"));
+
+        Actions actions = new Actions(driver);
+
+        actions
+                .scrollByAmount(0, 500)
+                .perform();
+
+        actions.moveToElement(addToCart).perform();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(addToCart));
+
+        addToCart.click();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//u[text() = 'View Cart']")))).click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("//a[text() = 'Blue Top']")).getText(),"Blue Top");
+
+        driver.quit();
+    }
+
+    @Test
     public void testScrollUpButton() throws InterruptedException {
         driver.get(AUTOEX_URL);
         driver.manage().window().maximize();
