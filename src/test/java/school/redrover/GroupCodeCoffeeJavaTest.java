@@ -1,9 +1,12 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -76,4 +79,59 @@ public class GroupCodeCoffeeJavaTest {
 
         driver.quit();
     }
+    @Test
+    public void goToElementsTest(){
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.get("https://demoqa.com/");
+        driver.findElement(By.xpath("(//h5)[1]")).click();
+        String url = driver.getCurrentUrl();
+        Assert.assertEquals(url, "https://demoqa.com/elements");
+        String elementText = driver.findElement(By.xpath("(//div[@class='header-text'])[1]")).getText();
+        Assert.assertEquals(elementText, "Elements");
+    }
+   @Test
+    public void selectTextBox(){
+       WebDriver driver = new ChromeDriver();
+       driver.manage().window().maximize();
+       driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+       driver.get("https://demoqa.com/");
+       driver.findElement(By.xpath("(//h5)[1]")).click();
+       String url = driver.getCurrentUrl();
+       Assert.assertEquals(url, "https://demoqa.com/elements");
+       driver.findElement(By.xpath("//span[text()='Text Box']")).click();
+       Assert.assertEquals(driver.findElement(By.xpath("//h1")).getText(), "Text Box");
+   }
+
+   @Test
+    public void textBoxTest(){
+       WebDriver driver = new ChromeDriver();
+       driver.manage().window().maximize();
+       driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+       driver.get("https://demoqa.com/");
+
+       WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+       WebElement firstCard = wait.until(ExpectedConditions.elementToBeClickable(
+               By.xpath("(//div[@class='card mt-4 top-card'])[1]")
+       ));
+      firstCard.click();
+       driver.findElement(By.xpath("//span[text()='Text Box']")).click();
+
+       driver.findElement(By.id("userName")).sendKeys("Ivan Ivanov");
+       driver.findElement(By.id("userEmail")).sendKeys("Ivan@gmail.com");
+       driver.findElement(By.id("currentAddress")).sendKeys("Mosсow, str. Parkovaya, 20");
+       driver.findElement(By.id("permanentAddress")).sendKeys("Mosсow, str. Parkovaya, 22");
+       WebElement submitBtn = wait.until(ExpectedConditions.presenceOfElementLocated(
+               By.id("submit")
+       ));
+
+// Клик через JavaScript
+       JavascriptExecutor js = (JavascriptExecutor) driver;
+       js.executeScript("arguments[0].click();", submitBtn);
+       Assert.assertTrue(driver.findElement(By.id("output")).isDisplayed());
+       Assert.assertEquals(driver.findElement(By.id("name")).getText(),"Name:Ivan Ivanov");
+       Assert.assertEquals(driver.findElement(By.id("email")).getText(),"Email:Ivan@gmail.com");
+
+   }
 }
