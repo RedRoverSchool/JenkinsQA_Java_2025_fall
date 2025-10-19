@@ -1085,48 +1085,34 @@ public class GroupUnitedByJavaTest {
     }
 
     @Test
-    public void testFormFilling() {
+    public void testPutDepositBankAccount() {
 
-        WebDriver driver = new ChromeDriver();
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("document.body.style.zoom='80%'");
-        driver.manage().window().maximize();
-        driver.get("https://demoqa.com/text-box");
+        createDriver();
 
-        String fullName = "Harry Potter";
-        String email = "harrypotter@gmail.com";
-        String currentAddress = "The Cupboard under the Stairs, 4 Privet Drive, Little Whinging, SURREY";
-        String permanentAddress = "Hogwarts School of Witchcraft and Wizardry, The Scottish Highlands, United Kingdom";
+        driverKM.get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
+        driverKM.manage().timeouts().implicitlyWait(Duration.ofMillis(900));
 
-        WebElement fullNameBox = driver.findElement(By.xpath("//*[@id='userName']"));
-        fullNameBox.sendKeys(fullName);
+        WebElement customerLoginButton = driverKM
+                .findElement(By.xpath("//button[@class='btn btn-primary btn-lg' and contains(text(), 'Customer Login')]"));
+        customerLoginButton.click();
 
-        WebElement emailBox = driver.findElement(By.xpath("//*[@id='userEmail']"));
-        emailBox.sendKeys(email);
+        Select userDropdown = new Select(driverKM.findElement(By.name("userSelect")));
+        userDropdown.selectByValue("1");
 
-        WebElement currentAddressBox = driver.findElement(By.xpath("//*[@id='currentAddress']"));
-        currentAddressBox.sendKeys(currentAddress);
+        WebElement loginButton = driverKM
+                .findElement(By.xpath("//button[@class='btn btn-default']"));
+        loginButton.click();
+        driverKM.findElement(By.xpath("//button[@ng-click='deposit()']")).click();
 
-        WebElement permanentAddressBox = driver.findElement(By.xpath("//*[@id='permanentAddress']"));
-        permanentAddressBox.sendKeys(permanentAddress);
+        WebElement makeDepositInput = driverKM
+                .findElement(By.xpath("//input[@class='form-control ng-pristine ng-untouched ng-invalid ng-invalid-required']"));
+        makeDepositInput.sendKeys("1000");
+        driverKM.findElement(By.xpath("//button[@class='btn btn-default']")).click();
 
-        WebElement submitButton = driver.findElement(By.xpath("//*[@id='submit']"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
-        submitButton.click();
+        WebElement depositMessage = driverKM
+                .findElement(By.xpath("//span[@class='error ng-binding']"));
+        Assert.assertEquals(depositMessage.getText(), "Deposit Successful", "Ошибка в переводе на депозит");
 
-        String actualName = driver.findElement(By.xpath("//p[@id='name']")).getText();
-        String actualEmail = driver.findElement(By.xpath("//p[@id='email']")).getText();
-        String actualCurrentAddress = driver.findElement(By.xpath("//p[@id='currentAddress']")).getText();
-        String actualPermanentAddress = driver.findElement(By.xpath("//p[@id='permanentAddress']")).getText();
-
-
-        Assert.assertEquals(actualName, "Name:" + fullName);
-        Assert.assertEquals(actualEmail,"Email:" + email);
-        Assert.assertEquals(actualCurrentAddress, "Current Address :" + currentAddress);
-        Assert.assertEquals(actualPermanentAddress,"Permananet Address :" + permanentAddress);
-
-        driver.quit();
+        closeDriver();
     }
-
-}
 
