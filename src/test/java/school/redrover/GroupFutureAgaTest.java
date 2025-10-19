@@ -44,27 +44,35 @@ public class GroupFutureAgaTest {
          * @return Возвращает инициализированный WebDriver
          */
         public static WebDriver getDriver() {
-            if (DriverManager.driver == null) {
-                String osName = System.getProperty("os.name").toLowerCase();
-                if (osName.contains("windows") && osName.contains("7")) {
-                    String pathChromeDriver = "D:\\Projects\\ChromeDriver\\chromedriver_win32_109_win7\\chromedriver.exe";
-                    System.setProperty("webdriver.chrome.driver", pathChromeDriver);
-                    // для Windows 7 необходимо скачать и установить путь к драйверу ChromeDriver 109.0.5414.74 https://chromedriver.chromium.org/downloads
-
-                    ChromeOptions options = new ChromeOptions();
-                    options.addArguments("auto-open-devtools-for-tabs");
-                    driver = new ChromeDriver(options);
-                    driver.manage().window().maximize();
-
-                } else {
-
-                    driver = new ChromeDriver();
-                    driver.manage().window().maximize();
-                    driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
-
-                }
+            if (driver == null) {
+                createDriver();
             }
             return driver;
+        }
+
+        private static void createDriver() {
+            String osName = System.getProperty("os.name").toLowerCase();
+            if (osName.contains("windows") && osName.contains("7")) {
+                String pathChromeDriver = "D:\\Projects\\ChromeDriver\\chromedriver_win32_109_win7\\chromedriver.exe";
+                    System.setProperty("webdriver.chrome.driver", pathChromeDriver);
+                // для Windows 7 необходимо скачать и установить путь к драйверу ChromeDriver 109.0.5414.74 https://chromedriver.chromium.org/downloads
+
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("auto-open-devtools-for-tabs");
+                driver = new ChromeDriver(options);
+                driver.manage().window().maximize();
+                driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
+            } else {
+                driver = new ChromeDriver();
+                driver.manage().window().maximize();
+                driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
+            }
+        }
+        public static void quitDriver() {
+            if (driver != null) {
+                driver.quit();
+                driver = null;
+            }
         }
     }
     private WebDriver driver;
@@ -79,14 +87,12 @@ public class GroupFutureAgaTest {
 
     @BeforeMethod
     public void setUpDriver() {
-        driver = DriverManager.getDriver();
+        this.driver = DriverManager.getDriver();
     }
 
     @AfterClass
-    public void closeAllDriver() {
-        if (nonNull(driver)) {
-            driver.quit();
-        }
+    public void tearDownDriver() {
+        DriverManager.quitDriver();
     }
 
     @Test
