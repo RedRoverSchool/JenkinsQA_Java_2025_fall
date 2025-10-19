@@ -174,6 +174,40 @@ public class GroupFutureAgaTest {
         WebElement responsePermanentAddress = driver.findElement(By.xpath("//div[@id='output']//p[@id='permanentAddress']"));
         assertEquals("Permananet Address :c. Moscow str. Pushkin house Kolotushkin", responsePermanentAddress.getText());
     }
+
+    @Test(testName = "Проверка работы text-area")
+    public void selenium_text_area_test() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+        driver.getTitle();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        WebElement textBox = driver.findElement(By.xpath("//textarea[@name='my-textarea']"));
+        WebElement submitButton = driver.findElement(By.xpath("//button"));
+        textBox.sendKeys("Selenium Test");
+        submitButton.click();
+        WebElement message = driver.findElement(By.id("message"));
+        Assert.assertEquals(message.getText(), "Received!");
+        driver.quit();
+    }
+
+    @Test(testName = "Проверка работы habra search")
+    public void habra_search_test() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://habr.com/");
+        driver.getTitle();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        WebElement searchButton = driver.findElement(By.cssSelector("[class*='tm-header-user-menu__search']"));
+        searchButton.click();
+        WebElement textBox = driver.findElement(By.cssSelector("[class*='tm-search__input tm-input-text-decorated__input']"));
+        WebElement submitButton = driver.findElement(By.cssSelector("[class*='tm-search__icon']"));
+        textBox.sendKeys("Selenium Test");
+        submitButton.click();
+        WebElement message = driver.findElement(By.className("searched-item"));
+        Assert.assertEquals(message.getText(), "Selenium Tests");
+        driver.quit();
+    }
 }
 
 
