@@ -50,4 +50,41 @@ public class FoxHelperTest {
         Assert.assertEquals(games.getText(), "146");
         driver.close();
     }
+
+    @Test
+    public void TestLogInTatiana() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+
+        driver.get("https://automationexercise.com/");
+
+        WebElement login = driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a"));
+        login.click();
+
+        WebElement nameLog = driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[3]/div/form/input[2]"));
+        nameLog.sendKeys("Tatiana");
+
+        WebElement emailLog = driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[3]/div/form/input[3]"));
+        emailLog.sendKeys("Tanya375444@gmail.com");
+
+        WebElement buttonSingUp = driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[3]/div/form/button"));
+        buttonSingUp.click();
+
+        WebElement text = driver.findElement((By.xpath("//*[@id=\"form\"]/div/div/div[3]/div/form/p")));
+        String x = "Email Address already exist!";
+        if (text.getText().equals(x)) {
+
+            WebElement email = driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[2]"));
+            email.sendKeys("Tanya375444@gmail.com");
+            WebElement password2 = driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[3]"));
+            password2.sendKeys("Tanya375444");
+            WebElement buttonLog = driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/button"));
+            buttonLog.click();
+
+            WebElement message2 = driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[10]/a"));
+            Assert.assertEquals(message2.getText(), "Logged in as Tatiana");
+            driver.quit();
 }
+    }
+}
+
