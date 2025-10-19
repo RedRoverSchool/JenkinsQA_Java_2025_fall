@@ -4,8 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -18,6 +19,62 @@ import static org.testng.Assert.assertNotNull;
 
 public class GroupFutureAgaTest {
 
+    /**
+     * Класс DriverManager предназначен для управления экземпляром WebDriver.
+     * Реализует паттерн Singleton — гарантирует, что будет создан только один экземпляр браузера.
+     *
+     * Используется в тестовых классах для получения уже инициализированного драйвера,
+     * что позволяет избежать повторного запуска браузера и повышает производительность тестов.
+     *
+     * Для Windows 7 используется специальная версия 109 ChromeDriver,
+     * так как стандартный не поддерживается.
+     */
+    public static class DriverManager {
+
+        /**
+         * Статическая переменная для хранения экземпляра WebDriver.
+         * Используется как Singleton, чтобы избежать создания нескольких экземпляров браузера.
+         */
+        private static WebDriver driver;
+
+        /**
+         * Метод getDriver() возвращает текущий экземпляр WebDriver.
+         * Если драйвер ещё не инициализирован, он создаётся с учётом ОС.
+         *
+         * @return Возвращает инициализированный WebDriver
+         */
+        public static WebDriver getDriver() {
+            if (driver == null) {
+                createDriver();
+            }
+            return driver;
+        }
+
+        private static void createDriver() {
+            String osName = System.getProperty("os.name").toLowerCase();
+            if (osName.contains("windows") && osName.contains("7")) {
+                String pathChromeDriver = "D:\\Projects\\ChromeDriver\\chromedriver_win32_109_win7\\chromedriver.exe";
+                    System.setProperty("webdriver.chrome.driver", pathChromeDriver);
+                // для Windows 7 необходимо скачать и установить путь к драйверу ChromeDriver 109.0.5414.74 https://chromedriver.chromium.org/downloads
+
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("auto-open-devtools-for-tabs");
+                driver = new ChromeDriver(options);
+                driver.manage().window().maximize();
+                driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
+            } else {
+                driver = new ChromeDriver();
+                driver.manage().window().maximize();
+                driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
+            }
+        }
+        public static void quitDriver() {
+            if (driver != null) {
+                driver.quit();
+                driver = null;
+            }
+        }
+    }
     private WebDriver driver;
 
     private static final String DEMOQA_URL = "https://demoqa.com/";
@@ -29,17 +86,13 @@ public class GroupFutureAgaTest {
             """;
 
     @BeforeMethod
-    public void setUp() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
+    public void setUpDriver() {
+        this.driver = DriverManager.getDriver();
     }
 
-    @AfterMethod
-    public void closeAll() {
-        if (nonNull(driver)) {
-            driver.quit();
-        }
+    @AfterClass
+    public void tearDownDriver() {
+        DriverManager.quitDriver();
     }
 
     @Test
