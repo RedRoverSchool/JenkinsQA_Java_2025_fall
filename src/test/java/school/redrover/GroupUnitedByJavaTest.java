@@ -35,7 +35,7 @@ public class GroupUnitedByJavaTest {
     private static final String LOGIN = "admin@admin.com";
     private static final String PASSWORD = "admin123";
     private static final String DEMOQA_URL = "https://demoqa.com/";
-    private static final String THECODE_URL = "https://thecode.media/";
+    private static final String THECODE_URL ="https://thecode.media/";
     private static final String ALERT_URL = DEMOQA_URL + "alerts";
     private static final String DATE_PICKER_URL = DEMOQA_URL + "date-picker";
     private static final String ACCORDION_URL = DEMOQA_URL + "accordian";
@@ -96,7 +96,7 @@ public class GroupUnitedByJavaTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://qa-practice.netlify.app/auth_ecommerce");
         driver.manage().window().setSize(new Dimension(1920, 1080));
-
+        
         driver.findElement(By.name("emailAddress")).sendKeys(LOGIN);
         driver.findElement(By.name("password")).sendKeys(PASSWORD);
         driver.findElement(By.id("submitLoginBtn")).click();
@@ -236,7 +236,7 @@ public class GroupUnitedByJavaTest {
             }
         }
 
-        String newWindow = driver.findElement(By.id("sampleHeading")).getText();
+        String newWindow =  driver.findElement(By.id("sampleHeading")).getText();
 
         Assert.assertEquals(newWindow, "This is a sample page");
 
@@ -253,10 +253,10 @@ public class GroupUnitedByJavaTest {
         driver.findElement(By.xpath("//span[text()='Browser Windows']")).click();
         driver.findElement(By.id("tabButton")).click();
 
-        Object[] windowHandles = driver.getWindowHandles().toArray();
+        Object[] windowHandles=driver.getWindowHandles().toArray();
         driver.switchTo().window((String) windowHandles[1]);
 
-        String newTab = driver.findElement(By.id("sampleHeading")).getText();
+        String newTab =  driver.findElement(By.id("sampleHeading")).getText();
 
         Assert.assertEquals(newTab, "This is a sample page");
 
@@ -273,7 +273,7 @@ public class GroupUnitedByJavaTest {
         driver.findElement(By.xpath("//span[text()='Browser Windows']")).click();
         driver.findElement(By.id("tabButton")).click();
 
-        Object[] windowHandles = driver.getWindowHandles().toArray();
+        Object[] windowHandles=driver.getWindowHandles().toArray();
         driver.switchTo().window((String) windowHandles[1]);
         driver.close();
         driver.switchTo().window((String) windowHandles[0]);
@@ -308,7 +308,7 @@ public class GroupUnitedByJavaTest {
             driver.switchTo().window(tabs.get(i));
             String searchTitle = driver.findElement(By.className("search__title")).getText();
 
-            if (searchTitle.toLowerCase().contains(requiredTitle.toLowerCase())) {
+            if (searchTitle.toLowerCase().contains(requiredTitle.toLowerCase())){
                 reqTabs++;
             }
         }
@@ -331,7 +331,7 @@ public class GroupUnitedByJavaTest {
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(THECODE_URL + "howto/");
 
-        String titleOpenTab = driver.findElement(By.className("search__title")).getText();
+        String titleOpenTab =  driver.findElement(By.className("search__title")).getText();
 
         Assert.assertEquals(titleOpenTab, "Это как");
 
@@ -361,7 +361,7 @@ public class GroupUnitedByJavaTest {
     }
 
     @Test
-    public void testClickRightMouseButton() {
+    public void testClickRightMouseButton(){
         WebDriver driver = new ChromeDriver();
         driver.manage().window().setSize(new Dimension(1920, 1080));
         driver.get(DEMOQA_URL);
@@ -403,7 +403,7 @@ public class GroupUnitedByJavaTest {
     }
 
     @Test
-    public void testFullOrderProduct() {
+    public void testFullOrderProduct(){
         WebDriver driver = new ChromeDriver();
         driver.manage().window().setSize(new Dimension(1920, 1080));
         driver.get("https://www.saucedemo.com/v1/inventory.html");
@@ -429,7 +429,7 @@ public class GroupUnitedByJavaTest {
     }
 
     @Test
-    public void testRegisterUser() {
+    public void testRegisterUser(){
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://automationexercise.com/");
@@ -447,7 +447,7 @@ public class GroupUnitedByJavaTest {
 
         // Verify 'New User Signup!' is visible
         WebElement textNewUser = driver.findElement(By.cssSelector("#form > div > div > div:nth-child(3) > div > h2"));
-        softAssert.assertTrue(textNewUser.isDisplayed(), "New User Signup is not visible");
+        softAssert.assertTrue(textNewUser.isDisplayed(),"New User Signup is not visible");
 
         // Enter name and email address
         WebElement nameField = driver.findElement(By.cssSelector("#form > div > div > div:nth-child(3) > div > form > input[type=text]:nth-child(2)"));
@@ -464,7 +464,7 @@ public class GroupUnitedByJavaTest {
 
         // Fill details: Title, Name, Email, Password, Date of birth
         // Check if the radio button "Mrs." selected or not
-        if (!driver.findElement(By.cssSelector("#id_gender2")).isSelected()) {
+        if(!driver.findElement(By.cssSelector("#id_gender2")).isSelected()){
             driver.findElement(By.cssSelector("#id_gender2")).click();
         }
 
@@ -523,19 +523,19 @@ public class GroupUnitedByJavaTest {
         driver.findElement(By.cssSelector("#form > div > div > div > div > form > button")).click();
 
         // Verify that 'ACCOUNT CREATED!' is visible
-        softAssert.assertTrue(driver.findElement(By.cssSelector("#form > div > div > div > h2 > b")).isDisplayed(), "Message is not visible");
+        softAssert.assertTrue(driver.findElement(By.cssSelector("#form > div > div > div > h2 > b")).isDisplayed(),"Message is not visible");
 
         // Click 'Continue' button
         driver.findElement(By.cssSelector("#form > div > div > div > div > a")).click();
 
         // Verify that 'Logged in as username' is visible
-        softAssert.assertTrue(driver.findElement(By.cssSelector("#header > div > div > div > div.col-sm-8 > div > ul > li:nth-child(10) > a")).isDisplayed(), "Logged in as Dariya is not displayed");
+        softAssert.assertTrue(driver.findElement(By.cssSelector("#header > div > div > div > div.col-sm-8 > div > ul > li:nth-child(10) > a")).isDisplayed(),"Logged in as Dariya is not displayed");
 
         // Click 'Delete Account' button
         driver.findElement(By.cssSelector("#header > div > div > div > div.col-sm-8 > div > ul > li:nth-child(5) > a")).click();
 
         // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
-        softAssert.assertTrue(driver.findElement(By.cssSelector("#form > div > div > div > h2 > b")).isDisplayed(), "Message ACCOUNT DELETED is not displayed");
+        softAssert.assertTrue(driver.findElement(By.cssSelector("#form > div > div > div > h2 > b")).isDisplayed(),"Message ACCOUNT DELETED is not displayed");
 
         driver.quit();
 
@@ -1072,9 +1072,9 @@ public class GroupUnitedByJavaTest {
         wait.until(ExpectedConditions.visibilityOf(searchBox));
         searchBox.sendKeys("el");
 
-        List<WebElement> searchResultsGrid = driver.findElements(By.cssSelector(".rt-tr-group .rt-tr:not(.-padRow)"));
+        List <WebElement> searchResultsGrid = driver.findElements (By.cssSelector(".rt-tr-group .rt-tr:not(.-padRow)"));
         int count = searchResultsGrid.size();
-        Assert.assertTrue(count >= 1);
+        Assert.assertTrue(count>=1);
 
         WebElement bookTitle = driver.findElement(By.id("see-book-Eloquent JavaScript, Second Edition"));
         bookTitle.click();
@@ -1116,4 +1116,3 @@ public class GroupUnitedByJavaTest {
         closeDriver();
     }
 
-}
