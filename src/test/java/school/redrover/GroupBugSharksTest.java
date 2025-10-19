@@ -262,4 +262,31 @@ public class GroupBugSharksTest {
         Assert.assertEquals(imageByItemPage, imageByProductPage);
     }
 
+    @Test
+    public void artemTLoginTest() {
+        String baseUrl = "https://www.saucedemo.com";
+        String standardUserName = "standard_user";
+        String password = "secret_sauce";
+        String plpUrl = "https://www.saucedemo.com/inventory.html";
+
+        driver.get(baseUrl);
+
+        WebElement userNameInputField = driver.findElement(By.id("user-name"));
+        WebElement passwordInputField = driver.findElement(By.id("password"));
+        WebElement loginButton = driver.findElement(By.id("login-button"));
+
+        userNameInputField.sendKeys(standardUserName);
+        passwordInputField.sendKeys(password);
+        loginButton.click();
+
+        Assert.assertEquals(driver.getCurrentUrl(), plpUrl, "The actual URL is not equal to expected");
+
+        WebElement plpHeader = driver.findElement(By.id("header_container"));
+        WebElement mainMenuButton = driver.findElement(By.id("react-burger-menu-btn"));
+        WebElement shoppingCart = driver.findElement(By.id("shopping_cart_container"));
+
+        Assert.assertTrue(plpHeader.isDisplayed(), "The header element is not visible");
+        Assert.assertTrue(mainMenuButton.isDisplayed(), "The main menu button element is not visible");
+        Assert.assertTrue(shoppingCart.isDisplayed(), "The shopping cart element is not visible");
+    }
 }
