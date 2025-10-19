@@ -19,7 +19,10 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class GroupCodeCoffeeJavaTest {
     protected WebDriver driver;
@@ -114,14 +117,14 @@ public class GroupCodeCoffeeJavaTest {
    }
 
    @Test
-    public void textBoxTest(){
+    public void textBoxTest() {
 
        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
        WebElement firstCard = wait.until(ExpectedConditions.elementToBeClickable(
                By.xpath("(//div[@class='card mt-4 top-card'])[1]")
        ));
-      firstCard.click();
+       firstCard.click();
        driver.findElement(By.xpath("//span[text()='Text Box']")).click();
 
        driver.findElement(By.id("userName")).sendKeys("Ivan Ivanov");
@@ -136,8 +139,91 @@ public class GroupCodeCoffeeJavaTest {
        JavascriptExecutor js = (JavascriptExecutor) driver;
        js.executeScript("arguments[0].click();", submitBtn);
        Assert.assertTrue(driver.findElement(By.id("output")).isDisplayed());
-       Assert.assertEquals(driver.findElement(By.id("name")).getText(),"Name:Ivan Ivanov");
-       Assert.assertEquals(driver.findElement(By.id("email")).getText(),"Email:Ivan@gmail.com");
-
+       Assert.assertEquals(driver.findElement(By.id("name")).getText(), "Name:Ivan Ivanov");
+       Assert.assertEquals(driver.findElement(By.id("email")).getText(), "Email:Ivan@gmail.com");
    }
-}
+       @Test
+               public void addLineTest(){
+           WebElement elements = driver.findElement(By.xpath("(//div[@class = 'card-up'])[1]"));
+           wait4.until(ExpectedConditions.visibilityOf(elements)).click();
+
+           WebElement textBox = driver.findElement(By.xpath("(//ul[@class='menu-list'])[1]//li[4]"));
+           wait4.until(ExpectedConditions.visibilityOf(textBox)).click();
+
+           driver.findElement(By.id("addNewRecordButton")).click();
+           driver.findElement(By.id("firstName")).sendKeys("Petr");
+           driver.findElement(By.id("lastName")).sendKeys("Petrov");
+           driver.findElement(By.id("userEmail")).sendKeys("Petrov@gmail.com");
+           driver.findElement(By.id("age")).sendKeys("25");
+           driver.findElement(By.id("salary")).sendKeys("50000");
+           driver.findElement(By.id("department")).sendKeys("IT");
+           driver.findElement(By.id("submit")).click();
+
+           List<String> expectedValues = Arrays.asList("Petr", "Petrov", "25", "Petrov@gmail.com", "50000", "IT");
+           WebElement tableRow = driver.findElement(By.xpath("//div[@class='rt-tbody']/div[@class='rt-tr-group'][last()]"));
+           assertTableRowContainsValues(tableRow, expectedValues);
+
+       }
+    // Универсальный метод для проверки строки таблицы
+    private void assertTableRowContainsValues(WebElement tableRow, List<String> expectedValues) {
+        // Находим все ячейки в строке
+        List<WebElement> cells = tableRow.findElements(By.xpath(".//div[contains(@class, 'rt-td')]"));
+
+        // Проверяем каждую ячейку
+        for (int i = 0; i < Math.min(cells.size(), expectedValues.size()); i++) {
+            String actualText = cells.get(i).getText().trim();
+            String expectedText = expectedValues.get(i);
+
+            softAssert.assertEquals(actualText, expectedText,
+                    "Ячейка " + (i + 1) + " содержит неверное значение");
+
+            // Логирование для отладки
+            System.out.println("Ячейка " + (i + 1) + ": '" + actualText + "' == '" + expectedText + "'");
+        }
+        softAssert.assertAll(); // Выводим все ошибки в конце
+    }
+
+    @Test
+    public void countLineTest() {
+        WebElement elements = driver.findElement(By.xpath("(//div[@class = 'card-up'])[1]"));
+        wait4.until(ExpectedConditions.visibilityOf(elements)).click();
+
+        WebElement textBox = driver.findElement(By.xpath("(//ul[@class='menu-list'])[1]//li[4]"));
+        wait4.until(ExpectedConditions.visibilityOf(textBox)).click();
+
+        List<WebElement> initialRows = getTableRows();
+        int initialCount = initialRows.size();
+        System.out.println("Строк до добавления: " + initialCount);
+
+        driver.findElement(By.id("addNewRecordButton")).click();
+        driver.findElement(By.id("firstName")).sendKeys("Petr");
+        driver.findElement(By.id("lastName")).sendKeys("Petrov");
+        driver.findElement(By.id("userEmail")).sendKeys("Petrov@gmail.com");
+        driver.findElement(By.id("age")).sendKeys("25");
+        driver.findElement(By.id("salary")).sendKeys("50000");
+        driver.findElement(By.id("department")).sendKeys("IT");
+        driver.findElement(By.id("submit")).click();
+
+        List<WebElement> finalRows = getTableRows();
+        int finalCount = finalRows.size();
+        System.out.println("Строк после добавления: " + finalCount);
+
+        // Проверяем, что строк стало на 1 больше
+        softAssert.assertEquals(finalCount, initialCount + 1,
+                "Количество строк не увеличилось на 1 после добавления записи");
+
+        softAssert.assertAll();
+    }
+    public List<WebElement> getTableRows() {
+        List<WebElement> allRows = driver.findElements(By.xpath("//div[@class='rt-tbody']/div[@class='rt-tr-group']"));
+
+        // Фильтруем только непустые строки
+        return allRows.stream()
+                .filter(row -> !row.getText().trim().isEmpty())
+                .collect(Collectors.toList());
+    }
+
+       }
+
+
+
