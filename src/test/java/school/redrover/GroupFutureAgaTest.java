@@ -12,7 +12,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.nonNull;
 import static org.testng.Assert.assertEquals;
@@ -243,6 +245,40 @@ public class GroupFutureAgaTest {
 
 
         }
+
+    @Test(testName = "City Warning appears if City field is empty")
+    public void testBankProject() {
+        String userId = "mngr638292";
+        String password = "zYqebUm";
+        String url = "https://demo.guru99.com/";
+        String address = "Red Square, 1";
+
+        ChromeOptions options = new ChromeOptions();
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("autofill.profile_enabled", false);
+        prefs.put("credentials_enable_service", false);
+        prefs.put("profile.password_manager_enabled", false);
+        options.setExperimentalOption("prefs", prefs);
+
+        WebDriver driverZen = new ChromeDriver(options);
+        driverZen.get(url);
+
+        driverZen.findElement(By.xpath("//*[@id=\"navbar-brand-centered\"]/ul/li[5]/a")).click();
+        driverZen.findElement(By.xpath("/html/body/form/table/tbody/tr[1]/td[2]/input")).sendKeys(userId);
+        driverZen.findElement(By.xpath("/html/body/form/table/tbody/tr[2]/td[2]/input")).sendKeys(password);
+        driverZen.findElement(By.xpath("/html/body/form/table/tbody/tr[3]/td[2]/input[1]")).click();
+
+        driverZen.findElement(By.xpath("/html/body/div[3]/div/ul/li[2]/a")).click();
+        driverZen.findElement(By.xpath("/html/body/table/tbody/tr/td/table/tbody/tr[4]/td[2]/input")).sendKeys("nameOfCustomer");
+        driverZen.findElement(By.xpath("//*[@id=\"dob\"]")).sendKeys("07081986");
+        WebElement txtAddress = driverZen.findElement(By.xpath("/html/body/table/tbody/tr/td/table/tbody/tr[7]/td[2]/textarea"));
+        txtAddress.sendKeys(address);
+        driverZen.findElement(By.xpath("/html/body/table/tbody/tr/td/table/tbody/tr[8]/td[2]/input")).click();
+        txtAddress.click();
+        Assert.assertEquals(driverZen.findElement(By.xpath("//*[@id=\"message4\"]")).getText(),
+                "City Field must be not blank");
+        driverZen.quit();
     }
+}
 
 
