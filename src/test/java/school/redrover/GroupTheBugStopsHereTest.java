@@ -201,4 +201,18 @@ public class GroupTheBugStopsHereTest {
 
         driver.quit();
     }
+
+    private void handleCookies(WebDriver driver) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            WebElement cookieAcceptButton = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//button[p[contains(text(),'Consent')] or contains(.,'Consent') or contains(.,'Accept') or contains(.,'Agree')]")
+            ));
+            cookieAcceptButton.click();
+            System.out.println("✅ Cookie consent accepted.");
+            wait.until(ExpectedConditions.invisibilityOf(cookieAcceptButton));
+        } catch (Exception e) {
+            System.out.println("ℹ️ No cookie consent dialog found. Continuing test.");
+        }
+    }
 }
