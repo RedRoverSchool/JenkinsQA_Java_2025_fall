@@ -11,6 +11,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -22,6 +24,8 @@ import java.util.List;
 public class GroupBitByBitTest {
 
     private WebDriver driver;
+    private WebDriverWait wait5;
+
     private static final String AUTOEX_URL = "https://automationexercise.com";
     private static final String USERNAME = "User_1";
     private static final String EMAIL = "user@gmail.com";
@@ -46,11 +50,17 @@ public class GroupBitByBitTest {
     @BeforeMethod
     public void startBeforeTest() {
         driver = new ChromeDriver();
+        wait5 = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 
-    private WebDriverWait getWait5() {
-        return new WebDriverWait(driver, Duration.ofSeconds(5));
+    @AfterMethod
+    public void tearDown(ITestResult result) {
+        // Закрываем браузер, только если тест прошёл успешно
+        if (result.getStatus() == ITestResult.SUCCESS && driver != null) {
+            driver.quit();
+        }
     }
+
     @Test
     public void testContactUsSubmit() {
         driver.get(AUTOEX_URL);
@@ -70,8 +80,6 @@ public class GroupBitByBitTest {
 
         WebElement alertSuccess = driver.findElement(By.xpath("//div[contains(@class, 'alert-success')]"));
         Assert.assertEquals(alertSuccess.getText(), "Success! Your details have been submitted successfully.");
-
-        driver.quit();
     }
 
     @Test
@@ -92,15 +100,13 @@ public class GroupBitByBitTest {
 
         actions.moveToElement(addToCart).perform();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(addToCart));
+        wait5.until(ExpectedConditions.elementToBeClickable(addToCart));
 
         addToCart.click();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//u[text() = 'View Cart']")))).click();
+        wait5.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//u[text() = 'View Cart']")))).click();
 
         Assert.assertEquals(driver.findElement(By.xpath("//a[text() = 'Blue Top']")).getText(),"Blue Top");
-
-        driver.quit();
     }
 
     @Test
@@ -140,9 +146,6 @@ public class GroupBitByBitTest {
 
         Assert.assertTrue(validationMessage.contains("Please include an '@'"),
                 "Expected validation message not displayed!");
-
-        driver.quit();
-
     }
 
     @Test
@@ -157,8 +160,6 @@ public class GroupBitByBitTest {
         testCasesButton.click();
 
         Assert.assertTrue(driver.getTitle().equals("Automation Practice Website for UI Testing - Test Cases"));
-
-        driver.quit();
     }
 
     @Test
@@ -167,7 +168,7 @@ public class GroupBitByBitTest {
         driver.get("https://practicesoftwaretesting.com/");
         driver.manage().window().maximize();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-test='nav-categories']")));
+        wait5.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-test='nav-categories']")));
 
         driver.findElement(By.xpath("//a[@data-test='nav-categories']")).click();
 
@@ -182,8 +183,6 @@ public class GroupBitByBitTest {
         Assert.assertEquals(otherTools.getAttribute("href"), "https://practicesoftwaretesting.com/category/other");
         Assert.assertEquals(specialTools.getAttribute("href"), "https://practicesoftwaretesting.com/category/special-tools");
         Assert.assertEquals(retails.getAttribute("href"), "https://practicesoftwaretesting.com/rentals");
-
-        driver.quit();
     }
 
     @Test
@@ -192,7 +191,7 @@ public class GroupBitByBitTest {
         driver.get("https://practicesoftwaretesting.com/");
         driver.manage().window().maximize();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[contains(text(),' Hand Tools ')]")));
+        wait5.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[contains(text(),' Hand Tools ')]")));
 
         driver.findElement(By.xpath("//*[contains(text(),' Hand Tools ')]")).click();
 
@@ -211,59 +210,53 @@ public class GroupBitByBitTest {
 
             Assert.assertTrue(checkbox.isSelected());
         }
-
-        driver.quit();
     }
 
     @Test
-    public void testHammerAddToCart() throws InterruptedException {
+    public void testHammerAddToCart() {
 
         driver.get("https://practicesoftwaretesting.com/");
         driver.manage().window().maximize();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(),' Hammer ')]")));
+        wait5.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(),' Hammer ')]")));
 
         driver.findElement(By.xpath("//label[contains(text(),' Hammer ')]")).click();
         driver.findElement(By.xpath("//h5[contains(text(), ' Thor Hammer ')]")).click();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("btn-add-to-cart")));
+        wait5.until(ExpectedConditions.elementToBeClickable(By.id("btn-add-to-cart")));
 
         driver.findElement(By.id("btn-add-to-cart")).click();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-test='nav-cart']")));
+        wait5.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-test='nav-cart']")));
 
         driver.findElement(By.xpath("//a[@data-test='nav-cart']")).click();
 
-        getWait5().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//span[@class='product-title']"), "Thor Hammer "));
+       wait5.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//span[@class='product-title']"), "Thor Hammer "));
 
         Assert.assertEquals(driver.findElement(By.xpath("//span[@class='product-title']")).getText(), "Thor Hammer ");
         Assert.assertEquals(driver.findElement(By.xpath("//input[@data-test='product-quantity']")).getAttribute("min"), "1");
         Assert.assertEquals(driver.findElement(By.xpath("//td[@data-test='cart-total']")).getText(), "$11.14");
-
-        driver.quit();
     }
 
     @Test
-    public void testDeleteHandSawFromCart() throws InterruptedException {
+    public void testDeleteHandSawFromCart() {
 
         driver.get("https://practicesoftwaretesting.com/");
         driver.manage().window().maximize();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(), ' Hand Saw ')]"))).click();
+        wait5.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[contains(text(), ' Hand Saw ')]"))).click();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//h5[contains(text(), ' Wood Saw ')]"))).click();
+        wait5.until(ExpectedConditions.elementToBeClickable(By.xpath("//h5[contains(text(), ' Wood Saw ')]"))).click();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='btn-add-to-cart']"))).click();
+        wait5.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='btn-add-to-cart']"))).click();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-test='nav-cart']"))).click();
+        wait5.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-test='nav-cart']"))).click();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='btn btn-danger']"))).click();
+        wait5.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='btn btn-danger']"))).click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@class='ng-star-inserted']")));
+        wait5.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@class='ng-star-inserted']")));
 
         Assert.assertEquals(driver.findElement(By.xpath("//p[@class='ng-star-inserted']")).getText(), "The cart is empty. Nothing to display.");
-
-        driver.quit();
     }
 
     @Test
@@ -274,18 +267,16 @@ public class GroupBitByBitTest {
 
         driver.findElement(By.xpath("//a[text()=' Products']")).click();
 
-        getWait5().until(ExpectedConditions.titleIs("Automation Exercise - All Products"));
+        wait5.until(ExpectedConditions.titleIs("Automation Exercise - All Products"));
 
         driver.findElement(By.xpath("//input[@id='search_product']")).sendKeys("Blue Top");
         driver.findElement(By.xpath("//button[@id='submit_search']")).click();
 
-        WebElement textResult = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(text(),'Searched Products')]")));
+        WebElement textResult = wait5.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(text(),'Searched Products')]")));
 
         Assert.assertEquals(textResult.getText().toLowerCase(), "searched products");
 
         Assert.assertEquals(driver.findElement(By.xpath("//div[@class='productinfo text-center']/p")).getText(), "Blue Top");
-
-        driver.quit();
     }
 
     @Test
@@ -295,23 +286,22 @@ public class GroupBitByBitTest {
 
         driver.get("https://automationintesting.online/");
 
-        getWait5().until(ExpectedConditions
+        wait5.until(ExpectedConditions
                 .elementToBeClickable(By.xpath("//label[@for='checkout']/following::input[1]"))).click();
 
         selectDate(numDays);
 
         driver.findElement(By.xpath("//button[text()='Check Availability']")).click();
 
-        WebElement bookButton = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[text()='Book now'])[1]")));
+        WebElement bookButton = wait5.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[text()='Book now'])[1]")));
 
         Actions actions = new Actions(driver);
         actions.moveToElement(bookButton).click().perform();
 
-        String totalText = getWait5().until(ExpectedConditions
+        String totalText = wait5.until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//span[text()='Total']/following-sibling::span"))).getText();
 
         Assert.assertEquals(expectedTotal, Integer.parseInt(totalText.substring(1)));
-        driver.quit();
     }
 
     @Test
@@ -326,8 +316,6 @@ public class GroupBitByBitTest {
         String result = driver.findElement(By.xpath("//div[@id=\"elements\"]")).getText();
 
         Assert.assertTrue(result.contains("Delete"), "Text is not found");
-
-        driver.quit();
     }
 
     @Test
@@ -346,29 +334,6 @@ public class GroupBitByBitTest {
 
         Assert.assertEquals(alert.getText(), "You selected a context menu",
                 "Context menu did not show up");
-
-        driver.quit();
-    }
-
-
-    private void selectDate(int daysToAdd) {
-        LocalDate today = LocalDate.now();
-        LocalDate targetDay = today.plusDays(daysToAdd);
-
-        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
-        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern(("d"));
-
-        while (true) {
-            String currentMonth = driver.findElement(By.className("react-datepicker__current-month")).getText();
-
-            if (targetDay.format(monthFormatter).equalsIgnoreCase(currentMonth)) {
-                String targetDayString = targetDay.format(dayFormatter);
-                driver.findElement(By.className("react-datepicker__day--0%s".formatted(targetDayString))).click();
-                break;
-            } else {
-                driver.findElement(By.className("react-datepicker__navigation--next")).click();
-            }
-        }
     }
 
     @Test
@@ -385,15 +350,10 @@ public class GroupBitByBitTest {
                 .stream().map(WebElement::getText).map(String::trim).toList();
 
         Assert.assertEquals(actualValues, expectedValues);
-
-        driver.quit();
-
     }
 
     @Test
     public void testGetConcerts() throws InterruptedException {
-
-        WebDriver driver = new ChromeDriver();
         driver.get("https://www.ticketmaster.com/discover/washington-dc");
 
         WebElement concertsButton = driver.findElement(By.xpath("//a[@data-testid='Concerts']"));
@@ -405,15 +365,10 @@ public class GroupBitByBitTest {
 
         WebElement concertTickets = driver.findElement(By.xpath("//*[@id=\"main-content\"]/div[1]/div/h1"));
         Assert.assertEquals(concertTickets.getText(), "CONCERT TICKETS");
-
-        driver.quit();
     }
-
 
     @Test
     public void filterWork() throws InterruptedException {
-
-        WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
 
         driver.get("https://www.ticketmaster.com/discover/washington-dc");
@@ -443,8 +398,26 @@ public class GroupBitByBitTest {
 
         WebElement bluesGenre = driver.findElement(By.xpath("//*[@id=\"main-content\"]/div[1]/div/h1"));
         Assert.assertEquals(bluesGenre.getText(), "BLUES");
-
-        driver.quit();
     }
 
+    private void selectDate(int daysToAdd) {
+        LocalDate today = LocalDate.now();
+        LocalDate targetDay = today.plusDays(daysToAdd);
+
+        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM yyyy");
+
+        int attempt = 1;
+        while (attempt <= 12) {
+            String currentMonth = driver.findElement(By.className("react-datepicker__current-month")).getText();
+
+            if (targetDay.format(monthFormatter).equalsIgnoreCase(currentMonth)) {
+                String targetDayString = String.format("%02d", targetDay.getDayOfMonth());
+                driver.findElement(By.xpath("//div[contains(@class, 'react-datepicker__day--0" + targetDayString + "')]")).click();
+                break;
+            } else {
+                driver.findElement(By.className("react-datepicker__navigation--next")).click();
+            }
+            attempt++;
+        }
+    }
 }
