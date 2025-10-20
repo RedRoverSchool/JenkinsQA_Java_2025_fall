@@ -318,4 +318,11 @@ public class BreadcrumbsTest {
         driver.quit();
     }
 
-}
+    @Test
+    public void SandraTest() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://aurma.kz");
+        Assert.assertEquals(driver.getTitle(),"Аптеки Алматы и Астаны онлайн: поиск и заказ лекарств с доставкой");
+        driver.quit();
+    }
+};
