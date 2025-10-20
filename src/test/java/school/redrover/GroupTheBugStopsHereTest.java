@@ -20,6 +20,7 @@ public class GroupTheBugStopsHereTest {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.automationexercise.com/");
+        handleCookies(driver);
 
         WebElement submitProductsButton = driver.findElement(By.cssSelector("a[href='/products']"));
         submitProductsButton.click();
@@ -57,11 +58,9 @@ public class GroupTheBugStopsHereTest {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://automationexercise.com/test_cases");
-        if(driver.findElement(By.xpath("//button[p[text()='Consent']]")).isDisplayed()){
-            driver.findElement(By.xpath("//button[p[text()='Consent']]")).click();
-        }
-        driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a")).click();
-        driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[2]")).sendKeys("ememdems@hotmail.com");
+        handleCookies(driver);
+        driver.findElement(By.xpath("//a[@href='/login']")).click();
+        driver.findElement(By.xpath("//input[@data-qa='login-email']")).sendKeys("ememdems@hotmail.com");
         driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[3]")).sendKeys("8XbTY@zG@wYg2hg");
         driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/button")).click();
 
@@ -78,6 +77,7 @@ public class GroupTheBugStopsHereTest {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.get("https://www.automationexercise.com");
+        handleCookies(driver);
 
         Assert.assertEquals(driver.getTitle(), "Automation Exercise");
 
@@ -145,6 +145,7 @@ public class GroupTheBugStopsHereTest {
         WebDriver driver = new ChromeDriver();
         driver = new ChromeDriver();
         driver.get("https://www.automationexercise.com/");
+        handleCookies(driver);
         driver.manage().window().maximize();
 
         driver.findElement(By.xpath("//a[@href='/login']")).click();
@@ -158,20 +159,22 @@ public class GroupTheBugStopsHereTest {
     }
 
     @Test
-    public void testLogin() {
+    public void testLogin() throws InterruptedException {
 
         WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.get("https://www.demoblaze.com/");
+        handleCookies(driver);
         driver.manage().window().maximize();
-
         driver.findElement(By.id("login2")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("logInModalLabel")));
         driver.findElement(By.xpath("//*[@id='loginusername']")).sendKeys("mTest@gmail.com");
         driver.findElement(By.xpath("//*[@id='loginpassword']")).sendKeys("45784okng_75()");
         driver.findElement(By.xpath("//button[text()='Log in']")).click();
-
+        Thread.sleep(3000);
         Assert.assertTrue(driver.findElement(By.xpath("//*[@id='logout2']")).isDisplayed(),
-                "Success");
-
+                "Fail");
         driver.quit();
     }
 
@@ -181,9 +184,7 @@ public class GroupTheBugStopsHereTest {
         WebDriver driver = new ChromeDriver();
 
         driver.get("http://automationexercise.com");
-
-        driver.findElement(By.xpath("//button[@aria-label='Consent']")).click();
-
+        handleCookies(driver);
         driver.findElement(By.xpath("//a[@href='/login']")).click();
         driver.findElement(By.xpath("//input[@data-qa='login-email']")).sendKeys("123@email");
         driver.findElement(By.name("password")).sendKeys("#$");
@@ -194,5 +195,37 @@ public class GroupTheBugStopsHereTest {
         Assert.assertEquals(message.getText(), "Your email or password is incorrect!");
 
         driver.quit();
+    }
+
+    private void handleCookies(WebDriver driver) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            WebElement cookieAcceptButton = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//button[p[contains(text(),'Consent')] or contains(.,'Consent') or contains(.,'Accept') or contains(.,'Agree')]")
+            ));
+            cookieAcceptButton.click();
+            System.out.println("✅ Cookie consent accepted.");
+            wait.until(ExpectedConditions.invisibilityOf(cookieAcceptButton));
+        } catch (Exception e) {
+            System.out.println("ℹ️ No cookie consent dialog found. Continuing test.");
+        }
+    }
+
+    @Test
+    public void testLoginWithValidCredentials() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.automationexercise.com/");
+
+        driver.findElement(By.xpath("//button[@aria-label='Соглашаюсь']")).click();
+
+        Assert.assertEquals(driver.getTitle(), "Automation Exercise");
+
+        driver.findElement(By.xpath("//a[@href='/login']")).click();
+
+        Assert.assertTrue(driver.findElement(By.xpath("//h2[text()='Login to your account']")).isDisplayed());
+
+        driver.quit();
+
     }
 }

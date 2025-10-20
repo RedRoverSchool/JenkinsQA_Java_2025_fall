@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -9,7 +10,10 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class Breadcrumbs {
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+
+public class BreadcrumbsTest {
 
     @Test
     public void mikhailOtest() throws InterruptedException {
@@ -248,4 +252,70 @@ public class Breadcrumbs {
 
 
     }
+
+    @Test
+    public void testSeleniumRandom() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://automationexercise.com/products");
+
+        Thread.sleep(1003);
+
+        WebElement inputSearch = driver.findElement(By.xpath("/html/body/section[1]/div/input"));
+
+        inputSearch.sendKeys("Sleeve");
+        WebElement buttonSearch = driver.findElement(By.xpath("/html/body/section[1]/div/button"));
+        buttonSearch.click();
+        Thread.sleep(2000);
+
+        WebElement findedSleeve = driver.findElement(By.xpath("/html/body/section[2]/div/div/div[2]/div/div[4]/div/div[2]/ul/li/a"));
+        findedSleeve.click();
+        Thread.sleep(3000);
+
+        WebElement element = driver.findElement(By.xpath("/html/body/section/div/div/div[2]/div[2]/div[2]/div/h2"));
+        Assert.assertEquals(element.getText(), "Half Sleeves Top Schiffli Detailing - Pink");
+
+        driver.quit();
+    }
+
+            @Test
+        public void searchCoat() throws InterruptedException {
+            WebDriver driver = new ChromeDriver();
+            driver.get("https://www.target.com");
+            Thread.sleep(1000);
+
+            WebElement inputField = driver.findElement(By.id("search"));
+            Thread.sleep(1000);
+
+            inputField.sendKeys("coat");
+            Thread.sleep(1000);
+            inputField.sendKeys(Keys.RETURN);
+            Thread.sleep(1000);
+
+            WebElement item = driver.findElement(By.cssSelector("[data-test='product-title"));
+            Thread.sleep(1000);
+
+            String str = item.getText();
+            Thread.sleep(1000);
+            boolean result = str.toLowerCase().contains("coat");
+            Assert.assertEquals(result, true);
+            driver.quit();
+        }
+
+    @Test
+    public void FistHWTest(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.findElement(By.cssSelector("#app > div > div > div.home-body > div > div:nth-child(1)")).click();
+        driver.findElement(By.xpath("//li[@id='item-0' and .//span[text()='Text Box']]")).click();
+        driver.findElement(By.id("userName")).sendKeys("Julia");
+        driver.findElement(By.id("submit")).click();
+        WebElement name = driver.findElement(By.id("name"));
+
+        Assert.assertEquals(name.getText(), "Name:Julia");
+
+        driver.quit();
+    }
+
 }
