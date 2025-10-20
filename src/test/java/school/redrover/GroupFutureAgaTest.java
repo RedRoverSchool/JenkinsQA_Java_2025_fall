@@ -178,11 +178,11 @@ public class GroupFutureAgaTest {
 
     @Test(testName = "Проверка работы text-area")
     public void selenium_text_area_test() {
-
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
         driver.getTitle();
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        
         WebElement textBox = driver.findElement(By.xpath("//textarea[@name='my-textarea']"));
         WebElement submitButton = driver.findElement(By.xpath("//button"));
         textBox.sendKeys("Selenium Test");
@@ -195,10 +195,10 @@ public class GroupFutureAgaTest {
     @Test(testName = "Проверка работы habra search")
     public void habra_search_test() {
         WebDriver driver = new ChromeDriver();
-
         driver.get("https://habr.com/");
         driver.getTitle();
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        
         WebElement searchButton = driver.findElement(By.cssSelector("[class*='tm-header-user-menu__search']"));
         searchButton.click();
         WebElement textBox = driver.findElement(By.cssSelector("[class*='tm-search__input tm-input-text-decorated__input']"));
@@ -208,6 +208,7 @@ public class GroupFutureAgaTest {
         WebElement message = driver.findElement(By.className("searched-item"));
         Assert.assertEquals(message.getText(), "Selenium Tests");
         driver.quit();
+        
     @Test
     public void testOZ() throws InterruptedException {
 
