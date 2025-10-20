@@ -204,7 +204,7 @@ public class GroupTheBugStopsHereTest {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
             WebElement cookieAcceptButton = wait.until(ExpectedConditions.elementToBeClickable(
-                    By.xpath("//button[p[contains(text(),'Consent')] or contains(.,'Consent') or contains(.,'Accept') or contains(.,'Agree')]")
+                    By.xpath("//button[p[contains(text(),'Consent')] or contains(.,'Consent') or contains(.,'Accept') or contains(.,'Agree') or contains(.,'Соглашаюсь')]")
             ));
             cookieAcceptButton.click();
             System.out.println("✅ Cookie consent accepted.");
@@ -220,7 +220,7 @@ public class GroupTheBugStopsHereTest {
 
         driver.get("https://www.automationexercise.com/");
 
-        driver.findElement(By.xpath("//button[@aria-label='Соглашаюсь']")).click();
+        handleCookies(driver);
 
         Assert.assertEquals(driver.getTitle(), "Automation Exercise");
 
