@@ -1148,9 +1148,9 @@ public class GroupUnitedByJavaTest {
 
         WebElement result = driver.findElement(By.xpath("//p[@class='mt-3']"));
         Assert.assertEquals(result.getText(), "You have selected Yes");
-      
-        driver.quit();
 
+        driver.quit();
+    }
     @Test
     public void testPutDepositBankAccount() {
 
