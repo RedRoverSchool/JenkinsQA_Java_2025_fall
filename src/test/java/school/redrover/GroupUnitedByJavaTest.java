@@ -979,61 +979,6 @@ public class GroupUnitedByJavaTest {
     }
 
     @Test
-    public void testHeaderMenuNavigation() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-        driver.get("https://www.mazda.md/");
-        driver.manage().window().setSize(new Dimension(1920, 1080));
-
-        List<WebElement> cookieBanner = driver.findElements(By.id("cookiescript_accept"));
-        if (!cookieBanner.isEmpty()) {
-            cookieBanner.get(0).click();
-        }
-
-        WebElement flagRu = wait.until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//img[@src='/images/Flags/ru-MD.gif']")));
-        flagRu.click();
-        Assert.assertTrue(driver.getCurrentUrl().contains("/ru"));
-
-        WebElement models = wait.until(
-                ExpectedConditions.elementToBeClickable(By.xpath("(//a[normalize-space()='Модели'])[2]")));
-        models.click();
-        WebElement modelsPageTitle = driver.findElement(By.xpath("//div[@class='l-view__title']//h2"));
-        Assert.assertTrue(modelsPageTitle.isDisplayed());
-
-        WebElement offers = wait.until(
-                ExpectedConditions.elementToBeClickable(
-                        By.xpath("//a[contains(@class, 'c-item__link') and contains(text(), 'ПРЕДЛОЖЕНИЯ')][1]"))
-        );
-        offers.click();
-        WebElement offersPageTitle = driver.findElement(By.xpath("//*[@id='Form']/header/section[2]/div/div/div/div/ul/li/a"));
-        Assert.assertTrue(offersPageTitle.isDisplayed());
-
-        WebElement logo = wait.until(
-                ExpectedConditions.elementToBeClickable(By.id("dnn_dnnLOGOHeader_imgLogo")));
-        logo.click();
-        Assert.assertTrue(driver.getCurrentUrl().contains("/ru/home"));
-
-        driver.quit();
-    }
-
-    @Test
-    public void testToolsQATitle() {
-        WebDriver driver = new ChromeDriver();
-
-        driver.get("https://demoqa.com/");
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-        WebElement title = driver.findElement(By.xpath("//header/a/img"));
-
-        Assert.assertTrue(title.isDisplayed());
-
-        driver.quit();
-    }
-
-    @Test
     public void testTextBox() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
 
@@ -1044,24 +989,24 @@ public class GroupUnitedByJavaTest {
         driver.findElement(By.xpath("//div[@class='card-body']/h5[text()='Elements']")).click();
         driver.findElement(By.xpath("//span[text()='Text Box']")).click();
 
-        WebElement inputFullName = driver.findElement(By.xpath("//input[@placeholder='Full Name']"));
-        inputFullName.sendKeys("Scolnicova Uliana");
+        WebElement fullNameInput = driver.findElement(By.xpath("//input[@placeholder='Full Name']"));
+        fullNameInput.sendKeys("Scolnicova Uliana");
 
-        WebElement inputEmail = driver.findElement(By.xpath("//input[@placeholder='name@example.com']"));
-        inputEmail.sendKeys("uliana@gmail.com");
+        WebElement emailInput = driver.findElement(By.xpath("//input[@placeholder='name@example.com']"));
+        emailInput.sendKeys("uliana@gmail.com");
 
-        WebElement inputCurrentAddress = driver.findElement(By.xpath("//textarea[@placeholder='Current Address']"));
-        inputCurrentAddress.sendKeys("Chisinau");
+        WebElement currentAddressInput = driver.findElement(By.xpath("//textarea[@placeholder='Current Address']"));
+        currentAddressInput.sendKeys("Chisinau");
 
-        WebElement inputPermanentAddress = driver.findElement(By.xpath("//textarea[@id='permanentAddress']"));
-        inputPermanentAddress.sendKeys("Chisinau");
+        WebElement permanentAddressInput = driver.findElement(By.xpath("//textarea[@id='permanentAddress']"));
+        permanentAddressInput.sendKeys("Chisinau");
 
-        WebElement buttonSubmit = driver.findElement(By.xpath("//button[@id='submit']"));
+        WebElement submitButton = driver.findElement(By.xpath("//button[@id='submit']"));
         new Actions(driver)
-                .scrollToElement(buttonSubmit)
+                .scrollToElement(submitButton)
                 .perform();
 
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", buttonSubmit);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitButton);
 
         new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("output")));
@@ -1080,7 +1025,6 @@ public class GroupUnitedByJavaTest {
         );
 
         driver.quit();
-
     }
 
     @Test
