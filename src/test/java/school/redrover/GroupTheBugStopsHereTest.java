@@ -8,19 +8,18 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
 public class GroupTheBugStopsHereTest {
+    private WebDriver driver;
     private WebDriverWait wait;
 
     @Test
     public void testAddReview() {
-
-        WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.automationexercise.com/");
         handleCookies(driver);
@@ -52,13 +51,10 @@ public class GroupTheBugStopsHereTest {
 
         WebElement element = driver.findElement(By.cssSelector("#review-section .alert-success.alert"));
         Assert.assertTrue(element.isDisplayed(), "The element should be visible on the page.");
-
-        driver.quit();
     }
 
     @Test
     public void testAutomationExercise() {
-        WebDriver driver = new ChromeDriver();
 
         driver.get("https://automationexercise.com/test_cases");
         handleCookies(driver);
@@ -68,15 +64,11 @@ public class GroupTheBugStopsHereTest {
         driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/button")).click();
 
         Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a")).isDisplayed());
-
-        driver.quit();
     }
 
     @Test
     public void registerUserTest(){
 
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.get("https://www.automationexercise.com");
@@ -140,13 +132,11 @@ public class GroupTheBugStopsHereTest {
         Assert.assertTrue(accountDeleted.isDisplayed(), "'ACCOUNT DELETED!' is not visible");
         driver.findElement(By.xpath("//a[@data-qa='continue-button']")).click();
 
-        driver.quit();
     }
 
     @Test
     public void testPositiveLogin() {
-        WebDriver driver = new ChromeDriver();
-        driver = new ChromeDriver();
+
         driver.get("https://www.automationexercise.com/");
         handleCookies(driver);
         driver.manage().window().maximize();
@@ -158,13 +148,11 @@ public class GroupTheBugStopsHereTest {
 
         Assert.assertEquals(driver.findElement(By.xpath("//a[@href='/logout']")).getText(), "Logout");
 
-        driver.quit();
     }
 
     @Test
     public void testLogin() throws InterruptedException {
 
-        WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.get("https://www.demoblaze.com/");
         handleCookies(driver);
@@ -178,13 +166,10 @@ public class GroupTheBugStopsHereTest {
         Thread.sleep(3000);
         Assert.assertTrue(driver.findElement(By.xpath("//*[@id='logout2']")).isDisplayed(),
                 "Fail");
-        driver.quit();
     }
 
     @Test
     public void loginUserIncorrect(){
-
-        WebDriver driver = new ChromeDriver();
 
         driver.get("http://automationexercise.com");
         handleCookies(driver);
@@ -196,8 +181,6 @@ public class GroupTheBugStopsHereTest {
 
         WebElement message = driver.findElement(By.xpath("//*[@id='form']//div[1]//p"));
         Assert.assertEquals(message.getText(), "Your email or password is incorrect!");
-
-        driver.quit();
     }
 
     private void handleCookies(WebDriver driver) {
@@ -216,7 +199,6 @@ public class GroupTheBugStopsHereTest {
 
     @Test
     public void testLoginWithValidCredentials() {
-        WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.automationexercise.com/");
 
@@ -227,28 +209,12 @@ public class GroupTheBugStopsHereTest {
         driver.findElement(By.xpath("//a[@href='/login']")).click();
 
         Assert.assertTrue(driver.findElement(By.xpath("//h2[text()='Login to your account']")).isDisplayed());
-
-        driver.quit();
-
-    }
-
-    private WebDriver driver;
-    private static final String BASE_URL = "http://automationexercise.com";
-
-    @BeforeSuite
-    public void setDriver() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get(BASE_URL);
-    }
-
-    @AfterSuite
-    public void closeDriver(){
-        driver.quit();
     }
 
     @Test
     public void testVerifyDetailOfProductVisible() {
+
+        driver.get("https://www.automationexercise.com/");
         handleCookies(driver);
 
         String titleHomePage = driver.getTitle();
@@ -276,5 +242,16 @@ public class GroupTheBugStopsHereTest {
 
         WebElement nameProduct = driver.findElement(By.xpath("//div[@class='product-information']/h2"));
         Assert.assertTrue(nameProduct.isDisplayed());
+    }
+
+    @BeforeMethod
+    public void setDriver() {
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+    }
+
+    @AfterMethod
+    public void closeDriver(){
+        driver.quit();
     }
 }
