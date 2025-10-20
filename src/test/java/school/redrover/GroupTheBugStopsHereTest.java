@@ -1,5 +1,6 @@
 package school.redrover;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -7,17 +8,18 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
 public class GroupTheBugStopsHereTest {
+    private WebDriver driver;
     private WebDriverWait wait;
 
     @Test
     public void testAddReview() {
-
-        WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.automationexercise.com/");
         handleCookies(driver);
@@ -28,6 +30,8 @@ public class GroupTheBugStopsHereTest {
         String pageProductsTitle = driver.getTitle();
         driver.findElement(By.cssSelector(".title.text-center"));
         Assert.assertEquals(pageProductsTitle, "Automation Exercise - All Products", "Ошибка! Заголовок страницы не совпал с ожидаемым.");
+
+        scrollPage();
 
         WebElement viewProductButton = driver.findElement(By.cssSelector("a[href='/product_details/1']"));
         viewProductButton.click();
@@ -49,13 +53,10 @@ public class GroupTheBugStopsHereTest {
 
         WebElement element = driver.findElement(By.cssSelector("#review-section .alert-success.alert"));
         Assert.assertTrue(element.isDisplayed(), "The element should be visible on the page.");
-
-        driver.quit();
     }
 
     @Test
     public void testAutomationExercise() {
-        WebDriver driver = new ChromeDriver();
 
         driver.get("https://automationexercise.com/test_cases");
         handleCookies(driver);
@@ -65,15 +66,11 @@ public class GroupTheBugStopsHereTest {
         driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/button")).click();
 
         Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a")).isDisplayed());
-
-        driver.quit();
     }
 
     @Test
     public void registerUserTest(){
 
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.get("https://www.automationexercise.com");
@@ -102,6 +99,8 @@ public class GroupTheBugStopsHereTest {
         new Select(driver.findElement(By.id("days"))).selectByValue("10");
         new Select(driver.findElement(By.id("months"))).selectByValue("5");
         new Select(driver.findElement(By.id("years"))).selectByValue("1995");
+
+        scrollPage();
 
         driver.findElement(By.id("newsletter")).click();
 
@@ -136,14 +135,11 @@ public class GroupTheBugStopsHereTest {
                 By.xpath("//b[contains(text(),'Account Deleted!')]")));
         Assert.assertTrue(accountDeleted.isDisplayed(), "'ACCOUNT DELETED!' is not visible");
         driver.findElement(By.xpath("//a[@data-qa='continue-button']")).click();
-
-        driver.quit();
     }
 
     @Test
     public void testPositiveLogin() {
-        WebDriver driver = new ChromeDriver();
-        driver = new ChromeDriver();
+
         driver.get("https://www.automationexercise.com/");
         handleCookies(driver);
         driver.manage().window().maximize();
@@ -154,14 +150,11 @@ public class GroupTheBugStopsHereTest {
         driver.findElement(By.xpath("//button[text()='Login']")).click();
 
         Assert.assertEquals(driver.findElement(By.xpath("//a[@href='/logout']")).getText(), "Logout");
-
-        driver.quit();
     }
 
     @Test
     public void testLogin() throws InterruptedException {
 
-        WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.get("https://www.demoblaze.com/");
         handleCookies(driver);
@@ -175,13 +168,10 @@ public class GroupTheBugStopsHereTest {
         Thread.sleep(3000);
         Assert.assertTrue(driver.findElement(By.xpath("//*[@id='logout2']")).isDisplayed(),
                 "Fail");
-        driver.quit();
     }
 
     @Test
     public void loginUserIncorrect(){
-
-        WebDriver driver = new ChromeDriver();
 
         driver.get("http://automationexercise.com");
         handleCookies(driver);
@@ -193,15 +183,13 @@ public class GroupTheBugStopsHereTest {
 
         WebElement message = driver.findElement(By.xpath("//*[@id='form']//div[1]//p"));
         Assert.assertEquals(message.getText(), "Your email or password is incorrect!");
-
-        driver.quit();
     }
 
     private void handleCookies(WebDriver driver) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
             WebElement cookieAcceptButton = wait.until(ExpectedConditions.elementToBeClickable(
-                    By.xpath("//button[p[contains(text(),'Consent')] or contains(.,'Consent') or contains(.,'Accept') or contains(.,'Agree')]")
+                    By.xpath("//button[p[contains(text(),'Consent')] or contains(.,'Consent') or contains(.,'Accept') or contains(.,'Agree') or contains(.,'Соглашаюсь')]")
             ));
             cookieAcceptButton.click();
             System.out.println("✅ Cookie consent accepted.");
@@ -213,19 +201,63 @@ public class GroupTheBugStopsHereTest {
 
     @Test
     public void testLoginWithValidCredentials() {
-        WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.automationexercise.com/");
 
-        driver.findElement(By.xpath("//button[@aria-label='Соглашаюсь']")).click();
+        handleCookies(driver);
 
         Assert.assertEquals(driver.getTitle(), "Automation Exercise");
 
         driver.findElement(By.xpath("//a[@href='/login']")).click();
 
         Assert.assertTrue(driver.findElement(By.xpath("//h2[text()='Login to your account']")).isDisplayed());
+    }
 
+    @Test
+    public void testVerifyDetailOfProductVisible() {
+
+        driver.get("https://www.automationexercise.com/");
+        handleCookies(driver);
+
+        String titleHomePage = driver.getTitle();
+        Assert.assertEquals(titleHomePage, "Automation Exercise");
+
+        WebElement productsButton = driver.findElement(By.xpath("//a[@href='/products']"));
+        productsButton.click();
+
+        String titleProductsPage = driver.getTitle();
+        Assert.assertEquals(titleProductsPage, "Automation Exercise - All Products");
+
+        WebElement headerAllProducts = driver.findElement(By.xpath("//h2[@class='title text-center']"));
+        String headerAllProductsText = headerAllProducts.getText();
+        Assert.assertTrue(headerAllProducts.isDisplayed());
+        Assert.assertEquals(headerAllProductsText, "ALL PRODUCTS");
+
+        WebElement productList = driver.findElement(By.xpath("//div[@class='features_items']"));
+        Assert.assertTrue(productList.isDisplayed());
+
+        scrollPage();
+
+        WebElement firstViewProductLink = driver.findElement(By.xpath("(//div[@class='choose']//a)[1]"));
+        firstViewProductLink.click();
+
+        WebElement nameProduct = driver.findElement(By.xpath("//div[@class='product-information']/h2"));
+        Assert.assertTrue(nameProduct.isDisplayed());
+    }
+
+    public void scrollPage(){
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+    }
+
+    @BeforeMethod
+    public void setDriver() {
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+    }
+
+    @AfterMethod
+    public void closeDriver(){
         driver.quit();
-
     }
 }
