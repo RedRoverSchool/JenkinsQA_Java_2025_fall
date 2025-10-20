@@ -31,6 +31,8 @@ public class GroupTheBugStopsHereTest {
         driver.findElement(By.cssSelector(".title.text-center"));
         Assert.assertEquals(pageProductsTitle, "Automation Exercise - All Products", "Ошибка! Заголовок страницы не совпал с ожидаемым.");
 
+        scrollPage();
+
         WebElement viewProductButton = driver.findElement(By.cssSelector("a[href='/product_details/1']"));
         viewProductButton.click();
 
@@ -98,6 +100,8 @@ public class GroupTheBugStopsHereTest {
         new Select(driver.findElement(By.id("months"))).selectByValue("5");
         new Select(driver.findElement(By.id("years"))).selectByValue("1995");
 
+        scrollPage();
+
         driver.findElement(By.id("newsletter")).click();
 
         driver.findElement(By.id("optin")).click();
@@ -131,7 +135,6 @@ public class GroupTheBugStopsHereTest {
                 By.xpath("//b[contains(text(),'Account Deleted!')]")));
         Assert.assertTrue(accountDeleted.isDisplayed(), "'ACCOUNT DELETED!' is not visible");
         driver.findElement(By.xpath("//a[@data-qa='continue-button']")).click();
-
     }
 
     @Test
@@ -147,7 +150,6 @@ public class GroupTheBugStopsHereTest {
         driver.findElement(By.xpath("//button[text()='Login']")).click();
 
         Assert.assertEquals(driver.findElement(By.xpath("//a[@href='/logout']")).getText(), "Logout");
-
     }
 
     @Test
@@ -234,14 +236,18 @@ public class GroupTheBugStopsHereTest {
         WebElement productList = driver.findElement(By.xpath("//div[@class='features_items']"));
         Assert.assertTrue(productList.isDisplayed());
 
-        JavascriptExecutor js = (JavascriptExecutor)driver;
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        scrollPage();
 
         WebElement firstViewProductLink = driver.findElement(By.xpath("(//div[@class='choose']//a)[1]"));
         firstViewProductLink.click();
 
         WebElement nameProduct = driver.findElement(By.xpath("//div[@class='product-information']/h2"));
         Assert.assertTrue(nameProduct.isDisplayed());
+    }
+
+    public void scrollPage(){
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
     }
 
     @BeforeMethod
