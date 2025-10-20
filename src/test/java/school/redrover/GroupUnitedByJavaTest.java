@@ -1290,7 +1290,6 @@ public class GroupUnitedByJavaTest {
                 (By.xpath("//div[contains(@class, 'option') and text()='" + state + "']")));
         stateOption.click();
 
-
         WebElement cityControl = wait.until(ExpectedConditions.elementToBeClickable
                 (By.xpath("//div[@id='city']//div[contains(@class, 'control')]")));
         cityControl.click();
@@ -1304,7 +1303,7 @@ public class GroupUnitedByJavaTest {
 
         String actualStudentName = driver.findElement(By.xpath("//tr[td[text()='Student Name']]/td[2]")).getText();
         String actualStudentEmail = driver.findElement(By.xpath("//tr[td[text()='Student Email']]/td[2]")).getText();
-        String actialStudentGender = driver.findElement(By.xpath("//tr[td[text()='Gender']]/td[2]")).getText();
+        String actualStudentGender = driver.findElement(By.xpath("//tr[td[text()='Gender']]/td[2]")).getText();
         String actualStudentMobile = driver.findElement(By.xpath("//tr[td[text()='Mobile']]/td[2]")).getText();
         String actualStudentDateBirth = driver.findElement(By.xpath("//tr[td[text()='Date of Birth']]/td[2]")).getText();
         String actualHobbies = driver.findElement(By.xpath("//tr[td[text()='Hobbies']]/td[2]")).getText();
@@ -1314,7 +1313,7 @@ public class GroupUnitedByJavaTest {
 
         Assert.assertEquals(actualStudentName, firstName + " " + lastName);
         Assert.assertEquals(actualStudentEmail, userEmail);
-        Assert.assertEquals(actialStudentGender, "Female");
+        Assert.assertEquals(actualStudentGender, "Female");
         Assert.assertEquals(actualStudentMobile, mobileNumber);
         Assert.assertEquals(actualStudentDateBirth, dayOfBirth + " " + monthOfBirth + "," + yearOfBirth);
         Assert.assertEquals(actualHobbies, "Sports");
