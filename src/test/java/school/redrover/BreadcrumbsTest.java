@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class Breadcrumbs {
+public class BreadcrumbsTest {
 
     @Test
     public void mikhailOtest() throws InterruptedException {
