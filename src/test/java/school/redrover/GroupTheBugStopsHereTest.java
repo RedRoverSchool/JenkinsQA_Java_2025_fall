@@ -249,8 +249,7 @@ public class GroupTheBugStopsHereTest {
 
     @Test
     public void testVerifyDetailOfProductVisible() {
-        WebElement consentButton = driver.findElement(By.xpath("//button/*[contains(text(),'Consent')]"));
-        consentButton.click();
+        handleCookies(driver);
 
         String titleHomePage = driver.getTitle();
         Assert.assertEquals(titleHomePage, "Automation Exercise");
