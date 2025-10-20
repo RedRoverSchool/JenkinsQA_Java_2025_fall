@@ -59,11 +59,8 @@ public class GroupTheBugStopsHereTest {
 
         driver.get("https://automationexercise.com/test_cases");
         handleCookies(driver);
-        if(driver.findElement(By.xpath("//button[p[text()='Consent']]")).isDisplayed()){
-            driver.findElement(By.xpath("//button[p[text()='Consent']]")).click();
-        }
-        driver.findElement(By.xpath("//*[@id=\"header\"]/div/div/div/div[2]/div/ul/li[4]/a")).click();
-        driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[2]")).sendKeys("ememdems@hotmail.com");
+        driver.findElement(By.xpath("//a[@href='/login']")).click();
+        driver.findElement(By.xpath("//input[@data-qa='login-email']")).sendKeys("ememdems@hotmail.com");
         driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/input[3]")).sendKeys("8XbTY@zG@wYg2hg");
         driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div[1]/div/form/button")).click();
 
@@ -162,21 +159,22 @@ public class GroupTheBugStopsHereTest {
     }
 
     @Test
-    public void testLogin() {
+    public void testLogin() throws InterruptedException {
 
         WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.get("https://www.demoblaze.com/");
         handleCookies(driver);
         driver.manage().window().maximize();
-
         driver.findElement(By.id("login2")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("logInModalLabel")));
         driver.findElement(By.xpath("//*[@id='loginusername']")).sendKeys("mTest@gmail.com");
         driver.findElement(By.xpath("//*[@id='loginpassword']")).sendKeys("45784okng_75()");
         driver.findElement(By.xpath("//button[text()='Log in']")).click();
-
+        Thread.sleep(3000);
         Assert.assertTrue(driver.findElement(By.xpath("//*[@id='logout2']")).isDisplayed(),
-                "Success");
-
+                "Fail");
         driver.quit();
     }
 
@@ -187,9 +185,6 @@ public class GroupTheBugStopsHereTest {
 
         driver.get("http://automationexercise.com");
         handleCookies(driver);
-
-        driver.findElement(By.xpath("//button[@aria-label='Consent']")).click();
-
         driver.findElement(By.xpath("//a[@href='/login']")).click();
         driver.findElement(By.xpath("//input[@data-qa='login-email']")).sendKeys("123@email");
         driver.findElement(By.name("password")).sendKeys("#$");
