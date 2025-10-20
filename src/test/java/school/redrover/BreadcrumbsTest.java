@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class Breadcrumbs {
+public class BreadcrumbsTest {
 
     @Test
     public void mikhailOtest() throws InterruptedException {
@@ -247,5 +247,30 @@ public class Breadcrumbs {
                 "Epic sadface: Username and password do not match any user in this service");
 
 
+    }
+
+    @Test
+    public void testSeleniumRandom() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://automationexercise.com/products");
+
+        Thread.sleep(1003);
+
+        WebElement inputSearch = driver.findElement(By.xpath("/html/body/section[1]/div/input"));
+
+        inputSearch.sendKeys("Sleeve");
+        WebElement buttonSearch = driver.findElement(By.xpath("/html/body/section[1]/div/button"));
+        buttonSearch.click();
+        Thread.sleep(2000);
+
+        WebElement findedSleeve = driver.findElement(By.xpath("/html/body/section[2]/div/div/div[2]/div/div[4]/div/div[2]/ul/li/a"));
+        findedSleeve.click();
+        Thread.sleep(3000);
+
+        WebElement element = driver.findElement(By.xpath("/html/body/section/div/div/div[2]/div[2]/div[2]/div/h2"));
+        Assert.assertEquals(element.getText(), "Half Sleeves Top Schiffli Detailing - Pink");
+
+        driver.quit();
     }
 }
