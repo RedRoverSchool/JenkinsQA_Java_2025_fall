@@ -1,6 +1,5 @@
 package school.redrover;
 
-import com.sun.tools.javac.Main;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
