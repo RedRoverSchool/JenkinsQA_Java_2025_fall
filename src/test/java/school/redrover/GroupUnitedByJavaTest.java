@@ -1231,17 +1231,16 @@ public class GroupUnitedByJavaTest {
 
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
+
         driver.get("https://roast.by/");
 
-        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[2]/header[2]/div/div/div/div[3]/div/ul/li[2]/a/span"));
-        submitButton.click();
+        driver.findElement(By.xpath("/html/body/div[2]/header[2]/div/div/div/div[3]/div/ul/li[2]/a/span")).click();
 
-        WebElement tea = driver.findElement(By.xpath("//*[@id='catalog-ics__list-js']/a[8]"));
-        tea.click();
+        driver.findElement(By.xpath("//*[@id='catalog-ics__list-js']/a[8]")).click();
 
-        WebElement message = driver.findElement(By.xpath("//*[@id='bx_1527614749_20308']/div/div/div[2]/a"));
+        WebElement teaName = driver.findElement(By.xpath("//*[@id='bx_1527614749_20308']/div/div/div[2]/a"));
+        Assert.assertEquals(teaName.getText(), "Фэн Хуан Дань Цун");
 
-        Assert.assertEquals(message.getText(), "Фэн Хуан Дань Цун");
         driver.quit();
     }
 
@@ -1251,19 +1250,16 @@ public class GroupUnitedByJavaTest {
 
         WebDriver driver = new ChromeDriver();
         driver.manage().window().setSize(new Dimension(1920, 1080));
+
         driver.get("https://roast.by/");
 
-        WebElement submitButton = driver.findElement(By.xpath("/html/body/div[2]/header[2]/div/div/div/div[3]/div/ul/li[2]/a/span"));
-        submitButton.click();
+        driver.findElement(By.xpath("/html/body/div[2]/header[2]/div/div/div/div[3]/div/ul/li[2]/a/span")).click();
 
-        WebElement tea = driver.findElement(By.xpath("//*[@id='catalog-ics__list-js']/a[8]"));
-        tea.click();
+        driver.findElement(By.xpath("//*[@id='catalog-ics__list-js']/a[8]")).click();
 
-        WebElement cart = driver.findElement(By.xpath("//*[@id='bx_1527614749_20308']/div/div/div[3]/div/div[2]/div[1]"));
-        cart.click();
+        driver.findElement(By.xpath("//*[@id='bx_1527614749_20308']/div/div/div[3]/div/div[2]/div[1]")).click();
 
-        WebElement accs = driver.findElement(By.xpath("/html/body/div[2]/header[2]/div/div/div/div[3]/div/ul/li[3]/a/span"));
-        accs.click();
+        driver.findElement(By.xpath("/html/body/div[2]/header[2]/div/div/div/div[3]/div/ul/li[3]/a/span")).click();
 
         driver.quit();
     }
