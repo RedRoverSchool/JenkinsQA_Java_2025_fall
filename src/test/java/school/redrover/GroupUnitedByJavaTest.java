@@ -1017,6 +1017,54 @@ public class GroupUnitedByJavaTest {
     }
 
     @Test
+    public void testTextBox() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://demoqa.com/");
+
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+
+        driver.findElement(By.xpath("//div[@class='card-body']/h5[text()='Elements']")).click();
+        driver.findElement(By.xpath("//span[text()='Text Box']")).click();
+
+        WebElement fullNameInput = driver.findElement(By.xpath("//input[@placeholder='Full Name']"));
+        fullNameInput.sendKeys("Scolnicova Uliana");
+
+        WebElement emailInput = driver.findElement(By.xpath("//input[@placeholder='name@example.com']"));
+        emailInput.sendKeys("uliana@gmail.com");
+
+        WebElement currentAddressInput = driver.findElement(By.xpath("//textarea[@placeholder='Current Address']"));
+        currentAddressInput.sendKeys("Chisinau");
+
+        WebElement permanentAddressInput = driver.findElement(By.xpath("//textarea[@id='permanentAddress']"));
+        permanentAddressInput.sendKeys("Chisinau");
+
+        WebElement submitButton = driver.findElement(By.xpath("//button[@id='submit']"));
+        new Actions(driver)
+                .scrollToElement(submitButton)
+                .perform();
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitButton);
+
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("output")));
+
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//p[@id='name']")).getText(), "Name:Scolnicova Uliana"
+        );
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//p[@id='email']")).getText(), "Email:uliana@gmail.com"
+        );
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//p[@id='currentAddress']")).getText(), "Current Address :Chisinau"
+        );
+        Assert.assertEquals(
+                driver.findElement(By.xpath("//p[@id='permanentAddress']")).getText(), "Permananet Address :Chisinau"
+        );
+
+        driver.quit();
+}
+
     public void testDataOpeningL2() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.la2era.com/ru");
@@ -1084,6 +1132,100 @@ public class GroupUnitedByJavaTest {
         driver.quit();
     }
 
+    @Test
+    public void testRadioButton() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://demoqa.com/elements");
+
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+
+        WebElement radioButtonMenu = driver.findElement(By.xpath("//span[text()='Radio Button']"));
+        radioButtonMenu.click();
+
+        WebElement yesRadioButton = driver.findElement(By.xpath("//label[@for='yesRadio']"));
+        yesRadioButton.click();
+
+        WebElement result = driver.findElement(By.xpath("//p[@class='mt-3']"));
+        Assert.assertEquals(result.getText(), "You have selected Yes");
+
+        driver.quit();
+    }
+    @Test
+    public void testPutDepositBankAccount() {
+
+        createDriver();
+
+        driverKM.get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
+        driverKM.manage().timeouts().implicitlyWait(Duration.ofMillis(900));
+
+        WebElement customerLoginButton = driverKM
+                .findElement(By.xpath("//button[@class='btn btn-primary btn-lg' and contains(text(), 'Customer Login')]"));
+        customerLoginButton.click();
+
+        Select userDropdown = new Select(driverKM.findElement(By.name("userSelect")));
+        userDropdown.selectByValue("1");
+
+        WebElement loginButton = driverKM
+                .findElement(By.xpath("//button[@class='btn btn-default']"));
+        loginButton.click();
+        driverKM.findElement(By.xpath("//button[@ng-click='deposit()']")).click();
+
+        WebElement makeDepositInput = driverKM
+                .findElement(By.xpath("//input[@class='form-control ng-pristine ng-untouched ng-invalid ng-invalid-required']"));
+        makeDepositInput.sendKeys("1000");
+        driverKM.findElement(By.xpath("//button[@class='btn btn-default']")).click();
+
+        WebElement depositMessage = driverKM
+                .findElement(By.xpath("//span[@class='error ng-binding']"));
+        Assert.assertEquals(depositMessage.getText(), "Deposit Successful", "Ошибка в переводе на депозит");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testFormFilling() {
+
+        WebDriver driver = new ChromeDriver();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("document.body.style.zoom='80%'");
+        driver.manage().window().maximize();
+        driver.get("https://demoqa.com/text-box");
+
+        String fullName = "Harry Potter";
+        String email = "harrypotter@gmail.com";
+        String currentAddress = "The Cupboard under the Stairs, 4 Privet Drive, Little Whinging, SURREY";
+        String permanentAddress = "Hogwarts School of Witchcraft and Wizardry, The Scottish Highlands, United Kingdom";
+
+        WebElement fullNameBox = driver.findElement(By.xpath("//*[@id='userName']"));
+        fullNameBox.sendKeys(fullName);
+
+        WebElement emailBox = driver.findElement(By.xpath("//*[@id='userEmail']"));
+        emailBox.sendKeys(email);
+
+        WebElement currentAddressBox = driver.findElement(By.xpath("//*[@id='currentAddress']"));
+        currentAddressBox.sendKeys(currentAddress);
+
+        WebElement permanentAddressBox = driver.findElement(By.xpath("//*[@id='permanentAddress']"));
+        permanentAddressBox.sendKeys(permanentAddress);
+
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id='submit']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
+        submitButton.click();
+
+        String actualName = driver.findElement(By.xpath("//p[@id='name']")).getText();
+        String actualEmail = driver.findElement(By.xpath("//p[@id='email']")).getText();
+        String actualCurrentAddress = driver.findElement(By.xpath("//p[@id='currentAddress']")).getText();
+        String actualPermanentAddress = driver.findElement(By.xpath("//p[@id='permanentAddress']")).getText();
+
+
+        Assert.assertEquals(actualName, "Name:" + fullName);
+        Assert.assertEquals(actualEmail,"Email:" + email);
+        Assert.assertEquals(actualCurrentAddress, "Current Address :" + currentAddress);
+        Assert.assertEquals(actualPermanentAddress,"Permananet Address :" + permanentAddress);
+
+        driver.quit();
+    }
     @Test
     public void testTea () {
 
