@@ -17,13 +17,15 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BugSharksGroupTest {
+public class GroupBugSharksTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
     private static final String PASSWORD = "secret_sauce";
     private static final String BASE_URL_SD = "https://www.saucedemo.com";
     private static final String PRODUCT_PAGE_URL_SD = BASE_URL_SD + "/inventory.html";
+    private static final String USERNAME = "yar"+ System.currentTimeMillis();
+    private static final String USEREMAIL = USERNAME + "@gmail.com";
 
     @BeforeMethod
     public void setUp() {
@@ -98,19 +100,19 @@ public class BugSharksGroupTest {
     }
 
     @DataProvider(name = "userCredentials")
-    public Object[][] provideUserCredentials() {
-        return new Object[][]{
-                {"standard_user", PASSWORD},
-                {"performance_glitch_user", PASSWORD}
+    public String[] provideUserCredentials() {
+        return new String[]{
+                "standard_user",
+                "performance_glitch_user"
         };
     }
 
     @Test(dataProvider = "userCredentials")
-    public void testSauceDemoSuccessfulLogin(String username, String password) {
+    public void testSauceDemoSuccessfulLogin(String username) {
         openSauceDemoHomePage();
 
         driver.findElement(By.id("user-name")).sendKeys(username);
-        driver.findElement(By.id("password")).sendKeys(password);
+        driver.findElement(By.id("password")).sendKeys(PASSWORD);
         driver.findElement(By.id("login-button")).click();
 
         WebElement appLogo = driver.findElement(By.className("app_logo"));
@@ -142,6 +144,28 @@ public class BugSharksGroupTest {
                 By.cssSelector(".alert-success.alert")));
 
         Assert.assertEquals(successfulMessage.getText(), "You have been successfully subscribed!");
+    }
+    @Test
+    public void testLogIn() throws InterruptedException {
+        automationexercise();
+        Thread.sleep(100);
+        WebElement signUplogInButton = driver.findElement(By.xpath("//a[@href='/login']"));
+        signUplogInButton.click();
+
+        WebElement loginField = wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//form//input[@data-qa='signup-name']")));
+        loginField.sendKeys(USERNAME);
+
+        WebElement userPassword = driver.findElement(By.xpath("//form//input[@data-qa='signup-email']"));
+        userPassword.sendKeys(USEREMAIL);
+
+        WebElement signUpButton = driver.findElement(By.xpath("//form//button[@data-qa='signup-button']"));
+        signUpButton.click();
+
+        WebElement createButton = wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//form//button[@data-qa='create-account']")));
+
+        Assert.assertEquals(createButton.getText(),"Create Account");
     }
 
     public void loginStandartUser() {
@@ -238,4 +262,31 @@ public class BugSharksGroupTest {
         Assert.assertEquals(imageByItemPage, imageByProductPage);
     }
 
+    @Test
+    public void artemTLoginTest() {
+        String baseUrl = "https://www.saucedemo.com";
+        String standardUserName = "standard_user";
+        String password = "secret_sauce";
+        String plpUrl = "https://www.saucedemo.com/inventory.html";
+
+        driver.get(baseUrl);
+
+        WebElement userNameInputField = driver.findElement(By.id("user-name"));
+        WebElement passwordInputField = driver.findElement(By.id("password"));
+        WebElement loginButton = driver.findElement(By.id("login-button"));
+
+        userNameInputField.sendKeys(standardUserName);
+        passwordInputField.sendKeys(password);
+        loginButton.click();
+
+        Assert.assertEquals(driver.getCurrentUrl(), plpUrl, "The actual URL is not equal to expected");
+
+        WebElement plpHeader = driver.findElement(By.id("header_container"));
+        WebElement mainMenuButton = driver.findElement(By.id("react-burger-menu-btn"));
+        WebElement shoppingCart = driver.findElement(By.id("shopping_cart_container"));
+
+        Assert.assertTrue(plpHeader.isDisplayed(), "The header element is not visible");
+        Assert.assertTrue(mainMenuButton.isDisplayed(), "The main menu button element is not visible");
+        Assert.assertTrue(shoppingCart.isDisplayed(), "The shopping cart element is not visible");
+    }
 }

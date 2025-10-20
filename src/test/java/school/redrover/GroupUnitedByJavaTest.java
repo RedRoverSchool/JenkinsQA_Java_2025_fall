@@ -4,6 +4,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.TimeoutException;
@@ -23,6 +24,7 @@ import org.testng.asserts.SoftAssert;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.Duration.ofMillis;
@@ -279,6 +281,42 @@ public class GroupUnitedByJavaTest {
         String titleMainSite = driver.getTitle();
 
         Assert.assertEquals(titleMainSite, "DEMOQA");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testOpenTabsCtrlClick() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+        driver.get(THECODE_URL);
+        String theMainCodeWindow = driver.getWindowHandle();
+        String requiredTitle = "Железо";
+
+        driver.findElement(By.cssSelector("#menu-item-20644 > a")).sendKeys(Keys.CONTROL, Keys.ENTER);
+        driver.findElement(By.cssSelector("#menu-item-20645 > a")).sendKeys(Keys.CONTROL, Keys.ENTER);
+        driver.findElement(By.cssSelector("#menu-item-20646 > a")).sendKeys(Keys.CONTROL, Keys.ENTER);
+        driver.findElement(By.cssSelector("#menu-item-20647 > a")).sendKeys(Keys.CONTROL, Keys.ENTER);
+        driver.findElement(By.cssSelector("#menu-item-20933 > a")).sendKeys(Keys.CONTROL, Keys.ENTER);
+        driver.findElement(By.cssSelector("#menu-item-20932 > a")).sendKeys(Keys.CONTROL, Keys.ENTER);
+
+        ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+        Assert.assertEquals(tabs.size(), 7);
+        int reqTabs = 0;
+
+        for (int i = 1; i < tabs.size(); i++) {
+            driver.switchTo().window(tabs.get(i));
+            String searchTitle = driver.findElement(By.className("search__title")).getText();
+
+            if (searchTitle.toLowerCase().contains(requiredTitle.toLowerCase())){
+                reqTabs++;
+            }
+        }
+
+        Assert.assertTrue(reqTabs > 0, "Вкладки имеют название " + requiredTitle);
+
+        driver.close();
+        driver.switchTo().window((theMainCodeWindow));
 
         driver.quit();
     }
@@ -1023,6 +1061,73 @@ public class GroupUnitedByJavaTest {
         Assert.assertEquals(
                 driver.findElement(By.xpath("//p[@id='permanentAddress']")).getText(), "Permananet Address :Chisinau"
         );
+  
+        driver.quit();
+}
+  
+    public void testDataOpeningL2() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.la2era.com/ru");
+        WebElement textBox = driver.findElement(By.xpath("/html/body/div/section/section/div/div/div[2]/div[2]/a[1]"));
+        textBox.click();
+        Assert.assertEquals(driver.findElement(By.cssSelector("body > div > section > section > div > div > div.home-about__stroke.flex-cc > div.tab-content > div.tab-pane.active > div.home-about__stroke.flex-ss > div:nth-child(9)")).getText(), "Дата открытия: 09.02.2018");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testChangeLanguageL2() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.la2era.com/ru");
+        WebElement submitButton = driver.findElement(By.cssSelector("body > div.wrapper > header > nav > div > div.navigation__langs > div"));
+        submitButton.click();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+        WebElement submitButton2 = driver.findElement(By.cssSelector("body > div > header > nav > div > div.navigation__langs > div > a:nth-child(3) > div.navigation__langs-item-name"));
+        submitButton2.click();
+        Assert.assertEquals(driver.findElement(By.cssSelector("body > div.wrapper > section > section > div > div > div.home-about__textbox > div")).getText(), "HIGH FIVE X3: LAUNCHING OCTOBER 3RD.\n" + "GET READY FOR ADVENTURE!");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testBookChooseDemoQA() throws InterruptedException {
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--window-size=1920,1080");
+
+        WebDriver driver = new ChromeDriver(options);
+        driver.get(DEMOQA_URL);
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        ((JavascriptExecutor) driver).executeScript(
+                "var ad = document.getElementById('fixedban'); if (ad) ad.remove();"
+        );
+
+        WebElement BookStoreAppTile = driver.findElement(By.xpath("//div[contains(@class,'card-body')][.//h5[text()='Book Store Application']]"));
+        wait.until(ExpectedConditions.visibilityOf(BookStoreAppTile));
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", BookStoreAppTile);
+        BookStoreAppTile.click();
+        String booksUrl = driver.getCurrentUrl();
+
+        Assert.assertEquals(booksUrl, "https://demoqa.com/books");
+
+        Thread.sleep(2000);
+        WebElement searchBox = driver.findElement(By.id("searchBox"));
+
+        wait.until(ExpectedConditions.visibilityOf(searchBox));
+        searchBox.sendKeys("el");
+
+        List <WebElement> searchResultsGrid = driver.findElements (By.cssSelector(".rt-tr-group .rt-tr:not(.-padRow)"));
+        int count = searchResultsGrid.size();
+        Assert.assertTrue(count>=1);
+
+        WebElement bookTitle = driver.findElement(By.id("see-book-Eloquent JavaScript, Second Edition"));
+        bookTitle.click();
+        String bookTitleUrl = driver.getCurrentUrl();
+        Assert.assertEquals(bookTitleUrl, "https://demoqa.com/books?book=9781593275846");
 
         driver.quit();
     }
@@ -1043,6 +1148,81 @@ public class GroupUnitedByJavaTest {
 
         WebElement result = driver.findElement(By.xpath("//p[@class='mt-3']"));
         Assert.assertEquals(result.getText(), "You have selected Yes");
+      
+        driver.quit();
+
+    @Test
+    public void testPutDepositBankAccount() {
+
+        createDriver();
+
+        driverKM.get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
+        driverKM.manage().timeouts().implicitlyWait(Duration.ofMillis(900));
+
+        WebElement customerLoginButton = driverKM
+                .findElement(By.xpath("//button[@class='btn btn-primary btn-lg' and contains(text(), 'Customer Login')]"));
+        customerLoginButton.click();
+
+        Select userDropdown = new Select(driverKM.findElement(By.name("userSelect")));
+        userDropdown.selectByValue("1");
+
+        WebElement loginButton = driverKM
+                .findElement(By.xpath("//button[@class='btn btn-default']"));
+        loginButton.click();
+        driverKM.findElement(By.xpath("//button[@ng-click='deposit()']")).click();
+
+        WebElement makeDepositInput = driverKM
+                .findElement(By.xpath("//input[@class='form-control ng-pristine ng-untouched ng-invalid ng-invalid-required']"));
+        makeDepositInput.sendKeys("1000");
+        driverKM.findElement(By.xpath("//button[@class='btn btn-default']")).click();
+
+        WebElement depositMessage = driverKM
+                .findElement(By.xpath("//span[@class='error ng-binding']"));
+        Assert.assertEquals(depositMessage.getText(), "Deposit Successful", "Ошибка в переводе на депозит");
+
+        closeDriver();
+    }
+
+    @Test
+    public void testFormFilling() {
+
+        WebDriver driver = new ChromeDriver();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("document.body.style.zoom='80%'");
+        driver.manage().window().maximize();
+        driver.get("https://demoqa.com/text-box");
+
+        String fullName = "Harry Potter";
+        String email = "harrypotter@gmail.com";
+        String currentAddress = "The Cupboard under the Stairs, 4 Privet Drive, Little Whinging, SURREY";
+        String permanentAddress = "Hogwarts School of Witchcraft and Wizardry, The Scottish Highlands, United Kingdom";
+
+        WebElement fullNameBox = driver.findElement(By.xpath("//*[@id='userName']"));
+        fullNameBox.sendKeys(fullName);
+
+        WebElement emailBox = driver.findElement(By.xpath("//*[@id='userEmail']"));
+        emailBox.sendKeys(email);
+
+        WebElement currentAddressBox = driver.findElement(By.xpath("//*[@id='currentAddress']"));
+        currentAddressBox.sendKeys(currentAddress);
+
+        WebElement permanentAddressBox = driver.findElement(By.xpath("//*[@id='permanentAddress']"));
+        permanentAddressBox.sendKeys(permanentAddress);
+
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id='submit']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
+        submitButton.click();
+
+        String actualName = driver.findElement(By.xpath("//p[@id='name']")).getText();
+        String actualEmail = driver.findElement(By.xpath("//p[@id='email']")).getText();
+        String actualCurrentAddress = driver.findElement(By.xpath("//p[@id='currentAddress']")).getText();
+        String actualPermanentAddress = driver.findElement(By.xpath("//p[@id='permanentAddress']")).getText();
+
+
+        Assert.assertEquals(actualName, "Name:" + fullName);
+        Assert.assertEquals(actualEmail,"Email:" + email);
+        Assert.assertEquals(actualCurrentAddress, "Current Address :" + currentAddress);
+        Assert.assertEquals(actualPermanentAddress,"Permananet Address :" + permanentAddress);
 
         driver.quit();
     }
