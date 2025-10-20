@@ -20,6 +20,7 @@ public class GroupTheBugStopsHereTest {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.automationexercise.com/");
+        handleCookies(driver);
 
         WebElement submitProductsButton = driver.findElement(By.cssSelector("a[href='/products']"));
         submitProductsButton.click();
@@ -57,6 +58,7 @@ public class GroupTheBugStopsHereTest {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://automationexercise.com/test_cases");
+        handleCookies(driver);
         if(driver.findElement(By.xpath("//button[p[text()='Consent']]")).isDisplayed()){
             driver.findElement(By.xpath("//button[p[text()='Consent']]")).click();
         }
@@ -78,6 +80,7 @@ public class GroupTheBugStopsHereTest {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.get("https://www.automationexercise.com");
+        handleCookies(driver);
 
         Assert.assertEquals(driver.getTitle(), "Automation Exercise");
 
@@ -145,6 +148,7 @@ public class GroupTheBugStopsHereTest {
         WebDriver driver = new ChromeDriver();
         driver = new ChromeDriver();
         driver.get("https://www.automationexercise.com/");
+        handleCookies(driver);
         driver.manage().window().maximize();
 
         driver.findElement(By.xpath("//a[@href='/login']")).click();
@@ -162,6 +166,7 @@ public class GroupTheBugStopsHereTest {
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.demoblaze.com/");
+        handleCookies(driver);
         driver.manage().window().maximize();
 
         driver.findElement(By.id("login2")).click();
@@ -181,6 +186,7 @@ public class GroupTheBugStopsHereTest {
         WebDriver driver = new ChromeDriver();
 
         driver.get("http://automationexercise.com");
+        handleCookies(driver);
 
         driver.findElement(By.xpath("//button[@aria-label='Consent']")).click();
 
