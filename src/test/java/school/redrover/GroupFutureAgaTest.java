@@ -176,39 +176,73 @@ public class GroupFutureAgaTest {
         assertEquals("Permananet Address :c. Moscow str. Pushkin house Kolotushkin", responsePermanentAddress.getText());
     }
 
-    @Test
-    public void testOZ() throws InterruptedException {
-
+    @Test(testName = "Проверка работы text-area")
+    public void selenium_text_area_test() {
         WebDriver driver = new ChromeDriver();
-
-        driver.get("https://oz.by/");
-
-
-        //accept cookie
-        driver.findElement(By.xpath("//*[@id=\"modalCookie\"]/div/div/div[3]/button[2]")).click();
-
-        WebElement menu = driver.findElement(By.xpath("//*[@id=\"top-page\"]/div/div[1]/div[1]/div/div/ul/li[2]/a"));
-        WebElement subMenu = driver.findElement(By.xpath("//*[@id=\"top-page\"]/div/div[1]/div[1]/div/div/ul/li[2]/div/div/ul/li[1]/div[1]/div[1]/a"));
-
-        // open first category in submenu
-        Actions actions = new Actions(driver);
-        actions.moveToElement(menu).moveToElement(subMenu).click().build().perform();
-
-        // add first book in checkout
-
-        actions.moveToElement(driver.findElement(By.cssSelector("#goods-table > article:nth-child(1) > div.product-card__footer > form > button"))).click().build().perform();
-
-        // open checkout
-        Thread.sleep(10000);
-        actions.moveToElement(driver.findElement(By.xpath("//*[@id=\"top-page\"]/header/div[1]/div/a[2]"))).click().build().perform();
-
-        // check book in checkout
-        Assert.assertNotNull(driver.findElement(By.xpath("//*[@id=\"goods-block\"]/tbody/tr[2]/td[1]")));
-
+        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+        driver.getTitle();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        
+        WebElement textBox = driver.findElement(By.xpath("//textarea[@name='my-textarea']"));
+        WebElement submitButton = driver.findElement(By.xpath("//button"));
+        textBox.sendKeys("Selenium Test");
+        submitButton.click();
+        WebElement message = driver.findElement(By.id("message"));
+        Assert.assertEquals(message.getText(), "Received!");
         driver.quit();
-
-
     }
-}
+
+    @Test(testName = "Проверка работы habra search")
+    public void habra_search_test() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://habr.com/");
+        driver.getTitle();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        WebElement searchButton = driver.findElement(By.cssSelector("[class*='tm-header-user-menu__search']"));
+        searchButton.click();
+        WebElement textBox = driver.findElement(By.cssSelector("[class*='tm-search__input tm-input-text-decorated__input']"));
+        WebElement submitButton = driver.findElement(By.cssSelector("[class*='tm-search__icon']"));
+        textBox.sendKeys("Selenium Test");
+        submitButton.click();
+        WebElement message = driver.findElement(By.className("searched-item"));
+        Assert.assertEquals(message.getText(), "Selenium Tests");
+        driver.quit();
+    }
+
+        @Test
+        public void testOZ () throws InterruptedException {
+
+            WebDriver driver = new ChromeDriver();
+
+            driver.get("https://oz.by/");
+
+
+            //accept cookie
+            driver.findElement(By.xpath("//*[@id=\"modalCookie\"]/div/div/div[3]/button[2]")).click();
+
+            WebElement menu = driver.findElement(By.xpath("//*[@id=\"top-page\"]/div/div[1]/div[1]/div/div/ul/li[2]/a"));
+            WebElement subMenu = driver.findElement(By.xpath("//*[@id=\"top-page\"]/div/div[1]/div[1]/div/div/ul/li[2]/div/div/ul/li[1]/div[1]/div[1]/a"));
+
+            // open first category in submenu
+            Actions actions = new Actions(driver);
+            actions.moveToElement(menu).moveToElement(subMenu).click().build().perform();
+
+            // add first book in checkout
+
+            actions.moveToElement(driver.findElement(By.cssSelector("#goods-table > article:nth-child(1) > div.product-card__footer > form > button"))).click().build().perform();
+
+            // open checkout
+            Thread.sleep(10000);
+            actions.moveToElement(driver.findElement(By.xpath("//*[@id=\"top-page\"]/header/div[1]/div/a[2]"))).click().build().perform();
+
+            // check book in checkout
+            Assert.assertNotNull(driver.findElement(By.xpath("//*[@id=\"goods-block\"]/tbody/tr[2]/td[1]")));
+
+            driver.quit();
+
+
+        }
+    }
 
 

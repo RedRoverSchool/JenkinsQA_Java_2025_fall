@@ -223,7 +223,31 @@ public class GroupCodeCoffeeJavaTest {
                 .collect(Collectors.toList());
     }
 
-       }
+    @Test
+    public void buttonsTest() {
+        driver.findElement(By.xpath("(//div[@class = 'card-up'])[1]")).click();
+
+        driver.findElement(By.xpath("//span[text()='Buttons']")).click();
+
+        WebElement doubleClickBtn = driver.findElement(By.id("doubleClickBtn"));
+        WebElement rightClickBtn = driver.findElement(By.id("rightClickBtn"));
+        WebElement singleClickBtn = driver.findElement(By.xpath("//button[text()='Click Me']"));
+
+        Actions actions = new Actions(driver);
+        actions.doubleClick(doubleClickBtn).perform();
+        actions.contextClick(rightClickBtn).perform();
+        actions.click(singleClickBtn).perform();
+
+        String msgRightClick = driver.findElement(By.xpath("//p[@id='rightClickMessage']")).getText();
+        String msgDoubleClick = driver.findElement(By.xpath("//p[@id='doubleClickMessage']")).getText();
+        String msgSingleClick = driver.findElement(By.xpath("//p[@id='dynamicClickMessage']")).getText();
+
+        Assert.assertEquals(msgDoubleClick, "You have done a double click");
+        Assert.assertEquals(msgRightClick, "You have done a right click");
+        Assert.assertEquals(msgSingleClick, "You have done a dynamic click");
+    }
+
+}
 
 
 

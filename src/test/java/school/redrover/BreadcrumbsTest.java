@@ -10,6 +10,9 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+
 public class BreadcrumbsTest {
 
     @Test
@@ -275,8 +278,7 @@ public class BreadcrumbsTest {
         driver.quit();
     }
 
-    public class SvetaDoroshTest {
-        @Test
+            @Test
         public void searchCoat() throws InterruptedException {
             WebDriver driver = new ChromeDriver();
             driver.get("https://www.target.com");
@@ -299,5 +301,28 @@ public class BreadcrumbsTest {
             Assert.assertEquals(result, true);
             driver.quit();
         }
+
+    @Test
+    public void FistHWTest(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.findElement(By.cssSelector("#app > div > div > div.home-body > div > div:nth-child(1)")).click();
+        driver.findElement(By.xpath("//li[@id='item-0' and .//span[text()='Text Box']]")).click();
+        driver.findElement(By.id("userName")).sendKeys("Julia");
+        driver.findElement(By.id("submit")).click();
+        WebElement name = driver.findElement(By.id("name"));
+
+        Assert.assertEquals(name.getText(), "Name:Julia");
+
+        driver.quit();
     }
-}
+
+    @Test
+    public void SandraTest() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://aurma.kz");
+        Assert.assertEquals(driver.getTitle(),"Аптеки Алматы и Астаны онлайн: поиск и заказ лекарств с доставкой");
+        driver.quit();
+    }
+};

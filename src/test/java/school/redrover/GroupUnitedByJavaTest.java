@@ -21,6 +21,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import java.io.File;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -1264,5 +1265,101 @@ public class GroupUnitedByJavaTest {
         driver.quit();
     }
 
+
+    @Test
+    public void testPracticeForm() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://demoqa.com/");
+        WebElement formsCard = driver.findElement(By.xpath("//div[@class='category-cards']/div[2]"));
+        formsCard.click();
+
+        driver.findElement(By.xpath("//span[contains(text(), 'Practice Form')]")).click();
+
+        String firstName = "Adelya";
+        String lastName = "Sensation";
+        String userEmail = "user@gmail.com";
+        String mobileNumber = "8123456789";
+        String yearOfBirth = "1900";
+        String monthOfBirth = "January";
+        String dayOfBirth = "25";
+        String currentAdress = "Markova, 5";
+        String state = "Uttar Pradesh";
+        String city = "Agra";
+
+        driver.findElement(By.id("firstName")).sendKeys(firstName);
+        driver.findElement(By.id("lastName")).sendKeys(lastName);
+        driver.findElement(By.id("userEmail")).sendKeys(userEmail);
+        driver.findElement(By.xpath("//label[@for='gender-radio-2']")).click();
+        driver.findElement(By.xpath("//input[@placeholder='Mobile Number']")).sendKeys(mobileNumber);
+        driver.findElement(By.id("dateOfBirthInput")).click();
+
+        WebElement yearDropdown = driver.findElement(By.xpath("//select[@class='react-datepicker__year-select']"));
+        Select yearSelect = new Select(yearDropdown);
+        yearSelect.selectByValue(yearOfBirth);
+
+        WebElement monthDropdown = driver.findElement(By.xpath("//select[@class='react-datepicker__month-select']"));
+        Select monthSelect = new Select((monthDropdown));
+        monthSelect.selectByVisibleText(monthOfBirth);
+
+        WebElement day = driver.findElement(By.xpath("//div[text()=" + dayOfBirth + "]"));
+        day.click();
+
+        WebElement hobbiesCheckbox = driver.findElement(By.xpath("//label[@for='hobbies-checkbox-1']"));
+        hobbiesCheckbox.click();
+
+        WebElement uploadElement = driver.findElement(By.id("uploadPicture"));
+        File file = new File("src/resources/RedRoverSchool.jpg");
+        String absolutePath = file.getAbsolutePath();
+        uploadElement.sendKeys(absolutePath);
+
+        driver.findElement(By.xpath("//textarea")).sendKeys(currentAdress);
+
+        WebElement submitButton = driver.findElement(By.id("submit"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); window.scrollBy(0, -100);", submitButton);
+
+        WebElement stateDropdown = driver.findElement(By.id("state"));
+        WebElement control = stateDropdown.findElement(By.className("css-yk16xz-control"));
+        control.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(3000));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[id^='react-select']")));
+        WebElement stateOption = wait.until(ExpectedConditions.elementToBeClickable
+                (By.xpath("//div[contains(@class, 'option') and text()='" + state + "']")));
+        stateOption.click();
+
+        WebElement cityControl = wait.until(ExpectedConditions.elementToBeClickable
+                (By.xpath("//div[@id='city']//div[contains(@class, 'control')]")));
+        cityControl.click();
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#city .css-26l3qy-menu")));
+        WebElement cityOption = wait.until(ExpectedConditions.elementToBeClickable
+                (By.xpath("//div[@id='city']//div[contains(@class, 'option') and text()='" + city + "']")));
+        cityOption.click();
+
+        submitButton.click();
+
+        String actualStudentName = driver.findElement(By.xpath("//tr[td[text()='Student Name']]/td[2]")).getText();
+        String actualStudentEmail = driver.findElement(By.xpath("//tr[td[text()='Student Email']]/td[2]")).getText();
+        String actualStudentGender = driver.findElement(By.xpath("//tr[td[text()='Gender']]/td[2]")).getText();
+        String actualStudentMobile = driver.findElement(By.xpath("//tr[td[text()='Mobile']]/td[2]")).getText();
+        String actualStudentDateBirth = driver.findElement(By.xpath("//tr[td[text()='Date of Birth']]/td[2]")).getText();
+        String actualHobbies = driver.findElement(By.xpath("//tr[td[text()='Hobbies']]/td[2]")).getText();
+        String actualPicture = driver.findElement(By.xpath("//tr[td[text()='Picture']]/td[2]")).getText();
+        String actualAddress = driver.findElement(By.xpath("//tr[td[text()='Address']]/td[2]")).getText();
+        String actualStateAndCity = driver.findElement(By.xpath("//tr[td[text()='State and City']]/td[2]")).getText();
+
+        Assert.assertEquals(actualStudentName, firstName + " " + lastName);
+        Assert.assertEquals(actualStudentEmail, userEmail);
+        Assert.assertEquals(actualStudentGender, "Female");
+        Assert.assertEquals(actualStudentMobile, mobileNumber);
+        Assert.assertEquals(actualStudentDateBirth, dayOfBirth + " " + monthOfBirth + "," + yearOfBirth);
+        Assert.assertEquals(actualHobbies, "Sports");
+        Assert.assertEquals(actualPicture, "RedRoverSchool.jpg");
+        Assert.assertEquals(actualAddress, currentAdress);
+        Assert.assertEquals(actualStateAndCity, state + " " + city);
+
+        driver.quit();
+    }
 }
 
