@@ -355,7 +355,7 @@ public class GroupLoopCoreTest {
         Assert.assertNotEquals(holdPositionThumb, startPositionThumb, "Thumb wasn't move");
     }
 
-    @Test
+    @Test(groups = "Daria", priority = 200)
     public void testWebForm() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
@@ -375,6 +375,7 @@ public class GroupLoopCoreTest {
 
         String actualValue = input.getAttribute("value");
         Assert.assertEquals(actualValue, "Go !!!");
+        input.clear();
     }
 
     @Test(groups = "Boich_WebForm", priority = 19)
@@ -385,6 +386,7 @@ public class GroupLoopCoreTest {
 
         String actualValue = password.getAttribute("value");
         Assert.assertEquals(actualValue, "Java!");
+        password.clear();
     }
 
     @Test(groups = "Boich_WebForm", priority = 20)
@@ -440,8 +442,6 @@ public class GroupLoopCoreTest {
         WebElement datalist = driver.findElement(By.name("my-datalist"));
         datalist.click();
 
-        WebElement shadowHost = driver.findElement(By.cssSelector("select[name='my-select']"));
-
         List<String> options = List.of(
                 "San Francisco", "New York", "Seattle", "Los Angeles", "Chicago"
         );
@@ -454,6 +454,7 @@ public class GroupLoopCoreTest {
 
         String actualValue = datalist.getAttribute("value");
         Assert.assertEquals(actualValue, expectedValue, "Error");
+        datalist.clear();
     }
 
     @Test(groups = "Boich_WebForm", priority = 25)
@@ -488,18 +489,17 @@ public class GroupLoopCoreTest {
 
         Assert.assertFalse(radio1.isSelected(), "Кнопка1 не выбрана");
         Assert.assertTrue(radio2.isSelected(), "Кнопка2 не выбрана");
+        radio1.click();
     }
 
-    @Test(groups = "Boich_WebForm", priority = 28)
+    @Ignore
+    @Test(groups = "Boich_WebForm", priority = 100)
     public void testAllPageSubmit() {
-//        WebElement submit = driver.findElement(By.xpath("//button[text()='Submit']"));
-//        submit.click();
-
         WebElement resultForm = driver.findElement(By.xpath("//h1[text()='Form submitted']"));
         Assert.assertEquals(resultForm.getText(), "Form submitted");
     }
 
-    @Test(groups = "Chapter3_WebForm", priority = 27)
+    @Test(groups = "Chapter3_WebForm", priority = 150)
     void submitButtonTest() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
         WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit']"));
@@ -521,65 +521,43 @@ public class GroupLoopCoreTest {
         Assert.assertEquals(actualTitle, expectedTitle, "Title is wrong!");
     }
 
-    @Test
+    @Test(groups = "Alexandra", priority = 28)
     public void textInputTest() {
         String textExample = "test";
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("my-text-id")));
         WebElement textInput = driver.findElement(By.id("my-text-id"));
         textInput.sendKeys(textExample);
         assertEquals(textInput.getAttribute("value"), textExample, "Input data is not equal");
-
-        driver.quit();
     }
 
-    @Test
+    @Test(groups = "Alexandra", priority = 29)
     public void psswrdInputTest() {
         String passwordExample = "123456";
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement passwordInput = driver.findElement(By.xpath("//input[@type='password']"));
         passwordInput.sendKeys(passwordExample);
         assertEquals(passwordInput.getAttribute("value"), passwordExample, "Input data is not equal");
-
-        driver.quit();
     }
 
-    @Test
+    @Test(groups = "Alexandra", priority = 30)
     public void scrollBarAppearTextAreaTest() {
         String textExample = "1\n 2\n 3\n 4\n";
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement textArea = driver.findElement(By.cssSelector(".form-control[name='my-textarea']"));
         long cleanTextArea = Long.parseLong(textArea.getAttribute("scrollHeight"));
         textArea.sendKeys(textExample);
         long fullTextArea = Long.parseLong(textArea.getAttribute("scrollHeight"));
         assertTrue(cleanTextArea < fullTextArea);
-
-        driver.quit();
     }
 
-    @Test
+    @Test(groups = "Alexandra", priority = 31)
     public void dropdownSelectTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement dropdown = driver.findElement(By.cssSelector(".form-select[name='my-select']"));
         dropdown.findElement(By.cssSelector(".form-select option:nth-child(3)")).click();
 
         assertEquals(dropdown.getAttribute("value"), "2");
-
-        driver.quit();
     }
 
-    @Test
+    @Test(groups = "Alexandra", priority = 32)
     public void dropdownDatalistTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement cities = driver.findElement(By.id("my-options"));
         List<WebElement> options = cities.findElements(By.tagName("option"));
         List<String> citiesList = new ArrayList<>();
@@ -590,29 +568,23 @@ public class GroupLoopCoreTest {
         WebElement dropdownDatalist = driver.findElement(By.xpath("//input[@name='my-datalist']"));
         dropdownDatalist.sendKeys(citiesList.get(0));
         assertEquals(dropdownDatalist.getAttribute("value"), "San Francisco");
-
-        driver.quit();
     }
 
-    @Test
+    @Ignore
+    @Test(groups = "Alexandra", priority = 33)
     public void fileInputTest() {
-        String filepath = "C:\\RedroverSQL\\test.txt";
-        WebDriver driver = new ChromeDriver();
+        String filepath = "src/resources/DanilovaE/FileFieldTest.txt";
+
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
 
         WebElement fileInput = driver.findElement(By.xpath("//input[@name='my-file']"));
         fileInput.sendKeys(filepath);
 
-        assertTrue(fileInput.getAttribute("value").contains("test.txt"), "File is not attached");
-
-        driver.quit();
+        assertTrue(fileInput.getAttribute("value").contains("FileFieldTest.txt"), "File is not attached");
     }
 
-    @Test
+    @Test(groups = "Alexandra", priority = 34)
     public void checkboxesTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement chekedCheckbox = driver.findElement(By.xpath("//input[@id='my-check-1']"));
         boolean one = chekedCheckbox.isSelected();
         chekedCheckbox.click();
@@ -622,15 +594,10 @@ public class GroupLoopCoreTest {
         boolean two = defaultCheckbox.isSelected();
         defaultCheckbox.click();
         assertNotEquals(defaultCheckbox.isSelected(), two, "Default checkbox has an error");
-
-        driver.quit();
     }
 
-    @Test
+    @Test(groups = "Alexandra", priority = 35)
     public void radioButtonTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement radio1 = driver.findElement(By.xpath("//input[@id='my-radio-1']"));
         boolean one = radio1.isSelected();
         WebElement radio2 = driver.findElement(By.xpath("//input[@id='my-radio-2']"));
@@ -639,22 +606,16 @@ public class GroupLoopCoreTest {
 
         assertNotEquals(radio1.isSelected(), one, "RadioButton 1 didn't change the condition");
         assertNotEquals(radio2.isSelected(), two, "RadioButton 2 didn't change the condition");
-
-        driver.quit();
     }
 
-    @Test
+    @Ignore
+    @Test(groups = "Alexandra", priority = 36)
     public void submitBttnTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit']"));
         submitButton.click();
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         WebElement submitPageName = driver.findElement(By.xpath("//h1[text()='Form submitted']"));
         assertEquals(submitPageName.getText(), "Form submitted");
-
-        driver.quit();
     }
 }
