@@ -216,9 +216,9 @@ public class GroupJavaCrackersRedroverTest {
 
         driver.get("https://www.saucedemo.com");
 
-        driver.findElement(By.xpath("//*[@id='user-name']")).sendKeys("standard_user");
-        driver.findElement(By.xpath("//*[@id='password']")).sendKeys("secret_sauce");
-        driver.findElement(By.xpath("//*[@id='login-button']")).click();
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("login-button")).click();
 
         WebElement message = driver.findElement(By.xpath("//*[@id='item_4_title_link']/div"));
 
@@ -233,8 +233,10 @@ public class GroupJavaCrackersRedroverTest {
 
         driver.get("https://www.selenium.dev/selenium/web/formPage.html");
 
-        driver.findElement(By.xpath("//*[@id='nested_form']/div/input")).sendKeys("John");
-        driver.findElement(By.xpath("//*[@id='nested_form']/input")).click();
+        WebElement input = driver.findElement(By.xpath("//*[@id='nested_form']/div/input"));
+        input.sendKeys("John");
+        WebElement submitInputButton = driver.findElement(By.xpath("//*[@id='nested_form']/input"));
+        submitInputButton.click();
 
         WebElement message = driver.findElement(By.cssSelector("#greeting"));
 
