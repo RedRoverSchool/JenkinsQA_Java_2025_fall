@@ -24,7 +24,6 @@ public class AnnaMelnikovaTest {
     }
     @Test
     public void testHW15() {
-
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.99-bottles-of-beer.net/lyrics.html");
         WebElement topLists =driver.findElement(By.xpath("//*[@id=\"menu\"]/li[4]/a"));
