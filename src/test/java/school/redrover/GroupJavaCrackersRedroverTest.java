@@ -187,4 +187,61 @@ public class GroupJavaCrackersRedroverTest {
 
     }
 
+
+    @Test
+    public void testSauceDemo() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.saucedemo.com");
+
+        driver.findElement(By.xpath("//*[@id='user-name']")).sendKeys("standard_user");
+        driver.findElement(By.xpath("//*[@id='password']")).sendKeys("secret_sauce");
+        driver.findElement(By.xpath("//*[@id='login-button']")).click();
+
+        WebElement message = driver.findElement(By.xpath("//*[@id='item_4_title_link']/div"));
+
+        Assert.assertEquals(message.getText(), "Sauce Labs Backpack");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testSeleniumDev() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.selenium.dev/selenium/web/formPage.html");
+
+        driver.findElement(By.xpath("//*[@id='nested_form']/div/input")).sendKeys("John");
+        driver.findElement(By.xpath("//*[@id='nested_form']/input")).click();
+
+        WebElement message = driver.findElement(By.cssSelector("#greeting"));
+
+        Assert.assertEquals(message.getText(), "Success!");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testAutomationExerciseAddReview() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://automationexercise.com");
+
+        WebElement productsButton = driver.findElement(By.xpath("//*[@id='header']/div/div/div/div[2]/div/ul/li[2]/a"));
+        productsButton.click();
+        WebElement viewProductButton = driver.findElement(By.xpath("/html/body/section[2]/div/div/div[2]/div/div[7]/div/div[2]/ul/li/a"));
+        viewProductButton.click();
+
+        driver.findElement(By.xpath("//*[@id='name']")).sendKeys("John");
+        driver.findElement(By.xpath("//*[@id='email']")).sendKeys("johntest@gmail.com");
+        driver.findElement(By.xpath("//*[@id='review']")).sendKeys("Test review text");
+        driver.findElement(By.xpath("//*[@id='button-review']")).click();
+
+        WebElement message = driver.findElement(By.xpath("//*[@id='review-section']/div/div/span"));
+
+        Assert.assertEquals(message.getText(), "Thank you for your review.");
+
+        driver.quit();
+    }
+
 }
