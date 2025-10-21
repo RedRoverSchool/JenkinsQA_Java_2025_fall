@@ -9,8 +9,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -97,18 +95,17 @@ public class GroupCodeCoffeeJavaTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
     }
     @Test
-    public void goToElementsTest(){
+    public void testGoToElements(){
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         getActionsScroll();
         driver.findElement(By.xpath("(//h5)[1]")).click();
-        String url = driver.getCurrentUrl();
-        Assert.assertEquals(url, "https://demoqa.com/elements");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/elements");
         String elementText = driver.findElement(By.xpath("(//div[@class='header-text'])[1]")).getText();
         Assert.assertEquals(elementText, "Elements");
     }
    @Test
-    public void selectTextBox(){
+    public void testSelectTextBox(){
        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
        getActionsScroll();
        driver.findElement(By.xpath("(//h5)[1]")).click();
@@ -119,7 +116,7 @@ public class GroupCodeCoffeeJavaTest {
    }
 
    @Test
-    public void textBoxTest() {
+    public void testTextBox() {
 
        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -145,7 +142,7 @@ public class GroupCodeCoffeeJavaTest {
        Assert.assertEquals(driver.findElement(By.id("email")).getText(), "Email:Ivan@gmail.com");
    }
        @Test
-               public void addLineTest(){
+       public void testAddLine(){
            WebElement elements = driver.findElement(By.xpath("(//div[@class = 'card-up'])[1]"));
            wait4.until(ExpectedConditions.visibilityOf(elements)).click();
 
@@ -188,7 +185,7 @@ public class GroupCodeCoffeeJavaTest {
     }
 
     @Test
-    public void countLineTest() {
+    public void testCountLine() {
         WebElement elements = driver.findElement(By.xpath("(//div[@class = 'card-up'])[1]"));
         wait4.until(ExpectedConditions.visibilityOf(elements)).click();
 
