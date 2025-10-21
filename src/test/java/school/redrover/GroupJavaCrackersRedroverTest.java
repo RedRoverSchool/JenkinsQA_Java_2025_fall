@@ -77,7 +77,7 @@ public class GroupJavaCrackersRedroverTest {
     }
 
     @Test
-    public void testSelenium(){
+    public void testSelenium() {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
@@ -113,7 +113,7 @@ public class GroupJavaCrackersRedroverTest {
     }
 
     @Test
-    public void testHerokuappOpeningAddRemoveElementsPage(){
+    public void testHerokuappOpeningAddRemoveElementsPage() {
         WebDriver driver = new ChromeDriver();
 
         driver.navigate().to("https://the-internet.herokuapp.com/");
@@ -126,7 +126,7 @@ public class GroupJavaCrackersRedroverTest {
     }
 
     @Test
-    public void testHerokuappAddElements(){
+    public void testHerokuappAddElements() {
         WebDriver driver = new ChromeDriver();
 
         driver.navigate().to("https://the-internet.herokuapp.com/add_remove_elements/");
@@ -153,14 +153,13 @@ public class GroupJavaCrackersRedroverTest {
         Assert.assertEquals(doubleClick.getText(), "You have done a double click");
 
         WebElement rightClick = driver.findElement(By.xpath("//p [@id='rightClickMessage']"));
-        Assert.assertEquals(rightClick.getText(),"You have done a right click");
+        Assert.assertEquals(rightClick.getText(), "You have done a right click");
 
         WebElement clickMe = driver.findElement(By.xpath("//p [@id='dynamicClickMessage']"));
         Assert.assertEquals(clickMe.getText(), "You have done a dynamic click");
 
         driver.quit();
     }
-
 
     @Test
     public void testCjCity() throws InterruptedException {
@@ -187,4 +186,27 @@ public class GroupJavaCrackersRedroverTest {
 
     }
 
+    @Test
+    public void testLoginAutomationExercise() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://automationexercise.com/");
+
+        driver.findElement(By.linkText("Signup / Login"))
+                .click();
+
+        driver.findElement(By.cssSelector("input[data-qa='login-email']"))
+                .sendKeys("maryalice.lakin.1759567115@hane.org");
+        driver.findElement(By.cssSelector("input[data-qa='login-password']"))
+                .sendKeys("Pa$$word1!");
+        driver.findElement(By.cssSelector("button[data-qa='login-button']"))
+                .click();
+
+        WebElement loginMessage = driver.findElement(By.xpath("//i[contains(@class, 'fa-user')]/parent::a"));
+
+        Assert.assertTrue(loginMessage.isDisplayed());
+        Assert.assertEquals(loginMessage.getText(), "Logged in as Maryalice");
+
+        driver.quit();
+    }
 }
