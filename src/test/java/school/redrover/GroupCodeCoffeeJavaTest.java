@@ -100,6 +100,7 @@ public class GroupCodeCoffeeJavaTest {
     public void goToElementsTest(){
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        getActionsScroll();
         driver.findElement(By.xpath("(//h5)[1]")).click();
         String url = driver.getCurrentUrl();
         Assert.assertEquals(url, "https://demoqa.com/elements");
@@ -109,6 +110,7 @@ public class GroupCodeCoffeeJavaTest {
    @Test
     public void selectTextBox(){
        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+       getActionsScroll();
        driver.findElement(By.xpath("(//h5)[1]")).click();
        String url = driver.getCurrentUrl();
        Assert.assertEquals(url, "https://demoqa.com/elements");
@@ -160,7 +162,9 @@ public class GroupCodeCoffeeJavaTest {
            driver.findElement(By.id("submit")).click();
 
            List<String> expectedValues = Arrays.asList("Petr", "Petrov", "25", "Petrov@gmail.com", "50000", "IT");
-           WebElement tableRow = driver.findElement(By.xpath("//div[@class='rt-tbody']/div[@class='rt-tr-group'][last()]"));
+           WebElement tableRow = driver.findElement(By.xpath
+                   ("//div[@class='rt-tbody']/div[@class='rt-tr-group'][.//div[@class='rt-td' and" +
+                           " normalize-space(text()) != '']][last()]"));
            assertTableRowContainsValues(tableRow, expectedValues);
 
        }
