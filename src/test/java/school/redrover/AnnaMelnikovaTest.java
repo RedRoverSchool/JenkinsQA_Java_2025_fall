@@ -29,12 +29,9 @@ public class AnnaMelnikovaTest {
         driver.get("https://www.99-bottles-of-beer.net/lyrics.html");
         WebElement topLists =driver.findElement(By.xpath("//*[@id=\"menu\"]/li[4]/a"));
         topLists.click();
-
         WebElement topHits = driver.findElement(By.linkText("Top Hits"));
         topHits.click();
-
         System.out.println("Две кнопки нашли, нажали, вот заголовок перехода и название сайта  "+ driver.getTitle());
-
         driver.quit();
     }
 }
