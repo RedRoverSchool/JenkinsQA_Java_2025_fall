@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -325,4 +326,29 @@ public class BreadcrumbsTest {
         Assert.assertEquals(driver.getTitle(),"Аптеки Алматы и Астаны онлайн: поиск и заказ лекарств с доставкой");
         driver.quit();
     }
+
+    @Test
+    public void loginUserWithCorrectEmailPasswordTest() {
+        String mainPage = "https://automationexercise.com/";
+        String userEmail = "testloginemail@test.com";
+        String userPassword = "QWErty1!";
+        String userName = "MrsTestUser";
+        WebDriver driver = new ChromeDriver();
+
+        driver.get(mainPage);
+        driver.findElement(By.cssSelector("li a[href='/login']")).click();
+
+        driver.findElement(By.cssSelector("[data-qa=\"login-email\"]")).sendKeys(userEmail);
+        driver.findElement(By.cssSelector("[data-qa=\"login-password\"]")).sendKeys(userPassword);
+        driver.findElement(By.cssSelector("[data-qa=\"login-button\"]")).click();
+
+        WebElement loggedInAsButton = driver.findElement(By.xpath("//a[i[contains(@class,'fa-user')]]//b"));
+        Assert.assertTrue(loggedInAsButton.isDisplayed());
+        Assert.assertEquals(loggedInAsButton.getText(), userName);
+
+        driver.findElement(By.cssSelector("li a[href='/logout']")).click();
+        driver.quit();
+
+    }
+
 };
