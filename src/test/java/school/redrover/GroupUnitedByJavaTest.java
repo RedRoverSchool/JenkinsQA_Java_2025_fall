@@ -1115,10 +1115,10 @@ public class GroupUnitedByJavaTest {
         Assert.assertEquals(
                 driver.findElement(By.xpath("//p[@id='permanentAddress']")).getText(), "Permananet Address :Chisinau"
         );
-  
+
         driver.quit();
 }
-  
+
     public void testDataOpeningL2() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.la2era.com/ru");
@@ -1280,6 +1280,44 @@ public class GroupUnitedByJavaTest {
 
         driver.quit();
     }
+    @Test
+    public void testTea () {
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+
+        driver.get("https://roast.by/");
+
+        driver.findElement(By.xpath("/html/body/div[2]/header[2]/div/div/div/div[3]/div/ul/li[2]/a/span")).click();
+
+        driver.findElement(By.xpath("//*[@id='catalog-ics__list-js']/a[8]")).click();
+
+        WebElement teaName = driver.findElement(By.xpath("//*[@id='bx_1527614749_20308']/div/div/div[2]/a"));
+        Assert.assertEquals(teaName.getText(), "Фэн Хуан Дань Цун");
+
+        driver.quit();
+    }
+
+
+    @Test
+    public void testTeaCart () {
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+
+        driver.get("https://roast.by/");
+
+        driver.findElement(By.xpath("/html/body/div[2]/header[2]/div/div/div/div[3]/div/ul/li[2]/a/span")).click();
+
+        driver.findElement(By.xpath("//*[@id='catalog-ics__list-js']/a[8]")).click();
+
+        driver.findElement(By.xpath("//*[@id='bx_1527614749_20308']/div/div/div[3]/div/div[2]/div[1]")).click();
+
+        driver.findElement(By.xpath("/html/body/div[2]/header[2]/div/div/div/div[3]/div/ul/li[3]/a/span")).click();
+
+        driver.quit();
+    }
+
 
     @Test
     public void testPracticeForm() {

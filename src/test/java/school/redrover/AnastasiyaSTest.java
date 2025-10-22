@@ -50,5 +50,6 @@ public class AnastasiyaSTest {
         accs.click();
 
         driver.quit();
+
     }
 }
