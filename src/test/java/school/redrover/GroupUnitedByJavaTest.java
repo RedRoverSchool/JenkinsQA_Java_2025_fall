@@ -218,6 +218,59 @@ public class GroupUnitedByJavaTest {
     }
 
     @Test
+    public void testChangeNameUseSelect() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+        driver.get("https://naveenautomationlabs.com/opencart/");
+
+        driver.findElement(By.linkText("Cameras")).click();
+        driver.findElement(By.linkText("Nikon D300")).click();
+        driver.findElement(By.id("button-cart")).click();
+        driver.findElement(By.id("cart")).click();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+        driver.findElement(By.linkText("View Cart")).click();
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollTo(0, document.documentElement.scrollHeight/2);");
+        driver.findElement(By.linkText("Estimate Shipping & Taxes")).click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement dropdownCountry = driver.findElement(By.cssSelector("#input-country"));
+        wait.until(ExpectedConditions.elementToBeClickable(dropdownCountry));
+        Select selectCountry = new Select(dropdownCountry);
+        selectCountry.selectByVisibleText("Switzerland");
+
+        WebElement dropdownRegion = driver.findElement(By.cssSelector("#input-zone"));
+        wait.until(ExpectedConditions.elementToBeClickable(dropdownRegion));
+        Select selectRegion = new Select(dropdownRegion);
+        selectRegion.selectByVisibleText("Bern");
+
+        driver.findElement(By.id("button-quote")).click();
+        driver.findElement(By.name("shipping_method")).click();
+        driver.findElement(By.id("button-shipping")).click();
+
+        js.executeScript("window.scrollTo(0, document.documentElement.scrollHeight/2);");
+        driver.findElement(By.linkText("Estimate Shipping & Taxes")).click();
+
+        WebElement dropCountry = driver.findElement(By.cssSelector("#input-country"));
+        Select selCountry = new Select(dropCountry);
+        wait.until(ExpectedConditions.elementToBeClickable(dropCountry));
+        WebElement country = selCountry.getFirstSelectedOption();
+        String countryText = country.getText();
+        Assert.assertEquals(countryText, "Switzerland");
+
+        WebElement dropRegion = driver.findElement(By.cssSelector("#input-zone"));
+        Select selRegion = new Select(dropRegion);
+        wait.until(ExpectedConditions.elementToBeClickable(dropRegion));
+        WebElement region = selRegion.getFirstSelectedOption();
+        String regionText = region.getText();
+        Assert.assertEquals(regionText, "Bern");
+
+        driver.quit();
+    }
+
+    @Test
     public void testCheckOpenNewBrowserWindow() {
         WebDriver driver = new ChromeDriver();
         driver.manage().window().setSize(new Dimension(1920, 1080));
