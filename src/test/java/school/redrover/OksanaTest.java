@@ -13,12 +13,12 @@ public class OksanaTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.wikipedia.org");
 
-        Thread.sleep(1000); // just a short wait to see page load
+        Thread.sleep(1000);
 
         WebElement englishLink = driver.findElement(By.id("js-link-box-en"));
         englishLink.click();
 
-        Thread.sleep(1000); // let the page load
+        Thread.sleep(1000);
 
         String heading = driver.findElement(By.id("mp-welcome")).getText();
         Assert.assertTrue(heading.contains("Welcome to Wikipedia"));
