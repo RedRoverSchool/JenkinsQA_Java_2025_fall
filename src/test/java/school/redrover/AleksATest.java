@@ -9,7 +9,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import java.time.Duration;
 
 public class AleksATest {
@@ -27,12 +26,12 @@ public class AleksATest {
     public void websiteTextSearch() {
         String searchText = "Selenium WebDriver";
         String expectedText = "Getting started";
+
         WebElement magnifierField = new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='docsearch-1']/button/span[1]/span")));
         magnifierField.click();
 
         WebElement searchField = new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='docsearch-input']")));
         searchField.sendKeys(searchText);
-
 
         WebElement searchResult = new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.id("docsearch-item-0")));
         searchResult.click();
