@@ -19,8 +19,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.Random;
@@ -36,7 +34,7 @@ public class GroupLoopCoreTest {
     private WebDriverWait wait;
     private WebDriver driver;
 
-    @BeforeClass
+    @BeforeSuite
     void setUp() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -44,19 +42,10 @@ public class GroupLoopCoreTest {
         wait = new WebDriverWait(driver, Duration.ofSeconds(6));
         String title = driver.findElement(By.xpath(HOME_PAGE_TITLE)).getText();
         wait.until(ExpectedConditions.titleIs(title));
-    }
-
-    @BeforeGroups("Chapter3_WebForm")
-    void openWebForm() {
         driver.findElement(By.xpath(WEB_FORM_PAGE)).click();
     }
 
-//    @BeforeGroups("Boich_WebForm")
-//    void openWebForm1() {
-//        driver.findElement(By.xpath(WEB_FORM_PAGE)).click();
-//    }
-
-    @AfterClass
+    @AfterSuite
     void tearDown() {
         driver.quit();
     }
@@ -244,6 +233,7 @@ public class GroupLoopCoreTest {
         String actual = host.getShadowRoot().findElement(By.cssSelector("div#editing-view-port > div")).getText();
 
         Assert.assertEquals(actual, expected, "Error");
+        host.clear();
     }
 
     @Test(groups = "Chapter3_WebForm", priority = 12)
@@ -277,6 +267,7 @@ public class GroupLoopCoreTest {
         Assert.assertFalse(checkBox2.isSelected(), "checkBox #2 must be not checked!");
         checkBox1.click();
         Assert.assertFalse(checkBox1.isSelected(), "checkBox #1 must be not checked!");
+        checkBox1.click();
     }
 
     @Test(groups = "Chapter3_WebForm", priority = 14)
@@ -289,6 +280,7 @@ public class GroupLoopCoreTest {
         radio2.click();
         Assert.assertTrue(radio2.isSelected(), "radio2 is not selected");
         Assert.assertFalse(radio1.isSelected(), "radio1 is not selected");
+        radio1.click();
     }
 
     @Test(groups = "Chapter3_WebForm", priority = 15)
@@ -363,7 +355,151 @@ public class GroupLoopCoreTest {
         Assert.assertNotEquals(holdPositionThumb, startPositionThumb, "Thumb wasn't move");
     }
 
-    @Test(groups = "Chapter3_WebForm", priority = 18)
+    @Test(groups = "Daria", priority = 200)
+    public void testWebForm() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+        driver.findElement(By.xpath("//a[text()='Web form']")).click();
+        String currentUrl = driver.getCurrentUrl();
+
+        Assert.assertTrue(currentUrl.contains("web-form"), "ссылка должна содержать 'web-form'");
+
+        driver.quit();
+    }
+
+    @Test(groups = "Boich_WebForm", priority = 18)
+    public void testTextInput() {
+        WebElement input = driver.findElement(By.xpath("//input[@id='my-text-id']"));
+        input.click();
+        input.sendKeys("Go !!!");
+
+        String actualValue = input.getAttribute("value");
+        Assert.assertEquals(actualValue, "Go !!!");
+        input.clear();
+    }
+
+    @Test(groups = "Boich_WebForm", priority = 19)
+    public void testPassword() {
+        WebElement password = driver.findElement(By.name("my-password"));
+        password.click();
+        password.sendKeys("Java!");
+
+        String actualValue = password.getAttribute("value");
+        Assert.assertEquals(actualValue, "Java!");
+        password.clear();
+    }
+
+    @Test(groups = "Boich_WebForm", priority = 20)
+    public void testTextarea() {
+        WebElement textarea = driver.findElement(By.name("my-textarea"));
+        textarea.click();
+        textarea.sendKeys("Java! Forever !!");
+
+        String actualValue = textarea.getAttribute("value");
+        Assert.assertEquals(actualValue, "Java! Forever !!");
+    }
+
+    @Test(groups = "Boich_WebForm", priority = 21)
+    public void testDisabledInput() {
+        WebElement disabled = driver.findElement(By.name("my-disabled"));
+        disabled.click();
+
+        Assert.assertTrue(disabled.isDisplayed(), "Поле не задизейблено");
+    }
+
+    @Test(groups = "Boich_WebForm", priority = 22)
+    public void testReadonlyInput() {
+        WebElement readOnlyInput = driver.findElement(By.name("my-readonly"));
+        readOnlyInput.click();
+
+        String expectedPlaceholder = "Readonly input";
+        String actualPlaceholder = readOnlyInput.getAttribute("value");
+        Assert.assertEquals(actualPlaceholder, expectedPlaceholder, "Текст должен быть 'Readonly input'");
+    }
+
+    @Test(groups = "Boich_WebForm", priority = 23)
+    public void testDropdownSelect() {
+        WebElement select = driver.findElement(By.name("my-select"));
+        select.click();
+
+        List<WebElement> options = select.findElements(By.tagName("option"));
+
+        Random random = new Random();
+        WebElement randomOption = options.get(random.nextInt(options.size()));
+
+        String expectedText = randomOption.getText().trim();
+
+        randomOption.click();
+
+        WebElement selectedOption = select.findElement(By.cssSelector("option:checked"));
+        String actualText = selectedOption.getText().trim();
+
+        Assert.assertEquals(actualText, expectedText, "Выбран неправильный элемент");
+    }
+
+    @Test(groups = "Boich_WebForm", priority = 24)
+    public void testDropdownDatalist() {
+        WebElement datalist = driver.findElement(By.name("my-datalist"));
+        datalist.click();
+
+        List<String> options = List.of(
+                "San Francisco", "New York", "Seattle", "Los Angeles", "Chicago"
+        );
+
+        Random random = new Random();
+
+        String expectedValue = options.get(random.nextInt(options.size()));
+
+        datalist.sendKeys(expectedValue);
+
+        String actualValue = datalist.getAttribute("value");
+        Assert.assertEquals(actualValue, expectedValue, "Error");
+        datalist.clear();
+    }
+
+    @Test(groups = "Boich_WebForm", priority = 25)
+    public void testChexBox() {
+        List<WebElement> chexBoxList = driver.findElements(By.xpath("//input[@type='checkbox']"));
+
+        Assert.assertEquals(chexBoxList.size(), 2, "Not == 2");
+        Assert.assertTrue(chexBoxList.get(0).isSelected(), "checkbox d't checked");
+
+        WebElement checkbox = driver.findElement(By.xpath("//input[@id='my-check-1']"));
+        WebElement checkbox2 = driver.findElement(By.xpath("//input[@id='my-check-2']"));
+
+        checkbox.click();
+        Assert.assertFalse(checkbox.isSelected(), "checkbox didn't checked");
+
+        checkbox.click();
+        Assert.assertTrue(checkbox.isSelected(), "checkbox else checked");
+
+        checkbox2.click();
+        Assert.assertTrue(checkbox2.isSelected(), "checkbox2 didn't checked");
+    }
+
+    @Test(groups = "Boich_WebForm", priority = 26)
+    public void testButton() {
+        List<WebElement> radios = driver.findElements(By.xpath("//input[@type='radio']"));
+        Assert.assertEquals(radios.size(), 2, "Нет 2 кнопок");
+        Assert.assertTrue(radios.get(0).isSelected(), "Кнопка не выбрана");
+
+        WebElement radio1 = driver.findElement(By.id("my-radio-1"));
+        WebElement radio2 = driver.findElement(By.id("my-radio-2"));
+        radio2.click();
+
+        Assert.assertFalse(radio1.isSelected(), "Кнопка1 не выбрана");
+        Assert.assertTrue(radio2.isSelected(), "Кнопка2 не выбрана");
+        radio1.click();
+    }
+
+    @Ignore
+    @Test(groups = "Boich_WebForm", priority = 100)
+    public void testAllPageSubmit() {
+        WebElement resultForm = driver.findElement(By.xpath("//h1[text()='Form submitted']"));
+        Assert.assertEquals(resultForm.getText(), "Form submitted");
+    }
+
+    @Test(groups = "Chapter3_WebForm", priority = 150)
     void submitButtonTest() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6));
         WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit']"));
@@ -385,216 +521,43 @@ public class GroupLoopCoreTest {
         Assert.assertEquals(actualTitle, expectedTitle, "Title is wrong!");
     }
 
-    @Test
-    public void testWebForm() {
-
-        WebDriver driver = new ChromeDriver();
-
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
-
-        driver.findElement(By.xpath("//a[text()='Web form']")).click();
-
-        String currentUrl = driver.getCurrentUrl();
-
-        Assert.assertTrue(currentUrl.contains("web-form"), "ссылка должна содержать 'web-form'");
-
-        driver.quit();
-    }
-
-    @Test(groups = "Chapter3_WebForm", priority = 19)
-    public void testTextInput() {
-        WebElement input = driver.findElement(By.xpath("//input[@id='my-text-id']"));
-        input.click();
-        input.sendKeys("Go !!!");
-
-        String actualValue = input.getAttribute("value");
-        Assert.assertEquals(actualValue, "Go !!!");
-    }
-
-    @Test(groups = "Chapter3_WebForm", priority = 20)
-    public void testPassword() {
-        WebElement password = driver.findElement(By.name("my-password"));
-        password.click();
-        password.sendKeys("Java!");
-
-        String actualValue = password.getAttribute("value");
-        Assert.assertEquals(actualValue, "Java!");
-    }
-
-    @Test(groups = "Chapter3_WebForm", priority = 21)
-    public void testTextarea() {
-        WebElement textarea = driver.findElement(By.name("my-textarea"));
-        textarea.click();
-        textarea.sendKeys("Java! Forever !!");
-
-        String actualValue = textarea.getAttribute("value");
-        Assert.assertEquals(actualValue, "Java! Forever !!");
-    }
-
-    @Test(groups = "Chapter3_WebForm", priority = 22)
-    public void testDisabledInput() {
-        WebElement disabled = driver.findElement(By.name("my-disabled"));
-        disabled.click();
-
-        Assert.assertTrue(disabled.isDisplayed(), "Поле не задизейблено");
-    }
-
-    @Test(groups = "Chapter3_WebForm", priority = 23)
-    public void testReadonlyInput() {
-        WebElement readOnlyInput = driver.findElement(By.name("my-readonly"));
-        readOnlyInput.click();
-
-        String expectedPlaceholder = "Readonly input";
-        String actualPlaceholder = readOnlyInput.getAttribute("value");
-        Assert.assertEquals(actualPlaceholder, expectedPlaceholder, "Текст должен быть 'Readonly input'");
-    }
-
-    @Test(groups = "Chapter3_WebForm", priority = 24)
-    public void testDropdownSelect() {
-        WebElement select = driver.findElement(By.name("my-select"));
-        select.click();
-
-        List<WebElement> options = select.findElements(By.tagName("option"));
-
-        Random random = new Random();
-        WebElement randomOption = options.get(random.nextInt(options.size()));
-
-        String expectedText = randomOption.getText().trim();
-
-        randomOption.click();
-
-        WebElement selectedOption = select.findElement(By.cssSelector("option:checked"));
-        String actualText = selectedOption.getText().trim();
-
-        Assert.assertEquals(actualText, expectedText, "Выбран неправильный элемент");
-    }
-
-    @Test(groups = "Chapter3_WebForm", priority = 27)
-    public void testDropdownDatalist() {
-        WebElement datalist = driver.findElement(By.name("my-datalist"));
-        datalist.click();
-
-        WebElement shadowHost = driver.findElement(By.cssSelector("select[name='my-select']"));
-
-        SearchContext shadowRoot = shadowHost.getShadowRoot();
-
-        List<String> options = List.of(
-                "San Francisco", "New York", "Seattle", "Los Angeles", "Chicago"
-        );
-
-        Random random = new Random();
-
-        String expectedValue = options.get(random.nextInt(options.size()));
-
-        datalist.sendKeys(expectedValue);
-
-        String actualValue = datalist.getAttribute("value");
-        Assert.assertEquals(actualValue, expectedValue, "Error");
-    }
-
-    @Test(groups = "Chapter3_WebForm", priority = 28)
-    public void testChexBox() {
-        List<WebElement> chexBoxList = driver.findElements(By.xpath("//input[@type='checkbox']"));
-
-        Assert.assertTrue(chexBoxList.size() == 2, "Not == 2");
-        Assert.assertTrue(chexBoxList.get(0).isSelected(), "checkbox d't checked");
-
-        WebElement checkbox = driver.findElement(By.xpath("//input[@id='my-check-1']"));
-        WebElement checkbox2 = driver.findElement(By.xpath("//input[@id='my-check-2']"));
-
-        checkbox.click();
-        Assert.assertFalse(checkbox.isSelected(), "checkbox didn't checked");
-
-        checkbox.click();
-        Assert.assertTrue(checkbox.isSelected(), "checkbox else checked");
-
-        checkbox2.click();
-        Assert.assertTrue(checkbox2.isSelected(), "checkbox2 didn't checked");
-    }
-
-    @Test(groups = "Chapter3_WebForm", priority = 29)
-    public void testButton() {
-        List<WebElement> radios = driver.findElements(By.xpath("//input[@type='radio']"));
-        Assert.assertEquals(radios.size(), 2, "Нет 2 кнопок");
-        Assert.assertTrue(radios.get(0).isSelected(), "Кнопка не выбрана");
-
-        WebElement radio1 = driver.findElement(By.id("my-radio-1"));
-        WebElement radio2 = driver.findElement(By.id("my-radio-2"));
-        radio2.click();
-
-        Assert.assertFalse(radio1.isSelected(), "Кнопка1 не выбрана");
-        Assert.assertTrue(radio2.isSelected(), "Кнопка2 не выбрана");
-    }
-
-    @Test(groups = "Chapter3_WebForm", priority = 30)
-    public void testAllPageSubmit() {
-        WebElement submit = driver.findElement(By.xpath("//button[text()='Submit']"));
-        submit.click();
-
-        WebElement resultForm = driver.findElement(By.xpath("//h1[text()='Form submitted']"));
-        Assert.assertEquals(resultForm.getText(), "Form submitted");
-
-    }
-
-    @Test
+    @Test(groups = "Alexandra", priority = 28)
     public void textInputTest() {
         String textExample = "test";
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("my-text-id")));
         WebElement textInput = driver.findElement(By.id("my-text-id"));
         textInput.sendKeys(textExample);
         assertEquals(textInput.getAttribute("value"), textExample, "Input data is not equal");
-
-        driver.quit();
     }
 
-    @Test
+    @Test(groups = "Alexandra", priority = 29)
     public void psswrdInputTest() {
         String passwordExample = "123456";
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement passwordInput = driver.findElement(By.xpath("//input[@type='password']"));
         passwordInput.sendKeys(passwordExample);
         assertEquals(passwordInput.getAttribute("value"), passwordExample, "Input data is not equal");
-
-        driver.quit();
     }
 
-    @Test
+    @Test(groups = "Alexandra", priority = 30)
     public void scrollBarAppearTextAreaTest() {
         String textExample = "1\n 2\n 3\n 4\n";
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement textArea = driver.findElement(By.cssSelector(".form-control[name='my-textarea']"));
         long cleanTextArea = Long.parseLong(textArea.getAttribute("scrollHeight"));
         textArea.sendKeys(textExample);
         long fullTextArea = Long.parseLong(textArea.getAttribute("scrollHeight"));
         assertTrue(cleanTextArea < fullTextArea);
-
-        driver.quit();
     }
 
-    @Test
+    @Test(groups = "Alexandra", priority = 31)
     public void dropdownSelectTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement dropdown = driver.findElement(By.cssSelector(".form-select[name='my-select']"));
         dropdown.findElement(By.cssSelector(".form-select option:nth-child(3)")).click();
 
         assertEquals(dropdown.getAttribute("value"), "2");
-
-        driver.quit();
     }
 
-    @Test
+    @Test(groups = "Alexandra", priority = 32)
     public void dropdownDatalistTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement cities = driver.findElement(By.id("my-options"));
         List<WebElement> options = cities.findElements(By.tagName("option"));
         List<String> citiesList = new ArrayList<>();
@@ -605,29 +568,23 @@ public class GroupLoopCoreTest {
         WebElement dropdownDatalist = driver.findElement(By.xpath("//input[@name='my-datalist']"));
         dropdownDatalist.sendKeys(citiesList.get(0));
         assertEquals(dropdownDatalist.getAttribute("value"), "San Francisco");
-
-        driver.quit();
     }
 
-    @Test
+    @Ignore
+    @Test(groups = "Alexandra", priority = 33)
     public void fileInputTest() {
-        String filepath = "C:\\RedroverSQL\\test.txt";
-        WebDriver driver = new ChromeDriver();
+        String filepath = "src/resources/DanilovaE/FileFieldTest.txt";
+
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
 
         WebElement fileInput = driver.findElement(By.xpath("//input[@name='my-file']"));
         fileInput.sendKeys(filepath);
 
-        assertTrue(fileInput.getAttribute("value").contains("test.txt"), "File is not attached");
-
-        driver.quit();
+        assertTrue(fileInput.getAttribute("value").contains("FileFieldTest.txt"), "File is not attached");
     }
 
-    @Test
+    @Test(groups = "Alexandra", priority = 34)
     public void checkboxesTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement chekedCheckbox = driver.findElement(By.xpath("//input[@id='my-check-1']"));
         boolean one = chekedCheckbox.isSelected();
         chekedCheckbox.click();
@@ -637,15 +594,10 @@ public class GroupLoopCoreTest {
         boolean two = defaultCheckbox.isSelected();
         defaultCheckbox.click();
         assertNotEquals(defaultCheckbox.isSelected(), two, "Default checkbox has an error");
-
-        driver.quit();
     }
 
-    @Test
+    @Test(groups = "Alexandra", priority = 35)
     public void radioButtonTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement radio1 = driver.findElement(By.xpath("//input[@id='my-radio-1']"));
         boolean one = radio1.isSelected();
         WebElement radio2 = driver.findElement(By.xpath("//input[@id='my-radio-2']"));
@@ -654,22 +606,16 @@ public class GroupLoopCoreTest {
 
         assertNotEquals(radio1.isSelected(), one, "RadioButton 1 didn't change the condition");
         assertNotEquals(radio2.isSelected(), two, "RadioButton 2 didn't change the condition");
-
-        driver.quit();
     }
 
-    @Test
+    @Ignore
+    @Test(groups = "Alexandra", priority = 36)
     public void submitBttnTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
-
         WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit']"));
         submitButton.click();
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         WebElement submitPageName = driver.findElement(By.xpath("//h1[text()='Form submitted']"));
         assertEquals(submitPageName.getText(), "Form submitted");
-
-        driver.quit();
     }
 }
