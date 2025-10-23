@@ -9,7 +9,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 @Ignore
-public class AnnaMelnikovaTest {
+public class NoGroupTest {
 
     @Test
     public void testNumberOne() {
