@@ -27,9 +27,9 @@ import java.util.stream.Collectors;
 public class GroupCodeCoffeeJavaTest {
     protected WebDriver driver;
     SoftAssert softAssert = new SoftAssert();
-    private static final Logger logger = Logger.getGlobal();
+    private static final Logger logger = null;//Logger.getGlobal();
     private int time;
-    WebDriverWait wait4 = new WebDriverWait(driver, Duration.ofSeconds(4));
+    WebDriverWait wait4 = null;//new WebDriverWait(driver, Duration.ofSeconds(4));
 
 
     public void getActionsScroll() {

@@ -49,7 +49,7 @@ public class AleksATest {
         Assert.assertEquals(titleText.getText(), expectedText);
     }
 
-    @AfterTest
+    //@AfterTest
     public void tearDown() {
         if (driver != null) {
             driver.quit();

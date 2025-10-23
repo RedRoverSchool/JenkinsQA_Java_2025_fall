@@ -35,7 +35,7 @@ public class GroupLoopCoreTest {
     private WebDriverWait wait;
     private WebDriver driver;
 
-    @BeforeSuite
+    //@BeforeSuite
     void setUp() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -46,7 +46,7 @@ public class GroupLoopCoreTest {
         driver.findElement(By.xpath(WEB_FORM_PAGE)).click();
     }
 
-    @AfterSuite
+    //@AfterSuite
     void tearDown() {
         driver.quit();
     }

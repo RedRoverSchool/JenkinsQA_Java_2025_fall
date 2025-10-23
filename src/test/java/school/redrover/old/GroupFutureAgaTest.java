@@ -92,7 +92,7 @@ public class GroupFutureAgaTest {
         this.driver = DriverManager.getDriver();
     }
 
-    @AfterClass
+    //@AfterClass
     public void tearDownDriver() {
         DriverManager.quitDriver();
     }

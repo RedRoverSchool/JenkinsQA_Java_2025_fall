@@ -20,7 +20,7 @@ public class RenataBoichenkoTest {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
     }
 
-    @AfterClass
+    //@AfterClass
     public void tearDown() {
         driver.quit();
     }
