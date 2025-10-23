@@ -16,7 +16,7 @@ public class ExampleTest extends BaseTest {
     }
 
     @Test
-    public void testCreateFreeStyleProject() {
+    public void testCreateFreeStyleProject() throws InterruptedException {
         final String jobName = "my project";
 
         WebElement createJobButton = getDriver().findElement(By.xpath("//a[@href='newJob']"));
@@ -25,6 +25,9 @@ public class ExampleTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(jobName);
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
+
+        Thread.sleep(2000);
+
         getDriver().findElement(By.cssSelector("span.jenkins-mobile-hide")).click();
 
         WebElement jobRecordCell = getDriver().findElement(By.cssSelector(".jenkins-table__link >span:first-child"));
