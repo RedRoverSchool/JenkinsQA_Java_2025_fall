@@ -12,6 +12,6 @@ public class HomePageTest extends BaseTest {
 
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector("span.jenkins-mobile-hide")).getText(),
-                "Jenkins---");
+                "Jenkins");
     }
 }
