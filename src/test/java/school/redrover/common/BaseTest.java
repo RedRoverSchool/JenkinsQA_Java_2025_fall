@@ -16,9 +16,9 @@ public abstract class BaseTest {
 
         ProjectUtils.log("Clear data");
         JenkinsUtils.clearData();
-        ProjectUtils.log("Browser open");
+        ProjectUtils.log("Open the browser");
         driver = ProjectUtils.createDriver();
-        ProjectUtils.log("Get web page");
+        ProjectUtils.log("Get the web page");
         ProjectUtils.get(getDriver());
         ProjectUtils.log("Login");
         JenkinsUtils.login(getDriver());
