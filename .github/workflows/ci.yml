@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-test:
+    name: 'Run tests'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+          cache: 'maven'
+
+# tar -cvf jenkins_backup.tar ./jenkins_backup
+# split -b 90m -d jenkins_backup.tar jenkins_backup
+
+      - name: Prepare Jenkins data
+        run: |
+          cat ${{ github.workspace }}/_jenkins_data/jenkins_backup.tar.gz.part_* > ${{ github.workspace }}/jenkins_backup.tar.gz
+          md5sum ${{ github.workspace }}/jenkins_backup.tar.gz
+
+      - name: Extract Jenkins data and set permission
+        run: |
+          tar -xvf ./jenkins_backup.tar.gz
+          chmod -R 777 ./jenkins_backup/var/jenkins_home
+
+      - name: Docker login
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Docker start
+        run: docker run --rm --detach -p 8080:8080 -v ${{ github.workspace }}/jenkins_backup/var/jenkins_home:/var/jenkins_home jenkins/jenkins:2.516.3-lts-jdk21
+
+      - name: Wait for the Jenkins
+        run: ./.github/wait-for-jenkins.sh
+
+      - name: Maven test
+        run: mvn test
+        env:
+          JENKINS_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+          JENKINS_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          JENKINS_HOST: localhost
+          JENKINS_PORT: 8080
+          BROWSER_NAME: chrome
+          BROWSER_OPTIONS_CHROME: --remote-allow-origins=*;--disable-gpu;--no-sandbox;--disable-dev-shm-usage;--headless=new;--window-size=1920,1080
+          RUN_CI: true
