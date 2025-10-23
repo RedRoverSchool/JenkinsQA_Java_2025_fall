@@ -1,14 +1,12 @@
 package school.redrover.old;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.time.Duration;
 
 import static org.testng.Assert.assertFalse;
@@ -351,5 +349,78 @@ public class BreadcrumbsTest {
         driver.quit();
 
     }
+
+    @Test
+    public void loginUserWithIncorrectEmailPassword() {
+        String mainPage = "https://automationexercise.com/";
+        String userEmail = "testloginemail@test.com";
+        String userPassword = "incorrectPassword";
+        WebDriver driver = new ChromeDriver();
+
+        driver.get(mainPage);
+        driver.findElement(By.cssSelector("li a[href='/login']")).click();
+
+        driver.findElement(By.cssSelector("[data-qa=\"login-email\"]")).sendKeys(userEmail);
+        driver.findElement(By.cssSelector("[data-qa=\"login-password\"]")).sendKeys(userPassword);
+        driver.findElement(By.cssSelector("[data-qa=\"login-button\"]")).click();
+
+        Assert.assertTrue(driver.findElement(By.cssSelector("form[action=\"/login\"] input[type=\"password\"] + p")).isDisplayed(), "Email or password incorrect");
+        Assert.assertEquals(driver.findElement(By.cssSelector("form[action=\"/login\"] input[type=\"password\"] + p")).getText(), "Your email or password is incorrect!");
+
+        driver.quit();
+    }
+
+    @Test
+    public void registerUserWithExistingEmail() {
+        String mainPage = "https://automationexercise.com/";
+        String userEmail = "testloginemail@test.com";
+        String userName = "UserName";
+        WebDriver driver = new ChromeDriver();
+
+        driver.get(mainPage);
+        driver.findElement(By.cssSelector("li a[href='/login']")).click();
+
+        driver.findElement(By.cssSelector("[data-qa=\"signup-name\"]")).sendKeys(userName);
+        driver.findElement(By.cssSelector("[data-qa=\"signup-email\"]")).sendKeys(userEmail);
+        driver.findElement(By.cssSelector("[data-qa=\"signup-button\"]")).click();
+
+        WebElement emailAlreadyUsed = driver.findElement(By.cssSelector("form[action=\"/signup\"] input[type=\"hidden\"] + p"));
+        Assert.assertTrue(emailAlreadyUsed.isDisplayed(), "Email already used");
+        Assert.assertEquals(emailAlreadyUsed.getText(), "Email Address already exist!");
+
+        driver.quit();
+    }
+
+    @Test
+    public void contactUsForm() {
+        String mainPage = "https://automationexercise.com/";
+        WebDriver driver = new ChromeDriver();
+
+        driver.get(mainPage);
+        driver.findElement(By.cssSelector("li a[href='/contact_us']")).click();
+
+        driver.findElement(By.cssSelector("[data-qa=\"name\"]")).sendKeys("Name");
+        driver.findElement(By.cssSelector("[data-qa=\"email\"]")).sendKeys("testuseremail@test.com");
+        driver.findElement(By.cssSelector("[data-qa=\"subject\"]")).sendKeys("Test subject");
+        driver.findElement(By.cssSelector("[data-qa=\"message\"]")).sendKeys("Test message?");
+
+        String filePath = "C:\\Users\\yana\\test_files_aqa\\test_file.png";
+        driver.findElement(By.name("upload_file")).sendKeys(filePath);
+
+        driver.findElement(By.cssSelector("[data-qa=\"submit-button\"]")).click();
+
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+
+        WebElement homeButton = driver.findElement(By.cssSelector("#form-section .btn"));
+
+        Assert.assertEquals(driver.findElement(By.className("status")).getText(), "Success! Your details have been submitted successfully.");
+        Assert.assertTrue(driver.findElement(By.className("status")).isDisplayed());
+
+        driver.quit();
+
+    }
+
+
 
 };
