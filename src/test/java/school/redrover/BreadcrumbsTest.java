@@ -1,9 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -351,4 +348,26 @@ public class BreadcrumbsTest {
 
     }
 
+    @Test
+    public void kirill_testcase6() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://automationexercise.com/");
+        Assert.assertEquals(driver.getTitle(), "Automation Exercise");
+
+        driver.findElement((By.cssSelector("#header .shop-menu ul > :nth-child(8) > a[href]"))).click();
+        Assert.assertTrue(driver.findElement(By.cssSelector("#contact-page > div.row > div.col-sm-8 > div > h2")).isDisplayed());
+        driver.findElement(By.cssSelector("[data-qa='name']")).sendKeys("User");
+        driver.findElement(By.cssSelector("[data-qa='email']")).sendKeys("email@supergoogle.com");
+        driver.findElement(By.cssSelector("[data-qa='subject']")).sendKeys("Subj");
+        driver.findElement(By.cssSelector("[data-qa='message']")).sendKeys("Delete this message");
+        driver.findElement(By.cssSelector("[data-qa='submit-button']")).click();
+
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+        Assert.assertEquals(driver.findElement(By.cssSelector(".contact-form > :nth-child(3)")).getText(), "Success! Your details have been submitted successfully.");
+
+        driver.findElement(By.cssSelector("#form-section > a > span")).click();
+        driver.quit();
+    }
 };
