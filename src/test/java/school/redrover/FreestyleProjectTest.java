@@ -10,7 +10,7 @@ import school.redrover.common.BaseTest;
 public class FreestyleProjectTest extends BaseTest {
 
     @Test
-    public void testCreateFreestyleProject() {
+    public void testCreateFreestyleProject() throws InterruptedException {
         WebElement createJob = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
         createJob.click();
 
@@ -25,6 +25,8 @@ public class FreestyleProjectTest extends BaseTest {
 
         WebElement saveButton = getDriver().findElement(By.name("Submit"));
         saveButton.click();
+
+        Thread.sleep(1500);
 
         WebElement projectTitle = getDriver().findElement(By.xpath("//h1"));
 
