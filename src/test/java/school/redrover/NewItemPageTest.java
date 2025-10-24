@@ -18,7 +18,7 @@ public class NewItemPageTest extends BaseTest {
         WebElement newItemButton = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOfElementLocated(newItemButtonFromHomePage));
 
-        getDriver().findElement(newItemButtonFromHomePage).click();
+        newItemButton.click();
     }
 
     @Test
