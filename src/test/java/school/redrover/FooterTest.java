@@ -10,7 +10,7 @@ import java.util.List;
 public class FooterTest extends BaseTest {
 
     @Test
-    public void testCheckRestApiPage() {
+    public void testRestApiPage() {
         getDriver().findElement(By.xpath("//a[@href='api/']")).click();
 
         String actualTitle = getDriver().getTitle();
