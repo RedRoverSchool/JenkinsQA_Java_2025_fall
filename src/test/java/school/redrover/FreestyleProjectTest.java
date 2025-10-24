@@ -30,4 +30,22 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(projectTitle.getText(), "Freestyle Project");
     }
+
+    @Test
+    public void testAddDescription() {
+        testCreateFreestyleProject();
+
+        WebElement addDescription = getDriver().findElement(By.id("description-link"));
+        addDescription.click();
+
+        WebElement textBox = getDriver().findElement(By.xpath("//textarea"));
+        textBox.sendKeys("This is a Freestyle Project");
+
+        WebElement saveButton = getDriver().findElement(By.name("Submit"));
+        saveButton.click();
+
+        WebElement description = getDriver().findElement(By.id("description-content"));
+
+        Assert.assertEquals(description.getText(), "This is a Freestyle Project");
+    }
 }
