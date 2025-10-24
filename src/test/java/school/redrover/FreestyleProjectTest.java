@@ -33,7 +33,20 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testAddDescription() {
-        testCreateFreestyleProject();
+        WebElement createJob = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
+        createJob.click();
+
+        WebElement projectName = getDriver().findElement(By.id("name"));
+        projectName.sendKeys("Freestyle Project");
+
+        WebElement freestyleProjectOption = getDriver().findElement(By.xpath("//span[text()='Freestyle project']"));
+        freestyleProjectOption.click();
+
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        okButton.click();
+
+        WebElement saveButton = getDriver().findElement(By.name("Submit"));
+        saveButton.click();
 
         WebElement addDescription = getDriver().findElement(By.id("description-link"));
         addDescription.click();
@@ -41,8 +54,8 @@ public class FreestyleProjectTest extends BaseTest {
         WebElement textBox = getDriver().findElement(By.xpath("//textarea"));
         textBox.sendKeys("This is a Freestyle Project");
 
-        WebElement saveButton = getDriver().findElement(By.name("Submit"));
-        saveButton.click();
+        WebElement saveButtonDescription = getDriver().findElement(By.name("Submit"));
+        saveButtonDescription.click();
 
         WebElement description = getDriver().findElement(By.id("description-content"));
 
