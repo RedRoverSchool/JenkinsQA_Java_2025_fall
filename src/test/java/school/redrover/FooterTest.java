@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -11,7 +10,7 @@ import java.util.List;
 public class FooterTest extends BaseTest {
 
     @Test
-    public void testCheckRestApi() {
+    public void testCheckRestApiPage() {
         getDriver().findElement(By.xpath("//a[@href='api/']")).click();
 
         String actualTitle = getDriver().getTitle();
