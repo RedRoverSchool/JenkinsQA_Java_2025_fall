@@ -20,5 +20,4 @@ public class DescriptionTest extends BaseTest {
         String actualDescription = getDriver().findElement(By.id("description-content")).getText();
         Assert.assertEquals(actualDescription, description);
     }
-
 }
