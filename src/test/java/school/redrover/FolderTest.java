@@ -9,7 +9,7 @@ import school.redrover.common.BaseTest;
 public class FolderTest extends BaseTest {
 
     @Test(testName = "Создание Folder")
-    public void createFolder() throws InterruptedException {
+    public void testCreateFolder() throws InterruptedException {
         final String folderName = "best folder in the world";
 
         WebElement createJobButton = getDriver().findElement(By.cssSelector("a[href='newJob']"));
