@@ -36,13 +36,10 @@ public class FooterTest extends BaseTest {
                 "Restarting Jenkins"
         );
 
-        new WebDriverWait(getDriver(), Duration.ofMillis(2000))
-                .until(ExpectedConditions.elementToBeClickable
-                        (By.xpath("//a[@href='api/']")))
-                .click();
+        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
 
         new WebDriverWait(getDriver(), Duration.ofMillis(2000))
-                .until(ExpectedConditions.textToBe(By.tagName("h1"), expectedHeading));
+                .until(ExpectedConditions.urlContains("api/"));
 
         String actualHeading = getDriver().findElement(By.tagName("h1")).getText();
 
