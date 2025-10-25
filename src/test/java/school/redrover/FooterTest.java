@@ -25,6 +25,16 @@ public class FooterTest extends BaseTest {
     @Test
     public void testRestApiPageHeadings() {
         final String expectedHeading = "REST API";
+        final List<String> expectedSubHeadings = List.of(
+                "Controlling the amount of data you fetch",
+                "Create Job",
+                "Copy Job",
+                "Create View",
+                "Copy View",
+                "Build Queue",
+                "Load Statistics",
+                "Restarting Jenkins"
+        );
 
         new WebDriverWait(getDriver(), Duration.ofMillis(2000))
                 .until(ExpectedConditions.elementToBeClickable
@@ -35,17 +45,6 @@ public class FooterTest extends BaseTest {
                 .until(ExpectedConditions.textToBe(By.tagName("h1"), expectedHeading));
 
         String actualHeading = getDriver().findElement(By.tagName("h1")).getText();
-
-        List<String> expectedSubHeadings = List.of(
-                "Controlling the amount of data you fetch",
-                "Create Job",
-                "Copy Job",
-                "Create View",
-                "Copy View",
-                "Build Queue",
-                "Load Statistics",
-                "Restarting Jenkins"
-        );
 
         List<String> actualSubHeadings = getDriver()
                 .findElements(By.tagName("h2"))
