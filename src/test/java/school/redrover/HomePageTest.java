@@ -15,10 +15,10 @@ public class HomePageTest extends BaseTest {
 
     @Test
     public void testHomePageHeadings() {
-        WebElement actualHeading = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1")));
+        final List<String> expectedSubHeadings = List.of("Start building your software project", "Set up a distributed build");
 
-        List<String> expectedSubHeadings = List.of("Start building your software project", "Set up a distributed build");
+        WebElement actualHeading = new WebDriverWait(getDriver(), Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block h1")));
 
         List<String> actualSubHeadings = getDriver()
                 .findElements(By.cssSelector("h2.h4"))
