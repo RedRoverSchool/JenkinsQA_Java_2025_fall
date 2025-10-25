@@ -26,12 +26,12 @@ public class FooterTest extends BaseTest {
     public void testRestApiPageHeadings() {
         final String expectedHeading = "REST API";
 
-        new WebDriverWait(getDriver(), Duration.ofSeconds(10))
+        new WebDriverWait(getDriver(), Duration.ofMillis(2000))
                 .until(ExpectedConditions.elementToBeClickable
                         (By.xpath("//a[@href='api/']")))
                 .click();
 
-        new WebDriverWait(getDriver(), Duration.ofSeconds(10))
+        new WebDriverWait(getDriver(), Duration.ofMillis(2000))
                 .until(ExpectedConditions.textToBe(By.tagName("h1"), expectedHeading));
 
         String actualHeading = getDriver().findElement(By.tagName("h1")).getText();
