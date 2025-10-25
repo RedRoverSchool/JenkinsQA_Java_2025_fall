@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -58,12 +59,11 @@ public class FooterTest extends BaseTest {
                 "Website"
         );
 
-        new WebDriverWait(getDriver(), Duration.ofMillis(2000))
-                .until(ExpectedConditions.visibilityOfElementLocated(
+        List<WebElement> dropdownItems = new WebDriverWait(getDriver(), Duration.ofMillis(2000))
+                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                         By.xpath("//a[contains(@class, 'jenkins-dropdown__item')]")));
 
-        List<String> actualDropdownItems = getDriver()
-                .findElements(By.xpath("//a[contains(@class, 'jenkins-dropdown__item')]"))
+        List<String> actualDropdownItems = dropdownItems
                 .stream()
                 .map(DropdownItem -> DropdownItem.getText())
                 .toList();
