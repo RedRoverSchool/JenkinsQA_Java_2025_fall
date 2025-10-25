@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PipelineTest extends BaseTest {
 
-    static final String PIPELINE_NAME = "PipelineName";
+    private static final String PIPELINE_NAME = "PipelineName";
 
     @Test
     public void testCreatePipeline() throws InterruptedException {
