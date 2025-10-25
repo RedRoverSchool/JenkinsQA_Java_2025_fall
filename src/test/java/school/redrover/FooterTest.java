@@ -24,7 +24,15 @@ public class FooterTest extends BaseTest {
 
     @Test
     public void testRestApiPageHeadings() {
-        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+        final String expectedHeading = "REST API";
+
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable
+                        (By.xpath("//a[@href='api/']")))
+                .click();
+
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10))
+                .until(ExpectedConditions.textToBe(By.tagName("h1"), expectedHeading));
 
         String actualHeading = getDriver().findElement(By.tagName("h1")).getText();
 
@@ -42,10 +50,10 @@ public class FooterTest extends BaseTest {
         List<String> actualSubHeadings = getDriver()
                 .findElements(By.tagName("h2"))
                 .stream()
-                .map(subHeading -> subHeading.getText())
+                .map(WebElement::getText)
                 .toList();
 
-        Assert.assertEquals(actualHeading, "REST API");
+        Assert.assertEquals(actualHeading, expectedHeading);
         Assert.assertEquals(actualSubHeadings, expectedSubHeadings);
     }
 
@@ -65,7 +73,7 @@ public class FooterTest extends BaseTest {
 
         List<String> actualDropdownItems = dropdownItems
                 .stream()
-                .map(DropdownItem -> DropdownItem.getText())
+                .map(WebElement::getText)
                 .toList();
 
         Assert.assertEquals(actualDropdownItems, expectedDropdownItems);
