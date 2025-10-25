@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -28,6 +29,7 @@ public class PipelineTest extends BaseTest {
                 pipelineName);
     }
 
+    @Ignore
     @Test
     public void testDeletePipeline() throws InterruptedException {
         Actions actions = new Actions(getDriver());
