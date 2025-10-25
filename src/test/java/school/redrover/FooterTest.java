@@ -1,10 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.time.Duration;
 import java.util.List;
 
 public class FooterTest extends BaseTest {
@@ -43,5 +46,28 @@ public class FooterTest extends BaseTest {
 
         Assert.assertEquals(actualHeading, "REST API");
         Assert.assertEquals(actualSubHeadings, expectedSubHeadings);
+    }
+
+    @Test
+    public void testJenkinsDropdown() {
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
+
+        List<String> expectedDropdownItems = List.of(
+                "About Jenkins",
+                "Get involved",
+                "Website"
+        );
+
+        new WebDriverWait(getDriver(), Duration.ofMillis(2000))
+                .until(ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//a[contains(@class, 'jenkins-dropdown__item')]")));
+
+        List<String> actualDropdownItems = getDriver()
+                .findElements(By.xpath("//a[contains(@class, 'jenkins-dropdown__item')]"))
+                .stream()
+                .map(DropdownItem -> DropdownItem.getText())
+                .toList();
+
+        Assert.assertEquals(actualDropdownItems, expectedDropdownItems);
     }
 }
