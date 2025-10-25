@@ -51,7 +51,7 @@ public class FooterTest extends BaseTest {
 
     @Test
     public void testJenkinsDropdown() {
-        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
+        getDriver().findElement(By.cssSelector("button.jenkins_ver")).click();
 
         List<String> expectedDropdownItems = List.of(
                 "About Jenkins",
