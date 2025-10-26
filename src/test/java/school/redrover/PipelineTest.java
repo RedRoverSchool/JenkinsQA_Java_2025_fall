@@ -73,7 +73,7 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.id("jenkins-build-history")).click();
         getDriver().findElement(By.xpath("//a[substring-before(@href, 'console')]")).click();
 
-        String consoleOutputText = getDriver().findElement(By.id("consoleOutputText")).getText();
+        String consoleOutputText = getDriver().findElement(By.id("out")).getText();
 
         Assert.assertTrue(consoleOutputText.contains("Finished: SUCCESS"), "Build output should contain 'Finished: SUCCESS'");
     }
