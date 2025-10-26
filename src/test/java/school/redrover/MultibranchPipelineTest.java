@@ -38,10 +38,12 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testTryCreateProjectExistName(){
+    public void testTryCreateProjectExistName() throws InterruptedException {
         final String errorMessage = "» A job already exists with the name " + "‘" + MULTIBRANCH_PIPELINE_NAME + "’";
 
         createMultibranchPipline();
+
+        Thread.sleep(3000);
         getDriver().findElement(By.xpath("//a[@href='/']/img")).click();
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
