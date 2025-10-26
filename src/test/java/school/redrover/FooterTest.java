@@ -24,11 +24,8 @@ public class FooterTest extends BaseTest {
 
     @Test
     public void testRestApiPageHeadings() {
-        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
-
-        String actualHeading = getDriver().findElement(By.tagName("h1")).getText();
-
-        List<String> expectedSubHeadings = List.of(
+        final String expectedHeading = "REST API";
+        final List<String> expectedSubHeadings = List.of(
                 "Controlling the amount of data you fetch",
                 "Create Job",
                 "Copy Job",
@@ -39,13 +36,20 @@ public class FooterTest extends BaseTest {
                 "Restarting Jenkins"
         );
 
+        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+
+        new WebDriverWait(getDriver(), Duration.ofMillis(2000))
+                .until(ExpectedConditions.urlContains("api/"));
+
+        String actualHeading = getDriver().findElement(By.tagName("h1")).getText();
+
         List<String> actualSubHeadings = getDriver()
                 .findElements(By.tagName("h2"))
                 .stream()
-                .map(subHeading -> subHeading.getText())
+                .map(WebElement::getText)
                 .toList();
 
-        Assert.assertEquals(actualHeading, "REST API");
+        Assert.assertEquals(actualHeading, expectedHeading);
         Assert.assertEquals(actualSubHeadings, expectedSubHeadings);
     }
 
@@ -65,7 +69,7 @@ public class FooterTest extends BaseTest {
 
         List<String> actualDropdownItems = dropdownItems
                 .stream()
-                .map(DropdownItem -> DropdownItem.getText())
+                .map(WebElement::getText)
                 .toList();
 
         Assert.assertEquals(actualDropdownItems, expectedDropdownItems);
