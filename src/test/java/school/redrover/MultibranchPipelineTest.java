@@ -56,7 +56,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testVerifyStatusToSwitchingEnableMultibranchPipeline() {
+    public void testVerifyStatusToSwitchingEnableMultibranchPipeline() throws InterruptedException {
         final String disableText = "This Multibranch Pipeline is currently disabled";
 
         createMultibranchPipline();
@@ -64,6 +64,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
         getDriver().findElement(By.name("Submit")).click();
 
+        Thread.sleep(3000);
         String actualDisableText = getDriver().findElement(By.id("enable-project")).getText();
         Assert.assertTrue(actualDisableText.contains(disableText));
     }
