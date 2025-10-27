@@ -17,7 +17,7 @@ public class AvailableJobTypesTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='jenkins-form-label']")));
 
         List<String> expectedItemType = List.of(
