@@ -13,6 +13,5 @@ public class CorrectVersionJenkinsTest extends BaseTest {
                         .getText();
 
         Assert.assertEquals(jenkinsVersionNumber, "Jenkins 2.516.3");
-
     }
 }
