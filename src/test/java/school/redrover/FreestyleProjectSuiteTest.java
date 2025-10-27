@@ -35,20 +35,21 @@ public class FreestyleProjectSuiteTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         wait.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.name("Submit")))).click();
 
-        Assert.assertTrue(Objects.requireNonNull(getDriver().getCurrentUrl()).contains("http://localhost:8080/job/" + itemName + "/"),
+        Assert.assertTrue(Objects.requireNonNull(getDriver().getCurrentUrl()).contains("/job/" + itemName + "/"),
                 item + " is not created");
     }
 
     @Test
     public void testCreateFreestyleProject() {
         createNewItem(FREESTYLE_PROJECT_NAME, "Freestyle project");
-
+        Assert.assertTrue(Objects.requireNonNull(getDriver().getCurrentUrl()).contains("/job/" + FREESTYLE_PROJECT_NAME + "/"),
+                 "Freestyle project is not created");
         Assert.assertEquals(getDriver().findElement(By.className("job-index-headline")).getText(),
                 FREESTYLE_PROJECT_NAME, "Wrong project is created/opened");
     }
 
     @Test
-    public void testAddDescriptionToFreestyleProject() {
+    public void testAddDescriptionToFreestyleProject() throws InterruptedException {
         createNewItem(FREESTYLE_PROJECT_NAME, "Freestyle project");
 
         getDriver().findElement(By.linkText("Add description")).click();
@@ -56,8 +57,9 @@ public class FreestyleProjectSuiteTest extends BaseTest {
         descriptionField.clear();
         descriptionField.sendKeys("Description for " + FREESTYLE_PROJECT_NAME);
         getDriver().findElement(By.name("Submit")).click();
+        Thread.sleep(200);
 
-        Assert.assertEquals(wait.until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("description-content")))).getText(),
+        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(),
                 "Description for " + FREESTYLE_PROJECT_NAME, "Wrong description");
     }
 
@@ -72,7 +74,7 @@ public class FreestyleProjectSuiteTest extends BaseTest {
         newNameField.sendKeys(newFreestyleProjectName);
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.className("job-index-headline")).getText(), newFreestyleProjectName,
+        Assert.assertEquals(wait.until(ExpectedConditions.visibilityOf(getDriver().findElement(By.className("job-index-headline")))).getText(), newFreestyleProjectName,
                 "Wrong new name");
     }
 
@@ -88,6 +90,7 @@ public class FreestyleProjectSuiteTest extends BaseTest {
         Select select = new Select(getDriver().findElement(By.className("jenkins-select__input")));
         select.selectByValue("/" + folderName);
         getDriver().findElement(By.name("Submit")).click();
+        Thread.sleep(200);
 
         Assert.assertTrue(getDriver().findElement(By.id("main-panel")).getText().contains(
                 "Full project name: " + folderName + "/" + FREESTYLE_PROJECT_NAME), "Wrong full project name");
@@ -109,7 +112,7 @@ public class FreestyleProjectSuiteTest extends BaseTest {
 
         getDriver().findElement(By.linkText("Delete Project")).click();
         wait.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath("//button[@data-id='ok']")))).click();
-        getDriver().get("http://localhost:8080/job/" + FREESTYLE_PROJECT_NAME);
+        getDriver().get(getDriver().getCurrentUrl()+"/job/" + FREESTYLE_PROJECT_NAME);
 
         Assert.assertTrue(getDriver().findElement(By.id("error-description")).getText().contains("Not Found"),
                 "Wrong message about deleted item");
