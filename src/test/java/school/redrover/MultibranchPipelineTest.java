@@ -48,11 +48,11 @@ public class MultibranchPipelineTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
         getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
 
-        Thread.sleep(3000);
-        String actualMessage = getDriver().findElement(By.xpath("//*[@id='itemname-invalid']")).getText();
+        Thread.sleep(2000);
+        String actualMessage = getDriver().findElement(By.id("itemname-invalid")).getText();
         Assert.assertEquals(actualMessage, errorMessage);
     }
 
