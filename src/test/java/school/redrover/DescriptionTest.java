@@ -31,6 +31,7 @@ public class DescriptionTest extends BaseTest {
 
         setDescription(getDriver(), secondDescription);
 
+        Thread.sleep(3000);
         String actualDescription = getContent(getDriver());
         Assert.assertEquals(actualDescription, secondDescription + firstDescription);
     }
