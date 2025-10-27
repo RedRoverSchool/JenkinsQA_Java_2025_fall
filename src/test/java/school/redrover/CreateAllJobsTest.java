@@ -1,10 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -39,7 +42,8 @@ public class CreateAllJobsTest extends BaseTest {
     }
 
     @Test
-    public void testCreateJobs() {
+    public void testCreateJobs() throws InterruptedException
+    {
 
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
 
@@ -51,6 +55,7 @@ public class CreateAllJobsTest extends BaseTest {
             getDriver().findElement(By.xpath(getJobs(i))).click();
             getDriver().findElement(By.id("ok-button")).click();
 
+            Thread.sleep(2000);
             getDriver().findElement(By.xpath("//span[text()='Jenkins']")).click();
             getDriver().findElement(By.xpath("//span[text()='" + name + "']"));
 
