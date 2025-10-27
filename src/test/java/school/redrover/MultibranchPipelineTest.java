@@ -8,7 +8,7 @@ import school.redrover.common.BaseTest;
 
 public class MultibranchPipelineTest extends BaseTest {
 
-    private static final String MULTIBRANCH_PIPELINE_NAME = "MulribranchName";
+    private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchName";
 
     private void createMultibranchPipline() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -61,12 +61,12 @@ public class MultibranchPipelineTest extends BaseTest {
         final String disableText = "This Multibranch Pipeline is currently disabled";
 
         createMultibranchPipline();
-        getDriver().findElement(By.xpath("//a[@href='/job/MulribranchName/configure']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/configure']")).click();
         getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
         getDriver().findElement(By.name("Submit")).click();
 
         Thread.sleep(3000);
-        String actualDisableText = getDriver().findElement(By.id("enable-project")).getText();
+        String actualDisableText = getDriver().findElement(By.id("disabled-message")).getText();
         Assert.assertTrue(actualDisableText.contains(disableText));
     }
 }
