@@ -65,7 +65,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         String actualDisableText = getDriver().findElement(By.id("disabled-message")).getText();
         Assert.assertTrue(actualDisableText.contains(disableText));
     }
