@@ -22,9 +22,9 @@ public class JobCreationTest extends BaseTest {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-form-label']")));
 
         List<String> expectedItemType = List.of(
-                "Создать задачу со свободной конфигурацией",
+                "Freestyle project",
                 "Pipeline",
-                "Мультиконфигурационный проект",
+                "Multi-configuration project",
                 "Folder",
                 "Multibranch Pipeline",
                 "Organization Folder"
