@@ -8,9 +8,37 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import java.time.Duration;
+import java.util.List;
 
 
-public class ClassicJobTest extends BaseTest {
+public class JobCreationTest extends BaseTest {
+
+    @Test
+    public void testAvailableJobTypes() {
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-form-label']")));
+
+        List<String> expectedItemType = List.of(
+                "Создать задачу со свободной конфигурацией",
+                "Pipeline",
+                "Мультиконфигурационный проект",
+                "Folder",
+                "Multibranch Pipeline",
+                "Organization Folder"
+        );
+
+        List<WebElement> itemType = getDriver().findElements(By.xpath("//div[@id='items']//label"));
+
+        List<String> actualItemType = itemType
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+
+        Assert.assertEquals(actualItemType, expectedItemType);
+    }
 
     @Test
     public void testCreateClassicJob() {
