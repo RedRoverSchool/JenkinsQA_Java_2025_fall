@@ -39,7 +39,7 @@ public class FolderTest extends BaseTest {
 
     @Test(testName = "Добавление описания к Folder")
     public void testAddDescriptionToFolder() throws InterruptedException {
-        getDriver().findElement(By.xpath("//a[@it='hudson.model.Hudson@6aae4b80']")).click();
+        getDriver().findElement(By.cssSelector("a[href='newJob']")).click();
 
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).
                 sendKeys(folderName);
