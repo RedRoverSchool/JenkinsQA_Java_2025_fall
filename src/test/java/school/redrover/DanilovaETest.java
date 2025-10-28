@@ -36,9 +36,14 @@ public class DanilovaETest extends BaseTest {
 
     private String getCurrentStageUrl() throws IOException {
         properties.load(getClass().getClassLoader().getResourceAsStream(".properties"));
-        String host = properties.getProperty("jenkins.host");
-        String port = properties.getProperty("jenkins.port");
-        return String.format("http://%s:%s/", host, port);
+        String remoutHost = System.getenv("JENKINS_HOST");
+        String localHost = properties.getProperty("jenkins.host");
+        String remoutPort = System.getenv("JENKINS_PORT");
+        String localPort = properties.getProperty("jenkins.port");
+        if (remoutHost != null && remoutPort != null) {
+            return String.format("http://%s:%s/", remoutHost, remoutPort);
+        }
+        return String.format("http://%s:%s/", localHost, localPort);
     }
 
     @Test
