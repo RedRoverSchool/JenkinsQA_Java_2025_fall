@@ -40,10 +40,11 @@ public class DanilovaETest extends BaseTest {
         String localHost = properties.getProperty("jenkins.host");
         String remoutPort = System.getenv("JENKINS_PORT");
         String localPort = properties.getProperty("jenkins.port");
+        String targetUrl = "";
         if (remoutHost != null && remoutPort != null) {
-            return String.format("http://%s:%s/", remoutHost, remoutPort);
-        }
-        return String.format("http://%s:%s/", localHost, localPort);
+            targetUrl = String.format("http://%s:%s/", remoutHost, remoutPort);
+        } else targetUrl = String.format("http://%s:%s/", localHost, localPort);
+        return targetUrl;
     }
 
     @Test
