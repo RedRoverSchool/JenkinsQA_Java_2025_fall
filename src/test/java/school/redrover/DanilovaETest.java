@@ -35,12 +35,7 @@ public class DanilovaETest extends BaseTest {
     private static final By pipelineButton = By.xpath("(//span[@class='label'])[2]");
     private static final By submitButton = By.xpath("//button[@type='submit']");
 
-    private String getCurrentStageUrl() throws IOException {
-        //       properties.load(getClass().getClassLoader().getResourceAsStream(".properties"));
-//        String remoutHost = System.getenv("JENKINS_HOST");
-//        String localHost = properties.getProperty("jenkins.host");
-//        String remoutPort = System.getenv("JENKINS_PORT");
-//        String localPort = properties.getProperty("jenkins.port");
+    private String getCurrentStageUrl(){
         String host = ProjectUtils.getValue("jenkins.host");
         String port = ProjectUtils.getValue("jenkins.port");
         return String.format("http://%s:%s/", host, port);
