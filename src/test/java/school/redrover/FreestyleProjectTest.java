@@ -34,7 +34,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public  void testRenameProjectTest() throws InterruptedException {
+    public void testRenameProjectTest() throws InterruptedException {
         WebElement createJob = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
         createJob.click();
         WebElement projectName = getDriver().findElement(By.id("name"));
