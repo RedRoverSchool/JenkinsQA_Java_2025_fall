@@ -72,7 +72,12 @@ public class DanilovaETest extends BaseTest {
         } catch (IOException ignore) {
         }
         byte[] expectedBytes = expectedLogoStream.readAllBytes();
-        byte[] actualBytes = actualLogoStream.readAllBytes();
+        byte[] actualBytes = null;
+        try {
+            assert actualLogoStream != null;
+            actualBytes = actualLogoStream.readAllBytes();
+        } catch (NullPointerException ignored) {
+        }
 
         Assert.assertTrue(Arrays.equals(expectedBytes, actualBytes),
                 "Logo image bytes differ from expected");
