@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
@@ -47,9 +46,8 @@ public class MultiConfigurationProjectTest extends BaseTest {
         return getDriver().findElement(By.xpath("//h1[@class= 'matrix-project-headline page-headline']")).getText();
     }
 
-    public void goToProject(String projectName, String name) {
+    public void goToProject(String projectName) {
         getDriver().findElement(By.xpath(String.format("//td/a[@href='job/%s/']", projectName))).click();
-        getDriver().findElement(By.xpath(String.format("//span[text()= '%s']",name))).click();
     }
 
     public void goToDashBoard() {
@@ -77,7 +75,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         softAssert.assertAll();
     }
 
-    @Test(priority = 1)
+    @Test
     public void testAddDescriptionToProject() {
         createNewJob();
         setNameOfProject(NAME_OF_PROJECT);
@@ -85,7 +83,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         submitCreateProject();
         submitConfigure();
         goToDashBoard();
-        goToProject(NAME_OF_PROJECT, NAME_OF_PROJECT);
+        goToProject(NAME_OF_PROJECT);
         renameWithSidePanel("NewNameProject");
         getTitleOfProject();
 
