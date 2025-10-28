@@ -103,9 +103,11 @@ public class DanilovaETest extends BaseTest {
         wait.until(ExpectedConditions.elementToBeClickable(pipelineButton));
         getDriver().findElement(pipelineButton).click();
         getDriver().findElement(submitButton).click();
-
-        String currentUrl = getDriver().getCurrentUrl();
         String expectedNewUrl = String.format("/job/%s/configure", newName);
+
+        wait.until(ExpectedConditions.urlContains("/configure"));
+        String currentUrl = getDriver().getCurrentUrl();
+
         assert currentUrl != null;
         URI uri = URI.create(currentUrl);
 
