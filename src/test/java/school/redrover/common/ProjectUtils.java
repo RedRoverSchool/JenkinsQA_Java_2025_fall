@@ -52,7 +52,7 @@ public final class ProjectUtils {
         return propName.replace('.', '_').toUpperCase();
     }
 
-    private static String getValue(String name) {
+    public static String getValue(String name) {
         return properties.getProperty(name, System.getenv(convertPropToEnvName(name)));
     }
 

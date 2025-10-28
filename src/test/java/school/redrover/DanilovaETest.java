@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.ProjectUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,15 +37,13 @@ public class DanilovaETest extends BaseTest {
 
     private String getCurrentStageUrl() throws IOException {
         properties.load(getClass().getClassLoader().getResourceAsStream(".properties"));
-        String remoutHost = System.getenv("JENKINS_HOST");
-        String localHost = properties.getProperty("jenkins.host");
-        String remoutPort = System.getenv("JENKINS_PORT");
-        String localPort = properties.getProperty("jenkins.port");
-        String targetUrl = "";
-        if (remoutHost != null && remoutPort != null) {
-            targetUrl = String.format("http://%s:%s/", remoutHost, remoutPort);
-        } else targetUrl = String.format("http://%s:%s/", localHost, localPort);
-        return targetUrl;
+//        String remoutHost = System.getenv("JENKINS_HOST");
+//        String localHost = properties.getProperty("jenkins.host");
+//        String remoutPort = System.getenv("JENKINS_PORT");
+//        String localPort = properties.getProperty("jenkins.port");
+        String host = ProjectUtils.getValue("jenkins.host");
+        String port = ProjectUtils.getValue("jenkins.port");
+        return String.format("http://%s:%s/", host, port);
     }
 
     @Test
@@ -118,7 +117,6 @@ public class DanilovaETest extends BaseTest {
         String decodedPath = URLDecoder.decode(uri.getPath(), UTF_8);
         Assert.assertEquals(decodedPath, expectedNewUrl, " check Url address!");
     }
-
 }
 
 
