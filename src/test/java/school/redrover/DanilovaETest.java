@@ -66,7 +66,11 @@ public class DanilovaETest extends BaseTest {
         Assert.assertNotNull(expectedLogoStream, "Expected logo file not found");
 
         assert actualLogoSrcURI != null;
-        InputStream actualLogoStream = new URL(actualLogoSrcURI).openStream();
+        InputStream actualLogoStream = null;
+        try {
+            actualLogoStream = new URL(actualLogoSrcURI).openStream();
+        } catch (IOException ignore) {
+        }
         byte[] expectedBytes = expectedLogoStream.readAllBytes();
         byte[] actualBytes = actualLogoStream.readAllBytes();
 
