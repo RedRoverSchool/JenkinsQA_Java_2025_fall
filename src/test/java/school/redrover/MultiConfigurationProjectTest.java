@@ -47,9 +47,9 @@ public class MultiConfigurationProjectTest extends BaseTest {
         return getDriver().findElement(By.xpath("//h1[@class= 'matrix-project-headline page-headline']")).getText();
     }
 
-    public void goToProject(String projectName) {
+    public void goToProject(String projectName, String name) {
         getDriver().findElement(By.xpath(String.format("//td/a[@href='job/%s/']", projectName))).click();
-
+        getDriver().findElement(By.xpath(String.format("//span[text()= '%s']",name))).click();
     }
 
     public void goToDashBoard() {
@@ -85,24 +85,10 @@ public class MultiConfigurationProjectTest extends BaseTest {
         submitCreateProject();
         submitConfigure();
         goToDashBoard();
-        goToProject(NAME_OF_PROJECT);
+        goToProject(NAME_OF_PROJECT, NAME_OF_PROJECT);
         renameWithSidePanel("NewNameProject");
         getTitleOfProject();
 
         softAssert.assertEquals(getTitleOfProject(), "NewNameProject");
     }
-
-    @Test(priority = 2)
-    public void testRenameProject() {
-        //your code may be here
-
-    }
-
-    @Test(priority = 3)
-    public void testDeleteProject() {
-        //your code may be here
-
-    }
-
-
 }
