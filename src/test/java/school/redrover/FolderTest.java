@@ -7,11 +7,10 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class FolderTest extends BaseTest {
+    final String folderName = "best folder in the world";
 
     @Test(testName = "Создание Folder")
     public void testCreateFolder() throws InterruptedException {
-        final String folderName = "best folder in the world";
-
         WebElement createJobButton = getDriver().findElement(By.cssSelector("a[href='newJob']"));
         createJobButton.click();
 
@@ -36,5 +35,27 @@ public class FolderTest extends BaseTest {
 
         WebElement createdFolder = getDriver().findElement(By.xpath("//span[text()='" + folderName + "']"));
         Assert.assertNotNull(createdFolder);
+    }
+
+    @Test(testName = "Добавление описания к Folder")
+    public void testAddDescriptionToFolder() throws InterruptedException {
+        getDriver().findElement(By.xpath("//a[@it='hudson.model.Hudson@6aae4b80']")).click();
+
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).
+                sendKeys(folderName);
+        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']"))
+                .click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']")).
+                sendKeys(folderName);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Thread.sleep(1500);
+
+        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(),folderName);
     }
 }
