@@ -82,7 +82,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
-        getDriver().findElement(By.cssSelector("[href$='rename']")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, 'rename')]")).click();
 
         WebElement renameField = getDriver().findElement(By.name("newName"));
         renameField.clear();
