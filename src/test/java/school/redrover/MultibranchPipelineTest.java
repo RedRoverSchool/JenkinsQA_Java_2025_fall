@@ -86,7 +86,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.name("newName")).sendKeys(RENAMED_MULTIBRANCH_PIPELINE);
         getDriver().findElement(By.cssSelector("[value='Rename']")).click();
 
-        WebElement pageHeading = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class$='page-headline']")));
+        WebElement pageHeading = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("page-headline")));
 
         Assert.assertEquals(pageHeading.getText(), RENAMED_MULTIBRANCH_PIPELINE);
     }
