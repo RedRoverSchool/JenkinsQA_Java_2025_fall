@@ -10,7 +10,7 @@ import school.redrover.common.BaseTest;
 public class CreateWorkDataTest extends BaseTest {
 
     @Test
-    public void TestCreateWorkData() {
+    public void TestCreateWorkData() throws InterruptedException{
 
         WebElement createWorkPlus = getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div/section[1]/ul/li/a/span[1]"));
         createWorkPlus.click();
@@ -34,6 +34,8 @@ public class CreateWorkDataTest extends BaseTest {
 
         WebElement saveButton = getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]"));
         saveButton.click();
+
+        Thread.sleep(2000);
 
         WebElement message = getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[1]/div/h1"));
         Assert.assertEquals(message.getText(), "29.10.2025");
