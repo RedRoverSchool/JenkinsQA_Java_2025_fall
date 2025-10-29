@@ -26,10 +26,6 @@ public abstract class BaseTest {
 
     @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) {
-        if (!testResult.isSuccess() && ProjectUtils.isRunCI()) {
-            ProjectUtils.takeScreenshot(getDriver(), testResult.getTestClass().getRealClass().getSimpleName(), testResult.getName());
-        }
-
         if (ProjectUtils.isRunCI() || testResult.isSuccess() || ProjectUtils.closeIfError()) {
             try {
                 JenkinsUtils.logout(getDriver());

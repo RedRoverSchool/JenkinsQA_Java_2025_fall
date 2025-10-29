@@ -88,7 +88,7 @@ public class MultibranchPipelineTest extends BaseTest {
         renameField.clear();
         renameField.sendKeys(RENAMED_MULTIBRANCH_PIPELINE, Keys.ENTER);
 
-        WebElement pageHeading = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("page-headline")));
+        WebElement pageHeading = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class='jenkins-app-bar'] h1")));
 
         Assert.assertEquals(pageHeading.getText(), RENAMED_MULTIBRANCH_PIPELINE);
     }
