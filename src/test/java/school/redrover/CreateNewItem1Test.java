@@ -45,8 +45,6 @@ public class CreateNewItem1Test extends BaseTest {
             nameInput.sendKeys("" + ch);
             String dataValid = nameInput.getAttribute("data-valid");
 
-            System.out.printf("Char '%s' → data-valid=%s%n", ch, dataValid);
-
             Assert.assertEquals(dataValid, "false",
                     "Character '" + ch + "' should not be allowed");
         }
