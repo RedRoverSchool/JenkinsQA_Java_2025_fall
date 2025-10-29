@@ -2,9 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.time.Duration;
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -73,6 +77,8 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenameViaSidebar() {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
+
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
         getDriver().findElement(By.cssSelector("[href$='rename']")).click();
@@ -80,7 +86,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.name("newName")).sendKeys(RENAMED_MULTIBRANCH_PIPELINE);
         getDriver().findElement(By.name("Submit")).click();
 
-        WebElement pageHeading = getDriver().findElement(By.cssSelector("[class$='page-headline']"));
+        WebElement pageHeading = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class$='page-headline']")));
 
         Assert.assertEquals(pageHeading.getText(), RENAMED_MULTIBRANCH_PIPELINE);
     }
