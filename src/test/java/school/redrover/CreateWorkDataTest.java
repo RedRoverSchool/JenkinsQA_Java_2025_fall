@@ -3,9 +3,13 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.time.Duration;
 
 public class CreateWorkDataTest extends BaseTest {
 
@@ -35,9 +39,12 @@ public class CreateWorkDataTest extends BaseTest {
         WebElement saveButton = getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]"));
         saveButton.click();
 
-        Thread.sleep(2000);
-
-        WebElement message = getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[1]/div/h1"));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        WebElement message = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//*[@id='main-panel']/div[1]/div/h1")
+                )
+        );
         Assert.assertEquals(message.getText(), "29.10.2025");
     }
 }
