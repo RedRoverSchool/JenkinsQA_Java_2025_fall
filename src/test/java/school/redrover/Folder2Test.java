@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Folder2Test extends BaseTest {
 
     @Test
-    public void testCreateFolder throws InterruptedException() {
+    public void testCreateFolder() throws InterruptedException {
         final String folderName = "Folder-" + UUID.randomUUID().toString().substring(0, 5);
 
         getDriver().findElement(By.linkText("New Item")).click();
