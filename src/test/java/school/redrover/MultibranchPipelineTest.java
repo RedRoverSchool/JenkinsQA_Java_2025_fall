@@ -77,14 +77,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenameViaSidebar() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(4));
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
         getDriver().findElement(By.cssSelector("[href$='rename']")).click();
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(RENAMED_MULTIBRANCH_PIPELINE);
-        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.cssSelector("[value='Rename']")).click();
 
         WebElement pageHeading = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class$='page-headline']")));
 
