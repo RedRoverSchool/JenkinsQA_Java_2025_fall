@@ -24,9 +24,8 @@ public class Folder2Test extends BaseTest {
 
         Assert.assertTrue(Objects.requireNonNull(getDriver().getCurrentUrl()).contains("/job/%s".formatted(folderName)),
                 "Ошибка в ссылке на папку");
-        Thread.sleep(2000);
         Assert.assertEquals(
-                getDriver().findElement(By.className("job-index-headline")).getText(),
+                getDriver().findElement(By.cssSelector(".job-index-headline")).getText(),
                 folderName,
                 "Неверное название папки");
         Assert.assertTrue(
