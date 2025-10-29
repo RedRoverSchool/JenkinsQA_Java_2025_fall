@@ -19,7 +19,7 @@ public class CreateNewItem1Test extends BaseTest {
                 "Organization Folder"
         };
 
-        String[] actualItemsList = new String[6];
+        String[] actualItemsList = new String[expectedItemsList.length];
 
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
