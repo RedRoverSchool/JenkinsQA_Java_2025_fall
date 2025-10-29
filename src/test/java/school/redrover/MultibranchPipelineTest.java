@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -78,18 +79,21 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenameViaSidebar() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(4));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("(//div[@id='side-panel']//div[@class='task '])[7]")).click();
+        getDriver().findElement(By.cssSelector("[href$='confirm-rename']")).click();
 
         WebElement renameField = getDriver().findElement(By.name("newName"));
         renameField.clear();
         renameField.sendKeys(RENAMED_MULTIBRANCH_PIPELINE, Keys.ENTER);
 
-        WebElement pageHeading = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class='jenkins-app-bar'] h1")));
+//        WebElement pageHeading = wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("[class='jenkins-app-bar'] h1")));
 
-        Assert.assertEquals(pageHeading.getText(), RENAMED_MULTIBRANCH_PIPELINE);
+        wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
+
+//        Assert.assertFalse(getDriver().getCurrentUrl().contains("confirm-rename"));
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), RENAMED_MULTIBRANCH_PIPELINE);
     }
 }
