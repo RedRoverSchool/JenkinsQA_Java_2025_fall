@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -28,6 +29,26 @@ public class CreateNewItem1Test extends BaseTest {
         }
 
         Assert.assertEquals(actualItemsList,expectedItemsList);
+    }
 
+    @Test
+    public void testInvalidItemNameField() {
+
+        String invalidChars = " !@#$%^&*[]|\\;:<>?/";
+
+        getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
+
+        WebElement nameInput = getDriver().findElement(By.id("name"));
+
+        for (char ch : invalidChars.toCharArray()) {
+            nameInput.clear();
+            nameInput.sendKeys("" + ch);
+            String dataValid = nameInput.getAttribute("data-valid");
+
+            System.out.printf("Char '%s' → data-valid=%s%n", ch, dataValid);
+
+            Assert.assertEquals(dataValid, "false",
+                    "Character '" + ch + "' should not be allowed");
+        }
     }
 }
