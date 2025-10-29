@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Folder2Test extends BaseTest {
 
     @Test
-    public void testCreateFolder() throws InterruptedException {
+    public void testCreateFolder() {
         final String folderName = "Folder-" + UUID.randomUUID().toString().substring(0, 5);
 
         getDriver().findElement(By.linkText("New Item")).click();
@@ -24,9 +24,8 @@ public class Folder2Test extends BaseTest {
 
         Assert.assertTrue(Objects.requireNonNull(getDriver().getCurrentUrl()).contains("/job/%s".formatted(folderName)),
                 "Ошибка в ссылке на папку");
-        Thread.sleep(2000);
         Assert.assertEquals(
-                getDriver().findElement(By.cssSelector(".job-index-headline")).getText(),
+                getDriver().findElement(By.cssSelector(".page-headline")).getText(),
                 folderName,
                 "Неверное название папки");
         Assert.assertTrue(
