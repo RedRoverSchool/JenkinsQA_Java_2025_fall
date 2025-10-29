@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -83,8 +84,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         getDriver().findElement(By.cssSelector("[href$='rename']")).click();
         getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(RENAMED_MULTIBRANCH_PIPELINE);
-        getDriver().findElement(By.cssSelector("[value='Rename']")).click();
+        getDriver().findElement(By.name("newName")).sendKeys(RENAMED_MULTIBRANCH_PIPELINE + Keys.ENTER);
 
         WebElement pageHeading = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("page-headline")));
 
