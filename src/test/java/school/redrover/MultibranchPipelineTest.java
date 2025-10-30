@@ -76,6 +76,90 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
+    public void testAddDescription() {
+        final String descriptionText = "This is a test of the possibility of adding a description";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Multibranch Pipeline (test)");
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='jenkins-mobile-hide']")));
+
+        WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='_.description']"));
+        descriptionField.sendKeys("This is a test of the possibility of adding a description");
+        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span.jenkins-mobile-hide")));
+
+        WebElement createdDescription = getDriver().findElement(By.xpath("//div[@id='view-message']"));
+        Assert.assertEquals(createdDescription.getText(), descriptionText);
+    }
+
+    @Test
+    public void testButtonIsDisplayed() {
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Multibranch Pipeline (test)");
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='jenkins-mobile-hide']")));
+
+        getDriver().findElement(By.xpath("//a[@href='/job/Multibranch%20Pipeline%20(test)/']")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span.jenkins-mobile-hide")));
+
+        WebElement buttonAddDescription = getDriver().findElement(By.id("description-link"));
+
+        Assert.assertTrue(buttonAddDescription.isDisplayed());
+    }
+
+    @Test
+    public void testClickAddDescriptionButton() {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']"))
+                .sendKeys("Multibranch Pipeline (test)");
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/Multibranch%20Pipeline%20(test)/']")).click();
+
+        WebElement buttonAddDescription = getDriver().findElement(By.id("description-link"));
+        buttonAddDescription.click();
+
+        WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='description']"));
+
+        Assert.assertTrue(descriptionField.isDisplayed());
+    }
+
+    @Test
+    public void testEnterTheDescription() {
+        final String description = "This is a test description for Multibranch Pipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']"))
+                .sendKeys("Multibranch Pipeline (test)");
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/Multibranch%20Pipeline%20(test)/']")).click();
+
+        WebElement buttonAddDescription = getDriver().findElement(By.id("description-link"));
+        buttonAddDescription.click();
+
+        WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='description']"));
+        descriptionField.sendKeys(description);
+
+        Assert.assertTrue(descriptionField.isDisplayed());
+     }
+
+    @Test
     public void testRenameViaSidebar() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
 

@@ -36,7 +36,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Ignore
     @Test
-    public void testAddDescription() {
+    public void testAddDescription() throws InterruptedException {
         WebElement createJob = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
         createJob.click();
 

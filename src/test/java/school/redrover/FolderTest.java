@@ -58,4 +58,20 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(),FOLDER_NAME);
     }
+
+    @Test
+    public void testAddNewFolder() throws InterruptedException {
+
+        String folder = "NewFolder";
+
+        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(1)")).click();
+        getDriver().findElement((By.id("name"))).sendKeys(folder);
+        getDriver().findElement(By.cssSelector("#j-add-item-type-nested-projects > ul > :nth-child(1)")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Thread.sleep(1500);
+        getDriver().findElement(By.cssSelector("#page-header > div.jenkins-header__main > div > a > span")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#job_NewFolder > td:nth-child(3) > a > span")).getText(), folder);
+    }
 }
