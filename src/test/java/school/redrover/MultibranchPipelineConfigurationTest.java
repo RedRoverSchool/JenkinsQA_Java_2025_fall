@@ -7,7 +7,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -18,18 +17,11 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     private WebDriverWait wait;
 
-    @BeforeMethod
-    public void setUp() {
-        if (wait == null) {
-            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        }
-    }
-
     private void createMultibranchPipelineProject() {
         final String randomAlphaNumericText = UUID.randomUUID().toString().replaceAll("-", "");
 
         wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/view/all/newJob']"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
 
         getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericText);
 
