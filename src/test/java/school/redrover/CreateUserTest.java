@@ -34,6 +34,7 @@ public class CreateUserTest extends BaseTest {
     @Test
     public void testCheckingEmptyInput() {
         getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+
         final List<String> expectedErrors = List.of(
                 "\"\" is prohibited as a username for security reasons.",
                 "Требуется пароль",
@@ -41,6 +42,7 @@ public class CreateUserTest extends BaseTest {
                 "\"\" is prohibited as a full name for security reasons.",
                 "Некорректный e-mail"
         );
+
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
         getDriver().findElement(By.xpath("//dt[text()='Users']")).click();
         getDriver().findElement(By.className("jenkins-button--primary")).click();
