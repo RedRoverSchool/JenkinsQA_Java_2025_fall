@@ -35,4 +35,28 @@ public class FreestyleProjectConfigurationSCMTest extends BaseTest {
 
         Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
     }
+
+    @Test
+    public void testSCMSectionElements() {
+        // 02.003.05
+        createFreestyleProject(freestyleProjectName);
+
+        WebElement scmDescription = getDriver().findElement(By.xpath("//div[normalize-space()='Connect and manage " +
+                "your code repository to automatically pull the latest code for your builds.']"));
+
+        WebElement selectedInput = getDriver().findElement(By.xpath("//input[@name='scm' and @checked='true']"));
+        String inputId = selectedInput.getAttribute("id");
+        WebElement linkedLabel = getDriver().findElement(By.xpath("//label[@for='%s']".formatted(inputId)));
+        String actualLabelText = linkedLabel.getText();
+
+        WebElement gitLabel = getDriver().findElement(By.xpath("//label[normalize-space(text())='Git']"));
+        WebElement gitHelpIcon = getDriver().findElement(
+                By.xpath("//a[@title='Help for feature: Git']"));
+        String tooltipText = gitHelpIcon.getAttribute("tooltip");
+
+        Assert.assertTrue(scmDescription.isDisplayed(), "SCM Description is not displayed or the description text doesn't match");
+        Assert.assertEquals(actualLabelText, "None", "Radio button 'None' should be selected by default");
+        Assert.assertTrue(gitLabel.isDisplayed(), "Radio button 'Git' should be displayed");
+        Assert.assertEquals(tooltipText, "Help for feature: Git", "Tooltip text should match expected value");
+    }
 }
