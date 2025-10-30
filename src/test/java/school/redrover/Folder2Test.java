@@ -14,7 +14,7 @@ public class Folder2Test extends BaseTest {
 
     @Test
     public void testCreateFolder() {
-        final String folderName = "Folder-" + UUID.randomUUID().toString().substring(0, 5);
+        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 5);
 
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(folderName);
@@ -24,7 +24,7 @@ public class Folder2Test extends BaseTest {
         Assert.assertTrue(Objects.requireNonNull(getDriver().getCurrentUrl()).contains("/job/%s".formatted(folderName)),
                 "Ошибка в ссылке на папку");
         Assert.assertEquals(
-                getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(),
+                getDriver().findElement(By.tagName("h1")).getText(),
                 folderName,
                 "Неверное название папки");
         Assert.assertTrue(
