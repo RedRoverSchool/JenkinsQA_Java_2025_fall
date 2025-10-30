@@ -16,12 +16,12 @@ public class DescriptionTest extends BaseTest {
 
         Thread.sleep(2000);
 
-        String actualDescription = getContent(getDriver());
+        String actualDescription = getDescription(getDriver());
         Assert.assertEquals(actualDescription, description);
     }
 
     @Test
-    void testChangeDescription() throws InterruptedException {
+    public void testChangeDescription() throws InterruptedException {
         final String firstDescription = "First text!";
         final String secondDescription = "Second text!";
 
@@ -32,17 +32,17 @@ public class DescriptionTest extends BaseTest {
         setDescription(getDriver(), secondDescription);
 
         Thread.sleep(3000);
-        String actualDescription = getContent(getDriver());
+        String actualDescription = getDescription(getDriver());
         Assert.assertEquals(actualDescription, secondDescription + firstDescription);
     }
 
-    static void setDescription(WebDriver driver, String description) {
+    private static void setDescription(WebDriver driver, String description) {
         driver.findElement(By.id("description-link")).click();
         driver.findElement(By.name("description")).sendKeys(description);
         driver.findElement(By.name("Submit")).click();
     }
 
-    static String getContent(WebDriver driver) {
+    private static String getDescription(WebDriver driver) {
         return driver.findElement(By.id("description-content")).getText();
     }
 }

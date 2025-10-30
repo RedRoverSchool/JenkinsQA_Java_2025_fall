@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
@@ -49,7 +48,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     public void goToProject(String projectName) {
         getDriver().findElement(By.xpath(String.format("//td/a[@href='job/%s/']", projectName))).click();
-
     }
 
     public void goToDashBoard() {
@@ -77,7 +75,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         softAssert.assertAll();
     }
 
-    @Test(priority = 1)
+    @Test
     public void testAddDescriptionToProject() {
         createNewJob();
         setNameOfProject(NAME_OF_PROJECT);
@@ -91,18 +89,4 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         softAssert.assertEquals(getTitleOfProject(), "NewNameProject");
     }
-
-    @Test(priority = 2)
-    public void testRenameProject() {
-        //your code may be here
-
-    }
-
-    @Test(priority = 3)
-    public void testDeleteProject() {
-        //your code may be here
-
-    }
-
-
 }
