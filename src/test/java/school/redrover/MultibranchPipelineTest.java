@@ -13,11 +13,12 @@ import java.time.Duration;
 public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchName";
+    private static final String RENAMED_MULTIBRANCH_PIPELINE = "RenamedMultibranchName";
 
-    private void createMultibranchPipline() {
+    private void createMultibranchPipeline(String name) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
-        getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
+        getDriver().findElement(By.id("name")).sendKeys(name);
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
@@ -45,7 +46,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testTryCreateProjectExistName() throws InterruptedException {
         final String errorMessage = "» A job already exists with the name " + "‘" + MULTIBRANCH_PIPELINE_NAME + "’";
 
-        createMultibranchPipline();
+        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
         Thread.sleep(2000);
         getDriver().findElement(By.xpath("//a[@href='/']/img")).click();
@@ -64,7 +65,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testVerifyStatusToSwitchingEnableMultibranchPipeline() throws InterruptedException {
         final String disableText = "This Multibranch Pipeline is currently disabled";
 
-        createMultibranchPipline();
+        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
         getDriver().findElement(By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/configure']")).click();
         getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
         getDriver().findElement(By.name("Submit")).click();
@@ -157,4 +158,25 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertTrue(descriptionField.isDisplayed());
      }
+
+    @Test
+    public void testRenameViaSidebar() {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+
+        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
+
+        getDriver().findElement(By.cssSelector("[href$='confirm-rename']")).click();
+
+        WebElement renameField = getDriver().findElement(By.name("newName"));
+        renameField.clear();
+        renameField.sendKeys(RENAMED_MULTIBRANCH_PIPELINE);
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
+
+        WebElement multibranchPipelineName = getDriver().findElement(By.tagName("h1"));
+
+        Assert.assertEquals(multibranchPipelineName.getText(), RENAMED_MULTIBRANCH_PIPELINE);
+    }
 }
