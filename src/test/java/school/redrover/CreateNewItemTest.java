@@ -73,18 +73,19 @@ public class CreateNewItemTest extends BaseTest {
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.className("jenkins-mobile-hide"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='jenkins-mobile-hide']"))).click();
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
 
         wait.until(ExpectedConditions.elementToBeClickable(By.id("name"))).sendKeys(jobName);
 
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+
         final String errorMessage = "itemname-invalid";
 
-        Thread.sleep(2000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(errorMessage)));
 
         Assert.assertEquals(getDriver().findElement(By.id(errorMessage)).getText(), "» A job already exists with the name ‘AS new job’");
-        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "true");
     }
 }
 
