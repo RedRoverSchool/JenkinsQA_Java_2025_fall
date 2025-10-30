@@ -96,4 +96,24 @@ public class MultibranchPipelineTest extends BaseTest {
         WebElement createdDescription = getDriver().findElement(By.xpath("//div[@id='view-message']"));
         Assert.assertEquals(createdDescription.getText(), descriptionText);
     }
+
+    @Test
+    public void testButtonIsDisplayed() {
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Multibranch Pipeline (test)");
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='jenkins-mobile-hide']")));
+
+        getDriver().findElement(By.xpath("//a[@href='/job/Multibranch%20Pipeline%20(test)/']")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span.jenkins-mobile-hide")));
+
+        WebElement buttonAddDescription = getDriver().findElement(By.id("description-link"));
+
+        Assert.assertTrue(buttonAddDescription.isDisplayed());
+    }
 }
