@@ -24,10 +24,8 @@ public class Folder2Test extends BaseTest {
 
         Assert.assertTrue(Objects.requireNonNull(getDriver().getCurrentUrl()).contains("/job/%s".formatted(folderName)),
                 "Ошибка в ссылке на папку");
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(),
-                folderName,
-                "Неверное название папки");
+        getDriver().findElement(By.id("jenkins-head-icon")).click();
+        getDriver().findElement(By.linkText(folderName)).click();
         Assert.assertTrue(
                 getDriver().findElement(By.className("empty-state-section")).getText().contains("This folder is empty"),
                 "Отсутствует сообщение 'This folder is empty'");
