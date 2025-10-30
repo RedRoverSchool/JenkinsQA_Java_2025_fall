@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -60,10 +59,9 @@ public class CreateNewItemTest extends BaseTest {
         Assert.assertEquals(itemTypeList, expectedItemTypes);
     }
 
-    @Ignore
     @Test
     //TC 01-001-06
-    public void testErrorMessageForDuplicateItemNames() {
+    public void testErrorMessageForDuplicateItemNames() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         final String jobName = "AS new job";
 
@@ -81,11 +79,12 @@ public class CreateNewItemTest extends BaseTest {
 
         wait.until(ExpectedConditions.elementToBeClickable(By.id("name"))).sendKeys(jobName);
 
-        WebElement errorMessage = getDriver().findElement(By.id("itemname-invalid"));
+        final String errorMessage = "itemname-invalid";
 
-        Assert.assertEquals(errorMessage.getText(), "» A job already exists with the name ‘AS new job’");
+        Thread.sleep(2000);
+
+        Assert.assertEquals(getDriver().findElement(By.id(errorMessage)).getText(), "» A job already exists with the name ‘AS new job’");
         Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "true");
     }
-
 }
 
