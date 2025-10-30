@@ -224,9 +224,7 @@ public final class JenkinsUtils {
     }
 
     public static void logout(WebDriver driver) {
-        ProjectUtils.get(driver);
-
-        driver.findElement(By.xpath("//a[@href='/logout']")).click();
+        driver.get(ProjectUtils.getUrl() + "logout");
     }
 }
 
