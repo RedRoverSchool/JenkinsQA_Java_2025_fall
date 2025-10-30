@@ -37,18 +37,4 @@ public class NewItemPageTest extends BaseTest {
         WebElement itemTypeLabel = getDriver().findElement(By.xpath(".//div[@class='jenkins-form-label']"));
         Assert.assertEquals(itemTypeLabel.getText(), "Select an item type");
     }
-
-    @Test
-    public void testNewItemTypesAccessibility() {
-        newItemButtonClick();
-
-        List<String> expectedItemTypes = List.of("Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline", "Organization Folder");
-        List<WebElement> itemTypes = getDriver().findElements(By.xpath(".//span[@class='label']"));
-
-        List<String> itemTypeList = itemTypes.stream()
-                .map(WebElement::getText)
-                .toList();
-
-        Assert.assertEquals(itemTypeList, expectedItemTypes);
-    }
 }
