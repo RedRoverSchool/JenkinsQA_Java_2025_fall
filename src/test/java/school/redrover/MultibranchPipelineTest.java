@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -22,6 +23,10 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(name);
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollTo(0, document.documentElement.scrollHeight)");
+
         getDriver().findElement(By.name("Submit")).click();
     }
 
@@ -162,7 +167,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenameViaSidebar() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
