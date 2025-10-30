@@ -37,10 +37,10 @@ public class CreateUserTest extends BaseTest {
 
         final List<String> expectedErrors = List.of(
                 "\"\" is prohibited as a username for security reasons.",
-                "Требуется пароль",
-                "Требуется пароль",
+                "Password is required",
+                "Password is required",
                 "\"\" is prohibited as a full name for security reasons.",
-                "Некорректный e-mail"
+                "Invalid e-mail address"
         );
 
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
