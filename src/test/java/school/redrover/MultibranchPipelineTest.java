@@ -76,25 +76,21 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testAddDescription() {
-        final String descriptionText = "This is a test of the possibility of adding a description";
+        final String expectedDescription = "This is a test of the possibility of adding a description";
 
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
 
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Multibranch Pipeline (test)");
+        getDriver().findElement(By.xpath("//input[@name='name']"))
+                .sendKeys("Multibranch Pipeline (test)");
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='jenkins-mobile-hide']")));
-
         WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='_.description']"));
-        descriptionField.sendKeys("This is a test of the possibility of adding a description");
+        descriptionField.sendKeys(expectedDescription);
         getDriver().findElement(By.xpath("//button[@value='Save']")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span.jenkins-mobile-hide")));
-
-        WebElement createdDescription = getDriver().findElement(By.xpath("//div[@id='view-message']"));
-        Assert.assertEquals(createdDescription.getText(), descriptionText);
+        WebElement actualDescription = getDriver().findElement(By.xpath("//div[@id='view-message']"));
+        Assert.assertEquals(actualDescription.getText(), expectedDescription);
     }
 
     @Test
