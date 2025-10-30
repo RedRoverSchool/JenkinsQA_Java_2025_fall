@@ -87,13 +87,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
         WebElement renameField = getDriver().findElement(By.name("newName"));
         renameField.clear();
-        renameField.sendKeys(RENAMED_MULTIBRANCH_PIPELINE, Keys.ENTER);
+        renameField.sendKeys(RENAMED_MULTIBRANCH_PIPELINE);
 
-//        WebElement pageHeading = wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("[class='jenkins-app-bar'] h1")));
+        getDriver().findElement(By.name("Submit")).click();
 
         wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
 
-//        Assert.assertFalse(getDriver().getCurrentUrl().contains("confirm-rename"));
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), RENAMED_MULTIBRANCH_PIPELINE);
+        WebElement multibranchPipelineName = getDriver().findElement(By.tagName("h1"));
+
+        Assert.assertEquals(multibranchPipelineName.getText(), RENAMED_MULTIBRANCH_PIPELINE);
     }
 }
