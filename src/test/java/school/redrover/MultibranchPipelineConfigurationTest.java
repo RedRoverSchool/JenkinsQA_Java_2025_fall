@@ -20,7 +20,9 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @BeforeMethod
     public void setUp() {
-        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        if (wait == null) {
+            wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        }
     }
 
     private void createMultibranchPipelineProject() {
