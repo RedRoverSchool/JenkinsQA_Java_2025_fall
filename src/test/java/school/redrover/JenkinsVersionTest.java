@@ -14,4 +14,13 @@ public class JenkinsVersionTest extends BaseTest {
 
         Assert.assertEquals(actualVersion, "Jenkins 2.516.3");
     }
+
+    @Test
+    public void testJenkinsVersionFromAboutInfo() {
+
+        final String version = "Version 2.516.3";
+        getDriver().findElement(By.cssSelector(".page-footer__links > :nth-child(2)")).click();
+        getDriver().findElement(By.cssSelector(".jenkins-dropdown > :nth-child(1)")).click();
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".app-about-version")).getText(), version);
+    }
 }
