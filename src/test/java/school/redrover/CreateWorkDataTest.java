@@ -15,7 +15,6 @@ public class CreateWorkDataTest extends BaseTest {
 
     @Test
     public void TestCreateWorkData() throws InterruptedException{
-        final String descriptionText = "29.10.2025";
 
         getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div/section[1]/ul/li/a/span[1]"))
                 .click();
@@ -41,8 +40,14 @@ public class CreateWorkDataTest extends BaseTest {
         saveButton.click();
 
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(text(),'Today I do more work for class project')]")
-        ));
+
+        WebElement message = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//div[contains(text(),'Today I do more work for class project')]")
+                )
+        );
+
+        Assert.assertEquals(message.getText(),
+                "Today I do more work for class project");
     }
 }
