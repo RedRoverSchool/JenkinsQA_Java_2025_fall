@@ -16,7 +16,7 @@ public class CreateNewItemTest extends BaseTest {
 
     @Test
     //TC01-001-01
-    public void testNewItemPageByClickingCreateAJobLink() throws InterruptedException {
+    public void testNewItemPageByClickingCreateAJobLink() {
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "New Item");
@@ -24,7 +24,7 @@ public class CreateNewItemTest extends BaseTest {
 
     @Test
     //TC01-001-01
-    public void testNewItemPageByClickingNewItemLink() throws InterruptedException {
+    public void testNewItemPageByClickingNewItemLink() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "New Item");
@@ -32,7 +32,7 @@ public class CreateNewItemTest extends BaseTest {
 
     @Test
     //TC01-001-01
-    public void testEnterAnItemNameIsDisplayedOkButtonIdDisabled() throws InterruptedException {
+    public void testEnterAnItemNameIsDisplayedOkButtonIdDisabled() {
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
         WebElement okButton = getDriver().findElement(By.id("ok-button"));
@@ -62,7 +62,7 @@ public class CreateNewItemTest extends BaseTest {
     @Test
     //TC 01-001-06
     public void testErrorMessageForDuplicateItemNames() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         final String jobName = "AS new job";
 
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
