@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -161,17 +162,17 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenameViaSidebar() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//a[contains(@href, 'confirm-rename')]")).click();
+        wait.until(ExpectedConditions.textToBe(By.tagName("h1"), MULTIBRANCH_PIPELINE_NAME));
+
+        getDriver().findElement(By.cssSelector("[href$='confirm-rename']")).click();
 
         WebElement renameField = getDriver().findElement(By.name("newName"));
         renameField.clear();
-        renameField.sendKeys(RENAMED_MULTIBRANCH_PIPELINE);
-
-        getDriver().findElement(By.name("Submit")).click();
+        renameField.sendKeys(RENAMED_MULTIBRANCH_PIPELINE + Keys.ENTER);
 
         wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
 
