@@ -48,7 +48,6 @@ public class CreateUserTest extends BaseTest {
         getDriver().findElement(By.className("jenkins-button--primary")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-
         List<String> actualErrors = getDriver()
                 .findElements(By.xpath("//*[@class='error jenkins-!-margin-bottom-2']"))
                 .stream()
