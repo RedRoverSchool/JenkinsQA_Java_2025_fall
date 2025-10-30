@@ -55,8 +55,13 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
                 By.id("toggle-switch-enable-disable-project")
         ));
 
-        new Actions(getDriver()).moveToElement(toggleElement).perform();
-        String actualTooltip = toggleElement.getDomAttribute("tooltip");
+        new Actions(getDriver())
+                .moveToElement(toggleElement)
+                .moveToElement(toggleElement, 10, 10)
+                .perform();
+
+        String actualTooltip = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
+                .getText();
 
         Assert.assertEquals(actualTooltip, expectedTooltip);
     }
