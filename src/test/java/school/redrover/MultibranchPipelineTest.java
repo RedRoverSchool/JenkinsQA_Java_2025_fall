@@ -1,11 +1,11 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -160,14 +160,13 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(descriptionField.isDisplayed());
      }
 
-    @Ignore
     @Test
     public void testRenameViaSidebar() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
-        getDriver().findElement(By.cssSelector("[href$='confirm-rename']")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, 'confirm-rename')]")).click();
 
         WebElement renameField = getDriver().findElement(By.name("newName"));
         renameField.clear();
