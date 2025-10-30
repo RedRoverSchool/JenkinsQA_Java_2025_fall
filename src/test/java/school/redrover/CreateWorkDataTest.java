@@ -15,12 +15,13 @@ public class CreateWorkDataTest extends BaseTest {
 
     @Test
     public void TestCreateWorkData() throws InterruptedException{
+        final String descriptionText = "29.10.2025";
 
-        WebElement createWorkPlus = getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div/section[1]/ul/li/a/span[1]"));
-        createWorkPlus.click();
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div/section[1]/ul/li/a/span[1]"))
+                .click();
 
-        WebElement itemsName = getDriver().findElement(By.xpath("//*[@id=\"name\"]"));
-        itemsName.sendKeys("WorksData");
+        getDriver().findElement(By.xpath("//*[@id=\"name\"]"))
+                .sendKeys("WorksData");
 
         WebElement organizationFolder = getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[3]"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", organizationFolder);
@@ -40,11 +41,8 @@ public class CreateWorkDataTest extends BaseTest {
         saveButton.click();
 
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        WebElement message = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//*[@id='main-panel']/div[1]/div/h1")
-                )
-        );
-        Assert.assertEquals(message.getText(), "29.10.2025");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(text(),'Today I do more work for class project')]")
+        ));
     }
 }
