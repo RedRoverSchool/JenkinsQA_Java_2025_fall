@@ -62,4 +62,18 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualTooltip, expectedTooltip);
     }
+
+    @Test
+    public void testDisabledMessageOnStatusPage() {
+        final String expectedDisabledMessage = "This Multibranch Pipeline is currently disabled";
+
+        createMultibranchPipelineProject();
+
+        getDriver().findElement(By.cssSelector("[data-title='Disabled']")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        WebElement actualDisabledMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("disabled-message")));
+
+        Assert.assertEquals(actualDisabledMessage.getText(), expectedDisabledMessage);
+    }
 }
