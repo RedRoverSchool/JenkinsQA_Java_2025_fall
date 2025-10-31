@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -82,6 +83,17 @@ public class FreestyleProjectConfigurationSCMTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//button[@data-section-id='source-code-management']")).click();
         WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
+
+        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+    }
+
+    @Test
+    public void testNavigationToSCMByScrollingDown() {
+        // 02.003.04
+        createFreestyleProject(freestyleProjectName);
+
+        WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", scmTitle);
 
         Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
     }
