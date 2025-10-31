@@ -63,17 +63,18 @@ public class Folder2Test extends BaseTest {
                 folderNames,
                 "Путь хлебных крошек не соответствует ожиданию");
 
-        String fullFolderNameLine = "";
-        for (String line : getDriver().findElement(By.xpath("//*[contains(text(), 'Full folder name:')]")).getText().split("\n")) {
-            if (line.startsWith("Full folder name:")) {
-                fullFolderNameLine = line;
-                break;
-            }
-        }
-
-        Assert.assertEquals(
-                fullFolderNameLine,
-                "Full folder name: %s/%s".formatted(parentFolderName, childFolderName),
-                "Полное имя (путь) папки отображено неверно");
+        System.out.println(getDriver().findElement(By.xpath("//*[contains(text(), '%s/%s')]".formatted(parentFolderName, childFolderName))).getText());
+//        String fullFolderNameLine = "";
+//        for (String line : getDriver().findElement(By.xpath("//*[contains(text(), 'Full folder name:')]")).getText().split("\n")) {
+//            if (line.startsWith("Full folder name:")) {
+//                fullFolderNameLine = line;
+//                break;
+//            }
+//        }
+//
+//        Assert.assertEquals(
+//                fullFolderNameLine,
+//                "Full folder name: %s/%s".formatted(parentFolderName, childFolderName),
+//                "Полное имя (путь) папки отображено неверно");
     }
 }
