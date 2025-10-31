@@ -64,9 +64,8 @@ public class Folder2Test extends BaseTest {
                 folderNames,
                 "Путь хлебных крошек не соответствует ожиданию");
 
-        System.out.println(getDriver().findElement(By.id("main-panel")).getText());
         String fullFolderNameLine = "";
-        for (String line : getDriver().findElement(By.id("main-panel")).getText().split("\n")) {
+        for (String line : getDriver().findElement(By.id("//*[contains(text(), 'Full folder name:')]")).getText().split("\n")) {
             if (line.startsWith("Full folder name:")) {
                 fullFolderNameLine = line;
                 break;
