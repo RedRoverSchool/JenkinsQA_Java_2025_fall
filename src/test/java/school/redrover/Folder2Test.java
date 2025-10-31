@@ -64,6 +64,7 @@ public class Folder2Test extends BaseTest {
                 folderNames,
                 "Путь хлебных крошек не соответствует ожиданию");
 
+        System.out.println(getDriver().findElement(By.id("main-panel")).getText());
         String fullFolderNameLine = "";
         for (String line : getDriver().findElement(By.id("main-panel")).getText().split("\n")) {
             if (line.startsWith("Full folder name:")) {
@@ -72,8 +73,8 @@ public class Folder2Test extends BaseTest {
             }
         }
         Assert.assertEquals(
-                "Full folder name: %s/%s".formatted(parentFolderName, childFolderName),
                 fullFolderNameLine,
+                "Full folder name: %s/%s".formatted(parentFolderName, childFolderName),
                 "Полное имя (путь) папки отображено неверно");
     }
 }
