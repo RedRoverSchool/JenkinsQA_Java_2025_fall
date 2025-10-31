@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -16,11 +17,12 @@ public class NotificationApplyThemeTest extends BaseTest {
 
     @Test
     public void testChangeTheme() throws InterruptedException {
-        getDriver().findElement(By.id("root-action-UserAction")).click();
+        WebElement profile = getDriver().findElement(By.id("root-action-UserAction"));
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(profile).perform();
         Thread.sleep(2000);
-        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div[2]/div[1]/div/div[5]/span/a")));
-        element.click();
+        getDriver().findElement(By.xpath("//*[@id=\"tippy-1\"]/div/div/div/a[4]")).click();
+        Thread.sleep(1000);
         getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section/div[4]/div[1]/div/div[2]/div[1]/div/label")).click();
         getDriver().findElement(By.className("apply-button")).click();
         Thread.sleep(1000);
