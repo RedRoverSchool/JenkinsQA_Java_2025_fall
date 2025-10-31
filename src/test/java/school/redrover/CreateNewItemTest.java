@@ -44,19 +44,26 @@ public class CreateNewItemTest extends BaseTest {
 
     @Test
     public void testNewItemTypesAccessibility() {
+        final List<String> expectedItemTypes = List.of(
+                "Freestyle project",
+                "Pipeline",
+                "Multi-configuration project",
+                "Folder",
+                "Multibranch Pipeline",
+                "Organization Folder"
+        );
+
         WebElement newItemButton = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//div[@id='tasks']/div[1]/span/a")));
-
         newItemButton.click();
 
-        List<String> expectedItemTypes = List.of("Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline", "Organization Folder");
-        List<WebElement> itemTypes = getDriver().findElements(By.xpath(".//span[@class='label']"));
-
-        List<String> itemTypeList = itemTypes.stream()
+        List<String> actualTypeList = getDriver()
+                .findElements(By.xpath(".//span[@class='label']"))
+                .stream()
                 .map(WebElement::getText)
                 .toList();
 
-        Assert.assertEquals(itemTypeList, expectedItemTypes);
+        Assert.assertEquals(actualTypeList, expectedItemTypes);
     }
 
     @Test
