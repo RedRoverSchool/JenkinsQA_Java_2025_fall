@@ -52,7 +52,6 @@ public class Folder2Test extends BaseTest {
         List<String> breadcrumbTexts = new ArrayList<>();
         for (WebElement element : getDriver().findElements(By.xpath("//ol[@id='breadcrumbs']/li/a"))) {
             breadcrumbTexts.add(element.getText());
-            System.out.println(element.getText());
         }
 
         List<String> folderNames = new ArrayList<>();
@@ -65,12 +64,13 @@ public class Folder2Test extends BaseTest {
                 "Путь хлебных крошек не соответствует ожиданию");
 
         String fullFolderNameLine = "";
-        for (String line : getDriver().findElement(By.id("//*[contains(text(), 'Full folder name:')]")).getText().split("\n")) {
+        for (String line : getDriver().findElement(By.xpath("//*[contains(text(), 'Full folder name:')]")).getText().split("\n")) {
             if (line.startsWith("Full folder name:")) {
                 fullFolderNameLine = line;
                 break;
             }
         }
+
         Assert.assertEquals(
                 fullFolderNameLine,
                 "Full folder name: %s/%s".formatted(parentFolderName, childFolderName),
