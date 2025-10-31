@@ -62,7 +62,5 @@ public class Folder2Test extends BaseTest {
                 breadcrumbTexts,
                 folderNames,
                 "Путь хлебных крошек не соответствует ожиданию");
-
-        System.out.println(getDriver().findElement(By.xpath("//*[contains(text(), '%s/%s')]".formatted(parentFolderName, childFolderName))).getText());
     }
 }
