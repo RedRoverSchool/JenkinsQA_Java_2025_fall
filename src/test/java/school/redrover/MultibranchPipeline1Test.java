@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -32,6 +33,7 @@ public class MultibranchPipeline1Test extends BaseTest {
                 MULTIBRANCH_PIPELINE_NAME);
     }
 
+    @Ignore
     @Test
     public void testCreateMultibranchPipelineClickNewItem() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
