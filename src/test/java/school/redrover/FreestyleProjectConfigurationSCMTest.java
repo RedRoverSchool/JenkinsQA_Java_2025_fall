@@ -74,4 +74,15 @@ public class FreestyleProjectConfigurationSCMTest extends BaseTest {
 
         Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
     }
+
+    @Test
+    public void testNavigationToSCMViaMenu() {
+        // 02.003.03
+        createFreestyleProject(freestyleProjectName);
+
+        getDriver().findElement(By.xpath("//button[@data-section-id='source-code-management']")).click();
+        WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
+
+        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+    }
 }
