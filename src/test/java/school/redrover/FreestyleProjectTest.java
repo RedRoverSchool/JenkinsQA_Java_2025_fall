@@ -34,7 +34,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(projectTitle.getText(), "Freestyle Project");
     }
 
-    @Ignore
     @Test
     public void testAddDescription() throws InterruptedException {
         WebElement createJob = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
