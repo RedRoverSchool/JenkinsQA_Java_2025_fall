@@ -18,4 +18,15 @@ public class SignInOutTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Sign in to Jenkins");
     }
+
+    @Test
+    public void testGoToProfileAfterSignOut() {
+
+        String urlProfile = getDriver().getCurrentUrl() + "user/admin/";
+
+        testSignOutByClickUserMenu();
+        getDriver().get(urlProfile);
+
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Sign in to Jenkins");
+    }
 }
