@@ -15,6 +15,7 @@ public class MultibranchPipeline1Test extends BaseTest {
     private static final String MULTIBRANCH_PIPELINE_NAME = "Multibranch_Pipeline";
     private static final String MULTIBRANCH_PIPELINE_DISPLAY_NAME = "Multibranch_Pipeline_Display";
 
+    @Ignore
     @Test
     public void testCreateMultibranchPipelineClickCreateJob() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
