@@ -19,7 +19,7 @@ public class NotificationApplyThemeTest extends BaseTest {
         getDriver().findElement(By.id("root-action-UserAction")).click();
         Thread.sleep(2000);
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"tasks\"]/div[5]/span")));
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div[2]/div[1]/div/div[5]/span/a")));
         element.click();
         getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section/div[4]/div[1]/div/div[2]/div[1]/div/label")).click();
         getDriver().findElement(By.className("apply-button")).click();
