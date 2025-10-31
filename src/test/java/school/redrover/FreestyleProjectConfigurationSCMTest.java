@@ -59,4 +59,19 @@ public class FreestyleProjectConfigurationSCMTest extends BaseTest {
         Assert.assertTrue(gitLabel.isDisplayed(), "Radio button 'Git' should be displayed");
         Assert.assertEquals(tooltipText, "Help for feature: Git", "Tooltip text should match expected value");
     }
+
+    @Test
+    public void testAccessSCMInExistingJob() {
+        // 02.003.02
+        createFreestyleProject(freestyleProjectName);
+
+        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='jenkins-mobile-hide']"))).click();
+
+        getDriver().findElement(By.xpath("//a[@href='job/%s/']".formatted(freestyleProjectName))).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(freestyleProjectName))).click();
+        WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
+
+        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+    }
 }
