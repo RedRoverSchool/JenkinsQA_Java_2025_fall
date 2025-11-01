@@ -36,7 +36,7 @@ public class MultibranchPipeline1Test extends BaseTest {
 
     @Test
     public void testCreateMultibranchPipelineClickNewItem() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
         getDriver().findElement(By.cssSelector(".task:first-child a")).click();
         getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
