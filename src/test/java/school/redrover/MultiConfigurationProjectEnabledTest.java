@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,10 +22,13 @@ public class MultiConfigurationProjectEnabledTest extends BaseTest {
 
         WebElement arrow = getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']"));
         new Actions(getDriver()).moveToElement(arrow).perform();
-        WebElement dropdown = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.
-                        xpath("//button[@class='jenkins-menu-dropdown-chevron']")));
+
+        WebElement dropdown = new WebDriverWait(getDriver(), Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(
+                        By.xpath("//button[@class='jenkins-menu-dropdown-chevron']")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", dropdown);
         dropdown.click();
+
         getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]")).click();
         getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
         Thread.sleep(500);
