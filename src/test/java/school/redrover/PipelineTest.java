@@ -12,11 +12,6 @@ public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "PipelineName";
 
-    /**
-     * Остается на Pipeline Status page.
-     *
-     * @param name имя создаваемого pipeline; не должно быть пустым или null
-     */
     private void createPipeline(String name) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
