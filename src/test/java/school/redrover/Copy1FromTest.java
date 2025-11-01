@@ -13,7 +13,7 @@ import java.util.List;
 public class Copy1FromTest extends BaseTest {
 
     @Test
-    public void testCopyFrom() throws InterruptedException { //try to push again
+    public void testCopyFrom() throws InterruptedException { //try to push again #3
         final String firstJobName = "original_project";
         final String secondJobName = "new_project";
 
