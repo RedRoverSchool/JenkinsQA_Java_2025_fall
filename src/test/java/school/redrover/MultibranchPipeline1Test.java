@@ -46,7 +46,7 @@ public class MultibranchPipeline1Test extends BaseTest {
                 .sendKeys(MULTIBRANCH_PIPELINE_DISPLAY_NAME);
         getDriver().findElement(By.name("Submit")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated((By.cssSelector("span.jenkins-mobile-hide")))).click();
+        wait.until(ExpectedConditions.elementToBeClickable((By.cssSelector("span.jenkins-mobile-hide")))).click();
 
         Assert.assertEquals(
                 wait.until(ExpectedConditions.elementToBeClickable(
