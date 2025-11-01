@@ -20,8 +20,12 @@ public class MultiConfigurationProjectEnabledTest extends BaseTest {
         createMCProject(projectName);
         Thread.sleep(500);
 
-        WebElement arrow = getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']"));
-        new Actions(getDriver()).moveToElement(arrow).perform();
+/*        WebElement arrow = getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']"));
+        new Actions(getDriver()).moveToElement(arrow).perform();*/
+        WebElement findArrow = getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']"));
+        // new Actions(getDriver()).moveToElement(findArrow).perform();
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "var ev = new MouseEvent('mouseover', {bubbles: true}); arguments[0].dispatchEvent(ev);", findArrow);
 
         WebElement dropdown = new WebDriverWait(getDriver(), Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(
