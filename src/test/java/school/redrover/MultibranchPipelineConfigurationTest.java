@@ -34,11 +34,14 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
     }
 
+    private void clickOnTheToggle() {
+        getDriver().findElement(By.cssSelector("[data-title='Disabled']")).click();
+    }
+
     @Test
     public void testDisableToggle() {
         createMultibranchPipelineProject();
-
-        getDriver().findElement(By.cssSelector("[data-title='Disabled']")).click();
+        clickOnTheToggle();
 
         WebElement disabledTitle = getDriver().findElement(By.cssSelector("[class$='unchecked-title'"));
         wait.until(ExpectedConditions.textToBePresentInElement(disabledTitle, "Disabled"));
@@ -69,8 +72,8 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         final String expectedDisabledMessage = "This Multibranch Pipeline is currently disabled";
 
         createMultibranchPipelineProject();
+        clickOnTheToggle();
 
-        getDriver().findElement(By.cssSelector("[data-title='Disabled']")).click();
         getDriver().findElement(By.name("Submit")).click();
 
         WebElement actualDisabledMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("disabled-message")));
