@@ -13,15 +13,14 @@ public class PipelineTest extends BaseTest {
     private static final String PIPELINE_NAME = "PipelineName";
 
     /**
-     * Создает новый Pipeline с именем {@link #PIPELINE_NAME}.
-     * И переходит на страницу конфигурации job (т.е. Остается на главной странице задания после создания).
-     * Не возвращается на панель управления Jenkins.
+     * Остается на Pipeline Configuration page
+     * @param name имя создаваемого pipeline; не должно быть пустым или null
      */
-    private void createPipeline() {
+    private void createPipeline(String name) {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
-        getDriver().findElement(By.id("name")).sendKeys(PIPELINE_NAME);
+        getDriver().findElement(By.id("name")).sendKeys(name);
         getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
@@ -65,7 +64,7 @@ public class PipelineTest extends BaseTest {
     @Test
     public void testSuccessfulBuildPipeline() throws InterruptedException {
 
-        createPipeline();
+        createPipeline(PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
 
