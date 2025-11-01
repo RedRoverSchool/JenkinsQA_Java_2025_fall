@@ -13,7 +13,7 @@ import school.redrover.common.BaseTest;
 public class MultibranchPipeline2Test extends BaseTest {
 
     @Test
-    public void testCreateMultibranchPipelineByNew() throws InterruptedException {
+    public void testCreateMultibranchPipeline() throws InterruptedException {
         final String multibranchName = "MultibranchName";
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
