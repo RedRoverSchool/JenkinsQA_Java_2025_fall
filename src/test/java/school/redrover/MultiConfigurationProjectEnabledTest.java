@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -20,17 +19,13 @@ public class MultiConfigurationProjectEnabledTest extends BaseTest {
         createMCProject(projectName);
         Thread.sleep(500);
 
-/*        WebElement arrow = getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']"));
-        new Actions(getDriver()).moveToElement(arrow).perform();*/
-        WebElement findArrow = getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']"));
-        // new Actions(getDriver()).moveToElement(findArrow).perform();
-        ((JavascriptExecutor) getDriver()).executeScript(
-                "var ev = new MouseEvent('mouseover', {bubbles: true}); arguments[0].dispatchEvent(ev);", findArrow);
-
+        WebElement findArrow = getDriver().findElement(By.
+                xpath("//*[@id='job_NewMulti-ConfigurationProject']/td[3]/a"));
+        new Actions(getDriver()).moveToElement(findArrow).perform();
         WebElement dropdown = new WebDriverWait(getDriver(), Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(
                         By.xpath("//button[@class='jenkins-menu-dropdown-chevron']")));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", dropdown);
+        new Actions(getDriver()).moveToElement(dropdown).perform();
         dropdown.click();
 
         getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]")).click();
