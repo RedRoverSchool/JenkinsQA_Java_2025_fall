@@ -21,7 +21,10 @@ public class MultiConfigurationProjectEnabledTest extends BaseTest {
 
         WebElement arrow = getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']"));
         new Actions(getDriver()).moveToElement(arrow).perform();
-        getDriver().findElement(By.xpath("//button[@class='jenkins-menu-dropdown-chevron']")).click();
+        WebElement dropdown = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.
+                        xpath("//button[@class='jenkins-menu-dropdown-chevron']")));
+        dropdown.click();
         getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]")).click();
         getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
         Thread.sleep(500);
