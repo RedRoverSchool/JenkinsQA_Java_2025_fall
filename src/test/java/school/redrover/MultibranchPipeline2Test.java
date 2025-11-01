@@ -13,7 +13,7 @@ import school.redrover.common.BaseTest;
 public class MultibranchPipeline2Test extends BaseTest {
 
     @Test
-    public void testCreateMultibranchPipeline() throws InterruptedException {
+    public void testCreateMultibranchPipelineByNew() throws InterruptedException {
         final String multibranchName = "MultibranchName";
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
@@ -24,10 +24,14 @@ public class MultibranchPipeline2Test extends BaseTest {
         WebElement multibranchPipline = getDriver().findElement(By.cssSelector("[class*='MultiBranchProject']"));
         js.executeScript("arguments[0].scrollIntoView(true);", multibranchPipline);
         multibranchPipline.click();
-
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
+
+        Thread.sleep(2000);
+
         getDriver().findElement(By.xpath("//a[@href='/']")).click();
+
+        Thread.sleep(2000);
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//a[@href='job/%s/']".formatted(multibranchName))).getText(),
