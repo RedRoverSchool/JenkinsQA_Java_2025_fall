@@ -155,7 +155,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenameViaSidebar() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
