@@ -34,7 +34,6 @@ public class MultibranchPipeline1Test extends BaseTest {
                 MULTIBRANCH_PIPELINE_NAME);
     }
 
-    @Ignore
     @Test
     public void testCreateMultibranchPipelineClickNewItem() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
@@ -43,7 +42,7 @@ public class MultibranchPipeline1Test extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
         getDriver().findElement(By.cssSelector("#items .category:nth-child(2) li:nth-child(2)")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']"))
+        wait.until(ExpectedConditions.elementToBeClickable((By.xpath("//input[@name='_.displayNameOrNull']"))))
                 .sendKeys(MULTIBRANCH_PIPELINE_DISPLAY_NAME);
         getDriver().findElement(By.name("Submit")).click();
 
