@@ -31,6 +31,5 @@ public class SystemMessageTest extends BaseTest {
                         By.id("systemmessage"))).getText();
 
         Assert.assertEquals(actualMessage, expectedMessage);
-
     }
 }

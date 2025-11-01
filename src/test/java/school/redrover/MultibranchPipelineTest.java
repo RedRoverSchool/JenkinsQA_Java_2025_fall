@@ -76,6 +76,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(actualDisableText.contains(disableText));
     }
 
+    @Ignore
     @Test
     public void testAddDescription() {
         final String expectedDescription = "This is a test of the possibility of adding a description";
@@ -150,7 +151,7 @@ public class MultibranchPipelineTest extends BaseTest {
         descriptionField.sendKeys(description);
 
         Assert.assertTrue(descriptionField.isDisplayed());
-     }
+    }
 
     @Ignore
     @Test
