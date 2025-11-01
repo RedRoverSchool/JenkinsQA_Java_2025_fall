@@ -13,11 +13,11 @@ public class PipelineTest extends BaseTest {
     private static final String PIPELINE_NAME = "PipelineName";
 
     /**
-     * Остается на Pipeline Configuration page
+     * Остается на Pipeline Status page
+     *
      * @param name имя создаваемого pipeline; не должно быть пустым или null
      */
     private void createPipeline(String name) {
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
         getDriver().findElement(By.id("name")).sendKeys(name);
@@ -63,7 +63,6 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testSuccessfulBuildPipeline() throws InterruptedException {
-
         createPipeline(PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
@@ -75,6 +74,22 @@ public class PipelineTest extends BaseTest {
         String consoleOutputText = getDriver().findElement(By.id("out")).getText();
 
         Assert.assertTrue(consoleOutputText.contains("Finished: SUCCESS"), "Build output should contain 'Finished: SUCCESS'");
+    }
+
+    @Test
+    public void testAddDescription() throws InterruptedException {
+        final String textDescription = "\"aB3_mX9!qW@vL# zP$eR%nY^kU&[";
+
+        createPipeline(PIPELINE_NAME);
+
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).sendKeys(textDescription);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Thread.sleep(500);
+        Assert.assertEquals(
+                getDriver().findElement(By.id("description-content")).getText(),
+                textDescription);
     }
 
 }
