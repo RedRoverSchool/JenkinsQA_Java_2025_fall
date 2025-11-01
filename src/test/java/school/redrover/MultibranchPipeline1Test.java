@@ -36,7 +36,7 @@ public class MultibranchPipeline1Test extends BaseTest {
 
     @Test
     public void testCreateMultibranchPipelineClickNewItem() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         getDriver().findElement(By.cssSelector(".task:first-child a")).click();
         getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
@@ -46,7 +46,7 @@ public class MultibranchPipeline1Test extends BaseTest {
                 .sendKeys(MULTIBRANCH_PIPELINE_DISPLAY_NAME);
         getDriver().findElement(By.name("Submit")).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath("//a[@href='/']/img")))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated((By.cssSelector("span.jenkins-mobile-hide")))).click();
 
         Assert.assertEquals(
                 wait.until(ExpectedConditions.elementToBeClickable(
