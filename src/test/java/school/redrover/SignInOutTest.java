@@ -34,6 +34,10 @@ public class SignInOutTest extends BaseTest {
         String urlProfile = getDriver().getCurrentUrl() + "user/admin/";
 
         testSignOutByClickUserMenu();
+
+        getDriver().findElement(By.cssSelector("#j_username")).sendKeys(ProjectUtils.getUserName());
+        getDriver().findElement(By.cssSelector("#j_password")).sendKeys(ProjectUtils.getPassword());
+        getDriver().findElement(By.xpath("//button")).click();
         getDriver().get(urlProfile);
 
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), ProjectUtils.getUserName());
