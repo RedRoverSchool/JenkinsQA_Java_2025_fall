@@ -25,9 +25,10 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericText);
 
-        WebElement multiBranchPipelineProject = getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", multiBranchPipelineProject);
-        multiBranchPipelineProject.click();
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].click();",
+                getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']"))
+        );
 
         wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
@@ -56,8 +57,24 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         ));
 
         new Actions(getDriver()).moveToElement(toggleElement).perform();
-        String actualTooltip = toggleElement.getDomAttribute("tooltip");
+
+        String actualTooltip = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
+                .getText();
 
         Assert.assertEquals(actualTooltip, expectedTooltip);
+    }
+
+    @Test
+    public void testDisabledMessageOnStatusPage() {
+        final String expectedDisabledMessage = "This Multibranch Pipeline is currently disabled";
+
+        createMultibranchPipelineProject();
+
+        getDriver().findElement(By.cssSelector("[data-title='Disabled']")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        WebElement actualDisabledMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("disabled-message")));
+
+        Assert.assertEquals(actualDisabledMessage.getText(), expectedDisabledMessage);
     }
 }

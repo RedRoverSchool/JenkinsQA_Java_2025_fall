@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -45,25 +44,31 @@ public class CreateNewItemTest extends BaseTest {
 
     @Test
     public void testNewItemTypesAccessibility() {
+        final List<String> expectedItemTypes = List.of(
+                "Freestyle project",
+                "Pipeline",
+                "Multi-configuration project",
+                "Folder",
+                "Multibranch Pipeline",
+                "Organization Folder"
+        );
+
         WebElement newItemButton = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//div[@id='tasks']/div[1]/span/a")));
-
         newItemButton.click();
 
-        List<String> expectedItemTypes = List.of("Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline", "Organization Folder");
-        List<WebElement> itemTypes = getDriver().findElements(By.xpath(".//span[@class='label']"));
-
-        List<String> itemTypeList = itemTypes.stream()
+        List<String> actualTypeList = getDriver()
+                .findElements(By.xpath(".//span[@class='label']"))
+                .stream()
                 .map(WebElement::getText)
                 .toList();
 
-        Assert.assertEquals(itemTypeList, expectedItemTypes);
+        Assert.assertEquals(actualTypeList, expectedItemTypes);
     }
 
-    @Ignore
     @Test
     //TC 01-001-06
-    public void testErrorMessageForDuplicateItemNames() {
+    public void testErrorMessageForDuplicateItemNames() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         final String jobName = "AS new job";
 
@@ -75,17 +80,19 @@ public class CreateNewItemTest extends BaseTest {
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.className("jenkins-mobile-hide"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='jenkins-mobile-hide']"))).click();
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
 
         wait.until(ExpectedConditions.elementToBeClickable(By.id("name"))).sendKeys(jobName);
 
-        WebElement errorMessage = getDriver().findElement(By.id("itemname-invalid"));
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
 
-        Assert.assertEquals(errorMessage.getText(), "» A job already exists with the name ‘AS new job’");
-        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "true");
+        final String errorMessage = "itemname-invalid";
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(errorMessage)));
+
+        Assert.assertEquals(getDriver().findElement(By.id(errorMessage)).getText(), "» A job already exists with the name ‘AS new job’");
     }
-
 }
 
