@@ -25,4 +25,17 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
         Assert.assertEquals(actualAdvancedSectionTitle.getText(), "Advanced");
     }
+
+    @Test     //AT_03.005.02
+    public void testNavigationToAdvancedBySideMenu() {
+        createNewPipeline();
+
+        WebElement actualAdvancedItemMenu = getDriver().findElement(By.xpath(".//button[@data-section-id='advanced']"));
+        actualAdvancedItemMenu.click();
+
+        WebElement actualAdvancedSectionTitle = getDriver().findElement(By.id("advanced"));
+
+        Assert.assertEquals(actualAdvancedItemMenu.getText(), "Advanced");
+        Assert.assertEquals(actualAdvancedSectionTitle.getText(), "Advanced");
+    }
 }
