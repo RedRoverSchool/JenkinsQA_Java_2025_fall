@@ -34,7 +34,6 @@ public class SignInOutTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "Sign in to Jenkins");
     }
 
-
     @Ignore
     @Test
     public void testSignInAfterSignOut() {
