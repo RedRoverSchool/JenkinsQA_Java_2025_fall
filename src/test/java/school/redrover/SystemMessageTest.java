@@ -7,12 +7,22 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
 
 public class SystemMessageTest extends BaseTest {
+
+    private void clearSystemMessage() {
+        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getDriver().findElement(By.xpath("//a[@href='configure']")).click();
+
+        getDriver().findElement(By.name("system_message")).clear();
+        getDriver().findElement(By.name("Submit")).click();
+    }
 
     @Test
     public void testCreateMessage() {
@@ -22,7 +32,6 @@ public class SystemMessageTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='configure']")).click();
 
         WebElement input = getDriver().findElement(By.name("system_message"));
-        input.clear();
         input.sendKeys(expectedMessage);
         getDriver().findElement(By.name("Submit")).click();
 
@@ -31,5 +40,7 @@ public class SystemMessageTest extends BaseTest {
                         By.id("systemmessage"))).getText();
 
         Assert.assertEquals(actualMessage, expectedMessage);
+
+        clearSystemMessage();
     }
 }
