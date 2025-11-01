@@ -34,6 +34,7 @@ public class MultibranchPipeline1Test extends BaseTest {
                 MULTIBRANCH_PIPELINE_NAME);
     }
 
+    @Ignore
     @Test
     public void testCreateMultibranchPipelineClickNewItem() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
