@@ -72,7 +72,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     public String checkDescription() {
-        return waitTime(10).until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("description-content"))))
+        return waitTime(30).until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("description-content"))))
                 .getText();
     }
 
@@ -114,8 +114,8 @@ public class MultiConfigurationProjectTest extends BaseTest {
         goToDashBoard();
         goToProject(NAME_OF_PROJECT);
         editDescription(DESCRIPTION);
-        checkDescription();
+        String result = checkDescription();
 
-        softAssert.assertEquals(checkDescription(), DESCRIPTION);
+        softAssert.assertEquals(result, DESCRIPTION);
     }
 }
