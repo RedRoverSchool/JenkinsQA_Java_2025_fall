@@ -9,6 +9,7 @@ public class CreateNewItem2Test extends BaseTest {
 
     @Test
     public void createNewItemTest() {
+        // Test
         getDriver().findElement(By.cssSelector("#tasks > :nth-child(1)")).click();
         Assert.assertEquals(getDriver().getTitle(), "New Item - Jenkins");
     }
