@@ -48,13 +48,14 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
     public void testAdvancedSectionQuietPeriodElements() {
         createNewPipeline();
 
-        WebElement footer = getDriver().findElement(By.id("footer"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", footer);
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
-        WebElement advancedButton = new WebDriverWait(getDriver(), Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By
-                        .xpath(".//div[@id='advanced']/parent::section/descendant::button[contains(text(),'Advanced')]")));
+        WebElement footer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("footer")));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView({block: 'center'});", footer);
 
+        WebElement advancedButton = wait.until(ExpectedConditions.elementToBeClickable(By
+                .xpath(".//div[@id='advanced']/parent::section/descendant::button[contains(text(),'Advanced')]")));
         new Actions(getDriver()).moveToElement(advancedButton).click().perform();
 
         WebElement actualQuietPeriodLabel = getDriver().findElement(By.xpath(".//label[text()='Quiet period']"));
