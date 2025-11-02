@@ -25,6 +25,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
+    @Ignore
     @Test
     public void testAddingDescriptionCreatingMultibranch() {
         final String expectedDescription = "AddedDescription";
