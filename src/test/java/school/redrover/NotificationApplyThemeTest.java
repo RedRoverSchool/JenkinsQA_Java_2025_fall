@@ -18,8 +18,10 @@ public class NotificationApplyThemeTest extends BaseTest {
     @Test
     public void testChangeTheme() throws InterruptedException {
         WebElement profile = getDriver().findElement(By.id("root-action-UserAction"));
+
         Actions actions = new Actions(getDriver());
         actions.moveToElement(profile).perform();
+
         Thread.sleep(2000);
         getDriver().findElement(By.xpath("//*[@id=\"tippy-1\"]/div/div/div/a[4]")).click();
         Thread.sleep(1000);
