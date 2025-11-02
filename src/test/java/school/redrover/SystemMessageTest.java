@@ -43,4 +43,27 @@ public class SystemMessageTest extends BaseTest {
 
         clearSystemMessage();
     }
+    
+    @Test
+    public void testPreview() {
+        final String expectedMessage = "I want to see this message on preview!";
+
+        // усложнено специально для практики изученного материала
+        getDriver().findElement(By.xpath("//div[@class='jenkins-header__actions']/a[1]")).click();
+        getDriver().findElements(By.className("jenkins-section__item"))
+                .stream()
+                .filter(x -> x.getText().contains("System"))
+                .findFirst()
+                .ifPresent(WebElement::click);
+
+        getDriver().findElement(By.name("system_message")).sendKeys(expectedMessage);
+        getDriver().findElement(By.className("textarea-show-preview")).click();
+
+        WebElement preview = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
+                .until(ExpectedConditions.visibilityOfElementLocated(
+                        By.className("textarea-preview")
+                ));
+
+        Assert.assertEquals(preview.getText(), expectedMessage);
+    }
 }
