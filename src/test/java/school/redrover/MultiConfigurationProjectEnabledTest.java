@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -21,6 +22,19 @@ public class MultiConfigurationProjectEnabledTest extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.
                         xpath("//label[@class='jenkins-toggle-switch__label ']")).isSelected(),
                 "Toggle Button should be Disabled");
+    }
+
+    @Test
+    void warningWhenDisableTest() throws InterruptedException {
+        createMCProject(projectName);
+        Thread.sleep(500);
+
+        getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        WebElement warning = getDriver().findElement(By.xpath("//*[@id='enable-project']"));
+
+        Assert.assertTrue(warning.getText().contains("This project is currently disabled"),
+                "Warning text should contain 'This project is currently disabled'");
     }
 
     private void createMCProject(String name) {
