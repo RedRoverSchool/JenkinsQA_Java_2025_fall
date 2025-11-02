@@ -72,10 +72,8 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     public String checkDescription() {
-       WebElement description = getDriver().findElement(By.id("description-content"));
-        waitTime(10).until(ExpectedConditions.visibilityOf(description));
-
-        return description.getText();
+        return waitTime(10).until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("description-content"))))
+                .getText();
     }
 
     @Test
