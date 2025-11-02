@@ -9,9 +9,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class NewItemPageTest extends BaseTest {
     private final By newItemButtonFromHomePage = By.xpath(".//div[@id='tasks']/div[1]/span/a");
@@ -59,6 +57,8 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector(".jenkins-toggle-switch__label__checked-title")).getText(), "Enabled");
 
         getDriver().findElement(By.cssSelector(".app-jenkins-logo")).click();
+
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#projectstatus > :nth-child(2) > :nth-child(1) > :nth-child(3) > a > span")).getText(), itemName);
+
     }
 }
