@@ -2,10 +2,15 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.time.Duration;
 
 public class OrganizationFolder1Test extends BaseTest {
 
@@ -33,9 +38,13 @@ public class OrganizationFolder1Test extends BaseTest {
                 .executeScript("arguments[0].scrollIntoView(true);", saveOrganizationFolder);
         saveOrganizationFolder.click();
 
-        String resultName = getDriver().findElement(
-                By.xpath("//h1 [@class='job-index-headline page-headline']")).getText();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        WebElement resultName = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//h1[@class='job-index-headline page-headline']")
+                )
+        );
 
-        Assert.assertEquals(resultName, DISPLAYNAME);
+        Assert.assertEquals(resultName.getText(), DISPLAYNAME);
     }
 }
