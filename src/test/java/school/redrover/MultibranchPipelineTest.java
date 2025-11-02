@@ -154,6 +154,31 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
+    public void testSeeTheDescriptionPreview() {
+        final String projectName = "Multibranch Pipeline (test)";
+        final String description = "This is a test description for Multibranch Pipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
+
+       getDriver().findElement(By.id("description-link")).click();
+
+        WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='description']"));
+        descriptionField.sendKeys(description);
+
+        getDriver().findElement(By.xpath("//a[@class='textarea-show-preview']")).click();
+        WebElement textPreview = getDriver().findElement(By.xpath("//div[text()='%s']".formatted(description)));
+
+        Assert.assertTrue(textPreview.isDisplayed());
+    }
+
+
+    @Test
     public void testRenameViaSidebar() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
