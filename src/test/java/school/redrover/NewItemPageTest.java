@@ -59,8 +59,6 @@ public class NewItemPageTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector(".jenkins-toggle-switch__label__checked-title")).getText(), "Enabled");
 
         getDriver().findElement(By.cssSelector(".app-jenkins-logo")).click();
-
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#projectstatus > :nth-child(2) > :nth-child(1) > :nth-child(3) > a > span")).getText(), itemName);
-
     }
 }
