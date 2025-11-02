@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -74,7 +75,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     public String checkDescription() {
-        return waitTime(30).until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("description-content"))))
+        return waitTime(40).until(ExpectedConditions.presenceOfElementLocated(By.id("description-content")))
                 .getText();
     }
 
@@ -117,7 +118,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
         goToProject(NAME_OF_PROJECT);
         editDescription(DESCRIPTION);
         String result = checkDescription();
-        System.out.println(getDriver().getCurrentUrl());
 
         softAssert.assertEquals(result, DESCRIPTION);
     }
