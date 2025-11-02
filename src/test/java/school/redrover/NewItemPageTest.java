@@ -9,7 +9,9 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NewItemPageTest extends BaseTest {
     private final By newItemButtonFromHomePage = By.xpath(".//div[@id='tasks']/div[1]/span/a");
@@ -36,5 +38,27 @@ public class NewItemPageTest extends BaseTest {
 
         WebElement itemTypeLabel = getDriver().findElement(By.xpath(".//div[@class='jenkins-form-label']"));
         Assert.assertEquals(itemTypeLabel.getText(), "Select an item type");
+    }
+
+    @Test
+    public void testNewItemSelectAnItemType() {
+
+        String itemName = "TestItem";
+        String checkselect;
+
+        getDriver().findElement(By.cssSelector("#tasks > :nth-child(1)")).click();
+        getDriver().findElement((By.cssSelector(".add-item-name > #name"))).sendKeys(itemName);
+
+        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        checkselect = getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).getAttribute("aria-checked");
+        Assert.assertEquals(checkselect, "true");
+        getDriver().findElement(By.id("ok-button")).isDisplayed();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#side-panel > div.jenkins-app-bar > div.jenkins-app-bar__content > h1")).getText(), "Configure");
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".jenkins-toggle-switch__label__checked-title")).getText(), "Enabled");
+
+        getDriver().findElement(By.cssSelector(".app-jenkins-logo")).click();
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#projectstatus > :nth-child(2) > :nth-child(1) > :nth-child(3) > a > span")).getText(), itemName);
     }
 }
