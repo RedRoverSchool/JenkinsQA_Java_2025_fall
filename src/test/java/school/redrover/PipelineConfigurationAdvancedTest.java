@@ -58,6 +58,8 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
         new Actions(getDriver()).moveToElement(advancedButton).click().perform();
 
         WebElement actualQuietPeriodLabel = getDriver().findElement(By.xpath(".//label[text()='Quiet period']"));
+        new Actions(getDriver()).moveToElement(actualQuietPeriodLabel).perform();
+
         WebElement actualQuietPeriodCheckbox = getDriver().findElement(By.id("cb13"));
 
         Assert.assertEquals(actualQuietPeriodLabel.getText(), "Quiet period");
