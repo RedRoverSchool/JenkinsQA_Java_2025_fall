@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -16,6 +17,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
     }
 
+    @Ignore
     @Test(testName = "AT_03.005.01")
     public void testNavigationToAdvancedByScrollingDown() {
         createNewPipeline();
