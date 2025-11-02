@@ -9,9 +9,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class NewItemPageTest extends BaseTest {
     private final By newItemButtonFromHomePage = By.xpath(".//div[@id='tasks']/div[1]/span/a");

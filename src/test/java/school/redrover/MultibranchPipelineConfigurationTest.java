@@ -25,19 +25,23 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericText);
 
-        WebElement multiBranchPipelineProject = getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", multiBranchPipelineProject);
-        multiBranchPipelineProject.click();
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].click();",
+                getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']"))
+        );
 
         wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
     }
 
+    private void clickOnTheToggle() {
+        getDriver().findElement(By.cssSelector("[data-title='Disabled']")).click();
+    }
+
     @Test
     public void testDisableToggle() {
         createMultibranchPipelineProject();
-
-        getDriver().findElement(By.cssSelector("[data-title='Disabled']")).click();
+        clickOnTheToggle();
 
         WebElement disabledTitle = getDriver().findElement(By.cssSelector("[class$='unchecked-title'"));
         wait.until(ExpectedConditions.textToBePresentInElement(disabledTitle, "Disabled"));
@@ -61,5 +65,19 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
                 .getText();
 
         Assert.assertEquals(actualTooltip, expectedTooltip);
+    }
+
+    @Test
+    public void testDisabledMessageOnStatusPage() {
+        final String expectedDisabledMessage = "This Multibranch Pipeline is currently disabled";
+
+        createMultibranchPipelineProject();
+        clickOnTheToggle();
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        WebElement actualDisabledMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("disabled-message")));
+
+        Assert.assertEquals(actualDisabledMessage.getText(), expectedDisabledMessage);
     }
 }
