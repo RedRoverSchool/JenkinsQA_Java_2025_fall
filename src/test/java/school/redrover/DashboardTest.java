@@ -12,16 +12,15 @@ import java.time.Duration;
 
 public class DashboardTest extends BaseTest {
 
-    private WebElement getVisibleHomePageHeading() {
-        return new WebDriverWait(getDriver(), Duration.ofSeconds(5))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block > h1")));
+    private WebDriverWait getWait() {
+        return new WebDriverWait(getDriver(), Duration.ofSeconds(5));
     }
 
     @Test
     public void testHomePageHeading() {
-        WebElement actualHeading = getVisibleHomePageHeading();
+        WebElement actualHeading = getWait()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block > h1")));
 
-        Assert.assertTrue(actualHeading.isDisplayed());
         Assert.assertEquals(actualHeading.getText(), "Welcome to Jenkins!");
     }
 }
