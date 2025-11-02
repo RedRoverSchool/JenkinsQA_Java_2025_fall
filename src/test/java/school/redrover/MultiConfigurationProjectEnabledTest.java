@@ -1,9 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.time.Duration;
 
 public class MultiConfigurationProjectEnabledTest extends BaseTest {
     private final String projectName = "NewMulti-ConfigurationProject";
@@ -14,6 +18,24 @@ public class MultiConfigurationProjectEnabledTest extends BaseTest {
         Thread.sleep(500);
         getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
         Thread.sleep(500);
+
+        Assert.assertTrue(getDriver().findElement(By.
+                        xpath("//span[@class='jenkins-toggle-switch__label__unchecked-title']")).isDisplayed(),
+                "'Disabled' must be shown");
+        Assert.assertFalse(getDriver().findElement(By.
+                        xpath("//label[@class='jenkins-toggle-switch__label ']")).isSelected(),
+                "Toggle Button should be Disabled");
+    }
+
+    @Test
+    void disableFromHomePageTest() throws InterruptedException {
+        createMCProject(projectName);
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']"))).click();
+        getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]")).click();
+        getDriver().findElement(By.xpath("//label[@class='jenkins-toggle-switch__label ']")).click();
 
         Assert.assertTrue(getDriver().findElement(By.
                         xpath("//span[@class='jenkins-toggle-switch__label__unchecked-title']")).isDisplayed(),
