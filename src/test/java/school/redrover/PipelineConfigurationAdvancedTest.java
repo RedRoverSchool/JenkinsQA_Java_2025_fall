@@ -3,9 +3,14 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.time.Duration;
 
 public class PipelineConfigurationAdvancedTest extends BaseTest {
 
@@ -37,5 +42,28 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
         Assert.assertEquals(actualAdvancedItemMenu.getText(), "Advanced");
         Assert.assertEquals(actualAdvancedSectionTitle.getText(), "Advanced");
+    }
+
+    @Test     //AT_03.005.03
+    public void testAdvancedSectionQuietPeriodElements() {
+        createNewPipeline();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        WebElement footer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("footer")));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView({block: 'center'});", footer);
+
+        WebElement advancedButton = wait.until(ExpectedConditions.elementToBeClickable(By
+                .xpath(".//div[@id='advanced']/parent::section/descendant::button[contains(text(),'Advanced')]")));
+        new Actions(getDriver()).moveToElement(advancedButton).click().perform();
+
+        WebElement actualQuietPeriodLabel = getDriver().findElement(By.xpath(".//label[text()='Quiet period']"));
+        new Actions(getDriver()).moveToElement(actualQuietPeriodLabel).perform();
+
+        WebElement actualQuietPeriodCheckbox = getDriver().findElement(By.id("cb13"));
+
+        Assert.assertEquals(actualQuietPeriodLabel.getText(), "Quiet period");
+        Assert.assertFalse(actualQuietPeriodCheckbox.isSelected(), "Default Checkbox should not be selected");
     }
 }
