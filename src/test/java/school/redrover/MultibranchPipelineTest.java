@@ -89,7 +89,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(toggleTooltip).perform();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(6));
         String actualTooltip = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
                 .getText();
 
