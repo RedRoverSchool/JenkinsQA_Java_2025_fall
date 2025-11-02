@@ -48,10 +48,8 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
     public void testAdvancedSectionQuietPeriodElements() {
         createNewPipeline();
 
-        ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].scrollIntoView({block: 'center'});",
-                getDriver().findElement(By.id("footer"))
-        );
+        WebElement footer = getDriver().findElement(By.id("footer"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", footer);
 
         WebElement advancedButton = new WebDriverWait(getDriver(), Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(By
