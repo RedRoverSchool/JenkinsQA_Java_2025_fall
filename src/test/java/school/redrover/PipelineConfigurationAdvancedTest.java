@@ -38,4 +38,21 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
         Assert.assertEquals(actualAdvancedItemMenu.getText(), "Advanced");
         Assert.assertEquals(actualAdvancedSectionTitle.getText(), "Advanced");
     }
+
+    @Test     //AT_03.005.03
+    public void testAdvancedSectionQuietPeriodElements() {
+        createNewPipeline();
+
+        WebElement advancedButton = getDriver().findElement(By
+                .xpath(".//div[@id='advanced']/parent::section/descendant::button[contains(text(),'Advanced')]"));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView({block: 'center'});", advancedButton);
+        advancedButton.click();
+
+        WebElement actualQuietPeriodLabel = getDriver().findElement(By.xpath(".//label[text()='Quiet period']"));
+        WebElement actualQuietPeriodCheckbox = getDriver().findElement(By.id("cb13"));
+
+        Assert.assertEquals(actualQuietPeriodLabel.getText(), "Quiet period");
+        Assert.assertFalse(actualQuietPeriodCheckbox.isSelected(), "Default Checkbox should not be selected");
+    }
 }
