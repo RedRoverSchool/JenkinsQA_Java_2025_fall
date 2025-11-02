@@ -12,16 +12,10 @@ public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "PipelineName";
 
-    /**
-     * Создает новый Pipeline с именем {@link #PIPELINE_NAME}.
-     * И переходит на страницу конфигурации job (т.е. Остается на главной странице задания после создания).
-     * Не возвращается на панель управления Jenkins.
-     */
-    private void createPipeline() {
-
+    private void createPipeline(String name) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
-        getDriver().findElement(By.id("name")).sendKeys(PIPELINE_NAME);
+        getDriver().findElement(By.id("name")).sendKeys(name);
         getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
@@ -64,8 +58,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testSuccessfulBuildPipeline() throws InterruptedException {
-
-        createPipeline();
+        createPipeline(PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
 
@@ -76,6 +69,22 @@ public class PipelineTest extends BaseTest {
         String consoleOutputText = getDriver().findElement(By.id("out")).getText();
 
         Assert.assertTrue(consoleOutputText.contains("Finished: SUCCESS"), "Build output should contain 'Finished: SUCCESS'");
+    }
+
+    @Test
+    public void testAddDescription() throws InterruptedException {
+        final String textDescription = "\"aB3_mX9!qW@vL# zP$eR%nY^kU&[";
+
+        createPipeline(PIPELINE_NAME);
+
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).sendKeys(textDescription);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Thread.sleep(500);
+        Assert.assertEquals(
+                getDriver().findElement(By.id("description-content")).getText(),
+                textDescription);
     }
 
 }

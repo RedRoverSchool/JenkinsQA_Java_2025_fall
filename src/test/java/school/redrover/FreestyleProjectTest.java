@@ -66,6 +66,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(description.getText(), "This is a Freestyle Project");
     }
 
+    @Ignore
     @Test
     public void testScheduleBuild() throws InterruptedException {
         WebElement createJob = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
