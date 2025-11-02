@@ -41,7 +41,7 @@ public class OrganizationFolder1Test extends BaseTest {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         WebElement resultName = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//h1[@class='job-index-headline page-headline']")
+                        By.xpath(" //h1[contains(text(), 'Project 1')]")
                 )
         );
 
