@@ -64,10 +64,12 @@ public class MultiConfigurationProjectTest extends BaseTest {
         rename.sendKeys(newName, Keys.ENTER);
     }
 
-    public void editDescription(String description) {
+    public void editDescription(String text) {
         getDriver().findElement(By.xpath("//a[@href='editDescription']"))
                 .click();
-        getDriver().findElement(By.name("description")).sendKeys(description);
+        WebElement description = getDriver().findElement(By.name("description"));
+        description.clear();
+        description.sendKeys(text);
         getDriver().findElement(By.name("Submit")).click();
     }
 
@@ -115,6 +117,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         goToProject(NAME_OF_PROJECT);
         editDescription(DESCRIPTION);
         String result = checkDescription();
+        System.out.println(getDriver().getCurrentUrl());
 
         softAssert.assertEquals(result, DESCRIPTION);
     }
