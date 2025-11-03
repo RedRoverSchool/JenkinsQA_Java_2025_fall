@@ -89,7 +89,7 @@ public class Folder2Test extends BaseTest {
         actions.moveToElement(getDriver().findElement(By.xpath(("//button[contains(@class, 'jenkins-menu-dropdown-chevron')" +
                 " and contains(@data-href, '%s')]").formatted(pipelineName)))).click().build().perform();
         new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOf(
-                getDriver().findElement(By.xpath("//*[@id='tippy-5']/div/div/div/a[3]")))).click();
+                getDriver().findElement(By.xpath("//a[@href='/job/%s/move']".formatted(pipelineName))))).click();
 
         Select selectObject = new Select(getDriver().findElement(By.className("jenkins-select__input")));
         selectObject.selectByVisibleText("Jenkins » %s".formatted(folderName));
