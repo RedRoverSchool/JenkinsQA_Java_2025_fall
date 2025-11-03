@@ -24,9 +24,8 @@ public class CreateNewItem4Test extends BaseTest {
 
     @Test
     public void testItemNameInput() {
-
         getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("Uliana_123");
+        getDriver().findElement(By.id("name")).sendKeys("Uliana_123");
 
         List<WebElement> validationMessages = getDriver().findElements(By.className("input-validation-message"));
 
@@ -37,6 +36,7 @@ public class CreateNewItem4Test extends BaseTest {
                 allValidationMessagesDisabled = false;
             }
         }
+
         Assert.assertTrue(allValidationMessagesDisabled,
                 "All validation messages should be disabled for valid input");
     }
