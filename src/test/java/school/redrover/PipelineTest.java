@@ -125,14 +125,14 @@ public class PipelineTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//button[text() = 'Apply']")).click();
 
-        WebElement expectedNotificationMessage = getDriver().findElement(By.xpath("//span[text() = 'Saved']"));
-        WebElement expectedTextAreaValidationMessage = getDriver()
+        WebElement actualNotificationMessage = getDriver().findElement(By.xpath("//span[text() = 'Saved']"));
+        WebElement actualTextAreaValidationMessage = getDriver()
                 .findElement(By.xpath("//div[contains(text(), 'Schedule')]/following-sibling::div" +
                         "//div[@class = 'ok']"));
 
-        Assert.assertEquals(expectedNotificationMessage.getText(), "Saved");
-        Assert.assertTrue(expectedTextAreaValidationMessage.getText()
+        Assert.assertEquals(actualNotificationMessage.getText(), "Saved");
+        Assert.assertTrue(actualTextAreaValidationMessage.getText()
                 .matches("(?s)Would last have run at .*; would next run at .*"),
-                "Alias " + timePeriod + "не прошёл валидацию");
+                "Alias " + timePeriod + " не прошёл валидацию");
     }
 }
