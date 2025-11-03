@@ -93,7 +93,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
         softAssert.assertAll();
     }
 
-    @Ignore
     @Test
     public void testRenameProject() {
         createNewJob();
@@ -109,6 +108,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         softAssert.assertEquals(getTitleOfProject(), "NewNameProject");
     }
 
+    @Ignore
     @Test
     public void testAddDescriptionToProject() {
         createNewJob();
