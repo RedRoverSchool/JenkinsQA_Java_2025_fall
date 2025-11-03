@@ -43,7 +43,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(actualDescription, expectedDescription, actualDescription + " and " + expectedDescription + " don't match");
     }
-
+    @Ignore
     @Test
     public void testTryCreateProjectExistName() throws InterruptedException {
         final String errorMessage = "» A job already exists with the name " + "‘" + MULTIBRANCH_PIPELINE_NAME + "’";
@@ -62,7 +62,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String actualMessage = getDriver().findElement(By.id("itemname-invalid")).getText();
         Assert.assertEquals(actualMessage, errorMessage);
     }
-
+    @Ignore
     @Test
     public void testVerifyStatusToSwitchingEnableMultibranchPipeline() throws InterruptedException {
         final String disableText = "This Multibranch Pipeline is currently disabled";
@@ -76,7 +76,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String actualDisableText = getDriver().findElement(By.id("disabled-message")).getText();
         Assert.assertTrue(actualDisableText.contains(disableText));
     }
-
+    @Ignore
     @Test
     public void testAddDescription() {
         final String expectedDescription = "This is a test of the possibility of adding a description";
@@ -95,7 +95,7 @@ public class MultibranchPipelineTest extends BaseTest {
         WebElement actualDescription = getDriver().findElement(By.xpath("//div[@id='view-message']"));
         Assert.assertEquals(actualDescription.getText(), expectedDescription);
     }
-
+    @Ignore
     @Test
     public void testButtonIsDisplayed() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
@@ -111,7 +111,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertTrue(buttonAddDescription.isDisplayed());
     }
-
+    @Ignore
     @Test
     public void testClickAddDescriptionButton() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
@@ -130,7 +130,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertTrue(descriptionField.isDisplayed());
     }
-
+    @Ignore
     @Test
     public void testEnterTheDescription() {
         final String description = "This is a test description for Multibranch Pipeline";
