@@ -23,7 +23,7 @@ public class CreateNewItem4Test extends BaseTest {
     }
 
     @Test
-    public void itemNameInput() {
+    public void testItemNameInput() {
 
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("Uliana_123");
