@@ -15,8 +15,6 @@ public class CreateNewItem4Test extends BaseTest {
 
         getDriver().findElement(By.linkText("New Item")).click();
 
-        Thread.sleep(2000);
-
         WebElement label = getDriver().findElement(By.xpath("//label[text()='Enter an item name']"));
         WebElement inputField = getDriver().findElement(By.id("name"));
 
