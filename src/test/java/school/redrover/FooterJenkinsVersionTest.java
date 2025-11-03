@@ -13,8 +13,7 @@ import school.redrover.common.BaseTest;
 import java.time.Duration;
 import java.util.List;
 
-public class
-FooterJenkinsVersionTest extends BaseTest {
+public class FooterJenkinsVersionTest extends BaseTest {
 
     @Test
     public void testDropdownMenu() {
