@@ -85,7 +85,7 @@ public class Folder2Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         List<String> breadcrumbTexts = new ArrayList<>();
-        for (WebElement element : getDriver().findElements(By.xpath("//ol[@id='breadcrumbs']/li/a"))) {
+        for (WebElement element : getDriver().findElements(By.xpath("//*[@id='breadcrumbs']//a"))) {
             breadcrumbTexts.add(element.getText());
         }
 
