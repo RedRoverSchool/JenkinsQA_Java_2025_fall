@@ -17,7 +17,7 @@ public class EnableDisableMultiConfigProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//label[@for='enable-disable-project']")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        String actualState = "This project is currently disabled";
+        String actualState = getDriver().findElement(By.id("enable-project")).getText().replace("Enable", "").trim();
         Assert.assertEquals(actualState, "This project is currently disabled");
     }
 }
