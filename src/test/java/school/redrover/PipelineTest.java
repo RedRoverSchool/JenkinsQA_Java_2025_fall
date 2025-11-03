@@ -94,7 +94,7 @@ public class PipelineTest extends BaseTest {
 
     @DataProvider
     public Object[][] validAliases() {
-        return new String[][]{
+        return new String[][] {
                 {"@yearly"},
                 {"@annually"},
                 {"@monthly"},
@@ -106,7 +106,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dataProvider = "validAliases")
-    public void testScheduleWithValidData(String name) {
+    public void testScheduleWithValidData(String timePeriod) {
         createPipeline(PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[contains(@href , 'configure')]")).click();
@@ -119,20 +119,20 @@ public class PipelineTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
 
-        WebElement scheduleTextarea = getDriver().findElement(By.xpath("//textarea[@name = '_.spec']"));
-        scheduleTextarea.click();
-        scheduleTextarea.sendKeys(name);
+        WebElement scheduleTextArea = getDriver().findElement(By.xpath("//textarea[@name = '_.spec']"));
+        scheduleTextArea.click();
+        scheduleTextArea.sendKeys(timePeriod);
 
         getDriver().findElement(By.xpath("//button[text() = 'Apply']")).click();
 
-        WebElement notificationResult = getDriver().findElement(By.xpath("//span[text() = 'Saved']"));
-        WebElement validationMessageResult = getDriver()
+        WebElement expectedNotificationMessage = getDriver().findElement(By.xpath("//span[text() = 'Saved']"));
+        WebElement expectedTextAreaValidationMessage = getDriver()
                 .findElement(By.xpath("//div[contains(text(), 'Schedule')]/following-sibling::div" +
                         "//div[@class = 'ok']"));
 
-        Assert.assertEquals(notificationResult.getText(), "Saved");
-        Assert.assertTrue(validationMessageResult.getText()
-                        .matches("(?s)Would last have run at .*; would next run at .*"),
-                "Alias " + name + "не прошёл валидацию");
+        Assert.assertEquals(expectedNotificationMessage.getText(), "Saved");
+        Assert.assertTrue(expectedTextAreaValidationMessage.getText()
+                .matches("(?s)Would last have run at .*; would next run at .*"),
+                "Alias " + timePeriod + "не прошёл валидацию");
     }
 }
