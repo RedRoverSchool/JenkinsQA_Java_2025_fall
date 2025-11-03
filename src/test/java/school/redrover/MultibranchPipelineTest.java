@@ -27,6 +27,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
+
     @Test
     public void testAddingDescriptionCreatingMultibranch() {
         final String expectedDescription = "AddedDescription";
@@ -172,6 +173,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertTrue(descriptionField.isDisplayed());
     }
+
 
     @Test
     public void testRenameViaSidebar() {
