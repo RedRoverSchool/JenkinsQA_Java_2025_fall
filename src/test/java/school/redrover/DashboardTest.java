@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
+import java.util.List;
 
 public class DashboardTest extends BaseTest {
 
@@ -32,5 +33,30 @@ public class DashboardTest extends BaseTest {
         WebElement actualParagraph = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("p")));
 
         Assert.assertEquals(actualParagraph.getText(), expectedParagraphText);
+    }
+
+    @Test
+    public void testContentBlockLinks() {
+        final List<String> expectedUrlPaths = List.of(
+                "newJob",
+                "computer/new",
+                "cloud/",
+                "https://www.jenkins.io/redirect/distributed-builds"
+        );
+
+        List<WebElement> contentBlockLinks = getWait()
+                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".content-block > a")));
+
+        List<String> actualUrlPaths =
+                contentBlockLinks
+                        .stream()
+                        .map(link -> link.getDomAttribute("href"))
+                        .toList();
+
+        contentBlockLinks.forEach(link -> {
+            Assert.assertTrue(link.isEnabled());
+        });
+
+        Assert.assertEquals(actualUrlPaths, expectedUrlPaths);
     }
 }
