@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -63,17 +64,36 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testVerifyStatusToSwitchingEnableMultibranchPipeline() throws InterruptedException {
+    public void testVerifyDisableMessaageOnStatusPage() throws InterruptedException {
         final String disableText = "This Multibranch Pipeline is currently disabled";
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/configure']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(MULTIBRANCH_PIPELINE_NAME))).click();
         getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
         getDriver().findElement(By.name("Submit")).click();
 
         Thread.sleep(2000);
         String actualDisableText = getDriver().findElement(By.id("disabled-message")).getText();
         Assert.assertTrue(actualDisableText.contains(disableText));
+    }
+
+    @Test
+    public void testVerifyEnableToogleTooltip() {
+        final String tooltipText =
+                "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
+
+        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(MULTIBRANCH_PIPELINE_NAME))).click();
+        WebElement toggleTooltip = getDriver().findElement(By.id("toggle-switch-enable-disable-project"));
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(toggleTooltip).perform();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(6));
+        String actualTooltip = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
+                .getText();
+
+        Assert.assertEquals(actualTooltip, tooltipText);
     }
 
     @Test
