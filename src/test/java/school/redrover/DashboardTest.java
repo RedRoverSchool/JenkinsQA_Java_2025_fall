@@ -1,7 +1,9 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -37,26 +39,38 @@ public class DashboardTest extends BaseTest {
 
     @Test
     public void testContentBlockLinks() {
-        final List<String> expectedUrlPaths = List.of(
-                "newJob",
-                "computer/new",
-                "cloud/",
-                "https://www.jenkins.io/redirect/distributed-builds"
+        final List<String> expectedUrlEndpoints = List.of(
+                "/newJob",
+                "/computer/new",
+                "/cloud/",
+                "/#distributed-builds-architecture"
         );
 
         List<WebElement> contentBlockLinks = getWait()
                 .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".content-block > a")));
 
-        List<String> actualUrlPaths =
-                contentBlockLinks
-                        .stream()
-                        .map(link -> link.getDomAttribute("href"))
-                        .toList();
+        String originalWindow = getDriver().getWindowHandle();
 
-        contentBlockLinks.forEach(link -> {
-            Assert.assertTrue(link.isEnabled());
-        });
+        for (int i = 0; i < contentBlockLinks.size(); i++) {
+            WebElement currentLink = contentBlockLinks.get(i);
 
-        Assert.assertEquals(actualUrlPaths, expectedUrlPaths);
+            new Actions(getDriver())
+                    .keyDown(Keys.CONTROL)
+                    .click(currentLink)
+                    .perform();
+
+            getWait().until(ExpectedConditions.numberOfWindowsToBe(2));
+
+            Object[] windowHandles = getDriver().getWindowHandles().toArray();
+            getDriver().switchTo().window((String) windowHandles[1]);
+
+            String currentUrl = getDriver().getCurrentUrl();
+            String expectedUrlEndpoint = expectedUrlEndpoints.get(i);
+
+            Assert.assertTrue(currentUrl.contains(expectedUrlEndpoint));
+
+            getDriver().close();
+            getDriver().switchTo().window(originalWindow);
+        }
     }
 }
