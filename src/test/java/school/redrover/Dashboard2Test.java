@@ -2,28 +2,37 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.time.Duration;
+
 public class Dashboard2Test extends BaseTest {
 
-    @Test(dataProvider = "distributedBuildLinks")
-    public void testDistributedBuildButtons(String linkText, String expectedUrlSubstring) {
+    @DataProvider(name = "Links")
+    Object[][] linkData2() {
+        return new Object[][]{
+                {"Create a job", "/newJob", "New Item"},
+                {"Set up an agent", "/new", "New node"},
+                {"Configure a cloud", "/cloud/", "Clouds"},
+        };
+    }
+
+    @Test(dataProvider = "Links")
+    public void testDashboardButtons(String linkText, String expectedUrlSubstring, String expectedHeading) {
 
         WebElement link = getDriver().findElement(By.xpath(".//a[span[text()='" + linkText + "']]"));
         link.click();
 
-        Assert.assertTrue(getDriver().getCurrentUrl().endsWith(expectedUrlSubstring));
-    }
+        new WebDriverWait(getDriver(), Duration.ofMillis(2000))
+                .until(ExpectedConditions.urlContains(expectedUrlSubstring));
 
-    @DataProvider(name = "distributedBuildLinks")
-    Object[][] linkData() {
-        return new Object[][]{
-                {"Set up an agent", "/new"},
-                {"Configure a cloud", "/cloud/"},
-                {"Learn more about distributed builds", "/architecting-for-scale/#distributed-builds-architecture"}
-        };
+        String actualHeading = getDriver().findElement(By.tagName("h1")).getText();
+
+        Assert.assertEquals(actualHeading, expectedHeading);
     }
 }
