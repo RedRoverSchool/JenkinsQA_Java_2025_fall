@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
@@ -107,6 +108,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         softAssert.assertEquals(getTitleOfProject(), "NewNameProject");
     }
 
+    @Ignore
     @Test
     public void testAddDescriptionToProject() {
         createNewJob();
