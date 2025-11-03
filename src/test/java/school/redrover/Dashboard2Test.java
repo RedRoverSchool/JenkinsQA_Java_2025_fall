@@ -47,4 +47,20 @@ public class Dashboard2Test extends BaseTest {
 
         Assert.assertEquals(actualHeading, expectedHeading);
     }
+
+    @Test
+    public void testLearnMoreAboutDistributedBuildsButton() {
+
+        getDriver().findElement(By.xpath(".//a[span[text()='Learn more about distributed builds']]"))
+                .click();
+        Object[] windowHandles = getDriver().getWindowHandles().toArray();
+        getDriver().switchTo().window((String) windowHandles[1]);
+
+        new WebDriverWait(getDriver(), Duration.ofMillis(2000))
+                .until(ExpectedConditions.urlContains("architecting-for-scale"));
+
+        String actualHeading = getDriver().findElement(By.tagName("h1")).getText();
+
+        Assert.assertEquals(actualHeading, "Architecting for Scale");
+    }
 }
