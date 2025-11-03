@@ -26,7 +26,7 @@ public class Dashboard2Test extends BaseTest {
     }
 
     @DataProvider(name = "Links")
-    Object[][] linkData2() {
+    Object[][] linkData() {
         return new Object[][]{
                 {"Create a job", "/newJob", "New Item"},
                 {"Set up an agent", "/new", "New node"},
