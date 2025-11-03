@@ -23,11 +23,11 @@ public class CopyItemTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME1);
         getDriver().findElement(By.id("ok-button")).click();
 
-
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        WebElement checkbox = wait.until(ExpectedConditions.elementToBeClickable(By.id("cb6")));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("cb6")));
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("cb6")));
+        WebElement checkbox = getDriver().findElement(By.id("cb6"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", checkbox);
-        wait.until(driver -> checkbox.isDisplayed());
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", checkbox);
 
         WebElement checkbox1 = getDriver().findElement(By.id("cb16"));
