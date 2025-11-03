@@ -49,8 +49,6 @@ public class DashboardTest extends BaseTest {
         List<WebElement> contentBlockLinks = getWait()
                 .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".content-block > a")));
 
-        String originalWindow = getDriver().getWindowHandle();
-
         for (int i = 0; i < contentBlockLinks.size(); i++) {
             WebElement currentLink = contentBlockLinks.get(i);
 
@@ -70,7 +68,7 @@ public class DashboardTest extends BaseTest {
             Assert.assertTrue(currentUrl.contains(expectedUrlEndpoint));
 
             getDriver().close();
-            getDriver().switchTo().window(originalWindow);
+            getDriver().switchTo().window((String) windowHandles[0]);
         }
     }
 }
