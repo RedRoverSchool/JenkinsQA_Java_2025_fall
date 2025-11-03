@@ -9,6 +9,7 @@ public class EnableDisableMultiConfigProjectTest extends BaseTest {
 
     @Test
     public void disableNewMultiConfigProject () {
+
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("NewProject");
         getDriver().findElement(By.xpath("//li[@class='hudson_matrix_MatrixProject']")).click();
