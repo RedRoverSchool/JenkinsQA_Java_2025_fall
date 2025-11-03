@@ -12,16 +12,16 @@ public class OrganisationFolder1Test extends BaseTest {
     @Test
     public void testCreateOrganisationFolder() {
 
-        final String nameFolder = "Organization Folder";
+        final String folderName = "Organization Folder";
 
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(nameFolder);
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
 
-        WebElement OrganizationFolder = getDriver().
+        WebElement organizationFolder = getDriver().
                 findElement(By.xpath("//li[@class='jenkins_branch_OrganizationFolder']"));
         ((JavascriptExecutor) getDriver())
-                .executeScript("arguments[0].scrollIntoView(true);", OrganizationFolder);
-        OrganizationFolder.click();
+                .executeScript("arguments[0].scrollIntoView(true);", organizationFolder);
+        organizationFolder.click();
 
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
@@ -29,6 +29,6 @@ public class OrganisationFolder1Test extends BaseTest {
         WebElement OrganizationFolderName = getDriver().
                 findElement(By.xpath("//h1[contains(text(), 'Organization Folder')]"));
 
-        Assert.assertEquals(OrganizationFolderName.getText(), nameFolder);
+        Assert.assertEquals(OrganizationFolderName.getText(), folderName);
     }
 }
