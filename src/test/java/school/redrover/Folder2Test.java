@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -87,7 +88,9 @@ public class Folder2Test extends BaseTest {
                 By.xpath("//a[.//span[contains(text(), '%s')]]".formatted(pipelineName)))).perform();
         actions.moveToElement(getDriver().findElement(By.xpath(("//button[contains(@class, 'jenkins-menu-dropdown-chevron')" +
                 " and contains(@data-href, '%s')]").formatted(pipelineName)))).click().build().perform();
-        actions.moveToElement(getDriver().findElement(By.xpath(("//a[contains(@href, 'move')]")))).click().build().perform();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        WebElement moveLink = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, 'move')]")));
+        moveLink.click();
         Select selectObject = new Select(getDriver().findElement(By.className("jenkins-select__input")));
         selectObject.selectByVisibleText("Jenkins » %s".formatted(folderName));
         getDriver().findElement(By.name("Submit")).click();
