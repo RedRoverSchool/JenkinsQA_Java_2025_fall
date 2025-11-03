@@ -5,5 +5,5 @@ jenkins.port=<port>
 
 browser.name=chrome
 #browser.options.chrome=--remote-allow-origins=*;--disable-gpu;--no-sandbox;--disable-dev-shm-usage;--headless=new;--window-size=1920,1080
-browser.options.chrome=--window-size=1920,1080;--lang=en
+browser.options.chrome=--window-size=1920,1080;--lang=en-US
 browser.closeIfError=false
