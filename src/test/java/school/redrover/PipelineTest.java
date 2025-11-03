@@ -2,10 +2,14 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.time.Duration;
 import java.util.List;
 
 public class PipelineTest extends BaseTest {
@@ -68,7 +72,8 @@ public class PipelineTest extends BaseTest {
 
         String consoleOutputText = getDriver().findElement(By.id("out")).getText();
 
-        Assert.assertTrue(consoleOutputText.contains("Finished: SUCCESS"), "Build output should contain 'Finished: SUCCESS'");
+        Assert.assertTrue(consoleOutputText.contains("Finished: SUCCESS"),
+                "Build output should contain 'Finished: SUCCESS'");
     }
 
     @Test
@@ -87,4 +92,47 @@ public class PipelineTest extends BaseTest {
                 textDescription);
     }
 
+    @DataProvider
+    public Object[][] validAliases() {
+        return new String[][]{
+                {"@yearly"},
+                {"@annually"},
+                {"@monthly"},
+                {"@weekly"},
+                {"@daily"},
+                {"@midnight"},
+                {"@hourly"}
+        };
+    }
+
+    @Test(dataProvider = "validAliases")
+    public void testScheduleWithValidData(String name) {
+        createPipeline(PIPELINE_NAME);
+
+        getDriver().findElement(By.xpath("//a[contains(@href , 'configure')]")).click();
+
+        WebElement triggersSectionButton = getDriver().findElement(By.xpath("//button[@data-section-id = 'triggers']"));
+        triggersSectionButton.click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.attributeContains(triggersSectionButton, "class", "task-link--active"));
+
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
+
+        WebElement scheduleTextarea = getDriver().findElement(By.xpath("//textarea[@name = '_.spec']"));
+        scheduleTextarea.click();
+        scheduleTextarea.sendKeys(name);
+
+        getDriver().findElement(By.xpath("//button[text() = 'Apply']")).click();
+
+        WebElement notificationResult = getDriver().findElement(By.xpath("//span[text() = 'Saved']"));
+        WebElement validationMessageResult = getDriver()
+                .findElement(By.xpath("//div[contains(text(), 'Schedule')]/following-sibling::div" +
+                        "//div[@class = 'ok']"));
+
+        Assert.assertEquals(notificationResult.getText(), "Saved");
+        Assert.assertTrue(validationMessageResult.getText()
+                        .matches("(?s)Would last have run at .*; would next run at .*"),
+                "Alias " + name + "не прошёл валидацию");
+    }
 }
