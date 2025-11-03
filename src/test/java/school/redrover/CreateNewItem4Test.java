@@ -22,29 +22,3 @@ public class CreateNewItem4Test extends BaseTest {
         Assert.assertTrue(inputField.isDisplayed(), "Input field 'name' should be visible");
     }
 }
-
-
-/*
-Steps:
-
-1.Click on the “New Item” button in the left navigation panel.
-2.Verify that the “Enter an item name” input field is displayed.
-3.Verify that the list of available item types is displayed:
-    Freestyle Project
-    Pipeline
-    Multi-configuration Project
-    Folder
-    Multibranch Pipeline
-    Organization Folder
-Expected Result:
-After clicking the “New Item” button, the user is redirected to the New Job page (URL contains /view/all/newJob).
-The “Enter an item name” input field is visible on the page.
-The list of available item types is displayed correctly.
-
-Acceptance Criteria:
-
-New Item Page Accessibility
-The "New Item" page should be accessible from the Jenkins Dashboard.
-The page should have an input field "Enter an item name".
-A list of available item types (Freestyle Project, Pipeline, Multi-configuration Project, Folder, Multibranch Pipeline, Organization Folder) should be displayed.
- */
