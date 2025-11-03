@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
 import java.time.Duration;
 
 public class ConfigureAppearanceTest extends BaseTest {
