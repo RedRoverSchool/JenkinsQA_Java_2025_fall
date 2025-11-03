@@ -94,7 +94,7 @@ public class PipelineTest extends BaseTest {
 
     @DataProvider
     public Object[][] validAliases() {
-        return new String[][] {
+        return new String[][]{
                 {"@yearly"},
                 {"@annually"},
                 {"@monthly"},
@@ -125,14 +125,16 @@ public class PipelineTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//button[text() = 'Apply']")).click();
 
-        WebElement actualNotificationMessage = getDriver().findElement(By.xpath("//span[text() = 'Saved']"));
+        WebElement actualNotificationMessage = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']")));
+
         WebElement actualTextAreaValidationMessage = getDriver()
                 .findElement(By.xpath("//div[contains(text(), 'Schedule')]/following-sibling::div" +
                         "//div[@class = 'ok']"));
 
         Assert.assertEquals(actualNotificationMessage.getText(), "Saved");
         Assert.assertTrue(actualTextAreaValidationMessage.getText()
-                .matches("(?s)Would last have run at .*; would next run at .*"),
+                        .matches("(?s)Would last have run at .*; would next run at .*"),
                 "Alias " + timePeriod + " не прошёл валидацию");
     }
 }
