@@ -23,4 +23,14 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertEquals(actualHeading.getText(), "Welcome to Jenkins!");
     }
+
+    @Test
+    public void testHomePageParagraph() {
+        final String expectedParagraphText = "This page is where your Jenkins jobs will be displayed. " +
+                "To get started, you can set up distributed builds or start building a software project.";
+
+        WebElement actualParagraph = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("p")));
+
+        Assert.assertEquals(actualParagraph.getText(), expectedParagraphText);
+    }
 }
