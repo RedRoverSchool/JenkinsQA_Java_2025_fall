@@ -3,12 +3,19 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.time.Duration;
+
 public class PipelineConfigurationAdvancedTest extends BaseTest {
+
+    private WebDriverWait wait;
 
     private void createNewPipeline() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -18,6 +25,18 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
     }
 
     @Ignore
+    private void advancedButtonClick() {
+        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        WebElement footer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("footer")));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView({block: 'center'});", footer);
+
+        WebElement advancedButton = wait.until(ExpectedConditions.elementToBeClickable(By
+                .xpath(".//div[@id='advanced']/parent::section/descendant::button[contains(text(),'Advanced')]")));
+        new Actions(getDriver()).moveToElement(advancedButton).click().perform();
+    }
+
     @Test(testName = "AT_03.005.01")
     public void testNavigationToAdvancedByScrollingDown() {
         createNewPipeline();
@@ -39,5 +58,44 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
         Assert.assertEquals(actualAdvancedItemMenu.getText(), "Advanced");
         Assert.assertEquals(actualAdvancedSectionTitle.getText(), "Advanced");
+    }
+
+    @Test     //AT_03.005.03
+    public void testAdvancedSectionQuietPeriodElements() {
+        createNewPipeline();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        WebElement footer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("footer")));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView({block: 'center'});", footer);
+
+        WebElement advancedButton = wait.until(ExpectedConditions.elementToBeClickable(By
+                .xpath(".//div[@id='advanced']/parent::section/descendant::button[contains(text(),'Advanced')]")));
+        new Actions(getDriver()).moveToElement(advancedButton).click().perform();
+
+        WebElement actualQuietPeriodLabel = getDriver().findElement(By.xpath(".//label[text()='Quiet period']"));
+        new Actions(getDriver()).moveToElement(actualQuietPeriodLabel).perform();
+
+        WebElement actualQuietPeriodCheckbox = getDriver().findElement(By.id("cb13"));
+
+        Assert.assertEquals(actualQuietPeriodLabel.getText(), "Quiet period");
+        Assert.assertFalse(actualQuietPeriodCheckbox.isSelected(), "Default Checkbox should not be selected");
+    }
+
+    @Test     //AT_03.005.04
+    public void testAdvancedSectionDisplayNameFieldElements() {
+        createNewPipeline();
+        advancedButtonClick();
+
+        WebElement displayNameLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.
+                xpath(".//div[text()='Display Name']")));
+        new Actions(getDriver()).moveToElement(displayNameLabel).perform();
+
+        String actualDisplayNameLabel = displayNameLabel.getText().split("\\n")[0];
+        WebElement actualDisplayNameInput = getDriver().findElement(By.name("_.displayNameOrNull"));
+
+        Assert.assertEquals(actualDisplayNameLabel, "Display Name");
+        Assert.assertTrue(actualDisplayNameInput.getAttribute("value").isEmpty(), "Default Display Name field should be empty");
     }
 }
