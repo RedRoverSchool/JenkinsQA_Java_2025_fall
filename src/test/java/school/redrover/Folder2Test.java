@@ -86,8 +86,8 @@ public class Folder2Test extends BaseTest {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(getDriver().findElement(
                 By.xpath("//a[.//span[contains(text(), '%s')]]".formatted(pipelineName)))).perform();
-        actions.moveToElement(getDriver().findElement(By.xpath(("//button[contains(@class, 'jenkins-menu-dropdown-chevron')" +
-                " and contains(@data-href, '%s')]").formatted(pipelineName)))).click().build().perform();
+        getDriver().findElement(By.xpath(("//button[contains(@class, 'jenkins-menu-dropdown-chevron')" +
+                " and contains(@data-href, '%s')]").formatted(pipelineName))).click();
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         WebElement moveLink = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href, 'move')]")));
         moveLink.click();
