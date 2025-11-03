@@ -18,12 +18,12 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     private WebDriverWait wait;
 
     private void createMultibranchPipelineProject() {
-        final String randomAlphaNumericText = UUID.randomUUID().toString().replaceAll("-", "");
+        final String projectName = getRandomAlphaNumericText();
 
         wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         wait.until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
 
-        getDriver().findElement(By.id("name")).sendKeys(randomAlphaNumericText);
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
 
         ((JavascriptExecutor) getDriver()).executeScript(
                 "arguments[0].click();",
@@ -36,6 +36,10 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     private void clickOnTheToggle() {
         getDriver().findElement(By.cssSelector("[data-title='Disabled']")).click();
+    }
+
+    private String getRandomAlphaNumericText() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     @Test
@@ -79,5 +83,19 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         WebElement actualDisabledMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("disabled-message")));
 
         Assert.assertEquals(actualDisabledMessage.getText(), expectedDisabledMessage);
+    }
+
+    @Test
+    public void testProjectDescriptionPreview() {
+        final String projectDescription = getRandomAlphaNumericText();
+
+        createMultibranchPipelineProject();
+
+        getDriver().findElement(By.name("_.description")).sendKeys(projectDescription);
+        getDriver().findElement(By.className("textarea-show-preview")).click();
+
+        WebElement previewTextarea = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview")));
+
+        Assert.assertEquals(previewTextarea.getText(), projectDescription);
     }
 }
