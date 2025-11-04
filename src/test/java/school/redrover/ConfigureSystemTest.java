@@ -290,6 +290,28 @@ public class ConfigureSystemTest extends BaseTest {
                 numberOfHelpDisplayBlockAfterClick - 1);
     }
 
+    @Test
+    public void testDiskSpaceMonitoringThresholds() {
+        String testSpace = "1GiB";
+
+        getSystemConfigurePage();
+
+        getDriver().findElement(By.xpath("//input[contains(@name, 'DiskSpaceMonitorNodeProperty')]")).click();
+
+        WebElement freeDiskSpaceThreshold = getDriver().findElement(By.name("_.freeDiskSpaceThreshold"));
+        freeDiskSpaceThreshold.clear();
+        freeDiskSpaceThreshold.sendKeys(testSpace);
+
+        WebElement freeDiskSpaceWarningThreshold = getDriver().findElement(By.name("_.freeDiskSpaceThreshold"));
+        freeDiskSpaceWarningThreshold.clear();
+        freeDiskSpaceWarningThreshold.sendKeys(testSpace);
+
+        getSystemConfigurePage();
+
+        Assert.assertEquals(expectedGlobalProperties, actualGlobalProperties);
+    }
+
+
 
 
 
