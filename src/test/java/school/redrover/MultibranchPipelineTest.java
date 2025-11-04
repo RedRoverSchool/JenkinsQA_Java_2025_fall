@@ -197,4 +197,23 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(multibranchPipelineName.getText(), RENAMED_MULTIBRANCH_PIPELINE);
     }
+
+    @Test
+    public void testEnterTheDescriptionOfTheMultibranchPipeline() {
+        final String projectName = "Multibranch Pipeline (test)";
+        final String description = "This is a test description for Multibranch Pipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
+        getDriver().findElement(By.id("description-link")).click();
+        WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='description']"));
+        descriptionField.sendKeys(description);
+
+        Assert.assertTrue(descriptionField.isDisplayed());
+    }
 }
