@@ -27,7 +27,7 @@ public class JenkinsVersionTest extends BaseTest {
     @Test
     public void testVersion() {
 
-       Assert.assertEquals(getDriver().findElement(By.cssSelector("#jenkins > footer > div > div.page-footer__links > button")).getText(), "Jenkins 2.516.3");
+       Assert.assertEquals(getDriver().findElement(By.cssSelector("div.page-footer__links > button")).getText(), "Jenkins 2.516.3");
     }
 
 }
