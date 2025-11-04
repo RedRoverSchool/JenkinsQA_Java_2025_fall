@@ -4,17 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.frequency;
 
@@ -253,6 +250,25 @@ public class ConfigureSystemTest extends BaseTest {
         String actualQuietPeriod = getDriver().findElement(quietPeriodInputSelector).getAttribute("value");
         Assert.assertEquals(actualQuietPeriod, testQuietPeriod);
     }
+
+    @Test
+    public void testGlobalProperties() {
+        final List<String> expectedGlobalProperties = List.of(
+                "Disable deferred wipeout on this node",
+                "Disk Space Monitoring Thresholds",
+                "Environment variables",
+                "Tool Locations");
+
+        getSystemConfigurePage();
+
+        List<String> actualGlobalProperties = getDriver().findElements(By.xpath("//div[@id='global-properties']/..//label"))
+                .stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        Assert.assertEquals(expectedGlobalProperties, actualGlobalProperties);
+    }
+
 
 
 }
