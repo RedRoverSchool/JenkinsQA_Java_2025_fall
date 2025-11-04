@@ -127,6 +127,8 @@ public class Folder2Test extends BaseTest {
         createItem(pipelineName, "Pipeline");
 
         getDriver().findElement(By.xpath("//a[text()='%s']".formatted(folderName))).click();
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(driver -> Objects.requireNonNull(
+                driver.getCurrentUrl()).endsWith("/job/%s/".formatted(folderName)));
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(pipelineName);
 
