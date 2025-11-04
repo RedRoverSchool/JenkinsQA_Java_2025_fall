@@ -1,13 +1,18 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -90,7 +95,15 @@ public class ConfigureSystemTest extends BaseTest {
         systemMessageTextArea.sendKeys(numberOfExecutors);
         getDriver().findElement(By.name("Submit")).click();
 
-        String executorsLine = getDriver().findElement(By.className("executors-collapsed")).getText();
+        WebElement executors = getDriver().findElement(By.cssSelector("div#executors"));
+
+        String executorsLine;
+        if (executors.getAttribute("class").contains("expanded")) {
+            executorsLine = getDriver().findElement(By.cssSelector("span[tooltip*='executors busy']")).getAttribute("tooltip");
+        } else {
+            executorsLine = getDriver().findElement(By.className("executors-collapsed")).getText();
+        }
+
         List<String> lineElements = Arrays.stream(executorsLine.split(" ")).skip(1).toList();
         int frequency = frequency(lineElements, numberOfExecutors);
 
@@ -98,7 +111,7 @@ public class ConfigureSystemTest extends BaseTest {
     }
 
     @Test
-    public void testTooltipOfUserOption() {
+    public void testTooltipOfUsageOption() {
 
         getSystemConfigurePage();
 
@@ -112,7 +125,7 @@ public class ConfigureSystemTest extends BaseTest {
 
         Assert.assertEquals(
                 numberOfHelpDisplayBlockBeforeClick,
-                numberOfHelpDisplayBlockAfterClick);
+                numberOfHelpDisplayBlockAfterClick - 1);
     }
 
     @Test
@@ -194,14 +207,16 @@ public class ConfigureSystemTest extends BaseTest {
         int numberOfHelpDisplayBlockBeforeClick = getDriver()
                 .findElements(By.cssSelector("div .help[style='display: block;']")).size();
 
-        getDriver().findElement(By.cssSelector("a[tooltip= 'Help for feature: Quiet period']")).click();
+        WebElement tooltipOfQuietPeriod = getDriver().findElement(By.cssSelector("a[tooltip= 'Help for feature: Quiet period']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", tooltipOfQuietPeriod);
+        tooltipOfQuietPeriod.click();
 
         int numberOfHelpDisplayBlockAfterClick = getDriver()
                 .findElements(By.cssSelector("div .help[style='display: block;']")).size();
 
         Assert.assertEquals(
                 numberOfHelpDisplayBlockBeforeClick,
-                numberOfHelpDisplayBlockAfterClick);
+                numberOfHelpDisplayBlockAfterClick - 1);
     }
 
 
