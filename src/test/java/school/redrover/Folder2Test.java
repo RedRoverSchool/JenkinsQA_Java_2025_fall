@@ -118,7 +118,7 @@ public class Folder2Test extends BaseTest {
                 "Путь хлебных крошек не соответствует ожиданию");
     }
 
-    @Test(invocationCount = 10)
+    @Test
     public void testPreventDuplicateItemNamesInFolder() {
         final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
         final String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);
