@@ -9,9 +9,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.Collections.frequency;
 
@@ -100,7 +98,7 @@ public class ConfigureSystemTest extends BaseTest {
     }
 
     @Test
-    public void testUserOptionTooltipCheck() {
+    public void testTooltipOfUserOption() {
 
         getSystemConfigurePage();
 
@@ -155,7 +153,7 @@ public class ConfigureSystemTest extends BaseTest {
 
     @Test
     public void testChangeComputerRetentionCheckIntervalNegative() {
-        final String bagInterval = "61";
+        final String incorrectInterval = "61";
         final By intervalInputSelector = By.cssSelector("input[name = '_.computerRetentionCheckInterval']");
 
         getSystemConfigurePage();
@@ -163,7 +161,7 @@ public class ConfigureSystemTest extends BaseTest {
         WebElement intervalInput = getDriver().findElement(intervalInputSelector);
         String oldValue = intervalInput.getAttribute("value");
         intervalInput.clear();
-        intervalInput.sendKeys(bagInterval);
+        intervalInput.sendKeys(incorrectInterval);
         getDriver().findElement(By.name("Submit")).click();
 
         getSystemConfigurePage();
@@ -174,12 +172,13 @@ public class ConfigureSystemTest extends BaseTest {
 
     @Test
     public void testHintOfComputerRetentionCheckInterval() {
+        final String incorrectInterval = "61";
 
         getSystemConfigurePage();
 
         WebElement intervalInput = getDriver().findElement(By.cssSelector("input[name = '_.computerRetentionCheckInterval']"));
         intervalInput.clear();
-        intervalInput.sendKeys("61");
+        intervalInput.sendKeys(incorrectInterval);
         intervalInput.sendKeys(Keys.TAB);
 
         WebElement hint = getDriver().findElement(
@@ -187,6 +186,58 @@ public class ConfigureSystemTest extends BaseTest {
         Assert.assertTrue(hint.getAttribute("class").contains("--visible"));
     }
 
+    @Test
+    public void testTooltipOfQuietPeriod() {
+
+        getSystemConfigurePage();
+
+        int numberOfHelpDisplayBlockBeforeClick = getDriver()
+                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
+
+        getDriver().findElement(By.cssSelector("a[tooltip= 'Help for feature: Quiet period']")).click();
+
+        int numberOfHelpDisplayBlockAfterClick = getDriver()
+                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
+
+        Assert.assertEquals(
+                numberOfHelpDisplayBlockBeforeClick,
+                numberOfHelpDisplayBlockAfterClick);
+    }
+
+
+    @Test
+    public void testHintOfQuietPeriod() {
+        final String incorrectQuietPeriod = "-2";
+
+        getSystemConfigurePage();
+
+        WebElement intervalInput = getDriver().findElement(By.cssSelector("input[name = '_.quietPeriod']"));
+        intervalInput.clear();
+        intervalInput.sendKeys(incorrectQuietPeriod);
+        intervalInput.sendKeys(Keys.TAB);
+
+        WebElement hint = getDriver().findElement(
+                By.xpath("//div[text()='This value should be larger than 0']/.."));
+        Assert.assertTrue(hint.getAttribute("class").contains("--visible"));
+    }
+
+    @Test
+    public void testChangeQuietPeriodPositive() {
+        final String testQuietPeriod = "10";
+        final By quietPeriodInputSelector = By.cssSelector("input[name = '_.quietPeriod']");
+
+        getSystemConfigurePage();
+
+        WebElement quietPeriodInput = getDriver().findElement(quietPeriodInputSelector);
+        quietPeriodInput.clear();
+        quietPeriodInput.sendKeys(testQuietPeriod);
+        getDriver().findElement(By.name("Submit")).click();
+
+        getSystemConfigurePage();
+
+        String actualQuietPeriod = getDriver().findElement(quietPeriodInputSelector).getAttribute("value");
+        Assert.assertEquals(actualQuietPeriod, testQuietPeriod);
+    }
 
 
 }
