@@ -13,7 +13,6 @@ public class FooterRestApiTest extends BaseTest {
         return getDriver().findElement(By.cssSelector("h1")).getText();
     }
 
-
     @Test
     public void testRestApiMainPage() {
         Assert.assertEquals(checkRestApiHeader(), "REST API", "Текст заголовка не совпадает с ожидаемым");
