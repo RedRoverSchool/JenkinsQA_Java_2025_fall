@@ -118,4 +118,24 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualProjectDescription.getText(), projectDescriptionText);
     }
+
+    @Test
+    public void testEditExistingProjectDescription() {
+        final String initialProjectDescription = getRandomAlphaNumericText();
+        final String updatedProjectDescription = getRandomAlphaNumericText();
+
+        createMultibranchPipelineProject();
+        addProjectDescription(initialProjectDescription);
+        clickSaveButton();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("_.description"))).clear();
+
+        addProjectDescription(updatedProjectDescription);
+        clickSaveButton();
+
+        WebElement actualProjectDescription = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
+
+        Assert.assertEquals(actualProjectDescription.getText(), updatedProjectDescription);
+    }
 }
