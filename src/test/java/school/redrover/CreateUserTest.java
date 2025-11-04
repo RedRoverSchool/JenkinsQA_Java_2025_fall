@@ -1,7 +1,9 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -68,8 +70,8 @@ public class CreateUserTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@name='password2']")).sendKeys("never_mind");
         getDriver().findElement(By.xpath("//*[@name='email']")).sendKeys("someone@else.com");
         getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button")).click();
-
-        getDriver().findElement(By.xpath("//*[@id='root-action-SearchAction']")).click();
+        Actions actions = new Actions(getDriver());
+        actions.keyDown(Keys.CONTROL).sendKeys("k").keyUp(Keys.CONTROL).perform();
         getDriver().findElement(By.xpath("//*[@id='command-bar']")).sendKeys("someone_else");
         getDriver().findElement(By.xpath("//*[@id='search-results']")).click();
 
