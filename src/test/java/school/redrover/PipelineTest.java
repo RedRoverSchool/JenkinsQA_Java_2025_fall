@@ -86,7 +86,7 @@ public class PipelineTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
 
         wait.until(ExpectedConditions.elementToBeClickable(By.id("jenkins-build-history"))).click();
         getDriver().findElement(By.xpath("//a[substring-before(@href, 'console')]")).click();
@@ -108,7 +108,7 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.name("description")).sendKeys(textDescription);
         getDriver().findElement(By.name("Submit")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
         WebElement descriptionText = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
 
