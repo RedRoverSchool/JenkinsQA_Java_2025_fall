@@ -56,4 +56,30 @@ public class CreateUserTest extends BaseTest {
 
         Assert.assertEquals(expectedErrors, actualErrors);
     }
+
+    @Test
+    public void testSearchCreatedUser() {
+
+        getDriver().findElement(By.xpath("//*[@id='root-action-ManageJenkinsAction']")).click();
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
+        getDriver().findElement(By.xpath("//*[@id='username']")).sendKeys("someone_else");
+        getDriver().findElement(By.xpath("//*[@name='password1']")).sendKeys("never_mind");
+        getDriver().findElement(By.xpath("//*[@name='password2']")).sendKeys("never_mind");
+        getDriver().findElement(By.xpath("//*[@name='email']")).sendKeys("someone@else.com");
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='root-action-SearchAction']")).click();
+        getDriver().findElement(By.xpath("//*[@id='command-bar']")).sendKeys("someone_else");
+        getDriver().findElement(By.xpath("//*[@id='search-results']")).click();
+
+        String actual = getDriver().findElement(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1")).getText();
+        String expected = "someone_else";
+
+        Assert.assertEquals(actual, expected);
+
+
+
+
+    }
 }
