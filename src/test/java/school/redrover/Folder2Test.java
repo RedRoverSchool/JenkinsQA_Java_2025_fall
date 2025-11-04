@@ -137,7 +137,6 @@ public class Folder2Test extends BaseTest {
         Assert.assertEquals(
                 duplicateMessage.getText(),
                 "» A job already exists with the name ‘%s’".formatted(pipelineName),
-                "Неверное сообщение о дублировании имени"
-        );
+                "Неверное сообщение о дублировании имени");
     }
 }
