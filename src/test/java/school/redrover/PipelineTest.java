@@ -66,13 +66,15 @@ public class PipelineTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
 
-        Thread.sleep(3000);
-        getDriver().findElement(By.id("jenkins-build-history")).click();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("jenkins-build-history"))).click();
         getDriver().findElement(By.xpath("//a[substring-before(@href, 'console')]")).click();
 
-        String consoleOutputText = getDriver().findElement(By.id("out")).getText();
+        WebElement consoleOutputText = getDriver().findElement(By.id("out"));
+        wait.until(d -> consoleOutputText.getText().contains("Finished:"));
 
-        Assert.assertTrue(consoleOutputText.contains("Finished: SUCCESS"),
+        Assert.assertTrue(consoleOutputText.getText().contains("Finished: SUCCESS"),
                 "Build output should contain 'Finished: SUCCESS'");
     }
 
@@ -86,9 +88,12 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.name("description")).sendKeys(textDescription);
         getDriver().findElement(By.name("Submit")).click();
 
-        Thread.sleep(500);
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        WebElement descriptionText = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
+
         Assert.assertEquals(
-                getDriver().findElement(By.id("description-content")).getText(),
+                descriptionText.getText(),
                 textDescription);
     }
 
