@@ -237,4 +237,25 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertTrue(textPreview.isDisplayed());
     }
+
+    @Test
+    public void testSeeAddedDescriptionBelowHeading() {
+        final String projectName = "Multibranch Pipeline (test)";
+        final String description = "This is a test description for Multibranch Pipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
+        WebElement savedDescription = getDriver().findElement(By.id("description-content"));
+
+        Assert.assertFalse(savedDescription.isDisplayed(),
+                "Bug: description is not saved below the Multibranch Pipeline heading");
+    }
 }
