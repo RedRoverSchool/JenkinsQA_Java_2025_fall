@@ -7,12 +7,11 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
-@Ignore
+
 public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     private WebDriverWait wait;
@@ -96,5 +95,23 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
         Assert.assertEquals(actualDisplayNameLabel, "Display Name");
         Assert.assertTrue(actualDisplayNameInput.getAttribute("value").isEmpty(), "Default Display Name field should be empty");
+    }
+
+    @Test     //AT_03.005.05
+    public void testAdvancedSectionQuietPeriodElementsAfterSelecting() {
+        createNewPipeline();
+        advancedButtonClick();
+
+        WebElement actualQuietPeriodCheckbox = getDriver().findElement(By.name("hasCustomQuietPeriod"));
+        WebElement actualQuietPeriodLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//label[text()='Quiet period']")));
+        new Actions(getDriver()).moveToElement(actualQuietPeriodLabel).click().perform();
+
+        WebElement actualNumberOfSecondsLabel = getDriver().findElement(By.xpath(".//div[text()='Number of seconds']"));
+        WebElement actualNumberOfSecondsInput = getDriver().findElement(By.name("quiet_period"));
+        String defaultNumberOfSeconds = actualNumberOfSecondsInput.getAttribute("value");
+
+        Assert.assertTrue(actualQuietPeriodCheckbox.isSelected(), "Checkbox should be selected");
+        Assert.assertEquals(actualNumberOfSecondsLabel.getText(),"Number of seconds");
+        Assert.assertEquals(defaultNumberOfSeconds,"5");
     }
 }
