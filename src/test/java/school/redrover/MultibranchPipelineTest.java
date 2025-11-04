@@ -27,6 +27,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
+
     @Test
     public void testAddingDescriptionCreatingMultibranch() {
         final String expectedDescription = "AddedDescription";
@@ -118,15 +119,15 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testButtonIsDisplayed() {
+        final String projectName = "Multibranch Pipeline (test)";
+
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
 
-        getDriver().findElement(By.xpath("//input[@name='name']"))
-                .sendKeys("Multibranch Pipeline (test)");
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
-        getDriver().findElement(By.xpath("//a[@href='/job/Multibranch%20Pipeline%20(test)/']")).click();
-
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
         WebElement buttonAddDescription = getDriver().findElement(By.id("description-link"));
 
         Assert.assertTrue(buttonAddDescription.isDisplayed());
@@ -134,21 +135,19 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testClickAddDescriptionButton() {
+        final String projectName = "Multibranch Pipeline (test)";
+
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
 
-        getDriver().findElement(By.xpath("//input[@name='name']"))
-                .sendKeys("Multibranch Pipeline (test)");
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
-        getDriver().findElement(By.xpath("//a[@href='/job/Multibranch%20Pipeline%20(test)/']")).click();
-
-        WebElement buttonAddDescription = getDriver().findElement(By.id("description-link"));
-        buttonAddDescription.click();
-
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
+        getDriver().findElement(By.id("description-link")).click();
         WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='description']"));
 
-        Assert.assertTrue(descriptionField.isDisplayed());
+        Assert.assertTrue(descriptionField.isEnabled());
     }
 
     @Test
@@ -173,6 +172,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(descriptionField.isDisplayed());
     }
 
+
     @Test
     public void testRenameViaSidebar() {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
@@ -196,5 +196,66 @@ public class MultibranchPipelineTest extends BaseTest {
         WebElement multibranchPipelineName = getDriver().findElement(By.tagName("h1"));
 
         Assert.assertEquals(multibranchPipelineName.getText(), RENAMED_MULTIBRANCH_PIPELINE);
+    }
+
+    @Test
+    public void testEnterTheDescriptionOfTheMultibranchPipeline() {
+        final String projectName = "Multibranch Pipeline (test)";
+        final String description = "This is a test description for Multibranch Pipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
+        getDriver().findElement(By.id("description-link")).click();
+        WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='description']"));
+        descriptionField.sendKeys(description);
+
+        Assert.assertTrue(descriptionField.isDisplayed());
+    }
+
+    @Test
+    public void testSeeTheDescriptionPreview() {
+        final String projectName = "Multibranch Pipeline (test)";
+        final String description = "This is a test description for Multibranch Pipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+
+        getDriver().findElement(By.xpath("//a[@class='textarea-show-preview']")).click();
+        WebElement textPreview = getDriver().findElement(By.xpath("//div[text()='%s']".formatted(description)));
+
+        Assert.assertTrue(textPreview.isDisplayed());
+    }
+
+    @Test
+    public void testSeeAddedDescriptionBelowHeading() {
+        final String projectName = "Multibranch Pipeline (test)";
+        final String description = "This is a test description for Multibranch Pipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
+        WebElement savedDescription = getDriver().findElement(By.id("description-content"));
+
+        Assert.assertFalse(savedDescription.isDisplayed(),
+                "Bug: description is not saved below the Multibranch Pipeline heading");
     }
 }
