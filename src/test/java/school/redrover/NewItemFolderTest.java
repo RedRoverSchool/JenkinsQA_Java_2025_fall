@@ -21,6 +21,13 @@ public class NewItemFolderTest extends BaseTest {
         wait.until(ExpectedConditions.visibilityOf(element));
         element.sendKeys(text);
     }
+    public void waitMethod(){
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public void createNewFolderMethod(String folderName){
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='New Item']/.."))
@@ -36,10 +43,12 @@ public class NewItemFolderTest extends BaseTest {
                 getDriver().findElement(By.id("ok-button"))
         );
     }
+
     @Test
     public void testCreateFolder(){
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
+        waitMethod();
         clickMethod(
                 getDriver().findElement(By.className("app-jenkins-logo"))
         );
@@ -51,6 +60,7 @@ public class NewItemFolderTest extends BaseTest {
     public void testFolderIsEmpty(){
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
+        waitMethod();
         clickMethod(
                 getDriver().findElement(By.className("app-jenkins-logo"))
         );
@@ -66,6 +76,7 @@ public class NewItemFolderTest extends BaseTest {
     public void testCreateJobToFolder(){
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
+        waitMethod();
         clickMethod(
                 getDriver().findElement(By.className("app-jenkins-logo"))
         );
@@ -85,6 +96,7 @@ public class NewItemFolderTest extends BaseTest {
         clickMethod(
                 getDriver().findElement(By.id("ok-button"))
         );
+        waitMethod();
         clickMethod(
                 getDriver().findElement(By.className("app-jenkins-logo"))
         );
@@ -98,6 +110,7 @@ public class NewItemFolderTest extends BaseTest {
     public void testAddNewItemToFolder(){
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
+        waitMethod();
         clickMethod(
                 getDriver().findElement(By.className("app-jenkins-logo"))
         );
@@ -118,6 +131,7 @@ public class NewItemFolderTest extends BaseTest {
         clickMethod(
                 getDriver().findElement(By.id("ok-button"))
         );
+        waitMethod();
         clickMethod(
                 getDriver().findElement(By.className("app-jenkins-logo"))
         );
@@ -133,6 +147,7 @@ public class NewItemFolderTest extends BaseTest {
         String folderName1 = "Folder1";
         createNewFolderMethod(folderName1);
 
+        waitMethod();
         clickMethod(
                 getDriver().findElement(By.className("app-jenkins-logo"))
         );
@@ -153,6 +168,7 @@ public class NewItemFolderTest extends BaseTest {
         clickMethod(
                 getDriver().findElement(By.id("ok-button"))
         );
+        waitMethod();
         clickMethod(
                 getDriver().findElement(By.className("app-jenkins-logo"))
         );
@@ -160,6 +176,7 @@ public class NewItemFolderTest extends BaseTest {
         String folderName2 = "Folder2";
         createNewFolderMethod(folderName2);
 
+        waitMethod();
         clickMethod(
                 getDriver().findElement(By.className("app-jenkins-logo"))
         );
@@ -179,6 +196,7 @@ public class NewItemFolderTest extends BaseTest {
         clickMethod(
                 getDriver().findElement(By.id("ok-button"))
         );
+        waitMethod();
         clickMethod(
                 getDriver().findElement(By.className("app-jenkins-logo"))
         );
@@ -188,6 +206,7 @@ public class NewItemFolderTest extends BaseTest {
         );
         String folder1pipeline = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(pipeline))).getText();
 
+        waitMethod();
         clickMethod(
                 getDriver().findElement(By.className("app-jenkins-logo"))
         );
