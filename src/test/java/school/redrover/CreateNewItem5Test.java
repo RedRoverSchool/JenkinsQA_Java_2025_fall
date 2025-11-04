@@ -15,7 +15,7 @@ public class CreateNewItem5Test extends BaseTest {
 
     @Test
     public void testCreateNewItem() throws InterruptedException {
-        List<String> expectedTextsProjects =
+        final List<String> expectedTextsProjects =
                 List.of("Freestyle project", "Pipeline", "Multi-configuration project",
                         "Folder", "Multibranch Pipeline", "Organization Folder");
 
