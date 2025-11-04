@@ -65,6 +65,16 @@ public class CreateUserErrorMessagesTest extends BaseTest {
         Assert.assertEquals(passwordConfirmFieldErrorMessage.getText(), "Password didn't match");
     }
 
+    @Test
+    public void testEmptyEmail() {
+        getDriver().findElement(By.name("Submit")).click();
+
+        List<WebElement> createUserFormFieldErrors = getDriver().findElements(By.className("error"));
+
+        WebElement emailFieldErrorMessage = createUserFormFieldErrors.get(4);
+        Assert.assertEquals(emailFieldErrorMessage.getText(), "Invalid e-mail address");
+    }
+
     private char getRandomInvalidCharForUsernameInput() {
         char c;
         do {
