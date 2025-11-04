@@ -51,6 +51,17 @@ public class CreateUserErrorMessagesTest extends BaseTest {
                 "Password is required");
     }
 
+    @Test
+    public void testEmptyFullName() {
+        getDriver().findElement(By.name("Submit")).click();
+
+        WebElement fullnameFieldErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//input[@name='fullname']/parent::div/parent::div/following::div")));
+        Assert.assertEquals(
+                fullnameFieldErrorMessage.getText(),
+                "\"\" is prohibited as a full name for security reasons.");
+    }
+
     private char getRandomInvalidCharForUsernameInput() {
         char c;
         do {
