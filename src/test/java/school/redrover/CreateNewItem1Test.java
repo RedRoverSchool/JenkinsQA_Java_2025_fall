@@ -49,4 +49,17 @@ public class CreateNewItem1Test extends BaseTest {
                     "Character '" + ch + "' should not be allowed");
         }
     }
+
+    @Test
+    public void testConfigurationPageIsVisible() {
+
+        getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys("TestProject");
+        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span[text() = 'Configuration']")).getText(),"Configuration");
+
+    }
 }
