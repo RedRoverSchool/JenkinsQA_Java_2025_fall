@@ -17,15 +17,15 @@ public class CopyItemTest extends BaseTest {
 
     @Test
     public void testCopyItem() {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[1]/div[2]/label/span")).click();
         getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME1);
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button")));
         WebElement okButton = getDriver().findElement(By.id("ok-button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", okButton);
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("cb6")));
         wait.until(ExpectedConditions.elementToBeClickable(By.id("cb6")));
         WebElement checkbox = getDriver().findElement(By.id("cb6"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", checkbox);
