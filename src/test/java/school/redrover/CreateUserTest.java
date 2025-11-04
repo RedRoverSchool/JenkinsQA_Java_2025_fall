@@ -76,7 +76,7 @@ public class CreateUserTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='command-bar']")).sendKeys("someone_else");
         getDriver().findElement(By.xpath("//*[@id='search-results']")).click();
 
-        String actual = getDriver().findElement(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1")).getText();
+        String actual = getDriver().findElement(By.xpath("/html/body/div[2]/div[2]/div[1]/div[1]/h1")).getText();
         String expected = "someone_else";
 
         Assert.assertEquals(actual, expected);
