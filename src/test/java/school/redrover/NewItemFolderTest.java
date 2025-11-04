@@ -44,8 +44,13 @@ public class NewItemFolderTest extends BaseTest {
     public void testCreateFolder(){
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         clickMethod(
-                getDriver().findElement(By.id("jenkins-head-icon"))
+                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
         );
 
         WebElement newFolder = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)));
@@ -55,8 +60,13 @@ public class NewItemFolderTest extends BaseTest {
     public void testFolderIsEmpty(){
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         clickMethod(
-                getDriver().findElement(By.id("jenkins-head-icon"))
+                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
@@ -70,8 +80,13 @@ public class NewItemFolderTest extends BaseTest {
     public void testCreateJobToFolder(){
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         clickMethod(
-                getDriver().findElement(By.id("jenkins-head-icon"))
+                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
@@ -89,8 +104,13 @@ public class NewItemFolderTest extends BaseTest {
         clickMethod(
                 getDriver().findElement(By.id("ok-button"))
         );
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         clickMethod(
-                getDriver().findElement(By.id("jenkins-head-icon"))
+                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
@@ -102,8 +122,13 @@ public class NewItemFolderTest extends BaseTest {
     public void testAddNewItemToFolder(){
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         clickMethod(
-                getDriver().findElement(By.id("jenkins-head-icon"))
+                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
@@ -122,8 +147,13 @@ public class NewItemFolderTest extends BaseTest {
         clickMethod(
                 getDriver().findElement(By.id("ok-button"))
         );
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         clickMethod(
-                getDriver().findElement(By.id("jenkins-head-icon"))
+                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
@@ -137,8 +167,13 @@ public class NewItemFolderTest extends BaseTest {
         String folderName1 = "Folder1";
         createNewFolderMethod(folderName1);
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         clickMethod(
-                getDriver().findElement(By.id("jenkins-head-icon"))
+                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName1)))
@@ -157,15 +192,25 @@ public class NewItemFolderTest extends BaseTest {
         clickMethod(
                 getDriver().findElement(By.id("ok-button"))
         );
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         clickMethod(
-                getDriver().findElement(By.id("jenkins-head-icon"))
+                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
         );
 
         String folderName2 = "Folder2";
         createNewFolderMethod(folderName2);
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         clickMethod(
-                getDriver().findElement(By.id("jenkins-head-icon"))
+                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName2)))
@@ -183,8 +228,13 @@ public class NewItemFolderTest extends BaseTest {
         clickMethod(
                 getDriver().findElement(By.id("ok-button"))
         );
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         clickMethod(
-                getDriver().findElement(By.id("jenkins-head-icon"))
+                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
         );
 
         clickMethod(
@@ -192,8 +242,13 @@ public class NewItemFolderTest extends BaseTest {
         );
         String folder1pipeline = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(pipeline))).getText();
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         clickMethod(
-                getDriver().findElement(By.id("jenkins-head-icon"))
+                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName2)))
