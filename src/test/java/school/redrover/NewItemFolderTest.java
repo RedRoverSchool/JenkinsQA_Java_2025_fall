@@ -110,6 +110,7 @@ public class NewItemFolderTest extends BaseTest {
         inputField.sendKeys(pipeline);
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))));
         getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
 
         getDriver().findElement(By.xpath("//span[text()='New Item']/..")).click();
