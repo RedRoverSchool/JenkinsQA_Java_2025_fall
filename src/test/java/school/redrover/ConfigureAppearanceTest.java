@@ -33,13 +33,12 @@ public class ConfigureAppearanceTest extends BaseTest {
                 WebElement html = driver.findElement(By.cssSelector("html"));
                 return "dark".equals(html.getAttribute("data-theme"));
             } catch (StaleElementReferenceException e) {
-                return false;
+                return null;
             }
         });
 
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector("html")).getAttribute("data-theme"),
                 "dark");
-
     }
 }
