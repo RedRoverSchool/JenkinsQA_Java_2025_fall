@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CreateUserErrorMessagesTest extends BaseTest {
@@ -26,7 +27,7 @@ public class CreateUserErrorMessagesTest extends BaseTest {
     }
 
     @Test
-    public void testInvalidCharacters() {
+    public void testUsernameInvalidCharacters() {
         final String randomInvalidChar = String.valueOf(getRandomInvalidCharForUsernameInput());
 
         getDriver().findElement(By.id("username")).sendKeys(randomInvalidChar);
@@ -41,7 +42,7 @@ public class CreateUserErrorMessagesTest extends BaseTest {
     }
 
     @Test
-    public void testName() {
+    public void testPasswordEmptyFieldError() {
         getDriver().findElement(By.name("Submit")).click();
 
         WebElement usernameFieldErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By
@@ -49,6 +50,19 @@ public class CreateUserErrorMessagesTest extends BaseTest {
         Assert.assertEquals(
                 usernameFieldErrorMessage.getText(),
                 "Password is required");
+    }
+
+    @Test
+    public void testPasswordsUnmatch() {
+        getDriver().findElement(By.name("password1")).sendKeys("password");
+        getDriver().findElement(By.name("Submit")).click();
+
+        List<WebElement> foo = getDriver().findElements(By.className("error"));
+        WebElement passwordField = foo.get(1);
+        WebElement passwordConfirmField = foo.get(2);
+
+        Assert.assertEquals(passwordField.getText(), "Password didn't match");
+        Assert.assertEquals(passwordConfirmField.getText(), "Password didn't match");
     }
 
     private char getRandomInvalidCharForUsernameInput() {
