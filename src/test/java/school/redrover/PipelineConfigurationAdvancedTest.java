@@ -127,8 +127,10 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
         wait.until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
 
-        String actualDisplayNameInStatus = getDriver().findElement(By.tagName("h1")).getText();
-        String actualDisplayNameInBreadcrumbBar = getDriver().findElement(By.xpath(".//a[text()='%s']".formatted(displayName))).getText();
+        String actualDisplayNameInStatus = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+                .tagName("h1"))).getText();
+        String actualDisplayNameInBreadcrumbBar = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath(".//a[text()='%s']".formatted(displayName)))).getText();
 
         Assert.assertEquals(actualDisplayNameInStatus, displayName);
         Assert.assertEquals(actualDisplayNameInBreadcrumbBar, displayName);
