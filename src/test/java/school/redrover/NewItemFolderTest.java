@@ -13,31 +13,50 @@ import java.time.Duration;
 public class NewItemFolderTest extends BaseTest {
 
     public WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+    public void clickMethod(WebElement element){
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+        element.click();
+    }
+    public void sendKeysMethod(WebElement element, String text){
+        wait.until(ExpectedConditions.visibilityOf(element));
+        element.sendKeys(text);
+    }
+    public void createNewFolderMethod(String folderName){
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='New Item']/.."))
+        );
+        sendKeysMethod(
+                getDriver().findElement(By.id("name")),
+                folderName
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='Folder']"))
+        );
+        clickMethod(
+                getDriver().findElement(By.id("ok-button"))
+        );
+    }
     @Test
     public void testCreateFolder(){
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        WebElement inputField = getDriver().findElement(By.id("name"));
         String folderName = "My Folder Name";
-        wait.until(ExpectedConditions.visibilityOf(inputField));
-        inputField.sendKeys(folderName);
-        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
+        createNewFolderMethod(folderName);
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+        );
 
         WebElement newFolder = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)));
         Assert.assertTrue(newFolder.isDisplayed());
     }
     @Test
     public void testFolderIsEmpty(){
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        WebElement inputField = getDriver().findElement(By.id("name"));
         String folderName = "My Folder Name";
-        wait.until(ExpectedConditions.visibilityOf(inputField));
-        inputField.sendKeys(folderName);
-        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName))).click();
+        createNewFolderMethod(folderName);
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
+        );
 
         String actualContext = getDriver().findElement(By.xpath("//h2[text()='This folder is empty']")).getText();
         String expectedContext = "This folder is empty";
@@ -45,97 +64,136 @@ public class NewItemFolderTest extends BaseTest {
     }
     @Test
     public void testCreateJobToFolder(){
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        WebElement inputField = getDriver().findElement(By.id("name"));
         String folderName = "My Folder Name";
-        wait.until(ExpectedConditions.visibilityOf(inputField));
-        inputField.sendKeys(folderName);
-        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
-
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName))).click();
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        inputField = getDriver().findElement(By.id("name"));
+        createNewFolderMethod(folderName);
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//a[@href='newJob']"))
+        );
         String freestyleJob = "new freestyle job";
-        wait.until(ExpectedConditions.visibilityOf(inputField));
-        inputField.sendKeys(freestyleJob);
-        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName))).click();
+        sendKeysMethod(
+                getDriver().findElement(By.id("name")),freestyleJob
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='Freestyle project']"))
+        );
+        clickMethod(
+                getDriver().findElement(By.id("ok-button"))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
+        );
         WebElement freestyleJobElement = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(freestyleJob)));
         Assert.assertTrue(freestyleJobElement.isDisplayed());
     }
     @Test
     public void testAddNewItemToFolder(){
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        WebElement inputField = getDriver().findElement(By.id("name"));
         String folderName = "My Folder Name";
-        wait.until(ExpectedConditions.visibilityOf(inputField));
-        inputField.sendKeys(folderName);
-        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
-
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName))).click();
-        getDriver().findElement(By.xpath("//span[text()='New Item']/..")).click();
-        inputField = getDriver().findElement(By.id("name"));
+        createNewFolderMethod(folderName);
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='New Item']/.."))
+        );
         String freestyleJob = "new freestyle job";
-        wait.until(ExpectedConditions.visibilityOf(inputField));
-        inputField.sendKeys(freestyleJob);
-        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName))).click();
+        sendKeysMethod(
+                getDriver().findElement(By.id("name")),
+                freestyleJob
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='Freestyle project']"))
+        );
+        clickMethod(
+                getDriver().findElement(By.id("ok-button"))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
+        );
+
         WebElement freestyleJobElement = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(freestyleJob)));
         Assert.assertTrue(freestyleJobElement.isDisplayed());
     }
     @Test
     public void testSameNameItemsInDiffFolders(){
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        WebElement inputField = getDriver().findElement(By.id("name"));
         String folderName1 = "Folder1";
-        wait.until(ExpectedConditions.visibilityOf(inputField));
-        inputField.sendKeys(folderName1);
-        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        createNewFolderMethod(folderName1);
 
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName1))).click();
-        getDriver().findElement(By.xpath("//span[text()='New Item']/..")).click();
-        inputField = getDriver().findElement(By.id("name"));
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName1)))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='New Item']/.."))
+        );
         String pipeline = "pipeline1";
-        wait.until(ExpectedConditions.visibilityOf(inputField));
-        inputField.sendKeys(pipeline);
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        wait.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))));
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
+        sendKeysMethod(
+                getDriver().findElement(By.id("name")),
+                pipeline
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='Pipeline']"))
+        );
+        clickMethod(
+                getDriver().findElement(By.id("ok-button"))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+        );
 
-        getDriver().findElement(By.xpath("//span[text()='New Item']/..")).click();
-        inputField = getDriver().findElement(By.id("name"));
         String folderName2 = "Folder2";
-        wait.until(ExpectedConditions.visibilityOf(inputField));
-        inputField.sendKeys(folderName2);
-        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        createNewFolderMethod(folderName2);
 
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName2))).click();
-        getDriver().findElement(By.xpath("//span[text()='New Item']/..")).click();
-        inputField = getDriver().findElement(By.id("name"));
-        wait.until(ExpectedConditions.visibilityOf(inputField));
-        inputField.sendKeys(pipeline);
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName2)))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='New Item']/.."))
+        );
+        sendKeysMethod(
+                getDriver().findElement(By.id("name")),
+                pipeline
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='Pipeline']"))
+        );
+        clickMethod(
+                getDriver().findElement(By.id("ok-button"))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+        );
 
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName1))).click();
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName1)))
+        );
         String folder1pipeline = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(pipeline))).getText();
 
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName2))).click();
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+        );
+        clickMethod(
+                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName2)))
+        );
         String folder2pipeline = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(pipeline))).getText();
 
         Assert.assertEquals(folder1pipeline,folder2pipeline);
