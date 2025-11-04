@@ -42,6 +42,14 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
+    private void addProjectDescription(String projectDescription) {
+        getDriver().findElement(By.name("_.description")).sendKeys(projectDescription);
+    }
+
+    private void clickSaveButton() {
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
     @Test
     public void testDisableToggle() {
         createMultibranchPipelineProject();
@@ -77,8 +85,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         createMultibranchPipelineProject();
         clickOnTheToggle();
-
-        getDriver().findElement(By.name("Submit")).click();
+        clickSaveButton();
 
         WebElement actualDisabledMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("disabled-message")));
 
@@ -90,12 +97,25 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         final String projectDescription = getRandomAlphaNumericText();
 
         createMultibranchPipelineProject();
+        addProjectDescription(projectDescription);
 
-        getDriver().findElement(By.name("_.description")).sendKeys(projectDescription);
         getDriver().findElement(By.className("textarea-show-preview")).click();
 
         WebElement previewTextarea = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview")));
 
         Assert.assertEquals(previewTextarea.getText(), projectDescription);
+    }
+
+    @Test
+    public void testMultibranchProjectDescription() {
+        final String projectDescriptionText = getRandomAlphaNumericText();
+
+        createMultibranchPipelineProject();
+        addProjectDescription(projectDescriptionText);
+        clickSaveButton();
+
+        WebElement actualProjectDescription = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
+
+        Assert.assertEquals(actualProjectDescription.getText(), projectDescriptionText);
     }
 }
