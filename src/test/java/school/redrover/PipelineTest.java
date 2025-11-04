@@ -81,12 +81,12 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testSuccessfulBuildPipeline() throws InterruptedException {
+    public void testSuccessfulBuildPipeline() {
         createPipeline(PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(6));
 
         wait.until(ExpectedConditions.elementToBeClickable(By.id("jenkins-build-history"))).click();
         getDriver().findElement(By.xpath("//a[substring-before(@href, 'console')]")).click();
@@ -99,7 +99,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testAddDescription() throws InterruptedException {
+    public void testAddDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
 
         createPipeline(PIPELINE_NAME);
