@@ -71,7 +71,8 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 .xpath(".//div[@id='advanced']/parent::section/descendant::button[contains(text(),'Advanced')]")));
         new Actions(getDriver()).moveToElement(advancedButton).click().perform();
 
-        WebElement actualQuietPeriodLabel = getDriver().findElement(By.xpath(".//label[text()='Quiet period']"));
+        WebElement actualQuietPeriodLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.
+                xpath(".//label[text()='Quiet period']")));
         new Actions(getDriver()).moveToElement(actualQuietPeriodLabel).perform();
 
         WebElement actualQuietPeriodCheckbox = getDriver().findElement(By.id("cb13"));
