@@ -45,10 +45,10 @@ public class CreateUserErrorMessagesTest extends BaseTest {
     public void testPasswordEmptyFieldError() {
         getDriver().findElement(By.name("Submit")).click();
 
-        WebElement usernameFieldErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+        WebElement passwordFieldErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//input[@name='password1']/parent::div/parent::div/following::div")));
         Assert.assertEquals(
-                usernameFieldErrorMessage.getText(),
+                passwordFieldErrorMessage.getText(),
                 "Password is required");
     }
 
@@ -57,12 +57,12 @@ public class CreateUserErrorMessagesTest extends BaseTest {
         getDriver().findElement(By.name("password1")).sendKeys("password");
         getDriver().findElement(By.name("Submit")).click();
 
-        List<WebElement> foo = getDriver().findElements(By.className("error"));
-        WebElement passwordField = foo.get(1);
-        WebElement passwordConfirmField = foo.get(2);
+        List<WebElement> createUserFormFieldErrors = getDriver().findElements(By.className("error"));
+        WebElement passwordFieldErrorMessage = createUserFormFieldErrors.get(1);
+        WebElement passwordConfirmFieldErrorMessage = createUserFormFieldErrors.get(2);
 
-        Assert.assertEquals(passwordField.getText(), "Password didn't match");
-        Assert.assertEquals(passwordConfirmField.getText(), "Password didn't match");
+        Assert.assertEquals(passwordFieldErrorMessage.getText(), "Password didn't match");
+        Assert.assertEquals(passwordConfirmFieldErrorMessage.getText(), "Password didn't match");
     }
 
     private char getRandomInvalidCharForUsernameInput() {
