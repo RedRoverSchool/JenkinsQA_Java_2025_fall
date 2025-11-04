@@ -12,8 +12,8 @@ import java.time.Duration;
 
 public class CopyItemTest extends BaseTest {
 
-    static final String PROJECT_NAME1 = "Project1";
-    static final String PROJECT_NAME2 = "Project2";
+    static final String PROJECT_NAME1 = "Proj1496";
+    static final String PROJECT_NAME2 = "Proj2743";
 
     @Test
     public void testCopyItem() {
