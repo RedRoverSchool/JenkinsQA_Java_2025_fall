@@ -106,7 +106,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dataProvider = "validAliases")
-    public void testScheduleWithValidData(String name) {
+    public void testScheduleWithValidData(String timePeriod) {
         createPipeline(PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[contains(@href , 'configure')]")).click();
@@ -119,20 +119,22 @@ public class PipelineTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
 
-        WebElement scheduleTextarea = getDriver().findElement(By.xpath("//textarea[@name = '_.spec']"));
-        scheduleTextarea.click();
-        scheduleTextarea.sendKeys(name);
+        WebElement scheduleTextArea = getDriver().findElement(By.xpath("//textarea[@name = '_.spec']"));
+        scheduleTextArea.click();
+        scheduleTextArea.sendKeys(timePeriod);
 
         getDriver().findElement(By.xpath("//button[text() = 'Apply']")).click();
 
-        WebElement notificationResult = getDriver().findElement(By.xpath("//span[text() = 'Saved']"));
-        WebElement validationMessageResult = getDriver()
+        WebElement actualNotificationMessage = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']")));
+
+        WebElement actualTextAreaValidationMessage = getDriver()
                 .findElement(By.xpath("//div[contains(text(), 'Schedule')]/following-sibling::div" +
                         "//div[@class = 'ok']"));
 
-        Assert.assertEquals(notificationResult.getText(), "Saved");
-        Assert.assertTrue(validationMessageResult.getText()
+        Assert.assertEquals(actualNotificationMessage.getText(), "Saved");
+        Assert.assertTrue(actualTextAreaValidationMessage.getText()
                         .matches("(?s)Would last have run at .*; would next run at .*"),
-                "Alias " + name + "не прошёл валидацию");
+                "Alias " + timePeriod + " не прошёл валидацию");
     }
 }
