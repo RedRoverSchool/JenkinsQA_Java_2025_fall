@@ -40,5 +40,6 @@ public class ConfigureAppearanceTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector("html")).getAttribute("data-theme"),
                 "dark");
+
     }
 }
