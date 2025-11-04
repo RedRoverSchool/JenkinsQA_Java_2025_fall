@@ -11,13 +11,17 @@ import java.util.List;
 
 public class ConfigureSystemTest extends BaseTest {
 
+    private void moveToSystem() {
+        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getDriver().findElement(By.xpath("//a[@href='configure']")).click();
+    }
+
     @Test
     public void testUsageVariants() {
         final List<String> expectedVariants = List.of("Use this node as much as possible",
                 "Only build jobs with label expressions matching this node");
 
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getDriver().findElement(By.xpath("//a[@href='configure']")).click();
+        moveToSystem();
 
         Select select = new Select(getDriver().findElement(By.name("builtin.mode")));
         List<String> variants = select.getOptions()
@@ -27,5 +31,15 @@ public class ConfigureSystemTest extends BaseTest {
 
         Assert.assertEquals(variants, expectedVariants);
 
+    }
+
+    @Test
+    public void testIntervalDefaultValue() {
+        final String defaultValue = "60";
+        moveToSystem();
+
+        WebElement input = getDriver().findElement(By.name("_.computerRetentionCheckInterval"));
+
+        Assert.assertEquals(input.getAttribute("value"), defaultValue);
     }
 }
