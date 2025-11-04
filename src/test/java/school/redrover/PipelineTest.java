@@ -11,10 +11,13 @@ import school.redrover.common.BaseTest;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Random;
 
 public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "PipelineName";
+
+    private static final Random random = new Random();
 
     private void createPipeline(String name) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -23,6 +26,23 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
+    }
+
+    public static String generateRandomStringASCII(int minCode, int maxCode, int length) {
+        if (length < 0 || length > 1000) {
+            throw new IllegalArgumentException("Некорректная длина: " + length);
+        }
+        if (minCode < 32 || maxCode > 126 || minCode > maxCode) {
+            throw new IllegalArgumentException("Некорректный диапазон для ASCII: [" + minCode + ", " + maxCode + "]");
+        }
+        if (length == 0) return "";
+
+        StringBuilder sb = new StringBuilder(length);
+        int range = maxCode - minCode + 1;
+        for (int i = 0; i < length; i++) {
+            sb.append((char) (minCode + random.nextInt(range)));
+        }
+        return sb.toString();
     }
 
     @Test
@@ -80,7 +100,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testAddDescription() throws InterruptedException {
-        final String textDescription = "\"aB3_mX9!qW@vL# zP$eR%nY^kU&[";
+        final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
 
         createPipeline(PIPELINE_NAME);
 
