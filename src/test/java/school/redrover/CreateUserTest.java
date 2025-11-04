@@ -1,9 +1,9 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -60,7 +60,7 @@ public class CreateUserTest extends BaseTest {
     }
 
     @Test
-    public void testSearchCreatedUser() {
+    public void testSearchCreatedUser() throws InterruptedException {
 
         getDriver().findElement(By.xpath("//*[@id='root-action-ManageJenkinsAction']")).click();
         getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
@@ -70,8 +70,9 @@ public class CreateUserTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@name='password2']")).sendKeys("never_mind");
         getDriver().findElement(By.xpath("//*[@name='email']")).sendKeys("someone@else.com");
         getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button")).click();
-        Actions actions = new Actions(getDriver());
-        actions.keyDown(Keys.CONTROL).sendKeys("k").keyUp(Keys.CONTROL).perform();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='root-action-SearchAction']")));
+        element.click();
         getDriver().findElement(By.xpath("//*[@id='command-bar']")).sendKeys("someone_else");
         getDriver().findElement(By.xpath("//*[@id='search-results']")).click();
 
