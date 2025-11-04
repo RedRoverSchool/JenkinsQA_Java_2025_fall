@@ -269,6 +269,28 @@ public class ConfigureSystemTest extends BaseTest {
         Assert.assertEquals(expectedGlobalProperties, actualGlobalProperties);
     }
 
+    @Test
+    public void testTooltipOfDisableDeferredWipeoutOnThisNode() {
+
+        getSystemConfigurePage();
+
+        int numberOfHelpDisplayBlockBeforeClick = getDriver()
+                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
+
+        WebElement disableDeferredWipeoutOnThisNode = getDriver()
+                .findElement(By.cssSelector("a[tooltip= 'Help for feature: Disable deferred wipeout on this node']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", disableDeferredWipeoutOnThisNode);
+        disableDeferredWipeoutOnThisNode.click();
+
+        int numberOfHelpDisplayBlockAfterClick = getDriver()
+                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
+
+        Assert.assertEquals(
+                numberOfHelpDisplayBlockBeforeClick,
+                numberOfHelpDisplayBlockAfterClick - 1);
+    }
+
+
 
 
 }
