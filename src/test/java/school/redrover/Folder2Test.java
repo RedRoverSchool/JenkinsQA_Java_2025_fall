@@ -127,16 +127,58 @@ public class Folder2Test extends BaseTest {
         createItem(pipelineName, "Pipeline");
 
         getDriver().findElement(By.xpath("//a[text()='%s']".formatted(folderName))).click();
-        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(driver -> Objects.requireNonNull(
-                driver.getCurrentUrl()).endsWith("/job/%s/".formatted(folderName)));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(driver -> Objects.requireNonNull(driver.getCurrentUrl()).endsWith("/job/%s/".formatted(folderName)));
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(pipelineName);
 
         WebElement duplicateMessage = getDriver().findElement(By.id("itemname-invalid"));
-        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOf(duplicateMessage));
+        wait.until(ExpectedConditions.visibilityOf(duplicateMessage));
         Assert.assertEquals(
                 duplicateMessage.getText(),
                 "» A job already exists with the name ‘%s’".formatted(pipelineName),
                 "Неверное сообщение о дублировании имени");
+    }
+
+    @Test
+    public void testSameItemNamesInTwoFolders() {
+        final String folder1Name = "Folder" + UUID.randomUUID().toString().substring(0, 3);
+        final String folder2Name = "Folder" + UUID.randomUUID().toString().substring(0, 3);
+        final String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);
+
+        createItem(folder1Name, "Folder");
+        createItem(pipelineName, "Pipeline");
+        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+        createItem(folder2Name, "Folder");
+
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(pipelineName);
+        Assert.assertFalse(getDriver().findElement(By.id("itemname-invalid")).isDisplayed());
+
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(driver -> Objects.requireNonNull(
+                driver.getCurrentUrl()).endsWith("/job/%s/".formatted(pipelineName)));
+        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+
+        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folder1Name))).click();
+        List<String> folder1Items = new ArrayList<>();
+        for (WebElement element : getDriver().findElements(By.className("jenkins-table__link"))) {
+            folder1Items.add(element.getText());
+        }
+
+        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folder2Name))).click();
+        List<String> folder2Items = new ArrayList<>();
+        for (WebElement element : getDriver().findElements(By.className("jenkins-table__link"))) {
+            folder2Items.add(element.getText());
+        }
+
+        Assert.assertEquals(
+                folder1Items,
+                folder2Items,
+                "Несоответствие содержимого папок");
     }
 }
