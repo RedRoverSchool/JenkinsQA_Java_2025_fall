@@ -71,10 +71,10 @@ public class PipelineTest extends BaseTest {
         wait.until(ExpectedConditions.elementToBeClickable(By.id("jenkins-build-history"))).click();
         getDriver().findElement(By.xpath("//a[substring-before(@href, 'console')]")).click();
 
-        WebElement consoleOutputText = getDriver().findElement(By.id("out"));
-        wait.until(d -> consoleOutputText.getText().contains("Finished:"));
+        WebElement consoleOutput = getDriver().findElement(By.id("out"));
+        wait.until(d -> consoleOutput.getText().contains("Finished:"));
 
-        Assert.assertTrue(consoleOutputText.getText().contains("Finished: SUCCESS"),
+        Assert.assertTrue(consoleOutput.getText().contains("Finished: SUCCESS"),
                 "Build output should contain 'Finished: SUCCESS'");
     }
 
