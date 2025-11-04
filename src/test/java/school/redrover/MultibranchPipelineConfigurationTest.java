@@ -120,7 +120,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     }
 
     @Test
-    public void testEditExistingProjectDescription() {
+    public void testUpdateProjectDescription() {
         final String initialProjectDescription = getRandomAlphaNumericText();
         final String updatedProjectDescription = getRandomAlphaNumericText();
 
