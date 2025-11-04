@@ -41,7 +41,7 @@ public class NewItemFolderTest extends BaseTest {
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
         clickMethod(
-                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+                getDriver().findElement(By.className("app-jenkins-logo"))
         );
 
         WebElement newFolder = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)));
@@ -52,7 +52,7 @@ public class NewItemFolderTest extends BaseTest {
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
         clickMethod(
-                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+                getDriver().findElement(By.className("app-jenkins-logo"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
@@ -67,7 +67,7 @@ public class NewItemFolderTest extends BaseTest {
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
         clickMethod(
-                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+                getDriver().findElement(By.className("app-jenkins-logo"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
@@ -86,7 +86,7 @@ public class NewItemFolderTest extends BaseTest {
                 getDriver().findElement(By.id("ok-button"))
         );
         clickMethod(
-                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+                getDriver().findElement(By.className("app-jenkins-logo"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
@@ -99,7 +99,7 @@ public class NewItemFolderTest extends BaseTest {
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
         clickMethod(
-                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+                getDriver().findElement(By.className("app-jenkins-logo"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
@@ -119,7 +119,7 @@ public class NewItemFolderTest extends BaseTest {
                 getDriver().findElement(By.id("ok-button"))
         );
         clickMethod(
-                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+                getDriver().findElement(By.className("app-jenkins-logo"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
@@ -134,7 +134,7 @@ public class NewItemFolderTest extends BaseTest {
         createNewFolderMethod(folderName1);
 
         clickMethod(
-                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+                getDriver().findElement(By.className("app-jenkins-logo"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName1)))
@@ -154,14 +154,14 @@ public class NewItemFolderTest extends BaseTest {
                 getDriver().findElement(By.id("ok-button"))
         );
         clickMethod(
-                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+                getDriver().findElement(By.className("app-jenkins-logo"))
         );
 
         String folderName2 = "Folder2";
         createNewFolderMethod(folderName2);
 
         clickMethod(
-                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+                getDriver().findElement(By.className("app-jenkins-logo"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName2)))
@@ -180,7 +180,7 @@ public class NewItemFolderTest extends BaseTest {
                 getDriver().findElement(By.id("ok-button"))
         );
         clickMethod(
-                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+                getDriver().findElement(By.className("app-jenkins-logo"))
         );
 
         clickMethod(
@@ -189,7 +189,7 @@ public class NewItemFolderTest extends BaseTest {
         String folder1pipeline = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(pipeline))).getText();
 
         clickMethod(
-                getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']"))
+                getDriver().findElement(By.className("app-jenkins-logo"))
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName2)))
