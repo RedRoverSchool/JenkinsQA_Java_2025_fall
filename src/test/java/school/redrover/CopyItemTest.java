@@ -20,8 +20,8 @@ public class CopyItemTest extends BaseTest {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
-        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[1]/div[2]/label/span")).click();
         getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME1);
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[1]/div[2]/label/span")).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button")));
         WebElement okButton = getDriver().findElement(By.id("ok-button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", okButton);
@@ -68,6 +68,6 @@ public class CopyItemTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         WebElement projectName = getDriver().findElement(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1"));
-        Assert.assertEquals(projectName.getText(), "Project2");
+        Assert.assertEquals(projectName.getText(), "Proj2743");
     }
 }
