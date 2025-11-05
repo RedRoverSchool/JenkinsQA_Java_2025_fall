@@ -100,6 +100,20 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
+    public void testVerifyAppearSaveMessage() {
+        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(MULTIBRANCH_PIPELINE_NAME))).click();
+        getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
+        getDriver().findElement(By.name("Apply")).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        String actualSavedMessage =wait.until(ExpectedConditions.
+                visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']"))).getText();
+
+        Assert.assertEquals(actualSavedMessage, "Saved");
+    }
+
+    @Test
     public void testAddDescription() {
         final String expectedDescription = "This is a test of the possibility of adding a description";
 
