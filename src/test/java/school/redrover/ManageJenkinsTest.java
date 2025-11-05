@@ -60,6 +60,8 @@ public class ManageJenkinsTest extends BaseTest {
         wait.until(ExpectedConditions.attributeToBeNotEmpty(tooltipButton, "aria-describedby"));
 
         String tooltipId = tooltipButton.getAttribute("aria-describedby");
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(tooltipId)));
         String actualTooltipText = getDriver().findElement(By.id(tooltipId)).getText().trim();
 
         Assert.assertNotNull(tooltipId, "Tooltip id is null");
