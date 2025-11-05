@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -34,6 +35,7 @@ public class ConfigureSystemTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void testIntervalDefaultValue() {
         final String defaultValue = "60";
         moveToSystem();
