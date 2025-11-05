@@ -66,6 +66,16 @@ public class CreateUserErrorMessagesTest extends BaseTest {
     }
 
     @Test
+    public void testEmptyEmail() {
+        getDriver().findElement(By.name("Submit")).click();
+
+        List<WebElement> createUserFormFieldErrors = getDriver().findElements(By.className("error"));
+
+        WebElement emailFieldErrorMessage = createUserFormFieldErrors.get(4);
+        Assert.assertEquals(emailFieldErrorMessage.getText(), "Invalid e-mail address");
+    }
+
+    @Test
     public void testEmptyFullName() {
         getDriver().findElement(By.name("Submit")).click();
 
