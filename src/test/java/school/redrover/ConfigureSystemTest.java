@@ -18,12 +18,7 @@ import static java.util.Collections.frequency;
 
 public class ConfigureSystemTest extends BaseTest {
 
-    private void getSystemConfigurePage() {
-        getDriver().findElement(By.cssSelector("a[href$='manage']")).click();
-        getDriver().findElement(By.cssSelector("a[href$='configure']")).click();
-    }
-
-    @Test
+    @Test(testName = "US_10.001 SystemMessage. Create system message")
     public void testCreateSystemMessage() {
 
         final String systemMessage = "Hello redRover School!";
@@ -40,7 +35,7 @@ public class ConfigureSystemTest extends BaseTest {
                 systemMessage);
     }
 
-    @Test
+    @Test(testName = "US_10.001 SystemMessage. Change system message")
     public void testChangeSystemMessage() {
 
         final String firstPartSystemMessage = "Hello";
@@ -63,7 +58,7 @@ public class ConfigureSystemTest extends BaseTest {
                 firstPartSystemMessage + secondPartSystemMessage);
     }
 
-    @Test
+    @Test(testName = "US_10.001 SystemMessage. Check preview system message")
     public void testSystemMessagePreview() {
 
         final String systemMessage = "Hello redRover School!";
@@ -81,7 +76,7 @@ public class ConfigureSystemTest extends BaseTest {
                 systemMessage);
     }
 
-    @Test
+    @Test(testName = "US_10.001 #ofExecutors. Change number of executors")
     public void testChangeNumberOfExecutors() {
 
         final String numberOfExecutors = "12";
@@ -108,7 +103,7 @@ public class ConfigureSystemTest extends BaseTest {
         Assert.assertEquals(frequency, 1);
     }
 
-    @Test
+    @Test(testName = "US_10.001 Usage. Check tooltip of usage")
     public void testTooltipOfUsageOption() {
 
         getSystemConfigurePage();
@@ -126,7 +121,7 @@ public class ConfigureSystemTest extends BaseTest {
                 numberOfHelpDisplayBlockAfterClick - 1);
     }
 
-    @Test
+    @Test(testName = "US_10.001 Usage. Check select of usage")
     public void testUserOptionSelectCheck() {
 
         final List<String> expectedUsageOptions = List.of("Use this node as much as possible",
@@ -144,8 +139,9 @@ public class ConfigureSystemTest extends BaseTest {
                 expectedUsageOptions.get(0));
     }
 
-    @Test
+    @Test(testName = "US_10.001 ComputerRetentionCheckInterval. Change computer retention check interval. Positive")
     public void testChangeComputerRetentionCheckIntervalPositive() {
+
         final String testInterval = "59";
         final By intervalInputSelector = By.cssSelector("input[name = '_.computerRetentionCheckInterval']");
 
@@ -162,8 +158,9 @@ public class ConfigureSystemTest extends BaseTest {
         Assert.assertEquals(actualInterval, testInterval);
     }
 
-    @Test
+    @Test(testName = "US_10.001 ComputerRetentionCheckInterval. Change computer retention check interval. Negative")
     public void testChangeComputerRetentionCheckIntervalNegative() {
+
         final String incorrectInterval = "61";
         final By intervalInputSelector = By.cssSelector("input[name = '_.computerRetentionCheckInterval']");
 
@@ -181,8 +178,9 @@ public class ConfigureSystemTest extends BaseTest {
         Assert.assertEquals(actualInterval, oldValue);
     }
 
-    @Test
+    @Test(testName = "US_10.001 ComputerRetentionCheckInterval. Check hint of computer retention check interval")
     public void testHintOfComputerRetentionCheckInterval() {
+
         final String incorrectInterval = "61";
 
         getSystemConfigurePage();
@@ -197,7 +195,7 @@ public class ConfigureSystemTest extends BaseTest {
         Assert.assertTrue(hint.getAttribute("class").contains("--visible"));
     }
 
-    @Test
+    @Test(testName = "US_10.001 QuietPeriod. Check tooltip of quiet period")
     public void testTooltipOfQuietPeriod() {
 
         getSystemConfigurePage();
@@ -218,8 +216,9 @@ public class ConfigureSystemTest extends BaseTest {
     }
 
 
-    @Test
+    @Test(testName = "US_10.001 QuietPeriod. Check hint of quiet period")
     public void testHintOfQuietPeriod() {
+
         final String incorrectQuietPeriod = "-2";
 
         getSystemConfigurePage();
@@ -234,8 +233,9 @@ public class ConfigureSystemTest extends BaseTest {
         Assert.assertTrue(hint.getAttribute("class").contains("--visible"));
     }
 
-    @Test
+    @Test(testName = "US_10.001 QuietPeriod. Change quiet period. Positive")
     public void testChangeQuietPeriodPositive() {
+
         final String testQuietPeriod = "10";
         final By quietPeriodInputSelector = By.cssSelector("input[name = '_.quietPeriod']");
 
@@ -252,8 +252,9 @@ public class ConfigureSystemTest extends BaseTest {
         Assert.assertEquals(actualQuietPeriod, testQuietPeriod);
     }
 
-    @Test
+    @Test(testName = "US_10.001 GlobalProperties. Check global properties")
     public void testGlobalProperties() {
+
         final List<String> expectedGlobalProperties = List.of(
                 "Disable deferred wipeout on this node",
                 "Disk Space Monitoring Thresholds",
@@ -270,7 +271,7 @@ public class ConfigureSystemTest extends BaseTest {
         Assert.assertEquals(actualGlobalProperties, expectedGlobalProperties);
     }
 
-    @Test
+    @Test(testName = "US_10.001 GlobalProperties. Check tooltip of disable deferred wipe out on this node")
     public void testTooltipOfDisableDeferredWipeoutOnThisNode() {
 
         getSystemConfigurePage();
@@ -291,7 +292,7 @@ public class ConfigureSystemTest extends BaseTest {
                 numberOfHelpDisplayBlockAfterClick - 1);
     }
 
-    @Test
+    @Test(testName = "US_10.001 GlobalProperties. Change disk space monitoring thresholds")
     public void testDiskSpaceMonitoringThresholds() {
 
         final String testFreeDiskSpaceThreshold = "1.1GiB";
@@ -340,7 +341,7 @@ public class ConfigureSystemTest extends BaseTest {
                 testTempSpaceWarningThreshold);
     }
 
-    @Test
+    @Test(testName = "US_10.001 GlobalProperties. Add environment variable")
     public void testEnvironmentVariables() {
 
         final String testVariableName = UUID.randomUUID().toString();
@@ -385,6 +386,11 @@ public class ConfigureSystemTest extends BaseTest {
                         .contains(testVariableValue));
     }
 
+    private void getSystemConfigurePage() {
+        getDriver().findElement(By.cssSelector("a[href$='manage']")).click();
+        getDriver().findElement(By.cssSelector("a[href$='configure']")).click();
+    }
+
     private <T> T getLastElement(List<T> list) {
         if (list != null && !list.isEmpty()) {
             return list.get(list.size() - 1);
@@ -392,8 +398,5 @@ public class ConfigureSystemTest extends BaseTest {
 
         return null;
     }
-
-
-
 
 }
