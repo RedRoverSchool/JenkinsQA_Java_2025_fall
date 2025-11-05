@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -79,12 +80,12 @@ public class Folder2Test extends BaseTest {
         String orgFolderName = "OrgFolder" + UUID.randomUUID().toString().substring(0, 3);
 
         return new Object[][]{
-                { "Freestyle project", freestyleName },
-                { "Pipeline", pipelineName },
-                { "Multi-configuration project", multiConfigPrName },
-                { "Folder", folderName },
-                { "Multibranch Pipeline", multibrPipName },
-                { "Organization Folder", orgFolderName }
+                {"Freestyle project", freestyleName},
+                {"Pipeline", pipelineName},
+                {"Multi-configuration project", multiConfigPrName},
+                {"Folder", folderName},
+                {"Multibranch Pipeline", multibrPipName},
+                {"Organization Folder", orgFolderName}
         };
     }
 
@@ -115,5 +116,27 @@ public class Folder2Test extends BaseTest {
                 breadcrumbTexts,
                 itemsNames,
                 "Путь хлебных крошек не соответствует ожиданию");
+    }
+
+    @Test
+    public void testPreventDuplicateItemNamesInFolder() {
+        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
+        final String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);
+
+        createItem(folderName, "Folder");
+        createItem(pipelineName, "Pipeline");
+
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(folderName))).click();
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(driver -> Objects.requireNonNull(
+                driver.getCurrentUrl()).endsWith("/job/%s/".formatted(folderName)));
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(pipelineName);
+
+        WebElement duplicateMessage = getDriver().findElement(By.id("itemname-invalid"));
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOf(duplicateMessage));
+        Assert.assertEquals(
+                duplicateMessage.getText(),
+                "» A job already exists with the name ‘%s’".formatted(pipelineName),
+                "Неверное сообщение о дублировании имени");
     }
 }
