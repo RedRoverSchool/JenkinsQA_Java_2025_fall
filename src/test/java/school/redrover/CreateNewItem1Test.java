@@ -94,6 +94,12 @@ public class CreateNewItem1Test extends BaseTest {
 
         addBuildStep.click();
 
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//button[normalize-space()='Execute Windows batch command']")
+        ));
+
+
         for (int i = 0; i < expectedBuildSteps.length; i++) {
             WebElement actualBuildStep = getDriver().findElement(By.xpath("//button[contains(text(),'%s')]".formatted(expectedBuildSteps[i])));
 
