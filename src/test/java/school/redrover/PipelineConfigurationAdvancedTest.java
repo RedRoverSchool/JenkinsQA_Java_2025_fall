@@ -17,9 +17,9 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     private WebDriverWait wait;
 
-    private void createNewPipeline() {
+    private void createNewPipeline(String newPipelineName) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("pipeline_01");
+        getDriver().findElement(By.id("name")).sendKeys(newPipelineName);
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
     }
@@ -37,7 +37,8 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     @Test(testName = "AT_03.005.01")
     public void testNavigationToAdvancedByScrollingDown() {
-        createNewPipeline();
+        String newPipelineName = "newPipeline_01";
+        createNewPipeline(newPipelineName);
 
         WebElement actualAdvancedSectionTitle = getDriver().findElement(By.id("advanced"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", actualAdvancedSectionTitle);
@@ -47,7 +48,8 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     @Test     //AT_03.005.02
     public void testNavigationToAdvancedBySideMenu() {
-        createNewPipeline();
+        String newPipelineName = "newPipeline_02";
+        createNewPipeline(newPipelineName);
 
         WebElement actualAdvancedItemMenu = getDriver().findElement(By.xpath(".//button[@data-section-id='advanced']"));
         actualAdvancedItemMenu.click();
@@ -60,7 +62,8 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     @Test     //AT_03.005.03
     public void testAdvancedSectionQuietPeriodElements() {
-        createNewPipeline();
+        String newPipelineName = "newPipeline_03";
+        createNewPipeline(newPipelineName);
 
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
@@ -84,7 +87,8 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     @Test     //AT_03.005.04
     public void testAdvancedSectionDisplayNameFieldElements() {
-        createNewPipeline();
+        String newPipelineName = "newPipeline_04";
+        createNewPipeline(newPipelineName);
         advancedButtonClick();
 
         WebElement displayNameLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.
@@ -101,7 +105,8 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
     @Test     //AT_03.005.05
     @Ignore
     public void testAdvancedSectionQuietPeriodElementsAfterSelecting() {
-        createNewPipeline();
+        String newPipelineName = "newPipeline_05";
+        createNewPipeline(newPipelineName);
         advancedButtonClick();
 
         WebElement actualQuietPeriodCheckbox = getDriver().findElement(By.name("hasCustomQuietPeriod"));
@@ -119,8 +124,9 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     @Test     //AT_03.005.06
     public void testAdvancedSectionAddDisplayName() {
+        String pipelineName = "pipeline_01";
         String displayName = "PL_01";
-        createNewPipeline();
+        createNewPipeline(pipelineName);
         advancedButtonClick();
 
         WebElement displayNameInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By
@@ -141,7 +147,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
         getDriver().findElement(By.id("jenkins-head-icon")).click();
 
         String actualDisplayNameInHomePage = wait.until(ExpectedConditions.visibilityOfElementLocated(By
-                .id("job_%s".formatted("pipeline_01")))).getText().split("\\n")[0];
+                .id("job_%s".formatted(pipelineName)))).getText().split("\\n")[0];
 
         Assert.assertEquals(actualDisplayNameInHomePage, displayName);
     }
