@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CreateUserErrorMessagesTest extends BaseTest {
@@ -26,7 +27,7 @@ public class CreateUserErrorMessagesTest extends BaseTest {
     }
 
     @Test
-    public void testInvalidCharacters() {
+    public void testUsernameInvalidCharacters() {
         final String randomInvalidChar = String.valueOf(getRandomInvalidCharForUsernameInput());
 
         getDriver().findElement(By.id("username")).sendKeys(randomInvalidChar);
@@ -41,14 +42,27 @@ public class CreateUserErrorMessagesTest extends BaseTest {
     }
 
     @Test
-    public void testName() {
+    public void testPasswordEmptyFieldError() {
         getDriver().findElement(By.name("Submit")).click();
 
-        WebElement usernameFieldErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+        WebElement passwordFieldErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//input[@name='password1']/parent::div/parent::div/following::div")));
         Assert.assertEquals(
-                usernameFieldErrorMessage.getText(),
+                passwordFieldErrorMessage.getText(),
                 "Password is required");
+    }
+
+    @Test
+    public void testPasswordsUnmatch() {
+        getDriver().findElement(By.name("password1")).sendKeys("password");
+        getDriver().findElement(By.name("Submit")).click();
+
+        List<WebElement> createUserFormFieldErrors = getDriver().findElements(By.className("error"));
+        WebElement passwordFieldErrorMessage = createUserFormFieldErrors.get(1);
+        WebElement passwordConfirmFieldErrorMessage = createUserFormFieldErrors.get(2);
+
+        Assert.assertEquals(passwordFieldErrorMessage.getText(), "Password didn't match");
+        Assert.assertEquals(passwordConfirmFieldErrorMessage.getText(), "Password didn't match");
     }
 
     private char getRandomInvalidCharForUsernameInput() {
