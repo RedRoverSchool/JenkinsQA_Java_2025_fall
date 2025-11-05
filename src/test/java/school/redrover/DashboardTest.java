@@ -55,6 +55,7 @@ public class DashboardTest extends BaseTest {
             new Actions(getDriver())
                     .keyDown(Keys.CONTROL)
                     .click(currentLink)
+                    .keyUp(Keys.CONTROL)
                     .perform();
 
             getWait().until(ExpectedConditions.numberOfWindowsToBe(2));

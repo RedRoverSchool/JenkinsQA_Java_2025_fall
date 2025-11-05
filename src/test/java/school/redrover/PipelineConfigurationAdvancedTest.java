@@ -7,12 +7,11 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 import java.time.Duration;
-@Ignore
+
 public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     private WebDriverWait wait;
@@ -28,8 +27,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
         wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
         WebElement footer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("footer")));
-        ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].scrollIntoView({block: 'center'});", footer);
+        new Actions(getDriver()).scrollToElement(footer).perform();
 
         WebElement advancedButton = wait.until(ExpectedConditions.elementToBeClickable(By
                 .xpath(".//div[@id='advanced']/parent::section/descendant::button[contains(text(),'Advanced')]")));
@@ -73,7 +71,8 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 .xpath(".//div[@id='advanced']/parent::section/descendant::button[contains(text(),'Advanced')]")));
         new Actions(getDriver()).moveToElement(advancedButton).click().perform();
 
-        WebElement actualQuietPeriodLabel = getDriver().findElement(By.xpath(".//label[text()='Quiet period']"));
+        WebElement actualQuietPeriodLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.
+                xpath(".//label[text()='Quiet period']")));
         new Actions(getDriver()).moveToElement(actualQuietPeriodLabel).perform();
 
         WebElement actualQuietPeriodCheckbox = getDriver().findElement(By.id("cb13"));
@@ -96,5 +95,52 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
         Assert.assertEquals(actualDisplayNameLabel, "Display Name");
         Assert.assertTrue(actualDisplayNameInput.getAttribute("value").isEmpty(), "Default Display Name field should be empty");
+    }
+
+    @Test     //AT_03.005.05
+    public void testAdvancedSectionQuietPeriodElementsAfterSelecting() {
+        createNewPipeline();
+        advancedButtonClick();
+
+        WebElement actualQuietPeriodCheckbox = getDriver().findElement(By.name("hasCustomQuietPeriod"));
+        WebElement actualQuietPeriodLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//label[text()='Quiet period']")));
+        new Actions(getDriver()).moveToElement(actualQuietPeriodLabel).click().perform();
+
+        WebElement actualNumberOfSecondsLabel = getDriver().findElement(By.xpath(".//div[text()='Number of seconds']"));
+        WebElement actualNumberOfSecondsInput = getDriver().findElement(By.name("quiet_period"));
+        String defaultNumberOfSeconds = actualNumberOfSecondsInput.getAttribute("value");
+
+        Assert.assertTrue(actualQuietPeriodCheckbox.isSelected(), "Checkbox should be selected");
+        Assert.assertEquals(actualNumberOfSecondsLabel.getText(), "Number of seconds");
+        Assert.assertEquals(defaultNumberOfSeconds, "5");
+    }
+
+    @Test     //AT_03.005.06
+    public void testAdvancedSectionAddDisplayName() {
+        String displayName = "PL_01";
+        createNewPipeline();
+        advancedButtonClick();
+
+        WebElement displayNameInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+                .name("_.displayNameOrNull")));
+        new Actions(getDriver()).moveToElement(displayNameInput).perform();
+        displayNameInput.sendKeys(displayName);
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+
+        String actualDisplayNameInStatus = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+                .tagName("h1"))).getText();
+        String actualDisplayNameInBreadcrumbBar = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath(".//a[text()='%s']".formatted(displayName)))).getText();
+
+        Assert.assertEquals(actualDisplayNameInStatus, displayName);
+        Assert.assertEquals(actualDisplayNameInBreadcrumbBar, displayName);
+
+        getDriver().findElement(By.id("jenkins-head-icon")).click();
+
+        String actualDisplayNameInHomePage = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+                .id("job_%s".formatted("pipeline_01")))).getText().split("\\n")[0];
+
+        Assert.assertEquals(actualDisplayNameInHomePage, displayName);
     }
 }
