@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Collections.frequency;
 
-public class ConfigureSystemTest extends BaseTest {
+public class ConfigureSystem1Test extends BaseTest {
 
     @Test(testName = "US_10.001 SystemMessage. Create system message")
     public void testCreateSystemMessage() {
