@@ -107,12 +107,12 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
         createNewPipeline(newPipelineName);
         advancedButtonClick();
 
-        WebElement actualQuietPeriodCheckbox = wait.until(ExpectedConditions.visibilityOfElementLocated(By
-                .name("hasCustomQuietPeriod")));
         WebElement actualQuietPeriodLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath(".//label[text()='Quiet period']")));
         new Actions(getDriver()).moveToElement(actualQuietPeriodLabel).click().perform();
 
+        WebElement actualQuietPeriodCheckbox = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+                .name("hasCustomQuietPeriod")));
         WebElement actualNumberOfSecondsLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath(".//div[text()='Number of seconds']")));
         WebElement actualNumberOfSecondsInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By
