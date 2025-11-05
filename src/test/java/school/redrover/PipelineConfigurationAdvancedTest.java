@@ -7,7 +7,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -103,18 +102,21 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
     }
 
     @Test     //AT_03.005.05
-    @Ignore
     public void testAdvancedSectionQuietPeriodElementsAfterSelecting() {
         String newPipelineName = "newPipeline_05";
         createNewPipeline(newPipelineName);
         advancedButtonClick();
 
-        WebElement actualQuietPeriodCheckbox = getDriver().findElement(By.name("hasCustomQuietPeriod"));
-        WebElement actualQuietPeriodLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//label[text()='Quiet period']")));
+        WebElement actualQuietPeriodCheckbox = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+                .name("hasCustomQuietPeriod")));
+        WebElement actualQuietPeriodLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath(".//label[text()='Quiet period']")));
         new Actions(getDriver()).moveToElement(actualQuietPeriodLabel).click().perform();
 
-        WebElement actualNumberOfSecondsLabel = getDriver().findElement(By.xpath(".//div[text()='Number of seconds']"));
-        WebElement actualNumberOfSecondsInput = getDriver().findElement(By.name("quiet_period"));
+        WebElement actualNumberOfSecondsLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath(".//div[text()='Number of seconds']")));
+        WebElement actualNumberOfSecondsInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+                .name("quiet_period")));
         String defaultNumberOfSeconds = actualNumberOfSecondsInput.getAttribute("value");
 
         Assert.assertTrue(actualQuietPeriodCheckbox.isSelected(), "Checkbox should be selected");
