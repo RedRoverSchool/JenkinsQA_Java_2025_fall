@@ -11,6 +11,7 @@ import school.redrover.common.BaseTest;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.frequency;
@@ -266,7 +267,7 @@ public class ConfigureSystemTest extends BaseTest {
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
 
-        Assert.assertEquals(expectedGlobalProperties, actualGlobalProperties);
+        Assert.assertEquals(actualGlobalProperties, expectedGlobalProperties);
     }
 
     @Test
@@ -292,25 +293,105 @@ public class ConfigureSystemTest extends BaseTest {
 
     @Test
     public void testDiskSpaceMonitoringThresholds() {
-        String testSpace = "1GiB";
+
+        final String testFreeDiskSpaceThreshold = "1.1GiB";
+        final String testDiskSpaceWarningThreshold = "1.2GiB";
+        final String testTempSpaceThreshold = "1.3GiB";
+        final String testTempSpaceWarningThreshold = "1.4GiB";
 
         getSystemConfigurePage();
 
-        getDriver().findElement(By.xpath("//input[contains(@name, 'DiskSpaceMonitorNodeProperty')]")).click();
+        WebElement diskSpaceMonitoringThresholds = getDriver()
+                .findElement(By.xpath("//input[contains(@name, 'DiskSpaceMonitorNodeProperty')]/following-sibling::label"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", diskSpaceMonitoringThresholds);
+        diskSpaceMonitoringThresholds.click();
 
         WebElement freeDiskSpaceThreshold = getDriver().findElement(By.name("_.freeDiskSpaceThreshold"));
         freeDiskSpaceThreshold.clear();
-        freeDiskSpaceThreshold.sendKeys(testSpace);
+        freeDiskSpaceThreshold.sendKeys(testFreeDiskSpaceThreshold);
 
-        WebElement freeDiskSpaceWarningThreshold = getDriver().findElement(By.name("_.freeDiskSpaceThreshold"));
+        WebElement freeDiskSpaceWarningThreshold = getDriver().findElement(By.name("_.freeDiskSpaceWarningThreshold"));
         freeDiskSpaceWarningThreshold.clear();
-        freeDiskSpaceWarningThreshold.sendKeys(testSpace);
+        freeDiskSpaceWarningThreshold.sendKeys(testDiskSpaceWarningThreshold);
+
+        WebElement freeTempSpaceThreshold = getDriver().findElement(By.name("_.freeTempSpaceThreshold"));
+        freeTempSpaceThreshold.clear();
+        freeTempSpaceThreshold.sendKeys(testTempSpaceThreshold);
+
+        WebElement freeTempSpaceWarningThreshold = getDriver().findElement(By.name("_.freeTempSpaceWarningThreshold"));
+        freeTempSpaceWarningThreshold.clear();
+        freeTempSpaceWarningThreshold.sendKeys(testTempSpaceWarningThreshold);
+
+        getDriver().findElement(By.name("Submit")).click();
 
         getSystemConfigurePage();
 
-        Assert.assertEquals(expectedGlobalProperties, actualGlobalProperties);
+        Assert.assertEquals(
+                getDriver().findElement(By.name("_.freeDiskSpaceThreshold")).getAttribute("value"),
+                testFreeDiskSpaceThreshold);
+        Assert.assertEquals(
+                getDriver().findElement(By.name("_.freeDiskSpaceWarningThreshold")).getAttribute("value"),
+                testDiskSpaceWarningThreshold);
+        Assert.assertEquals(
+                getDriver().findElement(By.name("_.freeTempSpaceThreshold")).getAttribute("value"),
+                testTempSpaceThreshold);
+        Assert.assertEquals(
+                getDriver().findElement(By.name("_.freeTempSpaceWarningThreshold")).getAttribute("value"),
+                testTempSpaceWarningThreshold);
     }
 
+    @Test
+    public void testEnvironmentVariables() {
+
+        final String testVariableName = UUID.randomUUID().toString();
+        final String testVariableValue = UUID.randomUUID().toString();
+
+        getSystemConfigurePage();
+
+        WebElement addButton = getDriver().findElement(By.xpath(
+                "//input[contains(@name, 'EnvironmentVariablesNodeProperty')]/ancestor::div[contains(@class, 'optionalBlock')]//button[text()='Add']"));
+
+        if (!addButton.isDisplayed()) {
+            WebElement environmentVariables = getDriver()
+                    .findElement(By.xpath("//input[contains(@name, 'EnvironmentVariablesNodeProperty')]/following-sibling::label"));
+            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", environmentVariables);
+            environmentVariables.click();
+        }
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", addButton);
+        addButton.click();
+
+        List<WebElement> variableNames = getDriver().findElements(By.xpath("//input[@name='env.key']"));
+        WebElement variableName = getLastElement(variableNames);
+        variableName.clear();
+        variableName.sendKeys(testVariableName);
+
+        List<WebElement> variableValues = getDriver().findElements(By.xpath("//input[@name='env.value']"));
+        WebElement variableValue = getLastElement(variableValues);
+        variableValue.clear();
+        variableValue.sendKeys(testVariableValue);
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        getSystemConfigurePage();
+
+        Assert.assertTrue(
+                getDriver().findElements(By.xpath("//input[@name='env.key']")).stream()
+                        .map(name -> name.getAttribute("value")).toList()
+                        .contains(testVariableName));
+        Assert.assertTrue(
+                getDriver().findElements(By.xpath("//input[@name='env.value']")).stream()
+                        .map(value -> value.getAttribute("value")).toList()
+                        .contains(testVariableValue));
+    }
+
+    private <T> T getLastElement(List<T> list) {
+        if (list != null && !list.isEmpty()) {
+            return list.get(list.size() - 1);
+        }
+
+        return null;
+    }
 
 
 
