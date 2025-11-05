@@ -7,16 +7,37 @@ import school.redrover.common.BaseTest;
 
 public class WelcomeDashboard1Test extends BaseTest {
     @Test
-    public void testWelcomeDashboardSetUtAgent() {
+    public void testSetUtAgent() {
+
         getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//h1")).getText(),
                 "New node",
-                "New node don`t visible");
+                "New node is not visible"
+        );
 
         Assert.assertTrue(
                 getDriver().findElement(By.xpath("//form")).isDisplayed(),
-                "New Node form is not visible");
+                "New Node form is not visible"
+        );
+    }
+
+    @Test
+    public void testConfigureCloudIntegration() {
+
+        getDriver().findElement(By.xpath("//a[@href='cloud/']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//h1")).getText(),
+                "Clouds",
+                "Clouds is not visible"
+        );
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//p")).getText(),
+                "There is no plugin installed that supports clouds.",
+                "Message 'There is no plugin installed that supports clouds.' is not visible"
+        );
     }
 }
