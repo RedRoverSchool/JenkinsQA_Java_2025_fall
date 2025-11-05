@@ -2,9 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
@@ -14,6 +17,7 @@ import java.time.Duration;
 
 public class MultiConfigurationProjectTest extends BaseTest {
     private static final String NAME_OF_PROJECT = "Group-Code-Coffee_java_project";
+    private static final String DESCRIPTION = "Description for this project...";
 
     SoftAssert softAssert = new SoftAssert();
 
@@ -62,6 +66,20 @@ public class MultiConfigurationProjectTest extends BaseTest {
         rename.sendKeys(newName, Keys.ENTER);
     }
 
+    public void editDescription(String text) {
+        getDriver().findElement(By.xpath("//a[@href='editDescription']"))
+                .click();
+        WebElement description = getDriver().findElement(By.name("description"));
+        description.clear();
+        description.sendKeys(text);
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
+    public String checkDescription() {
+        return waitTime(40).until(ExpectedConditions.presenceOfElementLocated(By.id("description-content")))
+                .getText();
+    }
+
     @Test
     public void testCreateProject() {
         createNewJob();
@@ -76,7 +94,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    public void testAddDescriptionToProject() {
+    public void testRenameProject() {
         createNewJob();
         setNameOfProject(NAME_OF_PROJECT);
         selectProject();
@@ -88,5 +106,21 @@ public class MultiConfigurationProjectTest extends BaseTest {
         getTitleOfProject();
 
         softAssert.assertEquals(getTitleOfProject(), "NewNameProject");
+    }
+
+    @Ignore
+    @Test
+    public void testAddDescriptionToProject() {
+        createNewJob();
+        setNameOfProject(NAME_OF_PROJECT);
+        selectProject();
+        submitCreateProject();
+        submitConfigure();
+        goToDashBoard();
+        goToProject(NAME_OF_PROJECT);
+        editDescription(DESCRIPTION);
+        String result = checkDescription();
+
+        softAssert.assertEquals(result, DESCRIPTION);
     }
 }

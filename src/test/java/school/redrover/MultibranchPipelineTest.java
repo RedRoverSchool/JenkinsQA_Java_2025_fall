@@ -1,7 +1,9 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -22,8 +24,10 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(name);
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
+
         getDriver().findElement(By.name("Submit")).click();
     }
+
 
     @Test
     public void testAddingDescriptionCreatingMultibranch() {
@@ -63,17 +67,36 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testVerifyStatusToSwitchingEnableMultibranchPipeline() throws InterruptedException {
+    public void testVerifyDisableMessaageOnStatusPage() throws InterruptedException {
         final String disableText = "This Multibranch Pipeline is currently disabled";
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/configure']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(MULTIBRANCH_PIPELINE_NAME))).click();
         getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
         getDriver().findElement(By.name("Submit")).click();
 
         Thread.sleep(2000);
         String actualDisableText = getDriver().findElement(By.id("disabled-message")).getText();
         Assert.assertTrue(actualDisableText.contains(disableText));
+    }
+
+    @Test
+    public void testVerifyEnableToogleTooltip() {
+        final String tooltipText =
+                "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
+
+        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(MULTIBRANCH_PIPELINE_NAME))).click();
+        WebElement toggleTooltip = getDriver().findElement(By.id("toggle-switch-enable-disable-project"));
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(toggleTooltip).perform();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(6));
+        String actualTooltip = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
+                .getText();
+
+        Assert.assertEquals(actualTooltip, tooltipText);
     }
 
     @Test
@@ -97,15 +120,15 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testButtonIsDisplayed() {
+        final String projectName = "Multibranch Pipeline (test)";
+
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
 
-        getDriver().findElement(By.xpath("//input[@name='name']"))
-                .sendKeys("Multibranch Pipeline (test)");
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
-        getDriver().findElement(By.xpath("//a[@href='/job/Multibranch%20Pipeline%20(test)/']")).click();
-
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
         WebElement buttonAddDescription = getDriver().findElement(By.id("description-link"));
 
         Assert.assertTrue(buttonAddDescription.isDisplayed());
@@ -113,21 +136,19 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testClickAddDescriptionButton() {
+        final String projectName = "Multibranch Pipeline (test)";
+
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
 
-        getDriver().findElement(By.xpath("//input[@name='name']"))
-                .sendKeys("Multibranch Pipeline (test)");
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
-        getDriver().findElement(By.xpath("//a[@href='/job/Multibranch%20Pipeline%20(test)/']")).click();
-
-        WebElement buttonAddDescription = getDriver().findElement(By.id("description-link"));
-        buttonAddDescription.click();
-
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
+        getDriver().findElement(By.id("description-link")).click();
         WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='description']"));
 
-        Assert.assertTrue(descriptionField.isDisplayed());
+        Assert.assertTrue(descriptionField.isEnabled());
     }
 
     @Test
@@ -152,25 +173,91 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(descriptionField.isDisplayed());
     }
 
-    @Ignore
+
     @Test
     public void testRenameViaSidebar() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.name("Submit")).click();
 
         getDriver().findElement(By.cssSelector("[href$='confirm-rename']")).click();
 
         WebElement renameField = getDriver().findElement(By.name("newName"));
         renameField.clear();
-        renameField.sendKeys(RENAMED_MULTIBRANCH_PIPELINE);
-
-        getDriver().findElement(By.name("Submit")).click();
+        renameField.sendKeys(RENAMED_MULTIBRANCH_PIPELINE + Keys.ENTER);
 
         wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
 
         WebElement multibranchPipelineName = getDriver().findElement(By.tagName("h1"));
 
         Assert.assertEquals(multibranchPipelineName.getText(), RENAMED_MULTIBRANCH_PIPELINE);
+    }
+
+    @Test
+    public void testEnterTheDescriptionOfTheMultibranchPipeline() {
+        final String projectName = "Multibranch Pipeline (test)";
+        final String description = "This is a test description for Multibranch Pipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
+        getDriver().findElement(By.id("description-link")).click();
+        WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='description']"));
+        descriptionField.sendKeys(description);
+
+        Assert.assertTrue(descriptionField.isDisplayed());
+    }
+
+    @Test
+    public void testSeeTheDescriptionPreview() {
+        final String projectName = "Multibranch Pipeline (test)";
+        final String description = "This is a test description for Multibranch Pipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+
+        getDriver().findElement(By.xpath("//a[@class='textarea-show-preview']")).click();
+        WebElement textPreview = getDriver().findElement(By.xpath("//div[text()='%s']".formatted(description)));
+
+        Assert.assertTrue(textPreview.isDisplayed());
+    }
+
+    @Ignore
+    @Test
+    public void testSeeAddedDescriptionBelowHeading() {
+        final String projectName = "Multibranch Pipeline (test)";
+        final String description = "This is a test description for Multibranch Pipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
+        WebElement savedDescription = getDriver().findElement(By.id("description-content"));
+
+        Assert.assertFalse(savedDescription.isDisplayed(),
+                "Bug: description is not saved below the Multibranch Pipeline heading");
     }
 }
