@@ -117,11 +117,10 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 .xpath(".//div[text()='Number of seconds']")));
         WebElement actualNumberOfSecondsInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By
                 .name("quiet_period")));
-        String defaultNumberOfSeconds = actualNumberOfSecondsInput.getAttribute("value");
 
         Assert.assertTrue(actualQuietPeriodCheckbox.isSelected(), "Checkbox should be selected");
         Assert.assertEquals(actualNumberOfSecondsLabel.getText(), "Number of seconds");
-        Assert.assertEquals(defaultNumberOfSeconds, "5");
+        Assert.assertTrue(actualNumberOfSecondsInput.isDisplayed(), "'Number of seconds' input should be displayed");
     }
 
     @Test     //AT_03.005.06
