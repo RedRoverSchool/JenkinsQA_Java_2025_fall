@@ -94,5 +94,23 @@ public class CreateNewItemTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.id(errorMessage)).getText(), "» A job already exists with the name ‘AS new job’");
     }
+
+    @Test
+    //TC_01.001.03
+    public void testAcceptsAlphanumericAndUnderscores() {
+        final String projectName = "test_name1";
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(projectName);
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Pipeline']"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+
+        WebElement configurePageHeading = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-app-bar__content h1")));
+        WebElement breadCrumbs = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#breadcrumbs li:last-child span")));
+
+        Assert.assertEquals(configurePageHeading.getText(), "Configure");
+        Assert.assertEquals(breadCrumbs.getText(), "Configuration");
+    }
 }
 
