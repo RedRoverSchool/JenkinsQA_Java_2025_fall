@@ -25,6 +25,7 @@ public class Folder3Test extends BaseTest {
         ((JavascriptExecutor) getDriver())
                 .executeScript("arguments[0].scrollIntoView(true);", organizationButton);
         organizationButton.click();
+        sleep(3000);
         getDriver().findElement(By.xpath("//input[@type='text']"))
                 .sendKeys(folder);
         getDriver().findElement(By.name("Submit"))
