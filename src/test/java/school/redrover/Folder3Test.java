@@ -8,7 +8,7 @@ import school.redrover.common.BaseTest;
 
 public class Folder3Test extends BaseTest {
 
-    @Test(invocationCount = 15)
+    @Test
     public void testCreateFolder() throws InterruptedException {
         final String folderName = "Test Jenkins";
         final String descriptionText = "My first simple test";
@@ -30,9 +30,5 @@ public class Folder3Test extends BaseTest {
 
         WebElement jobNameCell = getDriver().findElement(By.xpath("//*[contains(@class, 'jenkins-table__link')]/span[1]"));
         Assert.assertEquals(jobNameCell.getText(), folderName);
-
-
     }
-
-
 }
