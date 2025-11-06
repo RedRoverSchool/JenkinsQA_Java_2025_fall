@@ -47,7 +47,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     }
 
     private void clickSaveButton() {
-        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.tagName("form")).submit();
     }
 
     @Test
@@ -137,5 +137,27 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         WebElement actualProjectDescription = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
 
         Assert.assertEquals(actualProjectDescription.getText(), updatedProjectDescription);
+    }
+
+    @Test
+    public void testUpdateProjectName() {
+        final String updatedProjectName = getRandomAlphaNumericText();
+
+        createMultibranchPipelineProject();
+        clickSaveButton();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']"))).click();
+
+        WebElement newNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
+        newNameField.clear();
+        newNameField.sendKeys(updatedProjectName);
+
+        clickSaveButton();
+
+        wait.until(ExpectedConditions.urlContains("/job"));
+
+        WebElement actualHeading = getDriver().findElement(By.tagName("h1"));
+
+        Assert.assertEquals(actualHeading.getText(), updatedProjectName);
     }
 }
