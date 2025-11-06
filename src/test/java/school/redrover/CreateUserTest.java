@@ -82,8 +82,8 @@ public class CreateUserTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='command-bar']")).sendKeys(userName);
         getDriver().findElement(By.xpath("//*[@id='search-results']")).click();
 
-        WebElement element1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1")));
-        String foundUser = element1.getText();
+        WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1")));
+        String foundUser = element2.getText();
 
         Assert.assertEquals(foundUser, userName);
 
