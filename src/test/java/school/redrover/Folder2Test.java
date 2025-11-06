@@ -65,18 +65,9 @@ public class Folder2Test extends BaseTest {
         createItem(parentFolderName, "Folder");
         createItem(childFolderName, "Folder");
 
-        List<String> breadcrumbTexts = new ArrayList<>();
-        for (WebElement element : getDriver().findElements(By.xpath("//ol[@id='breadcrumbs']/li/a"))) {
-            breadcrumbTexts.add(element.getText());
-        }
-
-        List<String> folderNames = new ArrayList<>();
-        folderNames.add(parentFolderName);
-        folderNames.add(childFolderName);
-
         Assert.assertEquals(
-                breadcrumbTexts,
-                folderNames,
+                getTextsOfItems("//ol[@id='breadcrumbs']/li/a"),
+                List.of(parentFolderName, childFolderName),
                 "Путь хлебных крошек не соответствует ожиданию");
     }
 
