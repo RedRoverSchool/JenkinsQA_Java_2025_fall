@@ -174,10 +174,10 @@ public class Folder2Test extends BaseTest {
         getDriver().findElement(By.className("jenkins-mobile-hide")).click();
 
         getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folder1Name))).click();
-        List<String> folder1Items = getTextsOfItems("//*[contains(@class, 'jenkins-table__link')]");
+        List<String> folder1Items = getTextsOfItems("//a[contains(@class, 'jenkins-table__link')]");
         getDriver().findElement(By.className("jenkins-mobile-hide")).click();
         getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folder2Name))).click();
-        List<String> folder2Items = getTextsOfItems("//*[contains(@class, 'jenkins-table__link')]");
+        List<String> folder2Items = getTextsOfItems("//a[contains(@class, 'jenkins-table__link')]");
 
         Assert.assertEquals(
                 folder1Items,
