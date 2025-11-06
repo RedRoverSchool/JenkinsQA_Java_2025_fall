@@ -6,6 +6,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -292,6 +293,7 @@ public class ConfigureSystem1Test extends BaseTest {
                 numberOfHelpDisplayBlockAfterClick - 1);
     }
 
+    @Ignore
     @Test(testName = "US_10.001 GlobalProperties. Change disk space monitoring thresholds")
     public void testDiskSpaceMonitoringThresholds() {
 

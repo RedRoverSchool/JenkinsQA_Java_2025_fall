@@ -181,7 +181,7 @@ public class PipelineTest extends BaseTest {
         descriptionField.sendKeys(textDescription);
         getDriver().findElement(By.name("Submit")).click();
 
-
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
         WebElement descriptionText = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
 
