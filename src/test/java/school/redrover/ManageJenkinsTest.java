@@ -67,4 +67,25 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertNotNull(tooltipId, "Tooltip id is null");
         Assert.assertEquals(actualTooltipText, expectedTooltipText, "Unexpected tooltip");
     }
+
+    @Test
+    public void testDeferredWipeoutHintText() {
+        final String expectedHintText =
+                "During the workspace cleanup disable improved deferred wipeout method. " +
+                        "By default deferred wipeout is used if desired.";
+
+        openGlobalProperties();
+        getDriver().findElement(By.xpath("//a[contains(@tooltip,'Disable deferred wipeout on this node')]")).click();
+
+        By hintLocator = By.xpath("//div[@nameref='cb3']//div[@class='help']/div[1]");
+
+        new WebDriverWait(getDriver(), Duration.ofSeconds(3))
+                .until(ExpectedConditions.visibilityOfElementLocated(hintLocator));
+
+        String actualHintText = getDriver()
+                .findElement(hintLocator)
+                .getText();
+
+        Assert.assertEquals(actualHintText, expectedHintText, "Unexpected tooltip");
+    }
 }
