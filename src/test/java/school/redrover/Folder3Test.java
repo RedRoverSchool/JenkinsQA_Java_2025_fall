@@ -25,13 +25,14 @@ public class Folder3Test extends BaseTest {
         ((JavascriptExecutor) getDriver())
                 .executeScript("arguments[0].scrollIntoView(true);", organizationButton);
         organizationButton.click();
+
         sleep(3000);
         getDriver().findElement(By.xpath("//input[@type='text']"))
                 .sendKeys(folder);
         getDriver().findElement(By.name("Submit"))
                         .click();
 
-        sleep(5000);
+        sleep(4000);
         WebElement message = getDriver().findElement(By.className("page-headline"));
 
         Assert.assertEquals(message.getText(), folder);
