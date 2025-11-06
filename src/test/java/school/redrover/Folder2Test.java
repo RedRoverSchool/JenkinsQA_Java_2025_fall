@@ -183,7 +183,7 @@ public class Folder2Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[text()='%s']".formatted(folderName))).click();
 
         Assert.assertEquals(
-                new HashSet<>(getTextsOfItems("//*[contains(@class, 'jenkins-table__link')]")),
+                new HashSet<>(getTextsOfItems("//a[contains(@class, 'jenkins-table__link')]")),
                 new HashSet<>(List.of(freestyleName, pipelineName)),
                 "Неверное отображение элементов");
 
@@ -192,9 +192,8 @@ public class Folder2Test extends BaseTest {
         WebElement searchInput = getDriver().findElement(By.id("command-bar"));
         searchInput.sendKeys(pipelineName);
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
-                "//*[contains(text(), 'Get help using Jenkins search')]")));
-
-        Assert.assertTrue(getTextsOfItems("//*[@id='search-results']//a").
+                "//a[contains(text(), 'Get help using Jenkins search')]")));
+        Assert.assertTrue(getTextsOfItems("//div[@id='search-results']//a").
                         contains("%s » %s".formatted(folderName, pipelineName)),
                 "Список результатов поиска не содержит нужный элемент");
 
@@ -205,8 +204,8 @@ public class Folder2Test extends BaseTest {
         getDriver().findElement(By.id("root-action-SearchAction")).click();
         getDriver().findElement(By.id("command-bar")).sendKeys(freestyleName);
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
-                "//*[contains(text(), 'Get help using Jenkins search')]")));
-        Assert.assertTrue(getTextsOfItems("//*[@id='search-results']//a").
+                "//div[contains(text(), 'Get help using Jenkins search')]")));
+        Assert.assertTrue(getTextsOfItems("//div[@id='search-results']//a").
                         contains("%s » %s".formatted(folderName, freestyleName)),
                 "Список результатов поиска не содержит нужный элемент");
     }
