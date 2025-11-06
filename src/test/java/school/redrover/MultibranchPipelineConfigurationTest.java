@@ -16,10 +16,9 @@ import java.util.UUID;
 public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     private WebDriverWait wait;
+    private final String projectName = getRandomAlphaNumericText();
 
-    private void createMultibranchPipelineProject() {
-        final String projectName = getRandomAlphaNumericText();
-
+    private void createMultibranchPipelineProject(String projectName) {
         wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         wait.until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
 
@@ -55,7 +54,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @Test
     public void testDisableToggle() {
-        createMultibranchPipelineProject();
+        createMultibranchPipelineProject(projectName);
         clickOnTheToggle();
 
         WebElement disabledTitle = getDriver().findElement(By.cssSelector("[class$='unchecked-title'"));
@@ -68,7 +67,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     public void testTooltipOnToggleHover() {
         final String expectedTooltip = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
-        createMultibranchPipelineProject();
+        createMultibranchPipelineProject(projectName);
 
         WebElement toggleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.id("toggle-switch-enable-disable-project")
@@ -86,7 +85,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     public void testDisabledMessageOnStatusPage() {
         final String expectedDisabledMessage = "This Multibranch Pipeline is currently disabled";
 
-        createMultibranchPipelineProject();
+        createMultibranchPipelineProject(projectName);
         clickOnTheToggle();
         submitForm();
 
@@ -99,7 +98,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     public void testProjectDescriptionPreview() {
         final String projectDescription = getRandomAlphaNumericText();
 
-        createMultibranchPipelineProject();
+        createMultibranchPipelineProject(projectName);
         addProjectDescription(projectDescription);
 
         getDriver().findElement(By.className("textarea-show-preview")).click();
@@ -113,7 +112,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     public void testMultibranchProjectDescription() {
         final String projectDescriptionText = getRandomAlphaNumericText();
 
-        createMultibranchPipelineProject();
+        createMultibranchPipelineProject(projectName);
         addProjectDescription(projectDescriptionText);
         submitForm();
 
@@ -127,7 +126,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         final String initialProjectDescription = getRandomAlphaNumericText();
         final String updatedProjectDescription = getRandomAlphaNumericText();
 
-        createMultibranchPipelineProject();
+        createMultibranchPipelineProject(projectName);
         addProjectDescription(initialProjectDescription);
         submitForm();
 
@@ -145,7 +144,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     public void testUpdateProjectName() {
         final String updatedProjectName = getRandomAlphaNumericText();
 
-        createMultibranchPipelineProject();
+        createMultibranchPipelineProject(projectName);
         submitForm();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']"))).click();
