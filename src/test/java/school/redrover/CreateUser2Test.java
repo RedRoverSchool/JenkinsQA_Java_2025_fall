@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class CreateUserErrorMessagesTest extends BaseTest {
+public class CreateUser2Test extends BaseTest {
 
     WebDriverWait wait;
 
@@ -24,6 +24,28 @@ public class CreateUserErrorMessagesTest extends BaseTest {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
         getDriver().findElement(By.cssSelector("a[href='securityRealm/']")).click();
         getDriver().findElement(By.linkText("Create User")).click();
+    }
+
+    @Test
+    public void testSuccessfulUserCreation() {
+        final String username = "testUser";
+        final String password = "Password1!";
+
+        getDriver().findElement(By.id("username")).sendKeys(username);
+        getDriver().findElement(By.name("password1")).sendKeys(password);
+        getDriver().findElement(By.name("password2")).sendKeys(password);
+        getDriver().findElement(By.name("fullname")).sendKeys("%s %s".formatted(username, username));
+        getDriver().findElement(By.name("email")).sendKeys(username.toLowerCase() + "@email.com");
+        getDriver().findElement(By.name("Submit")).click();
+
+        List<String> usernamesInTable = getDriver()
+                .findElements(By.className("jenkins-table__link")).stream()
+                .map(WebElement::getText).toList();
+
+        Assert.assertListContains(
+                usernamesInTable,
+                n -> n.equals(username),
+                "User <%s> are not created".formatted(username));
     }
 
     @Test
@@ -42,7 +64,7 @@ public class CreateUserErrorMessagesTest extends BaseTest {
     }
 
     @Test
-    public void testPasswordEmptyFieldError() {
+    public void testEmptyPassword() {
         getDriver().findElement(By.name("Submit")).click();
 
         WebElement passwordFieldErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By
