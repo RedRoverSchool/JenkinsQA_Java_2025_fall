@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,6 +14,7 @@ import school.redrover.common.BaseTest;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -29,6 +31,14 @@ public class Folder2Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
         new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(driver -> Objects.requireNonNull(
                 driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
+    }
+
+    private List<String> getTextsOfItems(String xpathLocator) {
+        List<String> itemsTexts = new ArrayList<>();
+        for (WebElement element : getDriver().findElements(By.xpath(xpathLocator))) {
+            itemsTexts.add(element.getText());
+        }
+        return itemsTexts;
     }
 
     @Test
@@ -180,5 +190,47 @@ public class Folder2Test extends BaseTest {
                 folder1Items,
                 folder2Items,
                 "Несоответствие содержимого папок");
+    }
+
+    @Test
+    public void testFindFolderContents() {
+        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
+        final String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);
+        final String freestyleName = "Freestyle" + UUID.randomUUID().toString().substring(0, 3);
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        createItem(folderName, "Folder");
+        createItem(pipelineName, "Pipeline");
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(folderName))).click();
+        createItem(freestyleName, "Freestyle project");
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(folderName))).click();
+
+        Assert.assertEquals(
+                new HashSet<>(getTextsOfItems("//*[contains(@class, 'jenkins-table__link')]")),
+                new HashSet<>(List.of(freestyleName, pipelineName)),
+                "Неверное отображение элементов");
+
+        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+        getDriver().findElement(By.id("root-action-SearchAction")).click();
+        WebElement searchInput = getDriver().findElement(By.id("command-bar"));
+        searchInput.sendKeys(pipelineName);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
+                "//*[contains(text(), 'Get help using Jenkins search')]")));
+
+        Assert.assertTrue(getTextsOfItems("//*[@id='search-results']//a").
+                        contains("%s » %s".formatted(folderName, pipelineName)),
+                "Список результатов поиска не содержит нужный элемент");
+
+        new Actions(getDriver())
+                .moveToElement(searchInput, 0, -50)
+                .click()
+                .perform();
+        getDriver().findElement(By.id("root-action-SearchAction")).click();
+        getDriver().findElement(By.id("command-bar")).sendKeys(freestyleName);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
+                "//*[contains(text(), 'Get help using Jenkins search')]")));
+        Assert.assertTrue(getTextsOfItems("//*[@id='search-results']//a").
+                        contains("%s » %s".formatted(folderName, freestyleName)),
+                "Список результатов поиска не содержит нужный элемент");
     }
 }
