@@ -1,5 +1,4 @@
 package school.redrover;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -25,13 +24,11 @@ public class Folder3Test extends BaseTest {
         ((JavascriptExecutor) getDriver())
                 .executeScript("arguments[0].scrollIntoView(true);", organizationButton);
         organizationButton.click();
-
         sleep(3000);
         getDriver().findElement(By.xpath("//input[@type='text']"))
                 .sendKeys(folder);
         getDriver().findElement(By.name("Submit"))
                         .click();
-
         sleep(4500);
         WebElement message = getDriver().findElement(By.className("page-headline"));
 

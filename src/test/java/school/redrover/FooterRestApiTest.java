@@ -7,14 +7,35 @@ import school.redrover.common.BaseTest;
 
 public class FooterRestApiTest extends BaseTest {
 
-    @Test
-    public void testRestApiMainPage() {
-        final String restApiText = "REST API";
-
+    private String checkRestApiHeader() {
         getDriver().findElement(By.className("rest-api")).click();
 
-        String actualText = getDriver().findElement(By.cssSelector("h1")).getText();
+        return getDriver().findElement(By.cssSelector("h1")).getText();
+    }
 
-        Assert.assertEquals(actualText, restApiText, "Текст заголовка не совпадает с ожидаемым");
+    @Test
+    public void testRestApiMainPage() {
+        Assert.assertEquals(checkRestApiHeader(), "REST API", "Текст заголовка не совпадает с ожидаемым");
+    }
+
+    @Test
+    public void testRestApiUserAdminPage() {
+        getDriver().findElement(By.id("root-action-UserAction")).click();
+
+        Assert.assertEquals(checkRestApiHeader(), "REST API", "Текст заголовка не совпадает с ожидаемым");
+    }
+
+    @Test
+    public void testRestApiBuildsPage() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/builds']")).click();
+
+        Assert.assertEquals(checkRestApiHeader(), "REST API", "Текст заголовка не совпадает с ожидаемым");
+    }
+
+    @Test
+    public void testRestApiComputerPage() {
+        getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
+
+        Assert.assertEquals(checkRestApiHeader(), "REST API", "Текст заголовка не совпадает с ожидаемым");
     }
 }

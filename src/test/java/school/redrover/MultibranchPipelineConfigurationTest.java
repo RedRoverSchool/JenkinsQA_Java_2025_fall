@@ -43,11 +43,14 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     }
 
     private void addProjectDescription(String projectDescription) {
-        getDriver().findElement(By.name("_.description")).sendKeys(projectDescription);
+        WebElement projectDescriptionField = getDriver().findElement(By.name("_.description"));
+
+        projectDescriptionField.clear();
+        projectDescriptionField.sendKeys(projectDescription);
     }
 
-    private void clickSaveButton() {
-        getDriver().findElement(By.name("Submit")).click();
+    private void submitForm() {
+        getDriver().findElement(By.tagName("form")).submit();
     }
 
     @Test
@@ -85,7 +88,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         createMultibranchPipelineProject();
         clickOnTheToggle();
-        clickSaveButton();
+        submitForm();
 
         WebElement actualDisabledMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("disabled-message")));
 
@@ -112,7 +115,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         createMultibranchPipelineProject();
         addProjectDescription(projectDescriptionText);
-        clickSaveButton();
+        submitForm();
 
         WebElement actualProjectDescription = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
 
@@ -126,16 +129,36 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         createMultibranchPipelineProject();
         addProjectDescription(initialProjectDescription);
-        clickSaveButton();
+        submitForm();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("_.description"))).clear();
 
         addProjectDescription(updatedProjectDescription);
-        clickSaveButton();
+        submitForm();
 
         WebElement actualProjectDescription = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
 
         Assert.assertEquals(actualProjectDescription.getText(), updatedProjectDescription);
+    }
+
+    @Test
+    public void testUpdateProjectName() {
+        final String updatedProjectName = getRandomAlphaNumericText();
+
+        createMultibranchPipelineProject();
+        submitForm();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']"))).click();
+
+        WebElement newNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
+        newNameField.clear();
+        newNameField.sendKeys(updatedProjectName);
+        submitForm();
+
+        wait.until(ExpectedConditions.urlContains("/job"));
+
+        WebElement actualHeading = getDriver().findElement(By.tagName("h1"));
+
+        Assert.assertEquals(actualHeading.getText(), updatedProjectName);
     }
 }
