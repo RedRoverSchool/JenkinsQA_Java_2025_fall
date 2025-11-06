@@ -53,9 +53,8 @@ public class Folder2Test extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.className("empty-state-section")).getText().contains("This folder is empty"),
                 "Отсутствует сообщение 'This folder is empty'");
-
-        Assert.assertTrue(getTextsOfItems("//*[contains(@class, 'jenkins-table__link')]").isEmpty(),
-                "Элементы должны отсутствовать в новой таблице");
+        List<WebElement> itemsInFolder = getDriver().findElements(By.xpath("//*[@id='projectstatus']/tbody/tr"));
+        Assert.assertTrue(itemsInFolder.isEmpty(), "Элементы должны отсутствовать в новой таблице");
     }
 
     @Test
@@ -66,9 +65,18 @@ public class Folder2Test extends BaseTest {
         createItem(parentFolderName, "Folder");
         createItem(childFolderName, "Folder");
 
+        List<String> breadcrumbTexts = new ArrayList<>();
+        for (WebElement element : getDriver().findElements(By.xpath("//ol[@id='breadcrumbs']/li/a"))) {
+            breadcrumbTexts.add(element.getText());
+        }
+
+        List<String> folderNames = new ArrayList<>();
+        folderNames.add(parentFolderName);
+        folderNames.add(childFolderName);
+
         Assert.assertEquals(
-                getTextsOfItems("//ol[@id='breadcrumbs']/li/a"),
-                List.of(parentFolderName, childFolderName),
+                breadcrumbTexts,
+                folderNames,
                 "Путь хлебных крошек не соответствует ожиданию");
     }
 
@@ -106,10 +114,17 @@ public class Folder2Test extends BaseTest {
 
         new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(driver -> Objects.requireNonNull(
                 driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
+        List<String> breadcrumbTexts = new ArrayList<>();
+        for (WebElement element : getDriver().findElements(By.xpath("//*[@id='breadcrumbs']//a"))) {
+            breadcrumbTexts.add(element.getText());
+        }
 
+        List<String> itemsNames = new ArrayList<>();
+        itemsNames.add(folderName);
+        itemsNames.add(itemName);
         Assert.assertEquals(
-                getTextsOfItems("//ol[@id='breadcrumbs']/li/a"),
-                List.of(folderName, itemName),
+                breadcrumbTexts,
+                itemsNames,
                 "Путь хлебных крошек не соответствует ожиданию");
     }
 
@@ -159,10 +174,17 @@ public class Folder2Test extends BaseTest {
         getDriver().findElement(By.className("jenkins-mobile-hide")).click();
 
         getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folder1Name))).click();
-        List<String> folder1Items = getTextsOfItems("//*[contains(@class, 'jenkins-table__link')]");
+        List<String> folder1Items = new ArrayList<>();
+        for (WebElement element : getDriver().findElements(By.className("jenkins-table__link"))) {
+            folder1Items.add(element.getText());
+        }
+
         getDriver().findElement(By.className("jenkins-mobile-hide")).click();
         getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folder2Name))).click();
-        List<String> folder2Items = getTextsOfItems("//*[contains(@class, 'jenkins-table__link')]");
+        List<String> folder2Items = new ArrayList<>();
+        for (WebElement element : getDriver().findElements(By.className("jenkins-table__link"))) {
+            folder2Items.add(element.getText());
+        }
 
         Assert.assertEquals(
                 folder1Items,
