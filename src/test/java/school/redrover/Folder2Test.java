@@ -53,7 +53,7 @@ public class Folder2Test extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.className("empty-state-section")).getText().contains("This folder is empty"),
                 "Отсутствует сообщение 'This folder is empty'");
-        Assert.assertTrue(getTextsOfItems("//*[contains(@class, 'jenkins-table__link')]").isEmpty(),
+        Assert.assertTrue(getTextsOfItems("//a[contains(@class, 'jenkins-table__link')]").isEmpty(),
                 "Элементы должны отсутствовать в новой таблице");
     }
 
