@@ -197,6 +197,7 @@ public class Folder2Test extends BaseTest {
         final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
         final String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);
         final String freestyleName = "Freestyle" + UUID.randomUUID().toString().substring(0, 3);
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
         createItem(folderName, "Folder");
         createItem(pipelineName, "Pipeline");
@@ -213,7 +214,6 @@ public class Folder2Test extends BaseTest {
         getDriver().findElement(By.id("root-action-SearchAction")).click();
         WebElement searchInput = getDriver().findElement(By.id("command-bar"));
         searchInput.sendKeys(pipelineName);
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
                 "//*[contains(text(), 'Get help using Jenkins search')]")));
 
