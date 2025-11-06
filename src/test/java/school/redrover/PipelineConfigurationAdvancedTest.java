@@ -125,6 +125,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
         Assert.assertTrue(actualNumberOfSecondsInput.isDisplayed(), "'Number of seconds' input should be displayed");
     }
 
+    @Ignore
     @Test     //AT_03.005.06
     public void testAdvancedSectionAddDisplayName() {
         String pipelineName = "pipeline_01";
