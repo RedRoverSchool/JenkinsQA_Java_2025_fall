@@ -114,17 +114,10 @@ public class Folder2Test extends BaseTest {
 
         new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(driver -> Objects.requireNonNull(
                 driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
-        List<String> breadcrumbTexts = new ArrayList<>();
-        for (WebElement element : getDriver().findElements(By.xpath("//*[@id='breadcrumbs']//a"))) {
-            breadcrumbTexts.add(element.getText());
-        }
 
-        List<String> itemsNames = new ArrayList<>();
-        itemsNames.add(folderName);
-        itemsNames.add(itemName);
         Assert.assertEquals(
-                breadcrumbTexts,
-                itemsNames,
+                getTextsOfItems("//ol[@id='breadcrumbs']/li/a"),
+                List.of(folderName, itemName),
                 "Путь хлебных крошек не соответствует ожиданию");
     }
 
