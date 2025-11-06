@@ -65,24 +65,27 @@ public class CreateUserTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='root-action-ManageJenkinsAction']")).click();
         getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
         getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
-        getDriver().findElement(By.xpath("//*[@id='username']")).sendKeys("someone_else");
-        getDriver().findElement(By.xpath("//*[@name='password1']")).sendKeys("never_mind");
-        getDriver().findElement(By.xpath("//*[@name='password2']")).sendKeys("never_mind");
+
+        final String userName = "someone_else";
+        final String password = "never_mind";
+
+        getDriver().findElement(By.xpath("//*[@id='username']")).sendKeys(userName);
+        getDriver().findElement(By.xpath("//*[@name='password1']")).sendKeys(password);
+        getDriver().findElement(By.xpath("//*[@name='password2']")).sendKeys(password);
         getDriver().findElement(By.xpath("//*[@name='email']")).sendKeys("someone@else.com");
         getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button")).click();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        WebDriverWait wait = new WebDriverWait(getDriver(),Duration.ofSeconds(10));
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='root-action-SearchAction']")));
         element.click();
-        getDriver().findElement(By.xpath("//*[@id='command-bar']")).sendKeys("someone_else");
+
+        getDriver().findElement(By.xpath("//*[@id='command-bar']")).sendKeys(userName);
         getDriver().findElement(By.xpath("//*[@id='search-results']")).click();
 
-        String actual = getDriver().findElement(By.xpath("/html/body/div[2]/div[2]/div[1]/div[1]/h1")).getText();
-        String expected = "someone_else";
+        WebElement element1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1")));
+        String foundUser = element1.getText();
 
-        Assert.assertEquals(actual, expected);
-
-
-
+        Assert.assertEquals(foundUser, userName);
 
     }
 }
