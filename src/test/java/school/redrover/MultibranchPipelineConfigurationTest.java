@@ -43,7 +43,10 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     }
 
     private void addProjectDescription(String projectDescription) {
-        getDriver().findElement(By.name("_.description")).sendKeys(projectDescription);
+        WebElement projectDescriptionField = getDriver().findElement(By.name("_.description"));
+
+        projectDescriptionField.clear();
+        projectDescriptionField.sendKeys(projectDescription);
     }
 
     private void submitForm() {
@@ -129,7 +132,6 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         submitForm();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("_.description"))).clear();
 
         addProjectDescription(updatedProjectDescription);
         submitForm();
