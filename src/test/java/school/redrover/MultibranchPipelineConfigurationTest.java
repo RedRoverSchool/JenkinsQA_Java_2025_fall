@@ -46,7 +46,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.name("_.description")).sendKeys(projectDescription);
     }
 
-    private void clickSaveButton() {
+    private void submitForm() {
         getDriver().findElement(By.tagName("form")).submit();
     }
 
@@ -85,7 +85,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         createMultibranchPipelineProject();
         clickOnTheToggle();
-        clickSaveButton();
+        submitForm();
 
         WebElement actualDisabledMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("disabled-message")));
 
@@ -112,7 +112,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         createMultibranchPipelineProject();
         addProjectDescription(projectDescriptionText);
-        clickSaveButton();
+        submitForm();
 
         WebElement actualProjectDescription = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
 
@@ -126,13 +126,13 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         createMultibranchPipelineProject();
         addProjectDescription(initialProjectDescription);
-        clickSaveButton();
+        submitForm();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']"))).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("_.description"))).clear();
 
         addProjectDescription(updatedProjectDescription);
-        clickSaveButton();
+        submitForm();
 
         WebElement actualProjectDescription = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
 
@@ -144,15 +144,14 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         final String updatedProjectName = getRandomAlphaNumericText();
 
         createMultibranchPipelineProject();
-        clickSaveButton();
+        submitForm();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']"))).click();
 
         WebElement newNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
         newNameField.clear();
         newNameField.sendKeys(updatedProjectName);
-
-        clickSaveButton();
+        submitForm();
 
         wait.until(ExpectedConditions.urlContains("/job"));
 
