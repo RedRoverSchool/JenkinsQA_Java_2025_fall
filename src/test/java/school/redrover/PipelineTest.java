@@ -164,7 +164,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void L() {
+    public void testEditDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
