@@ -106,4 +106,53 @@ public class CreateNewItem1Test extends BaseTest {
             Assert.assertEquals(actualBuildStep.getText(),expectedBuildSteps[i]);
         }
     }
+    @Test
+    public void testBuildStepsFilter() {
+
+        String[] expectedBuildSteps = {
+                "Execute Windows batch command",
+                "Execute shell",
+                "Invoke Ant",
+                "Invoke Gradle script",
+                "Invoke top-level Maven targets",
+                "Run with timeout",
+                "Set build status to \"pending\" on GitHub commit"
+        };
+
+        getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys("TestProject");
+        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        WebElement addBuildStep = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Add build')]")));
+
+        ((JavascriptExecutor) getDriver())
+                .executeScript("arguments[0].scrollIntoView({block: 'center'});", addBuildStep);
+
+        addBuildStep.click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//button[normalize-space()='Execute Windows batch command']")
+        ));
+
+        for (String expectedStep : expectedBuildSteps) {
+
+            WebElement filter = getDriver().findElement(By.xpath("//input[@type='search' and @placeholder='Filter']"));
+            filter.clear();
+
+            String filterPart = expectedStep.substring(0, Math.min(expectedStep.length(), 5));
+            filter.sendKeys(filterPart);
+
+            WebElement actualBuildStep = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
+                    .until(ExpectedConditions.visibilityOfElementLocated(
+                            By.xpath("//button[contains(@style,'inline-flex') and normalize-space()='%s']"
+                                    .formatted(expectedStep))));
+
+            Assert.assertEquals(actualBuildStep.getText(),expectedStep, "Filter didn't match expected build step");
+        }
+
+    }
 }
