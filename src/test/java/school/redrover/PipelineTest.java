@@ -162,4 +162,32 @@ public class PipelineTest extends BaseTest {
                         .matches("(?s)Would last have run at .*; would next run at .*"),
                 "Alias " + timePeriod + " не прошёл валидацию");
     }
+
+    @Test
+    public void testEditDescription() {
+        final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+
+        createPipeline(PIPELINE_NAME);
+
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).sendKeys("description");
+        getDriver().findElement(By.name("Submit")).click();
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
+                .click();
+        WebElement descriptionField = getDriver().findElement(By.name("description"));
+        descriptionField.clear();
+        descriptionField.sendKeys(textDescription);
+        getDriver().findElement(By.name("Submit")).click();
+
+
+        WebElement descriptionText = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
+
+        Assert.assertEquals(
+                descriptionText.getText(),
+                textDescription,
+                "Не совпал текст description после его редактирования");
+    }
 }

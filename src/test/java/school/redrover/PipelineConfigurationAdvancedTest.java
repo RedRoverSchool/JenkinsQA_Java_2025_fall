@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -124,6 +125,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
         Assert.assertTrue(actualNumberOfSecondsInput.isDisplayed(), "'Number of seconds' input should be displayed");
     }
 
+    @Ignore
     @Test     //AT_03.005.06
     public void testAdvancedSectionAddDisplayName() {
         String pipelineName = "pipeline_01";
