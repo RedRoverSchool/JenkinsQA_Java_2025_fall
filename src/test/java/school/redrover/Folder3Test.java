@@ -32,7 +32,7 @@ public class Folder3Test extends BaseTest {
         getDriver().findElement(By.name("Submit"))
                         .click();
 
-        sleep(4000);
+        sleep(4500);
         WebElement message = getDriver().findElement(By.className("page-headline"));
 
         Assert.assertEquals(message.getText(), folder);
