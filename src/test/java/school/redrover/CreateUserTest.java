@@ -2,6 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -55,5 +57,35 @@ public class CreateUserTest extends BaseTest {
                 .toList();
 
         Assert.assertEquals(expectedErrors, actualErrors);
+    }
+
+    @Test
+    public void testSearchCreatedUser() throws InterruptedException {
+
+        getDriver().findElement(By.xpath("//*[@id='root-action-ManageJenkinsAction']")).click();
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
+
+        final String userName = "someone_else";
+        final String password = "never_mind";
+
+        getDriver().findElement(By.xpath("//*[@id='username']")).sendKeys(userName);
+        getDriver().findElement(By.xpath("//*[@name='password1']")).sendKeys(password);
+        getDriver().findElement(By.xpath("//*[@name='password2']")).sendKeys(password);
+        getDriver().findElement(By.xpath("//*[@name='email']")).sendKeys("someone@else.com");
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button")).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(),Duration.ofSeconds(10));
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='root-action-SearchAction']")));
+        element.click();
+
+        getDriver().findElement(By.xpath("//*[@id='command-bar']")).sendKeys(userName);
+        getDriver().findElement(By.xpath("//*[@id='search-results']")).click();
+
+        WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1")));
+        String foundUser = element2.getText();
+
+        Assert.assertEquals(foundUser, userName);
+
     }
 }
