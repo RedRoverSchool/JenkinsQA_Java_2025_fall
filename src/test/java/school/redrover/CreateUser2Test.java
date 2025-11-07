@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -15,12 +14,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CreateUser2Test extends BaseTest {
 
-    WebDriverWait wait;
-
     @BeforeMethod
     private void preconditions() {
-        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
         getDriver().findElement(By.cssSelector("a[href='securityRealm/']")).click();
         getDriver().findElement(By.linkText("Create User")).click();
@@ -50,8 +45,9 @@ public class CreateUser2Test extends BaseTest {
         getDriver().findElement(By.id("username")).sendKeys(randomInvalidChar);
         getDriver().findElement(By.name("Submit")).click();
 
-        WebElement usernameFieldErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+        WebElement usernameFieldErrorMessage = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//input[@id='username']/parent::div/parent::div/following::div")));
+
         Assert.assertEquals(
                 usernameFieldErrorMessage.getText(),
                 "User name must only contain alphanumeric characters, underscore and dash",
@@ -62,8 +58,9 @@ public class CreateUser2Test extends BaseTest {
     public void testEmptyPassword() {
         getDriver().findElement(By.name("Submit")).click();
 
-        WebElement passwordFieldErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+        WebElement passwordFieldErrorMessage = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//input[@name='password1']/parent::div/parent::div/following::div")));
+
         Assert.assertEquals(
                 passwordFieldErrorMessage.getText(),
                 "Password is required");
@@ -87,8 +84,8 @@ public class CreateUser2Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         List<WebElement> createUserFormFieldErrors = getDriver().findElements(By.className("error"));
-
         WebElement emailFieldErrorMessage = createUserFormFieldErrors.get(4);
+
         Assert.assertEquals(emailFieldErrorMessage.getText(), "Invalid e-mail address");
     }
 
@@ -96,23 +93,26 @@ public class CreateUser2Test extends BaseTest {
     public void testEmptyFullName() {
         getDriver().findElement(By.name("Submit")).click();
 
-        WebElement fullnameFieldErrorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+        WebElement fullnameFieldErrorMessage = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//input[@name='fullname']/parent::div/parent::div/following::div")));
+
         Assert.assertEquals(
                 fullnameFieldErrorMessage.getText(),
                 "\"\" is prohibited as a full name for security reasons.");
     }
 
     @Test
-    public void testFindUser() throws Exception {
+    public void testFindUser() {
         final String username = "testUser";
         final String password = "Pa$$w0rd1!";
         final String userFullName = "%s %s".formatted(username, username);
 
         fillAndSubmitCreateUserForm(username, password);
 
-        Thread.sleep(100);
-        getDriver().findElement(By.id("root-action-SearchAction")).click();
+        getWait2().pollingEvery(Duration.ofMillis(100))
+                .until(ExpectedConditions.elementToBeClickable(By
+                        .id("root-action-SearchAction")))
+                .click();
         getDriver().findElement(By.id("command-bar")).sendKeys(username);
         getDriver().findElement(By.linkText(userFullName)).click();
 
