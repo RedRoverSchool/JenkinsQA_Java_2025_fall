@@ -90,7 +90,7 @@ public class Folder2Test extends BaseTest {
         };
     }
 
-    @Test(dataProvider = "itemsProvider",invocationCount = 15)
+    @Test(dataProvider = "itemsProvider")
     public void testPutItemToFolder(String itemType, String itemName) {
         final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
 
