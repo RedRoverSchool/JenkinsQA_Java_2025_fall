@@ -62,7 +62,6 @@ public class PipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
         wait.until(ExpectedConditions.elementToBeClickable((By.id("jenkins-head-icon")))).click();
 
-
         WebElement status = getDriver().findElement(By.xpath("//*[@id='job_%s']/td[1]/div".formatted(projectName)));
 
         Actions actions = new Actions(getDriver());
