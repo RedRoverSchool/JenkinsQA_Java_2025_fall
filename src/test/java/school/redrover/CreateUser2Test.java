@@ -31,12 +31,7 @@ public class CreateUser2Test extends BaseTest {
         final String username = "testUser";
         final String password = "Password1!";
 
-        getDriver().findElement(By.id("username")).sendKeys(username);
-        getDriver().findElement(By.name("password1")).sendKeys(password);
-        getDriver().findElement(By.name("password2")).sendKeys(password);
-        getDriver().findElement(By.name("fullname")).sendKeys("%s %s".formatted(username, username));
-        getDriver().findElement(By.name("email")).sendKeys(username.toLowerCase() + "@email.com");
-        getDriver().findElement(By.name("Submit")).click();
+        fillAndSubmitCreateUserForm(username, password);
 
         List<String> usernamesInTable = getDriver()
                 .findElements(By.className("jenkins-table__link")).stream()
@@ -106,6 +101,36 @@ public class CreateUser2Test extends BaseTest {
         Assert.assertEquals(
                 fullnameFieldErrorMessage.getText(),
                 "\"\" is prohibited as a full name for security reasons.");
+    }
+
+    @Test
+    public void testFindUser() throws Exception {
+        final String username = "testUser";
+        final String password = "Pa$$w0rd1!";
+        final String userFullName = "%s %s".formatted(username, username);
+
+        fillAndSubmitCreateUserForm(username, password);
+
+        Thread.sleep(100);
+        getDriver().findElement(By.id("root-action-SearchAction")).click();
+        getDriver().findElement(By.id("command-bar")).sendKeys(username);
+        getDriver().findElement(By.linkText(userFullName)).click();
+
+        WebElement userIdInfo = getDriver().findElement(By
+                .xpath("//div[@id='description']/following-sibling::div"));
+        WebElement userFullNameHeader = getDriver().findElement(By.className("jenkins-build-caption"));
+
+        Assert.assertEquals(userIdInfo.getText(), "Jenkins User ID: %s".formatted(username));
+        Assert.assertEquals(userFullNameHeader.getText(), userFullName);
+    }
+
+    private void fillAndSubmitCreateUserForm(String username, String password) {
+        getDriver().findElement(By.id("username")).sendKeys(username);
+        getDriver().findElement(By.name("password1")).sendKeys(password);
+        getDriver().findElement(By.name("password2")).sendKeys(password);
+        getDriver().findElement(By.name("fullname")).sendKeys("%s %s".formatted(username, username));
+        getDriver().findElement(By.name("email")).sendKeys(username.toLowerCase() + "@email.com");
+        getDriver().findElement(By.name("Submit")).click();
     }
 
     private char getRandomInvalidCharForUsernameInput() {
