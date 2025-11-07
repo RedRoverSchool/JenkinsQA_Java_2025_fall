@@ -54,6 +54,12 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.tagName("form")).submit();
     }
 
+    private void clickRenameLinkInSideMenu() {
+        getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
+                .click();
+    }
+
     @Test
     public void testDisableToggle() {
         createMultibranchPipelineProject(projectName);
@@ -145,19 +151,13 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     }
 
     @Test
-    public void testUpdateProjectName() {
+    public void testRenameProject() {
         final String updatedProjectName = getRandomAlphaNumericText();
 
         createMultibranchPipelineProject(projectName);
         submitForm();
-
-        getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
-                .click();
-
-        WebElement newNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
-        newNameField.clear();
-        newNameField.sendKeys(updatedProjectName);
+        clickRenameLinkInSideMenu();
+        renameProjectName(updatedProjectName);
         submitForm();
 
         getWait5().until(ExpectedConditions.urlContains("/job"));
@@ -174,11 +174,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         createMultibranchPipelineProject(projectName);
         submitForm();
-
-        getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
-                .click();
-
+        clickRenameLinkInSideMenu();
         renameProjectName(updatedProjectName);
         submitForm();
 
