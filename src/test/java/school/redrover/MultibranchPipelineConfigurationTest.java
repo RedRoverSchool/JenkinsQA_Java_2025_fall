@@ -43,6 +43,13 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         projectDescriptionField.sendKeys(projectDescription);
     }
 
+    private void renameProjectName(String updatedProjectName) {
+        WebElement newNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
+
+        newNameField.clear();
+        newNameField.sendKeys(updatedProjectName);
+    }
+
     private void submitForm() {
         getDriver().findElement(By.tagName("form")).submit();
     }
@@ -158,5 +165,26 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         WebElement actualHeading = getDriver().findElement(By.tagName("h1"));
 
         Assert.assertEquals(actualHeading.getText(), updatedProjectName);
+    }
+
+    @Test
+    public void testRenameProjectNameUsingDotAtTheEnd() {
+        final String updatedProjectName = getRandomAlphaNumericText() + ".";
+        final String expectedErrorMessageText = "A name cannot end with ‘.’";
+
+        createMultibranchPipelineProject(projectName);
+        submitForm();
+
+        getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
+                .click();
+
+        renameProjectName(updatedProjectName);
+        submitForm();
+
+        WebElement actualErrorMessage = getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Error']/../p")));
+
+        Assert.assertEquals(actualErrorMessage.getText(), expectedErrorMessageText);
     }
 }
