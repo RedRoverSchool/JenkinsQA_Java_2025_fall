@@ -56,4 +56,29 @@ public class CreateUserTest extends BaseTest {
 
         Assert.assertEquals(expectedErrors, actualErrors);
     }
+
+    @Test
+    public void testErrorMessageWhenCreateAnExistingUserAndEmptyEmail() {
+        final String userName = "admin";
+        final String userPassword = "adminPass";
+        final List<String> expectedErrors = List.of(
+                "User name is already taken",
+                "Invalid e-mail address"
+        );
+
+        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
+        getDriver().findElement(By.id("username")).sendKeys(userName);
+        getDriver().findElement(By.name("password1")).sendKeys(userPassword);
+        getDriver().findElement(By.name("password2")).sendKeys(userPassword);
+        getDriver().findElement(By.name("Submit")).click();
+
+        List<String> actualErrors = getDriver().findElements(By.xpath("//*[@class='error jenkins-!-margin-bottom-2']"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+
+        Assert.assertEquals(actualErrors, expectedErrors);
+    }
 }
