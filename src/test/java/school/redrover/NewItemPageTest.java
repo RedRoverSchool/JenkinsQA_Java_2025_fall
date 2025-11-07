@@ -39,16 +39,48 @@ public class NewItemPageTest extends BaseTest {
     }
 
     @Test
-    public void testNewItemTypesAccessibility() {
-        newItemButtonClick();
+    public void testNewItemSelectAnItemType() {
 
-        List<String> expectedItemTypes = List.of("Freestyle project", "Pipeline", "Multi-configuration project", "Folder", "Multibranch Pipeline", "Organization Folder");
-        List<WebElement> itemTypes = getDriver().findElements(By.xpath(".//span[@class='label']"));
+        String itemName = "TestItem";
+        String checkselect;
 
-        List<String> itemTypeList = itemTypes.stream()
-                .map(WebElement::getText)
-                .toList();
+        getDriver().findElement(By.cssSelector("#tasks > :nth-child(1)")).click();
+        getDriver().findElement((By.cssSelector(".add-item-name > #name"))).sendKeys(itemName);
 
-        Assert.assertEquals(itemTypeList, expectedItemTypes);
+        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        checkselect = getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).getAttribute("aria-checked");
+        Assert.assertEquals(checkselect, "true");
+        getDriver().findElement(By.id("ok-button")).isDisplayed();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#side-panel > div.jenkins-app-bar > div.jenkins-app-bar__content > h1")).getText(), "Configure");
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".jenkins-toggle-switch__label__checked-title")).getText(), "Enabled");
+
+        getDriver().findElement(By.cssSelector(".app-jenkins-logo")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#projectstatus > :nth-child(2) > :nth-child(1) > :nth-child(3) > a > span")).getText(), itemName);
+
+    }
+
+    @Test
+    public void testSelectItemTypeIsVisible() {
+
+        List<String> expectedItemTypes = List.of(
+                "Freestyle project",
+                "Pipeline",
+                "Multi-configuration project",
+                "Folder",
+                "Multibranch Pipeline",
+                "Organization Folder"
+        );
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        WebElement sectionTitle = getDriver().findElement(By.xpath("//div[text()='Select an item type']"));
+        List<WebElement> actualItemTypes = getDriver().findElements(By.xpath("//div[@id='items']//label"));
+        for (int i = 0; i < expectedItemTypes.size(); i++) {
+            Assert.assertTrue(actualItemTypes.get(i).isDisplayed());
+        }
+        Assert.assertTrue(sectionTitle.isDisplayed());
     }
 }

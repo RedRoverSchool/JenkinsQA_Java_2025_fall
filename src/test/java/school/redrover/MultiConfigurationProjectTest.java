@@ -2,10 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
@@ -15,6 +17,7 @@ import java.time.Duration;
 
 public class MultiConfigurationProjectTest extends BaseTest {
     private static final String NAME_OF_PROJECT = "Group-Code-Coffee_java_project";
+    private static final String DESCRIPTION = "Description for this project...";
 
     SoftAssert softAssert = new SoftAssert();
 
@@ -49,7 +52,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     public void goToProject(String projectName) {
         getDriver().findElement(By.xpath(String.format("//td/a[@href='job/%s/']", projectName))).click();
-
     }
 
     public void goToDashBoard() {
@@ -62,6 +64,20 @@ public class MultiConfigurationProjectTest extends BaseTest {
         WebElement rename = getDriver().findElement(By.name("newName"));
         rename.clear();
         rename.sendKeys(newName, Keys.ENTER);
+    }
+
+    public void editDescription(String text) {
+        getDriver().findElement(By.xpath("//a[@href='editDescription']"))
+                .click();
+        WebElement description = getDriver().findElement(By.name("description"));
+        description.clear();
+        description.sendKeys(text);
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
+    public String checkDescription() {
+        return waitTime(40).until(ExpectedConditions.presenceOfElementLocated(By.id("description-content")))
+                .getText();
     }
 
     @Test
@@ -77,8 +93,8 @@ public class MultiConfigurationProjectTest extends BaseTest {
         softAssert.assertAll();
     }
 
-    @Test(priority = 1)
-    public void testAddDescriptionToProject() {
+    @Test
+    public void testRenameProject() {
         createNewJob();
         setNameOfProject(NAME_OF_PROJECT);
         selectProject();
@@ -92,17 +108,19 @@ public class MultiConfigurationProjectTest extends BaseTest {
         softAssert.assertEquals(getTitleOfProject(), "NewNameProject");
     }
 
-    @Test(priority = 2)
-    public void testRenameProject() {
-        //your code may be here
+    @Ignore
+    @Test
+    public void testAddDescriptionToProject() {
+        createNewJob();
+        setNameOfProject(NAME_OF_PROJECT);
+        selectProject();
+        submitCreateProject();
+        submitConfigure();
+        goToDashBoard();
+        goToProject(NAME_OF_PROJECT);
+        editDescription(DESCRIPTION);
+        String result = checkDescription();
 
+        softAssert.assertEquals(result, DESCRIPTION);
     }
-
-    @Test(priority = 3)
-    public void testDeleteProject() {
-        //your code may be here
-
-    }
-
-
 }

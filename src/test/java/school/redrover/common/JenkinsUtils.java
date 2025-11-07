@@ -202,6 +202,14 @@ public final class JenkinsUtils {
 //                String.format("Jenkins-Crumb=%s", getCrumbFromPage(systemPage)));
     }
 
+    private static void deleteSystemMessage() {
+        String mainPage = getPage("");
+        postHttp(ProjectUtils.getUrl() + "manage/configSubmit",
+                String.format(
+                        "system_message=&Jenkins-Crumb=%1$s&json=%%7B%%22system_message%%22%%3A%%22%%22%%2C%%22Jenkins-Crumb%%22%%3A%%22%1$s%%22%%7D",
+                        getCrumbFromPage(mainPage)));
+    }
+
     static void clearData() {
         JenkinsUtils.deleteViews();
         JenkinsUtils.deleteJobs();
@@ -209,6 +217,7 @@ public final class JenkinsUtils {
         JenkinsUtils.deleteNodes();
         JenkinsUtils.deleteMainDescription();
         JenkinsUtils.deleteViewDescription();
+        JenkinsUtils.deleteSystemMessage();
         JenkinsUtils.deleteDomains();
         JenkinsUtils.resetTheme();
     }
@@ -224,9 +233,7 @@ public final class JenkinsUtils {
     }
 
     public static void logout(WebDriver driver) {
-        ProjectUtils.get(driver);
-
-        driver.findElement(By.xpath("//a[@href='/logout']")).click();
+        driver.get(ProjectUtils.getUrl() + "logout");
     }
 }
 
