@@ -43,7 +43,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         projectDescriptionField.sendKeys(projectDescription);
     }
 
-    private void renameProjectName(String updatedProjectName) {
+    private void renameProject(String updatedProjectName) {
         WebElement newNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
 
         newNameField.clear();
@@ -52,6 +52,12 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     private void submitForm() {
         getDriver().findElement(By.tagName("form")).submit();
+    }
+
+    private void clickRenameLinkInSideMenu() {
+        getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
+                .click();
     }
 
     @Test
@@ -145,19 +151,13 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     }
 
     @Test
-    public void testUpdateProjectName() {
+    public void testRenameProject() {
         final String updatedProjectName = getRandomAlphaNumericText();
 
         createMultibranchPipelineProject(projectName);
         submitForm();
-
-        getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
-                .click();
-
-        WebElement newNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
-        newNameField.clear();
-        newNameField.sendKeys(updatedProjectName);
+        clickRenameLinkInSideMenu();
+        renameProject(updatedProjectName);
         submitForm();
 
         getWait5().until(ExpectedConditions.urlContains("/job"));
@@ -174,12 +174,8 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         createMultibranchPipelineProject(projectName);
         submitForm();
-
-        getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
-                .click();
-
-        renameProjectName(updatedProjectName);
+        clickRenameLinkInSideMenu();
+        renameProject(updatedProjectName);
         submitForm();
 
         WebElement actualErrorMessage = getWait5()
