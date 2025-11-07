@@ -6,13 +6,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,15 +20,14 @@ import java.util.UUID;
 public class Folder2Test extends BaseTest {
 
     private void createItem(String itemName, String itemType) {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(itemName);
         WebElement selectedItemType = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(itemType)));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", selectedItemType);
         selectedItemType.click();
         getDriver().findElement(By.id("ok-button")).click();
-        wait.until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
-        wait.until(driver -> Objects.requireNonNull(driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+        getWait10().until(driver -> Objects.requireNonNull(driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
     }
 
     private List<String> getTextsOfItems(String xpathLocator) {
@@ -103,7 +100,7 @@ public class Folder2Test extends BaseTest {
         selectObject.selectByVisibleText("Jenkins » %s".formatted(folderName));
         getDriver().findElement(By.name("Submit")).click();
 
-        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(driver -> Objects.requireNonNull(
+        getWait10().until(driver -> Objects.requireNonNull(
                 driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
 
         Assert.assertEquals(
@@ -121,13 +118,12 @@ public class Folder2Test extends BaseTest {
         createItem(pipelineName, "Pipeline");
 
         getDriver().findElement(By.xpath("//a[text()='%s']".formatted(folderName))).click();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        wait.until(driver -> Objects.requireNonNull(driver.getCurrentUrl()).endsWith("/job/%s/".formatted(folderName)));
+        getWait10().until(driver -> Objects.requireNonNull(
+                driver.getCurrentUrl()).endsWith("/job/%s/".formatted(folderName)));
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(pipelineName);
 
-        WebElement duplicateMessage = getDriver().findElement(By.id("itemname-invalid"));
-        wait.until(ExpectedConditions.visibilityOf(duplicateMessage));
+        WebElement duplicateMessage = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
         Assert.assertEquals(
                 duplicateMessage.getText(),
                 "» A job already exists with the name ‘%s’".formatted(pipelineName),
@@ -153,7 +149,7 @@ public class Folder2Test extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(driver -> Objects.requireNonNull(
+        getWait10().until(driver -> Objects.requireNonNull(
                 driver.getCurrentUrl()).endsWith("/job/%s/".formatted(pipelineName)));
         getDriver().findElement(By.className("jenkins-mobile-hide")).click();
 
@@ -174,7 +170,6 @@ public class Folder2Test extends BaseTest {
         final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
         final String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);
         final String freestyleName = "Freestyle" + UUID.randomUUID().toString().substring(0, 3);
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
         createItem(folderName, "Folder");
         createItem(pipelineName, "Pipeline");
@@ -191,7 +186,7 @@ public class Folder2Test extends BaseTest {
         getDriver().findElement(By.id("root-action-SearchAction")).click();
         WebElement searchInput = getDriver().findElement(By.id("command-bar"));
         searchInput.sendKeys(pipelineName);
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
+        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
                 "//a[contains(text(), 'Get help using Jenkins search')]")));
         Assert.assertTrue(getTextsOfItems("//div[@id='search-results']//a").
                         contains("%s » %s".formatted(folderName, pipelineName)),
@@ -203,7 +198,7 @@ public class Folder2Test extends BaseTest {
                 .perform();
         getDriver().findElement(By.id("root-action-SearchAction")).click();
         getDriver().findElement(By.id("command-bar")).sendKeys(freestyleName);
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
+        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
                 "//div[contains(text(), 'Get help using Jenkins search')]")));
         Assert.assertTrue(getTextsOfItems("//div[@id='search-results']//a").
                         contains("%s » %s".formatted(folderName, freestyleName)),
