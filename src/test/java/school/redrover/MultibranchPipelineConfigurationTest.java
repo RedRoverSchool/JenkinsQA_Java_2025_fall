@@ -43,7 +43,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         projectDescriptionField.sendKeys(projectDescription);
     }
 
-    private void renameProjectName(String updatedProjectName) {
+    private void renameProject(String updatedProjectName) {
         WebElement newNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
 
         newNameField.clear();
@@ -157,7 +157,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         createMultibranchPipelineProject(projectName);
         submitForm();
         clickRenameLinkInSideMenu();
-        renameProjectName(updatedProjectName);
+        renameProject(updatedProjectName);
         submitForm();
 
         getWait5().until(ExpectedConditions.urlContains("/job"));
@@ -175,7 +175,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         createMultibranchPipelineProject(projectName);
         submitForm();
         clickRenameLinkInSideMenu();
-        renameProjectName(updatedProjectName);
+        renameProject(updatedProjectName);
         submitForm();
 
         WebElement actualErrorMessage = getWait5()
