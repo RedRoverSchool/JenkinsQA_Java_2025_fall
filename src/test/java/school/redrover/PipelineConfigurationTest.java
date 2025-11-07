@@ -70,7 +70,7 @@ public class PipelineConfigurationTest extends BaseTest {
                 .perform();
 
         String actualStatus = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("tippy-11"))).getText();
+                By.cssSelector("[data-tippy-root]"))).getText();
 
         Assert.assertEquals(actualStatus, "Disabled");
     }
