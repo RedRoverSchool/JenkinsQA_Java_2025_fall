@@ -2,12 +2,14 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import javax.swing.*;
 import java.time.Duration;
 
 public class PipelineConfigurationTest extends BaseTest {
@@ -47,5 +49,30 @@ public class PipelineConfigurationTest extends BaseTest {
                         By.className("jenkins-toggle-switch__label__unchecked-title")
                 )).getText();
         Assert.assertEquals(disabledText, "Disabled");
+    }
+
+    @Test
+    public void testActivityStatusProject() {
+        final String projectName = "Disable Project";
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        createFreestyleProject(projectName);
+
+        getDriver().findElement(toggleSwitch).click();
+        getDriver().findElement(By.name("Submit")).click();
+        wait.until(ExpectedConditions.elementToBeClickable((By.id("jenkins-head-icon")))).click();
+
+
+        WebElement status = getDriver().findElement(By.xpath("//*[@id='job_%s']/td[1]/div".formatted(projectName)));
+
+        Actions actions = new Actions(getDriver());
+        actions
+                .moveToElement(status)
+                .perform();
+
+        String actualStatus = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("tippy-11"))).getText();
+
+        Assert.assertEquals(actualStatus, "Disabled");
     }
 }
