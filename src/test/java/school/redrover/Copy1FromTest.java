@@ -2,11 +2,16 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,9 +48,9 @@ public class Copy1FromTest extends BaseTest {
 
         getDriver().findElement(By.name("Submit")).click();
 
-        Thread.sleep(2000);
-
-        getDriver().findElement(By.xpath("//span[text()='Jenkins']")).click();
+        getWait2()
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Jenkins']")))
+                .click();
         getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(secondJobName);
         getDriver().findElement(By.id("from")).sendKeys(firstJobName);
