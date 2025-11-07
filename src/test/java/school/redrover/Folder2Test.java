@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -23,15 +22,15 @@ import java.util.UUID;
 public class Folder2Test extends BaseTest {
 
     private void createItem(String itemName, String itemType) {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(itemName);
         WebElement selectedItemType = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(itemType)));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", selectedItemType);
         selectedItemType.click();
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(driver -> Objects.requireNonNull(
-                driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
+        wait.until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+        wait.until(driver -> Objects.requireNonNull(driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
     }
 
     private List<String> getTextsOfItems(String xpathLocator) {
@@ -91,7 +90,6 @@ public class Folder2Test extends BaseTest {
         };
     }
 
-    @Ignore
     @Test(dataProvider = "itemsProvider")
     public void testPutItemToFolder(String itemType, String itemName) {
         final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
