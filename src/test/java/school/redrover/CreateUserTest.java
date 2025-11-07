@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -27,8 +28,10 @@ public class CreateUserTest extends BaseTest {
         getDriver().findElement(By.name("email")).sendKeys(userEmail);
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//td[text()='%s']".formatted(userName))).getText(),
-                userName);
+        String actualUserName = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//td[text()='%s']".formatted(userName)))).getText();
+
+        Assert.assertEquals(actualUserName, userName);
     }
 
     @Test
@@ -63,8 +66,7 @@ public class CreateUserTest extends BaseTest {
         final String userPassword = "adminPass";
         final List<String> expectedErrors = List.of(
                 "User name is already taken",
-                "Invalid e-mail address"
-        );
+                "Invalid e-mail address");
 
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
         getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
@@ -74,7 +76,8 @@ public class CreateUserTest extends BaseTest {
         getDriver().findElement(By.name("password2")).sendKeys(userPassword);
         getDriver().findElement(By.name("Submit")).click();
 
-        List<String> actualErrors = getDriver().findElements(By.xpath("//*[@class='error jenkins-!-margin-bottom-2']"))
+        List<String> actualErrors = getWait2().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
+                .xpath("//*[@class='error jenkins-!-margin-bottom-2']")))
                 .stream()
                 .map(WebElement::getText)
                 .toList();
