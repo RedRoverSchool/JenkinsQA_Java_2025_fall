@@ -13,7 +13,7 @@ public class ConfigurationMatrix2Test extends BaseTest {
     @Test (testName = "TC_02.005.04 | Freestyle Project Configuration " +
             "> Set up Environment " +
             "> Verify the access to configuration page after refresh")
-    public void testSetUpEnvironment() {
+    public void testSetUpEnvironmentAfterRefresh() {
 
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         String expectedUrl =  "http://localhost:8080/job/NewFreestyleProject/configure";
