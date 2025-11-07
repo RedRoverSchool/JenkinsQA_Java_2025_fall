@@ -34,4 +34,23 @@ public class FolderConfigurationTest extends BaseTest {
                 .findElement(By.cssSelector("#main-panel section:nth-child(5) button"));
         Assert.assertTrue(healthMetricButton.isDisplayed());
     }
+
+    @Test
+    public void testAddMetricButton(){
+        createMyFolder();
+
+        WebElement healthMetricButton = getDriver()
+                .findElement(By.cssSelector("#main-panel section:nth-child(5) button"));
+        healthMetricButton.click();
+
+        WebElement addMetricButton = getDriver()
+                .findElement(By.xpath("//button[contains(@class, 'hetero-list-add') and normalize-space(text())='Add metric']"));
+        addMetricButton.click();
+
+        WebElement metricGivenName = getDriver().findElement(By.cssSelector("#tippy-1 button:nth-child(1)"));
+        WebElement metricWorstHealth = getDriver().findElement(By.cssSelector("#tippy-1 button:nth-child(2)"));
+
+        Assert.assertTrue(metricGivenName.isDisplayed());
+        Assert.assertTrue(metricWorstHealth.isDisplayed());
+    }
 }
