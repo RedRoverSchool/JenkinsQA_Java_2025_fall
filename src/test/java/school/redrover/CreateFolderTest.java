@@ -27,6 +27,7 @@ public class CreateFolderTest extends BaseTest {
         WebElement presenceElement = getWait5().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//*[@name='_.displayNameOrNull']")));
         presenceElement.sendKeys(folder);
+
         getDriver().findElement(By.name("Submit"))
                 .click();
 
