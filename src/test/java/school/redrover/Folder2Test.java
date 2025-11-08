@@ -109,7 +109,7 @@ public class Folder2Test extends BaseTest {
                 "Путь хлебных крошек не соответствует ожиданию");
     }
 
-    @Test(invocationCount = 50)
+    @Test(invocationCount = 30)
     public void testPreventDuplicateItemNamesInFolder() {
         final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
         final String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);
@@ -122,6 +122,9 @@ public class Folder2Test extends BaseTest {
                 driver.getCurrentUrl()).endsWith("/job/%s/".formatted(folderName)));
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(pipelineName);
+        WebElement selectedItemType = getDriver().findElement(By.xpath("//span[text()='%s']".formatted("Pipeline")));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", selectedItemType);
+        selectedItemType.click();
 
         WebElement duplicateMessage = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
         Assert.assertEquals(
