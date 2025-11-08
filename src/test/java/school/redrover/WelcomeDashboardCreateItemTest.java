@@ -48,7 +48,7 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         WebElement createdItemHeader = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .className("page-headline")));
+                .xpath("//h1")));
         Assert.assertEquals(createdItemHeader.getText(), itemName);
     }
 
