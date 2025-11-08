@@ -50,8 +50,8 @@ public class MultibranchPipelineTest extends BaseTest {
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
-        getWait2().until(ExpectedConditions
-                .elementToBeClickable(By.xpath("//a[@href='/']/img"))).click();
+        getWait5().until(ExpectedConditions
+                .elementToBeClickable(By.cssSelector("span.jenkins-mobile-hide"))).click();
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
