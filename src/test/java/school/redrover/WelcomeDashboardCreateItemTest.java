@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -47,8 +46,8 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        WebElement createdItemHeader = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//h1")));
+        WebElement createdItemHeader = getDriver().findElement(By
+                .xpath("//h1"));
         Assert.assertEquals(createdItemHeader.getText(), itemName);
     }
 
