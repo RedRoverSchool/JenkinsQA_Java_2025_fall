@@ -24,7 +24,6 @@ public class Dashboard3Test extends BaseTest {
 
     @Test
     public void testCheckCreatedJobsOnDashboard(){
-
         final List<String> createdJobsName = List.of(
                 "FreestyleName1",
                 "FreestyleName2",
