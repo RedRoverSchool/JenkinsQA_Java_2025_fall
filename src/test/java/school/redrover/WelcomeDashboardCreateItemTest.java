@@ -12,46 +12,52 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
 
     @DataProvider(name = "newItemLocators")
     public Object[][] newItemLocators() {
-        By newItemLink = By.linkText("New Item");
-        By createJobLink = By.linkText("Create a job");
+        final String newItemText = "New Item";
+        final String createJobText = "Create a job";
 
-        By freestyleProjectItem = By.className("hudson_model_FreeStyleProject");
-        By pipelineItem = By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob");
-        By multiConfigurationProjectItem = By.className("hudson_matrix_MatrixProject");
-        By folderItem = By.className("com_cloudbees_hudson_plugins_folder_Folder");
-        By multibranchPipelineItem = By.className("org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject");
-        By organizationFolderItem = By.className("jenkins_branch_OrganizationFolder");
+        final By newItemLink = By.linkText(newItemText);
+        final By createJobLink = By.linkText(createJobText);
+
+        final By freestyleProjectItem = By.className("hudson_model_FreeStyleProject");
+        final By pipelineItem = By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob");
+        final By multiConfigurationProjectItem = By.className("hudson_matrix_MatrixProject");
+        final By folderItem = By.className("com_cloudbees_hudson_plugins_folder_Folder");
+        final By multibranchPipelineItem = By.className("org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject");
+        final By organizationFolderItem = By.className("jenkins_branch_OrganizationFolder");
 
         return new Object[][]{
-                {newItemLink, freestyleProjectItem, "Test Freestyle Project"},
-                {newItemLink, pipelineItem, "Test Pipeline"},
-                {newItemLink, multiConfigurationProjectItem, "Test Multi-configuration Project"},
-                {newItemLink, folderItem, "Test Folder"},
-                {newItemLink, multibranchPipelineItem, "Test Multibranch Pipeline"},
-                {newItemLink, organizationFolderItem, "Test Organization Folder"},
+                {newItemLink, newItemText, freestyleProjectItem, "Test Freestyle Project"},
+                {newItemLink, newItemText, pipelineItem, "Test Pipeline"},
+                {newItemLink, newItemText, multiConfigurationProjectItem, "Test Multi-configuration Project"},
+                {newItemLink, newItemText, folderItem, "Test Folder"},
+                {newItemLink, newItemText, multibranchPipelineItem, "Test Multibranch Pipeline"},
+                {newItemLink, newItemText, organizationFolderItem, "Test Organization Folder"},
 
-                {createJobLink, freestyleProjectItem, "Test Freestyle Project"},
-                {createJobLink, pipelineItem, "Test Pipeline"},
-                {createJobLink, multiConfigurationProjectItem, "Test Multi-configuration Project"},
-                {createJobLink, folderItem, "Test Folder"},
-                {createJobLink, multibranchPipelineItem, "Test Multibranch Pipeline"},
-                {createJobLink, organizationFolderItem, "Test Organization Folder"},
+                {createJobLink, createJobText, freestyleProjectItem, "Test Freestyle Project"},
+                {createJobLink, createJobText, pipelineItem, "Test Pipeline"},
+                {createJobLink, createJobText, multiConfigurationProjectItem, "Test Multi-configuration Project"},
+                {createJobLink, createJobText, folderItem, "Test Folder"},
+                {createJobLink, createJobText, multibranchPipelineItem, "Test Multibranch Pipeline"},
+                {createJobLink, createJobText, organizationFolderItem, "Test Organization Folder"},
         };
     }
 
     @Test(dataProvider = "newItemLocators")
-    public void testSuccessfulItemCreation(By linkLocator, By itemLocator, String createdItemName) {
+    public void testSuccessfulItemCreation(By linkLocator, String linkText, By itemLocator, String itemName) {
         getDriver().findElement(linkLocator).click();
 
-        getDriver().findElement(By.id("name")).sendKeys(createdItemName);
+        getDriver().findElement(By.id("name")).sendKeys(itemName);
         WebElement currentItem = getDriver().findElement(itemLocator);
         scrollToElement(currentItem);
         currentItem.click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        WebElement createdJobHeader = getDriver().findElement(By.className("page-headline"));
-        Assert.assertEquals(createdJobHeader.getText(), createdItemName);
+        WebElement createdItemHeader = getDriver().findElement(By.className("page-headline"));
+        Assert.assertEquals(
+                createdItemHeader.getText(),
+                itemName,
+                "Start link: <%s>, Test for item: <%s>".formatted(linkText, itemName));
     }
 
     public void scrollToElement(WebElement element) {
