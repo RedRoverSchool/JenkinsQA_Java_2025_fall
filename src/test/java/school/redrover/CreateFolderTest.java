@@ -18,21 +18,21 @@ public class CreateFolderTest extends BaseTest {
                 .click();
         getDriver().findElement(By.id("name"))
                 .sendKeys("FolderOne");
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder"))
+        getDriver().findElement(By.xpath("//span[text()='Folder']"))
                 .click();
         WebElement organizationButton = getDriver().findElement(By.id("ok-button"));
         ((JavascriptExecutor) getDriver())
                 .executeScript("arguments[0].scrollIntoView(true);", organizationButton);
         organizationButton.click();
 
-        WebElement presenceElement = getWait2().until(ExpectedConditions.presenceOfElementLocated(
+        WebElement presenceElement = getWait5().until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//*[@name='_.displayNameOrNull']")));
         presenceElement.sendKeys(folder);
         getDriver().findElement(By.name("Submit"))
                 .click();
 
-        WebElement message = getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.cssSelector("#main-panel > div.jenkins-app-bar > div > h1")));
+        WebElement message = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@id='main-panel']//h1")));
 
         Assert.assertEquals(message.getText(), folder);
     }
