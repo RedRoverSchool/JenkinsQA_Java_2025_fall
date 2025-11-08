@@ -8,7 +8,7 @@ import school.redrover.common.BaseTest;
     public class Footer1RestApiTest extends BaseTest {
 
         private String getRestApiHeader(){
-            getDriver().findElement(By.xpath("/html/body/footer/div/div[2]/a")).click();
+            getDriver().findElement(By.className("rest-api")).click();
             return getDriver().findElement(By.cssSelector("h1")).getText();
         }
 
