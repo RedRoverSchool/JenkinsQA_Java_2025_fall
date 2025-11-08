@@ -20,9 +20,8 @@ public class CreateFolderTest extends BaseTest {
                 .sendKeys("FolderOne");
         getDriver().findElement(By.xpath("//span[text()='Folder']"))
                 .click();
-        WebElement organizationButton = getDriver().findElement(By.id("ok-button"));
-        ((JavascriptExecutor) getDriver())
-                .executeScript("arguments[0].scrollIntoView(true);", organizationButton);
+        WebElement organizationButton = getWait5().until(
+                ExpectedConditions.elementToBeClickable(By.id("ok-button")));
         organizationButton.click();
 
         WebElement presenceElement = getWait5().until(ExpectedConditions.presenceOfElementLocated(
