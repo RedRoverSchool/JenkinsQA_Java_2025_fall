@@ -122,7 +122,7 @@ public class Folder2Test extends BaseTest {
                 driver.getCurrentUrl()).endsWith("/job/%s/".formatted(folderName)));
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(pipelineName);
-        WebElement selectedItemType = getDriver().findElement(By.xpath("//span[text()='%s']".formatted("Pipeline")));
+        WebElement selectedItemType = getDriver().findElement(By.xpath("//span[text()='Pipeline']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", selectedItemType);
         selectedItemType.click();
 
