@@ -32,7 +32,7 @@ import school.redrover.common.BaseTest;
         @Test
         public void testRestApiNewItemPage(){
 
-            getDriver().findElement(By.xpath("/html/body/div[2]/div[1]/div[1]/div[1]/span/a")).click();
+            getDriver().findElement(By.linkText("New Item")).click();
 
             Assert.assertEquals(
                     getRestApiHeader(),
@@ -40,9 +40,9 @@ import school.redrover.common.BaseTest;
         }
 
         @Test
-        public void testRestApiNewNodePage() {
+        public void testRestApiNewNodesPage() {
 
-            getDriver().findElement(By.xpath("/html/body/div[2]/div[2]/div[2]/div/section[2]/ul/li[1]/a")).click();
+            getDriver().findElement(By.xpath("//div/section[2]/ul/li[1]/a")).click();
 
             Assert.assertEquals(
                     getRestApiHeader(),
@@ -51,7 +51,7 @@ import school.redrover.common.BaseTest;
         @Test
         public void testRestApiNodesPage(){
 
-            getDriver().findElement(By.xpath("//*[@id='executors']/div[1]")).click();
+            getDriver().findElement(By.linkText("Build Executor Status")).click();
 
             Assert.assertEquals(
                     getRestApiHeader(),
@@ -61,7 +61,7 @@ import school.redrover.common.BaseTest;
         @Test
         public void testRestApiBuildHistoryOfJenkinsPage(){
 
-            getDriver().findElement(By.xpath("//*[@id='tasks']/div[2]/span/a")).click();
+            getDriver().findElement(By.xpath("/html/body/div[2]/div[1]/div[1]/div[1]/span/a")).click();
 
             Assert.assertEquals(
                     getRestApiHeader(),
