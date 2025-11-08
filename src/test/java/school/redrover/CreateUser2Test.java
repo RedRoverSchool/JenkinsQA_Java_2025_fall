@@ -31,7 +31,6 @@ public class CreateUser2Test extends BaseTest {
         List<String> usernamesInTable = getDriver()
                 .findElements(By.className("jenkins-table__link")).stream()
                 .map(WebElement::getText).toList();
-
         Assert.assertListContains(
                 usernamesInTable,
                 n -> n.equals(username),
@@ -47,7 +46,6 @@ public class CreateUser2Test extends BaseTest {
 
         WebElement usernameFieldErrorMessage = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//input[@id='username']/parent::div/parent::div/following::div")));
-
         Assert.assertEquals(
                 usernameFieldErrorMessage.getText(),
                 "User name must only contain alphanumeric characters, underscore and dash",
@@ -60,7 +58,6 @@ public class CreateUser2Test extends BaseTest {
 
         WebElement passwordFieldErrorMessage = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//input[@name='password1']/parent::div/parent::div/following::div")));
-
         Assert.assertEquals(
                 passwordFieldErrorMessage.getText(),
                 "Password is required");
@@ -85,7 +82,6 @@ public class CreateUser2Test extends BaseTest {
 
         List<WebElement> createUserFormFieldErrors = getDriver().findElements(By.className("error"));
         WebElement emailFieldErrorMessage = createUserFormFieldErrors.get(4);
-
         Assert.assertEquals(emailFieldErrorMessage.getText(), "Invalid e-mail address");
     }
 
@@ -95,7 +91,6 @@ public class CreateUser2Test extends BaseTest {
 
         WebElement fullnameFieldErrorMessage = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//input[@name='fullname']/parent::div/parent::div/following::div")));
-
         Assert.assertEquals(
                 fullnameFieldErrorMessage.getText(),
                 "\"\" is prohibited as a full name for security reasons.");
