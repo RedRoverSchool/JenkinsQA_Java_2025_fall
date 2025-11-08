@@ -5,13 +5,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
-import java.time.Duration;
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -93,7 +90,7 @@ public class MultibranchPipelineTest extends BaseTest {
         actions.moveToElement(toggleTooltip).perform();
 
         String actualTooltip = getWait2().until(ExpectedConditions
-                        .visibilityOfElementLocated(By.className("tippy-content"))).getText();
+                .visibilityOfElementLocated(By.className("tippy-content"))).getText();
 
         Assert.assertEquals(actualTooltip, tooltipText);
     }
@@ -105,7 +102,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
         getDriver().findElement(By.name("Apply")).click();
 
-        String actualSavedMessage =getWait2().until(ExpectedConditions.
+        String actualSavedMessage = getWait2().until(ExpectedConditions.
                 visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']"))).getText();
 
         Assert.assertEquals(actualSavedMessage, "Saved");
@@ -188,8 +185,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenameViaSidebar() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
         getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
@@ -204,7 +199,7 @@ public class MultibranchPipelineTest extends BaseTest {
         renameField.clear();
         renameField.sendKeys(RENAMED_MULTIBRANCH_PIPELINE + Keys.ENTER);
 
-        wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
+        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
 
         WebElement multibranchPipelineName = getDriver().findElement(By.tagName("h1"));
 
