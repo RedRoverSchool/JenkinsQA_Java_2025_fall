@@ -57,8 +57,7 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
     }
 
     public void scrollToElement(WebElement element) {
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("""
+        ((JavascriptExecutor) getDriver()).executeScript("""
                 const el = arguments[0];
                 const rect = el.getBoundingClientRect();
                 const absoluteY = rect.top + window.pageYOffset - (window.innerHeight / 2) + (rect.height / 2);
