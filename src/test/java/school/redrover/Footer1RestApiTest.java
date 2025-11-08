@@ -32,7 +32,7 @@ import school.redrover.common.BaseTest;
         @Test
         public void testRestApiNewItemPage(){
 
-            getDriver().findElement(By.linkText("New Item")).click();
+            getDriver().findElement(By.linkText("Create a job")).click();
 
             Assert.assertEquals(
                     getRestApiHeader(),
@@ -61,7 +61,7 @@ import school.redrover.common.BaseTest;
         @Test
         public void testRestApiBuildHistoryOfJenkinsPage(){
 
-            getDriver().findElement(By.xpath("/html/body/div[2]/div[1]/div[1]/div[1]/span/a")).click();
+            getDriver().findElement(By.xpath("//div[2]/span/a")).click();
 
             Assert.assertEquals(
                     getRestApiHeader(),
