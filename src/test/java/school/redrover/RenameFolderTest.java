@@ -29,8 +29,9 @@ public class RenameFolderTest extends BaseTest{
         newName.clear();
         newName.sendKeys("NewNameForFolder");
         getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+        WebElement headerPage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("*//h1")));
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("*//h1")).getText(), "NewNameForFolder");
+        Assert.assertEquals(headerPage.getText(), "NewNameForFolder");
 
 
 
