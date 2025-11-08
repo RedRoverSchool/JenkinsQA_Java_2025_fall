@@ -15,7 +15,7 @@ public class CreateNewItemFolderTest extends BaseTest {
      getDriver().findElement(By.id("name")).sendKeys("NewFolder");
      getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
      getDriver().findElement(By.id("ok-button")).click();
-     getDriver().findElement(By.name("Submit")).click();
+     getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
 
      WebElement headerPage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1")));
      Assert.assertEquals(headerPage.getText(), "NewFolder");
