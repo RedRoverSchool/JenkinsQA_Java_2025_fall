@@ -16,7 +16,7 @@ public class RenameFolderTest extends BaseTest{
         getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Jenkins']"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Jenkins']"))).click();
     WebElement element = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='NewFolder']")));
         Actions actions = new Actions(getDriver());
         actions.moveToElement(element)
