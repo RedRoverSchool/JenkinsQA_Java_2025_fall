@@ -5,16 +5,11 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.time.Duration;
-
 public class PipelineConfigurationAdvancedTest extends BaseTest {
-
-    private WebDriverWait wait;
 
     private void createNewPipeline(String newPipelineName) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -24,22 +19,20 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
     }
 
     private void advancedButtonClick() {
-        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-
         getDriver().findElement(By.xpath(".//button[@data-section-id='advanced']")).click();
 
         ((JavascriptExecutor) getDriver()).executeScript(
                 "arguments[0].scrollIntoView({block: 'center'});",
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("footer"))));
+                getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("footer"))));
 
-        WebElement advancedButton = wait.until(ExpectedConditions.elementToBeClickable(By
+        WebElement advancedButton = getWait10().until(ExpectedConditions.elementToBeClickable(By
                 .xpath(".//div[@id='advanced']/parent::section/descendant::button[contains(text(),'Advanced')]")));
         new Actions(getDriver()).moveToElement(advancedButton).click().perform();
     }
 
     @Test
     public void testNavigationToAdvancedByScrollingDown() {
-        String newPipelineName = "newPipeline_01";
+        final String newPipelineName = "newPipeline_01";
         createNewPipeline(newPipelineName);
 
         WebElement actualAdvancedSectionTitle = getDriver().findElement(By.id("advanced"));
@@ -50,7 +43,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     @Test
     public void testNavigationToAdvancedBySideMenu() {
-        String newPipelineName = "newPipeline_02";
+        final String newPipelineName = "newPipeline_02";
         createNewPipeline(newPipelineName);
 
         WebElement actualAdvancedItemMenu = getDriver().findElement(By.xpath(".//button[@data-section-id='advanced']"));
@@ -80,11 +73,11 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     @Test
     public void testAdvancedSectionDisplayNameFieldElements() {
-        String newPipelineName = "newPipeline_04";
+        final String newPipelineName = "newPipeline_04";
         createNewPipeline(newPipelineName);
         advancedButtonClick();
 
-        WebElement displayNameLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By.
+        WebElement displayNameLabel = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.
                 xpath(".//div[text()='Display Name']")));
         new Actions(getDriver()).moveToElement(displayNameLabel).perform();
 
@@ -97,19 +90,19 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     @Test
     public void testAdvancedSectionQuietPeriodElementsAfterSelecting() {
-        String newPipelineName = "newPipeline_05";
+        final String newPipelineName = "newPipeline_05";
         createNewPipeline(newPipelineName);
         advancedButtonClick();
 
-        WebElement actualQuietPeriodLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+        WebElement actualQuietPeriodLabel = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath(".//label[text()='Quiet period']")));
         new Actions(getDriver()).moveToElement(actualQuietPeriodLabel).click().perform();
 
-        WebElement actualQuietPeriodCheckbox = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+        WebElement actualQuietPeriodCheckbox = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .name("hasCustomQuietPeriod")));
-        WebElement actualNumberOfSecondsLabel = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+        WebElement actualNumberOfSecondsLabel = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath(".//div[text()='Number of seconds']")));
-        WebElement actualNumberOfSecondsInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By
+        WebElement actualNumberOfSecondsInput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .name("quiet_period")));
 
         Assert.assertTrue(actualQuietPeriodCheckbox.isSelected(), "Checkbox should be selected");
