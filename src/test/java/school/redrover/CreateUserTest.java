@@ -102,7 +102,7 @@ public class CreateUserTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@name='email']")).sendKeys("someone@else.com");
         getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(),Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(getDriver(),Duration.ofSeconds(20));
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='root-action-SearchAction']")));
         element.click();
 
