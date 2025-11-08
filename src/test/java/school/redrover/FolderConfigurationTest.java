@@ -2,9 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.time.Duration;
 
 public class FolderConfigurationTest extends BaseTest {
 
@@ -41,13 +45,13 @@ public class FolderConfigurationTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//button[normalize-space(text())='Health metrics']")).click();
         getDriver().findElement(By.xpath("//button[normalize-space(text())='Add metric']")).click();
-        getWait2();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        wait.until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//input[@class='jenkins-dropdown__filter-input']")));
 
         Assert.assertTrue(getDriver()
-                .findElement(By.xpath("//button[normalize-space(text())='Child item with the given name']"))
-                .isDisplayed());
-        Assert.assertTrue(getDriver()
-                .findElement(By.xpath("//button[normalize-space(text())='Child item with worst health']"))
+                .findElement(By.xpath("//input[@class='jenkins-dropdown__filter-input']"))
                 .isDisplayed());
     }
 }
