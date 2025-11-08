@@ -18,7 +18,7 @@ import java.util.List;
 public class Copy1FromTest extends BaseTest {
 
     @Test
-    public void testCopyFrom() throws InterruptedException {
+    public void testCopyFrom() {
         final String firstJobName = "original_project";
         final String secondJobName = "new_project";
 
