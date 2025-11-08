@@ -58,7 +58,7 @@ public class Copy1FromTest extends BaseTest {
     private List<String> createSettingsListFromItem(String jobName) {
         List<String> settingsList = new ArrayList<>();
 
-        getDriver().findElement(By.cssSelector("span.jenkins-mobile-hide")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.cssSelector("span.jenkins-mobile-hide"))).click();
 
         getDriver().findElement(By.xpath("//a[@href='job/" + jobName + "/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + jobName + "/configure']")).click();
