@@ -208,7 +208,7 @@ public class Folder2Test extends BaseTest {
                 "Список результатов поиска не содержит нужный элемент");
     }
 
-    @Test(dataProvider = "itemsProvider",invocationCount = 15)
+    @Test(dataProvider = "itemsProvider")
     public void testFolderIsIdentifiedByIcon(String itemType, String itemName) {
         final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
         final String dAttributeOfFolderIcon = "M440 432H72a40 40 0 01-40-40V120a40 40 0 0140-40h75.89a40 40 0 0122.19 6.72";
