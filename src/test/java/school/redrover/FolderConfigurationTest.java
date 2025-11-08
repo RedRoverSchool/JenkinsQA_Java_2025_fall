@@ -36,21 +36,18 @@ public class FolderConfigurationTest extends BaseTest {
     }
 
     @Test
-    public void testAddMetricButton(){
+    public void testVerifyMetricTypeList(){
         createMyFolder();
 
-        WebElement healthMetricButton = getDriver()
-                .findElement(By.cssSelector("#main-panel section:nth-child(5) button"));
-        healthMetricButton.click();
+        getDriver().findElement(By.xpath("//button[normalize-space(text())='Health metrics']")).click();
+        getDriver().findElement(By.xpath("//button[normalize-space(text())='Add metric']")).click();
+        getWait2();
 
-        WebElement addMetricButton = getDriver()
-                .findElement(By.xpath("//button[contains(@class, 'hetero-list-add') and normalize-space(text())='Add metric']"));
-        addMetricButton.click();
-
-        WebElement metricGivenName = getDriver().findElement(By.cssSelector("#tippy-1 button:nth-child(1)"));
-        WebElement metricWorstHealth = getDriver().findElement(By.cssSelector("#tippy-1 button:nth-child(2)"));
-
-        Assert.assertTrue(metricGivenName.isDisplayed());
-        Assert.assertTrue(metricWorstHealth.isDisplayed());
+        Assert.assertTrue(getDriver()
+                .findElement(By.xpath("//button[normalize-space(text())='Child item with the given name']"))
+                .isDisplayed());
+        Assert.assertTrue(getDriver()
+                .findElement(By.xpath("//button[normalize-space(text())='Child item with worst health']"))
+                .isDisplayed());
     }
 }
