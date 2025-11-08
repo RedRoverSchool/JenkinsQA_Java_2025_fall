@@ -9,7 +9,7 @@ import school.redrover.common.BaseTest;
 
         private String getRestApiHeader(){
             getDriver().findElement(By.xpath("/html/body/footer/div/div[2]/a")).click();
-            return getDriver().findElement(By.xpath("/html/body/div[2]/div/h1")).getText();
+            return getDriver().findElement(By.cssSelector("h1")).getText();
         }
 
         @Test
