@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -51,17 +50,13 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        WebElement createdItemHeader = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .className("page-headline")));
+        WebElement createdItemHeader = getDriver().findElement(By.className("page-headline"));
         Assert.assertEquals(createdItemHeader.getText(), itemName);
     }
 
     public void scrollToElement(WebElement element) {
-        ((JavascriptExecutor) getDriver()).executeScript("""
-                const el = arguments[0];
-                const rect = el.getBoundingClientRect();
-                const absoluteY = rect.top + window.pageYOffset - (window.innerHeight / 2) + (rect.height / 2);
-                window.scrollTo({ top: absoluteY, behavior: 'instant' });
-                """, element);
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView({block: 'center', inline: 'center'});",
+                element);
     }
 }
