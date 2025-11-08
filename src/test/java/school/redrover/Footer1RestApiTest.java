@@ -32,7 +32,7 @@ import school.redrover.common.BaseTest;
         @Test
         public void testRestApiNewItemPage(){
 
-            getDriver().findElement(By.linkText("Create a job")).click();
+            getDriver().findElement(By.xpath("//div[2]/div/section[1]/ul/li/a/span[1]")).click();
 
             Assert.assertEquals(
                     getRestApiHeader(),
