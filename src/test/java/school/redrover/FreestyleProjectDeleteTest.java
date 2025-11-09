@@ -16,7 +16,7 @@ public class FreestyleProjectDeleteTest extends BaseTest {
         final String expectedText = "Welcome to Jenkins!";
         createFreestyleProject();
 
-        getDriver().findElement(By.xpath("//span[@class='jenkins-mobile-hide']")).click();
+        getDriver().findElement(By.id("jenkins-head-icon")).click();
 
         getActions().moveToElement(getDriver().findElement(
                 By.xpath("//a[@class='jenkins-table__link model-link inside']")))
