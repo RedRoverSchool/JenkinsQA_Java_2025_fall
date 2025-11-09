@@ -61,13 +61,17 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
                 """, h1);
         System.out.println("-----> " + allAttrs);
 
-        System.out.println("All h1 count: " +
+        System.out.println("-----> All h1 count: " +
                 getDriver().findElements(By.tagName("h1")).size());
         List<WebElement> h1s = getDriver().findElements(By.tagName("h1"));
         for (int i = 0; i < h1s.size(); i++) {
             WebElement el = h1s.get(i);
             System.out.printf("-----> H1[%d]: text='%s', class='%s'%n", i, el.getText(), el.getAttribute("class"));
         }
+
+        String html = h1.getAttribute("outerHTML");
+        System.out.println("-----> HTML элемента:\n" + html);
+
 
         Assert.assertEquals(h1.getText(), itemName);
 
