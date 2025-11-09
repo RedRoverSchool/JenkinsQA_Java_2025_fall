@@ -9,18 +9,15 @@ import school.redrover.common.BaseTest;
 
 public class CreateFolderFromCopy extends BaseTest {
 
-    final String folderName = "MyFirstFolder";
-    final String displayName = "Name for Autotest attempt";
-    final String description = "Description for Autotest attempt";
+    final private static String folderName = "MY_FIRST_FOLDER";
 
     @Test
     public void createCopy() {
-
         createFolder();
         boolean fieldExists = true;
 
         WebElement newItemButton = getDriver().
-                findElement(By.xpath("//a[@href='/job/MyFirstFolder/newJob']"));
+                findElement(By.xpath("//a[@href='/job/MY_FIRST_FOLDER/newJob']"));
         newItemButton.click();
         ((JavascriptExecutor) getDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
@@ -47,10 +44,10 @@ public class CreateFolderFromCopy extends BaseTest {
 
         getDriver()
                 .findElement(By.xpath("//div[@class='setting-main']//input"))
-                .sendKeys(displayName);
+                .sendKeys("Name for Autotest attempt");
         getDriver()
                 .findElement(By.xpath("//div[@class='setting-main']//textarea"))
-                .sendKeys(description);
+                .sendKeys("Description for Autotest attempt");
         WebElement submitButton = getDriver().findElement(By.className("jenkins-submit-button"));
         submitButton.click();
     }
