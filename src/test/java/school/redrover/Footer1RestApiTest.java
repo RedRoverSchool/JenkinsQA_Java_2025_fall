@@ -30,12 +30,13 @@ import school.redrover.common.BaseTest;
                     getRestApiHeader(),
                     "REST API");
         }
-@Ignore
+
         @Test
         public void testRestApiNewItemPage(){
             getWait2().
-                    until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#tasks > div:nth-child(1) > span > a"))).
+                   until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[2]/div[1]/div[1]/div[1]/span/a"))).
                     click();
+
 
             Assert.assertEquals(
                     getRestApiHeader(),
