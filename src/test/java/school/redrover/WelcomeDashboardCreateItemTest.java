@@ -19,13 +19,13 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
         final long timestamp = System.currentTimeMillis();
 
         List<By> links = List.of(
-//                By.linkText("New Item"),
+                By.linkText("New Item"),
                 By.linkText("Create a job")
         );
         Map<String, By> items = Map.of(
-//                "Freestyle Project (%s)".formatted(timestamp), By.className("hudson_model_FreeStyleProject"),
-//                "Pipeline (%s)".formatted(timestamp), By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob"),
-//                "Multi-configuration Project (%s)".formatted(timestamp), By.className("hudson_matrix_MatrixProject"),
+                "Freestyle Project (%s)".formatted(timestamp), By.className("hudson_model_FreeStyleProject"),
+                "Pipeline (%s)".formatted(timestamp), By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob"),
+                "Multi-configuration Project (%s)".formatted(timestamp), By.className("hudson_matrix_MatrixProject"),
                 "Folder (%s)".formatted(timestamp), By.className("com_cloudbees_hudson_plugins_folder_Folder"),
                 "Multibranch Pipeline (%s)".formatted(timestamp), By.className("org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject"),
                 "Organization Folder (%s)".formatted(timestamp), By.className("jenkins_branch_OrganizationFolder")
@@ -49,6 +49,10 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
 
         getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), itemName));
         Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), itemName);
+
+        WebElement createdJobHeader = getDriver().findElement(By.className("page-headline"));
+        Assert.assertEquals(createdJobHeader.getText(), itemName);
+
     }
 
     public void scrollToElement(WebElement element) {
