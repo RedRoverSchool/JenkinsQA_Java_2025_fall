@@ -208,7 +208,7 @@ public class Folder2Test extends BaseTest {
                 "Список результатов поиска не содержит нужный элемент");
     }
 
-    @Test(dataProvider = "itemsProvider")
+    @Test(dataProvider = "itemsProvider",invocationTimeOut = 15)
     public void testFolderIsIdentifiedByTooltip(String itemType, String itemName) {
         final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
         Actions actions = new Actions(getDriver());
