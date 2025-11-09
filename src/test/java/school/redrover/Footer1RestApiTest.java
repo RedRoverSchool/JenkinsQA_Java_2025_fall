@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -9,7 +10,8 @@ import school.redrover.common.BaseTest;
     public class Footer1RestApiTest extends BaseTest {
 
         private String getRestApiHeader(){
-            getDriver().findElement(By.className("rest-api")).click();
+            getWait2().
+                    until(ExpectedConditions.presenceOfElementLocated(By.className("rest-api"))).click();
             return getDriver().findElement(By.cssSelector("h1")).getText();
         }
 
@@ -31,7 +33,9 @@ import school.redrover.common.BaseTest;
 
         @Test
         public void testRestApiNewItemPage(){
-            getDriver().findElement(By.cssSelector("#tasks > div:nth-child(1) > span > a")).click();
+            getWait2().
+                    until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#tasks > div:nth-child(1) > span > a"))).
+                    click();
 
             Assert.assertEquals(
                     getRestApiHeader(),
