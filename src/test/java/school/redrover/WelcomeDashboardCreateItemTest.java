@@ -48,9 +48,13 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), itemName));
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), itemName);
+        WebElement h1 = getDriver().findElement(By.tagName("h1"));
+        System.out.println("class: " + h1.getAttribute("class"));
+        System.out.println("id: " + h1.getAttribute("id"));
+        System.out.println("text: " + h1.getText());
+        Assert.assertEquals(h1.getText(), itemName);
 
-        WebElement createdJobHeader = getDriver().findElement(By.className("page-headline"));
+        WebElement createdJobHeader = getDriver().findElement(By.className("page-headline-a"));
         Assert.assertEquals(createdJobHeader.getText(), itemName);
 
     }
