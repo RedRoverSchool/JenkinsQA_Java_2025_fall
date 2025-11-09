@@ -68,7 +68,11 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
 //            WebElement el = h1s.get(i);
 //            System.out.printf("-----> H1[%d]: text='%s', class='%s'%n", i, el.getText(), el.getAttribute("class"));
 //        }
-
+        try {
+            Thread.sleep(10000);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         String html = getDriver().findElement(By.tagName("html")).getAttribute("outerHTML");
         System.out.println("-----> HTML элемента:\n" + html);
 
