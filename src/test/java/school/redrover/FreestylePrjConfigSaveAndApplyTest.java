@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class FreestylePrjConfigSaveAndApplyTest extends BaseTest {
+
     final String nameFreestyleProjectItem = "My FreeStyleProject";
 
     @Test
@@ -17,6 +18,7 @@ public class FreestylePrjConfigSaveAndApplyTest extends BaseTest {
         goToHomePage();
         goToConfigurationPage();
         scrollToBottomOfPage();
+
         WebElement saveButton = getWait2()
                 .until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']")));
         Assert.assertTrue(saveButton.isDisplayed());
