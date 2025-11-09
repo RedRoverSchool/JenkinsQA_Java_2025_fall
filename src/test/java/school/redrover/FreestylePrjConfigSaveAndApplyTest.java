@@ -10,7 +10,7 @@ public class FreestylePrjConfigSaveAndApplyTest extends BaseTest {
     final String nameFreestyleProjectItem = "My FreeStyleProject";
 
     @Test
-    public void testSaveButtonIsVisible() throws InterruptedException {
+    public void testSaveButtonIsVisible() {
         createFreeStyleProject();
         goToHomePage();
         goToConfigurationPage();
@@ -20,8 +20,7 @@ public class FreestylePrjConfigSaveAndApplyTest extends BaseTest {
         );
     }
 
-    private void goToHomePage() throws InterruptedException {
-        Thread.sleep(500);
+    private void goToHomePage() {
         getDriver().findElement(By.xpath("//span[text()='Jenkins']/parent::a")).click();
     }
 
