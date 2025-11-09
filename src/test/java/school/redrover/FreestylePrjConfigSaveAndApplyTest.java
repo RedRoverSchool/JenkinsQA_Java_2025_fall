@@ -2,6 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -15,9 +17,9 @@ public class FreestylePrjConfigSaveAndApplyTest extends BaseTest {
         goToHomePage();
         goToConfigurationPage();
         scrollToBottomOfPage();
-        Assert.assertTrue(getDriver().findElement(By.xpath("//button[@value='Save']"))
-                .isDisplayed()
-        );
+        WebElement saveButton = getWait2()
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']")));
+        Assert.assertTrue(saveButton.isDisplayed());
     }
 
     private void goToHomePage() {
