@@ -22,7 +22,7 @@ public class FreestyleProjectDeleteTest extends BaseTest {
                 By.xpath("//a[@class='jenkins-table__link model-link inside']")))
                 .perform();
 
-        getWait2().until(ExpectedConditions
+        getWait5().until(ExpectedConditions
                 .elementToBeClickable(
                         By.xpath("//button[@class='jenkins-menu-dropdown-chevron']"))).click();
 
