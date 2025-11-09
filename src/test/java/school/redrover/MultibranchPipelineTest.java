@@ -5,10 +5,14 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.time.Duration;
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -24,6 +28,20 @@ public class MultibranchPipelineTest extends BaseTest {
 
         getDriver().findElement(By.name("Submit")).click();
     }
+
+    public WebDriverWait waitTime(int time) {
+        return new WebDriverWait(getDriver(), Duration.ofSeconds(time));
+    }
+
+    public void goToDashBoard() {
+        waitTime(30).until(ExpectedConditions.visibilityOfElementLocated((By.className("app-jenkins-logo"))))
+                .click();
+    }
+
+    public void goToProject(String projectName) {
+        getDriver().findElement(By.xpath(String.format("//td/a[@href='job/%s/']", projectName))).click();
+    }
+
 
 
     @Test
@@ -267,5 +285,17 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertFalse(savedDescription.isDisplayed(),
                 "Bug: description is not saved below the Multibranch Pipeline heading");
+    }
+
+    @Test
+    public void testCreteProjectAndAssertInBreadcrumbs() {
+        String name = "ProjectGroupCoffee";
+        createMultibranchPipeline(name);
+        goToDashBoard();
+        goToProject(name);
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        String result = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li/span")).getText();
+
+        Assert.assertEquals(result, name);
     }
 }
