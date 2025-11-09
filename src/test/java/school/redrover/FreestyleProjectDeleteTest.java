@@ -1,5 +1,7 @@
 package school.redrover;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -23,9 +25,12 @@ public class FreestyleProjectDeleteTest extends BaseTest {
                 By.xpath("//a[@class='jenkins-table__link model-link inside']")))
                 .perform();
 
-        getWait5().until(ExpectedConditions
-                .elementToBeClickable(
-                        By.xpath("//button[@class='jenkins-menu-dropdown-chevron']"))).click();
+//        getWait5().until(ExpectedConditions
+//                .elementToBeClickable(
+//                        By.xpath("//button[@class='jenkins-menu-dropdown-chevron']"))).click();
+
+       moveAndClickWithJS(getWait5().until(ExpectedConditions.
+                visibilityOfElementLocated(By.cssSelector(".jenkins-menu-dropdown-chevron"))));
 
         getDriver().findElement(By.xpath("//button[@href='/job/FreestyleProject/doDelete']")).click();
         getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
@@ -38,6 +43,13 @@ public class FreestyleProjectDeleteTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.xpath("//span[contains(text(), 'Freestyle project')]")).click();
         getDriver().findElement(By.id("ok-button")).click();
+    }
+
+    private void moveAndClickWithJS(WebElement element) {
+        ((JavascriptExecutor) getDriver())
+                .executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", element);
+        ((JavascriptExecutor) getDriver())
+                .executeScript("arguments[0].dispatchEvent(new Event('click'));", element);
     }
 
     private Actions getActions() {
