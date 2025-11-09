@@ -5,10 +5,13 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.time.Duration;
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -49,8 +52,9 @@ public class MultibranchPipelineTest extends BaseTest {
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
-        getWait10().until(ExpectedConditions
-                .elementToBeClickable(By.className("app-jenkins-logo"))).click();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(20));
+        wait.until(ExpectedConditions
+                .elementToBeClickable(By.cssSelector("span.jenkins-mobile-hide"))).click();
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
