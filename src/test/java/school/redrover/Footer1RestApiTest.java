@@ -21,28 +21,24 @@ import school.redrover.common.BaseTest;
         }
 
         @Test
-        public void  testRestApiUserPage(){
-
+        public void  testRestApiUserPage() {
             getDriver().findElement(By.id("root-action-UserAction")).click();
 
             Assert.assertEquals(
                     getRestApiHeader(),
                     "REST API");
         }
-@Ignore
+
         @Test
         public void testRestApiNewItemPage(){
-
-            getDriver().findElement(By.xpath("//div[2]/div/section[1]/ul/li/a/span[1]")).click();
+            getDriver().findElement(By.cssSelector("#tasks > div:nth-child(1) > span > a")).click();
 
             Assert.assertEquals(
                     getRestApiHeader(),
                     "REST API");
         }
-
         @Test
         public void testRestApiNewNodesPage() {
-
             getDriver().findElement(By.xpath("//div/section[2]/ul/li[1]/a")).click();
 
             Assert.assertEquals(
@@ -58,10 +54,8 @@ import school.redrover.common.BaseTest;
                     getRestApiHeader(),
                     "REST API");
         }
-
         @Test
         public void testRestApiBuildHistoryOfJenkinsPage(){
-
             getDriver().findElement(By.xpath("//div[2]/span/a")).click();
 
             Assert.assertEquals(
