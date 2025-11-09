@@ -207,4 +207,38 @@ public class Folder2Test extends BaseTest {
                         contains("%s » %s".formatted(folderName, freestyleName)),
                 "Список результатов поиска не содержит нужный элемент");
     }
+
+    @Test(dataProvider = "itemsProvider")
+    public void testFolderIsIdentifiedByTooltip(String itemType, String itemName) {
+        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
+        Actions actions = new Actions(getDriver());
+
+        createItem(folderName, "Folder");
+        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+        createItem(itemName, itemType);
+        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+
+        List<String> tooltipTexts = new ArrayList<>();
+        for (WebElement statusIcon : getDriver().findElements(By.xpath("//tr[contains(@class, 'job')]/td[1]//*[@tooltip]"))) {
+            actions
+                    .moveToElement(statusIcon)
+                    .perform();
+            String tooltipIDByAttribute = getDriver().findElement(By.xpath("//*[@aria-describedby]"))
+                    .getAttribute("aria-describedby");
+            getWait10().until(ExpectedConditions.presenceOfElementLocated(By.id(Objects.requireNonNull(tooltipIDByAttribute))));
+            tooltipTexts.add(getDriver().findElement(By.xpath("//*[@id='%s']/div/div".formatted(tooltipIDByAttribute))).getText());
+        }
+
+        if (itemType.equals("Folder")) {
+            Assert.assertEquals(
+                    tooltipTexts.get(0),
+                    tooltipTexts.get(1),
+                    "Тултипы у Folder не должны отличаться");
+        } else {
+            Assert.assertNotEquals(
+                    tooltipTexts.get(0),
+                    tooltipTexts.get(1),
+                    "Тултипы других элементов должны отличаться от тултипа Folder");
+        }
+    }
 }
