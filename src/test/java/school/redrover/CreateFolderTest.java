@@ -17,7 +17,7 @@ public class CreateFolderTest extends BaseTest {
                 .click();
         getDriver().findElement(By.id("name"))
                 .sendKeys("FolderOne");
-        getDriver().findElement(By.xpath("//span[text()='Folder']"))
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]"))
                 .click();
         WebElement organizationButton = getWait5().until(
                 ExpectedConditions.elementToBeClickable(By.id("ok-button")));
