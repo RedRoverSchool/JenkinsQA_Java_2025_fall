@@ -15,7 +15,6 @@ import java.util.List;
 public class CreateNewItemTest extends BaseTest {
 
     @Test
-    //TC01-001-01
     public void testNewItemPageByClickingCreateAJobLink() {
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
@@ -23,7 +22,6 @@ public class CreateNewItemTest extends BaseTest {
     }
 
     @Test
-    //TC01-001-01
     public void testNewItemPageByClickingNewItemLink() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
@@ -31,7 +29,6 @@ public class CreateNewItemTest extends BaseTest {
     }
 
     @Test
-    //TC01-001-01
     public void testEnterAnItemNameIsDisplayedOkButtonIdDisabled() {
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
@@ -67,32 +64,42 @@ public class CreateNewItemTest extends BaseTest {
     }
 
     @Test
-    //TC 01-001-06
     public void testErrorMessageForDuplicateItemNames() throws InterruptedException {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         final String jobName = "AS new job";
+        final String errorMessage = "itemname-invalid";
 
         getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("name")))).sendKeys(jobName);
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("name")))).sendKeys(jobName);
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='jenkins-mobile-hide']"))).click();
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("name"))).sendKeys(jobName);
-
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='jenkins-mobile-hide']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("name"))).sendKeys(jobName);
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
 
-        final String errorMessage = "itemname-invalid";
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(errorMessage)));
-
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id(errorMessage)));
         Assert.assertEquals(getDriver().findElement(By.id(errorMessage)).getText(), "» A job already exists with the name ‘AS new job’");
+    }
+
+    @Test
+    //TC_01.001.03
+    public void testAcceptsAlphanumericAndUnderscores() {
+        final String projectName = "test_name1";
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(projectName);
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Pipeline']"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+
+        WebElement configurePageHeading = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-app-bar__content h1")));
+        WebElement breadCrumbs = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#breadcrumbs li:last-child span")));
+
+        Assert.assertEquals(configurePageHeading.getText(), "Configure");
+        Assert.assertEquals(breadCrumbs.getText(), "Configuration");
     }
 }
 

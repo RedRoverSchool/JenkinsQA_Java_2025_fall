@@ -74,4 +74,31 @@ public class FooterTest extends BaseTest {
 
         Assert.assertEquals(actualDropdownItems, expectedDropdownItems);
     }
+
+    @Test
+    public void testJenkinsVersionOptions() {
+        getDriver().findElement(By.cssSelector("button.jenkins_ver")).click();
+        getDriver().findElement(By.xpath("//a[@href='/manage/about']")).click();
+        String breadсrumbName = getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[2]")).getText();
+
+        Assert.assertEquals(breadсrumbName, "About Jenkins");
+
+        WebElement jenkinsLogo = getDriver().findElement(By.className("jenkins-mobile-hide"));
+        jenkinsLogo.click();
+
+        getDriver().findElement(By.cssSelector("button.jenkins_ver")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, '/participate')]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Participate and Contribute");
+        getDriver().navigate().back();
+
+        getDriver().findElement(By.cssSelector("button.jenkins_ver")).click();
+        getDriver().findElement(By.xpath("//a[text()='\n" +
+                "          Website\n" +
+                "                    \n" +
+                "          \n" +
+                "      ']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Jenkins");
+    }
 }

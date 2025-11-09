@@ -23,4 +23,11 @@ public class JenkinsVersionTest extends BaseTest {
         getDriver().findElement(By.cssSelector(".jenkins-dropdown > :nth-child(1)")).click();
         Assert.assertEquals(getDriver().findElement(By.cssSelector(".app-about-version")).getText(), version);
     }
+
+    @Test
+    public void testVersion() {
+
+       Assert.assertEquals(getDriver().findElement(By.cssSelector("div.page-footer__links > button")).getText(), "Jenkins 2.516.3");
+    }
+
 }
