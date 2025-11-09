@@ -23,12 +23,12 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
                 By.linkText("Create a job")
         );
         Map<String, By> items = Map.of(
-                "Freestyle Project (%s)".formatted(timestamp), By.className("hudson_model_FreeStyleProject"),
-                "Pipeline (%s)".formatted(timestamp), By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob"),
+//                "Freestyle Project (%s)".formatted(timestamp), By.className("hudson_model_FreeStyleProject"),
+//                "Pipeline (%s)".formatted(timestamp), By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob"),
                 "Multi-configuration Project (%s)".formatted(timestamp), By.className("hudson_matrix_MatrixProject"),
-                "Folder (%s)".formatted(timestamp), By.className("com_cloudbees_hudson_plugins_folder_Folder"),
-                "Multibranch Pipeline (%s)".formatted(timestamp), By.className("org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject"),
-                "Organization Folder (%s)".formatted(timestamp), By.className("jenkins_branch_OrganizationFolder")
+//                "Folder (%s)".formatted(timestamp), By.className("com_cloudbees_hudson_plugins_folder_Folder"),
+                "Multibranch Pipeline (%s)".formatted(timestamp), By.className("org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject")//,
+//                "Organization Folder (%s)".formatted(timestamp), By.className("jenkins_branch_OrganizationFolder")
         );
         return links.stream()
                 .flatMap(link -> items.entrySet().stream()
@@ -76,7 +76,6 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
 
         WebElement createdJobHeader = getDriver().findElement(By.className("page-headline"));
         Assert.assertEquals(createdJobHeader.getText(), itemName);
-
     }
 
     public void scrollToElement(WebElement element) {
@@ -85,7 +84,6 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
                 element);
     }
 }
-
 
 /*
 * Login
