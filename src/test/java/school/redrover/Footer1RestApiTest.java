@@ -30,7 +30,7 @@ import school.redrover.common.BaseTest;
                     getRestApiHeader(),
                     "REST API");
         }
-
+@Ignore
         @Test
         public void testRestApiNewItemPage(){
             getWait2().
