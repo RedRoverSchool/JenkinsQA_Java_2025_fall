@@ -69,7 +69,7 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
 //            System.out.printf("-----> H1[%d]: text='%s', class='%s'%n", i, el.getText(), el.getAttribute("class"));
 //        }
         try {
-            Thread.sleep(10000);
+            Thread.sleep(60000);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
