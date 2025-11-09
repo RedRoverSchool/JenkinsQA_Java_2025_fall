@@ -8,6 +8,7 @@ import org.testng.annotations.*;
 import java.lang.reflect.Method;
 import java.time.Duration;
 
+@Listeners(FilterForTests.class)
 public abstract class BaseTest {
 
     private WebDriver driver;
