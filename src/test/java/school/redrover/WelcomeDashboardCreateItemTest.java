@@ -49,9 +49,9 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
 
         getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.tagName("h1"), itemName));
         WebElement h1 = getDriver().findElement(By.tagName("h1"));
-//        System.out.println("-----> class: " + element.getAttribute("class"));
-//        System.out.println("-----> text: " + element.getText());
-//
+        System.out.println("-----> class: " + h1.getAttribute("class"));
+        System.out.println("-----> text: " + h1.getText());
+
 //        JavascriptExecutor js = (JavascriptExecutor) getDriver();
 //        String allAttrs = (String) js.executeScript("""
 //                const el = arguments[0];
@@ -69,12 +69,15 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
 //            System.out.printf("-----> H1[%d]: text='%s', class='%s'%n", i, el.getText(), el.getAttribute("class"));
 //        }
         try {
-            Thread.sleep(60000);
+            Thread.sleep(15000);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        String html = getDriver().findElement(By.tagName("html")).getAttribute("outerHTML");
-        System.out.println("-----> HTML элемента:\n" + html);
+
+        String fullHtml = (String) ((JavascriptExecutor) getDriver())
+                .executeScript("return document.documentElement.outerHTML;");
+        System.out.println("-----> " + fullHtml);
+
 
         Assert.assertEquals(h1.getText(), itemName);
 
