@@ -64,8 +64,7 @@ public class NewItemPageTest extends BaseTest {
 
     @Test
     public void testSelectItemTypeIsVisible() {
-
-        List<String> expectedItemTypes = List.of(
+        final List<String> expectedItemTypes = List.of(
                 "Freestyle project",
                 "Pipeline",
                 "Multi-configuration project",
@@ -78,6 +77,7 @@ public class NewItemPageTest extends BaseTest {
 
         WebElement sectionTitle = getDriver().findElement(By.xpath("//div[text()='Select an item type']"));
         List<WebElement> actualItemTypes = getDriver().findElements(By.xpath("//div[@id='items']//label"));
+        Assert.assertNotEquals(actualItemTypes.size(), 0);
         for (int i = 0; i < expectedItemTypes.size(); i++) {
             Assert.assertTrue(actualItemTypes.get(i).isDisplayed());
         }
