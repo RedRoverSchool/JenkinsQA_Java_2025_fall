@@ -25,10 +25,6 @@ public class FreestyleProjectDeleteTest extends BaseTest {
                 By.xpath("//a[@class='jenkins-table__link model-link inside']")))
                 .perform();
 
-//        getWait5().until(ExpectedConditions
-//                .elementToBeClickable(
-//                        By.xpath("//button[@class='jenkins-menu-dropdown-chevron']"))).click();
-
        moveAndClickWithJS(getWait5().until(ExpectedConditions.
                 visibilityOfElementLocated(By.cssSelector(".jenkins-menu-dropdown-chevron"))));
 
