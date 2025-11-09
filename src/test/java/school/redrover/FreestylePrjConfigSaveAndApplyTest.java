@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -17,7 +16,6 @@ public class FreestylePrjConfigSaveAndApplyTest extends BaseTest {
         createFreeStyleProject();
         goToHomePage();
         goToConfigurationPage();
-        scrollToBottomOfPage();
 
         WebElement saveButton = getWait2()
                 .until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@value='Save']")));
@@ -25,7 +23,9 @@ public class FreestylePrjConfigSaveAndApplyTest extends BaseTest {
     }
 
     private void goToHomePage() {
-        getDriver().findElement(By.xpath("//span[text()='Jenkins']/parent::a")).click();
+        getWait2()
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Jenkins']/parent::a")))
+                .click();
     }
 
     private void createFreeStyleProject() {
@@ -40,8 +40,4 @@ public class FreestylePrjConfigSaveAndApplyTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
     }
 
-    private void scrollToBottomOfPage() {
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
-    }
 }
