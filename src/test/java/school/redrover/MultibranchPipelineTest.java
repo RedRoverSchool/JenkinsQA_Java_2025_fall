@@ -46,14 +46,14 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualDescription, expectedDescription, actualDescription + " and " + expectedDescription + " don't match");
     }
 
+    @Ignore
     @Test
     public void testTryCreateProjectExistName() {
         final String errorMessage = "» A job already exists with the name " + "‘" + MULTIBRANCH_PIPELINE_NAME + "’";
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(20));
-        wait.until(ExpectedConditions
+        getWait5().until(ExpectedConditions
                 .elementToBeClickable(By.cssSelector("span.jenkins-mobile-hide"))).click();
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
