@@ -14,8 +14,7 @@ public class FreestylePrjConfigSaveAndApplyTest extends BaseTest {
         createFreeStyleProject();
         goToHomePage();
         goToConfigurationPage();
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+        scrollToBottomOfPage();
         Assert.assertTrue(getDriver().findElement(By.xpath("//button[@value='Save']"))
                 .isDisplayed()
         );
@@ -36,5 +35,10 @@ public class FreestylePrjConfigSaveAndApplyTest extends BaseTest {
     private void goToConfigurationPage() {
         getDriver().findElement(By.xpath("//span[text()='" + nameFreestyleProjectItem + "']")).click();
         getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
+    }
+
+    private void scrollToBottomOfPage() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
     }
 }
