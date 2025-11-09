@@ -9,7 +9,7 @@ import school.redrover.common.BaseTest;
 
 public class CreateFolderFromCopy extends BaseTest {
 
-    final private static String folderName = "MY_FIRST_FOLDER";
+    final private static String FOLDER_NAME = "MY_FIRST_FOLDER";
 
     @Test
     public void createCopy() {
@@ -22,7 +22,7 @@ public class CreateFolderFromCopy extends BaseTest {
         ((JavascriptExecutor) getDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
         try {
-            getDriver().findElement(By.id("from")).sendKeys(folderName);
+            getDriver().findElement(By.id("from")).sendKeys(FOLDER_NAME);
         } catch (Exception e) {
             fieldExists = false;
         }
@@ -33,9 +33,8 @@ public class CreateFolderFromCopy extends BaseTest {
     }
 
     private void createFolder() {
-
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
         getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
 
         WebElement okButton = getDriver().findElement(By.id("ok-button"));
