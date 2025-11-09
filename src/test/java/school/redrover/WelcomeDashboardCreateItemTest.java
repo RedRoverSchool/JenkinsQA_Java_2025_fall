@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -52,8 +51,8 @@ public class WelcomeDashboardCreateItemTest extends BaseTest {
         System.out.println("getText className page-headline: " + getDriver().findElement(By.cssSelector(".page-headline")).getText());
         System.out.println("test data: " + itemName);
 
-        WebElement createdItemHeader = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .cssSelector(".page-headline")));
+        WebElement createdItemHeader = getDriver().findElement(By.className("page-headline"));
+        scrollToElement(createdItemHeader);
         Assert.assertEquals(createdItemHeader.getText(), itemName);
     }
 
