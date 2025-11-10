@@ -19,15 +19,6 @@ public class PipelineTest extends BaseTest {
 
     private static final Random random = new Random();
 
-    private void createPipeline(String name) {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
-        getDriver().findElement(By.id("name")).sendKeys(name);
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-    }
-
     public static String generateRandomStringASCII(int minCode, int maxCode, int length) {
         if (length < 0 || length > 1000) {
             throw new IllegalArgumentException("Некорректная длина: " + length);
@@ -43,6 +34,15 @@ public class PipelineTest extends BaseTest {
             sb.append((char) (minCode + random.nextInt(range)));
         }
         return sb.toString();
+    }
+
+    private void createPipeline(String name) {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys(name);
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
     }
 
     @Test
@@ -131,26 +131,21 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dataProvider = "validAliases")
-    public void testScheduleWithValidData(String timePeriod) {
+    public void testScheduleWithValidData(String validTimePeriod) {
         createPipeline(PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[contains(@href , 'configure')]")).click();
 
         WebElement triggersSectionButton = getDriver().findElement(By.xpath("//button[@data-section-id = 'triggers']"));
         triggersSectionButton.click();
-
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.attributeContains(triggersSectionButton, "class", "task-link--active"));
+        getWait2()
+                .until(ExpectedConditions.attributeContains(triggersSectionButton, "class", "task-link--active"));
 
         getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
-
-        WebElement scheduleTextArea = getDriver().findElement(By.xpath("//textarea[@name = '_.spec']"));
-        scheduleTextArea.click();
-        scheduleTextArea.sendKeys(timePeriod);
-
+        getDriver().findElement(By.xpath("//textarea[@name = '_.spec']")).sendKeys(validTimePeriod);
         getDriver().findElement(By.xpath("//button[text() = 'Apply']")).click();
 
-        WebElement actualNotificationMessage = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
+        WebElement actualNotificationMessage = getWait2()
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']")));
 
         WebElement actualTextAreaValidationMessage = getDriver()
@@ -160,7 +155,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualNotificationMessage.getText(), "Saved");
         Assert.assertTrue(actualTextAreaValidationMessage.getText()
                         .matches("(?s)Would last have run at .*; would next run at .*"),
-                "Alias " + timePeriod + " не прошёл валидацию");
+                "Alias " + validTimePeriod + " не прошёл валидацию");
     }
 
     @DataProvider
