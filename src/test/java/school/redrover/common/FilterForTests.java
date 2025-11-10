@@ -13,6 +13,10 @@ public class FilterForTests implements IMethodInterceptor {
 
         String files = System.getenv("LIST_OF_CHANGED_FILES");
         if (files != null) {
+            if (files.equals("FULL_RUN")) {
+                return methods;
+            }
+
             Set<String> fileSet = new HashSet<>(Arrays.asList(files.split(";")));
             Map<Class<?>, String> classMap = methods.stream()
                     .map(IMethodInstance::getMethod).map(ITestNGMethod::getTestClass).map(IClass::getRealClass)
