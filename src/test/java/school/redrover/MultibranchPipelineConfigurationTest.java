@@ -66,8 +66,8 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         getWait5().until(ExpectedConditions.urlContains("/configure"));
         submitForm();
 
-        WebElement heading = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
-        Assert.assertEquals(heading.getText(), PROJECT_NAME);
+        WebElement actualHeading = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel > h1")));
+        Assert.assertEquals(actualHeading.getText(), PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
