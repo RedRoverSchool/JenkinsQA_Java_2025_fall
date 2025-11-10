@@ -219,12 +219,9 @@ public class Folder2Test extends BaseTest {
         getDriver().findElement(By.className("jenkins-mobile-hide")).click();
 
         String xpathForItemNameByIconAttribute = "//tr[.//*[contains(@d,'%s')]]//a//span".formatted(dAttributeOfFolderIcon);
-        List<String> expectedItems;
-        if (itemType.equals("Folder")) {
-            expectedItems = List.of(folderName, itemName);
-        } else {
-            expectedItems = List.of(folderName);
-        }
+        List<String> expectedItems = itemType.equals("Folder")
+                ? List.of(folderName, itemName)
+                : List.of(folderName);
         Assert.assertEquals(
                 new HashSet<>(getTextsOfItems(xpathForItemNameByIconAttribute)),
                 new HashSet<>(expectedItems),
