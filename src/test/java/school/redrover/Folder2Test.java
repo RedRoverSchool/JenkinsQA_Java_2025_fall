@@ -69,20 +69,20 @@ public class Folder2Test extends BaseTest {
 
     @DataProvider
     public Object[][] itemsProvider() {
-        final String SUB_FOLDER_NAME = "SubFolder";
-        final String FREESTYLE_PROJECT_NAME = "SubFreestyleProject";
-        final String PIPELINE_NAME = "SubPipeline";
-        final String MULTICONFIGURATION_PROJECT_NAME = "SubMulticonfigurationProject";
-        final String MULTIBRANCH_PIPELINE_NAME = "SubMultibranchPipeline";
-        final String ORGANIZATION_FOLDER_NAME = "SubOrganizationFolder";
+        final String subFolderName = "SubFolder";
+        final String freestyleProjectName = "SubFreestyleProject";
+        final String pipelineName = "SubPipeline";
+        final String multiconfigurationProjectName = "SubMulticonfigurationProject";
+        final String multibranchPipelineName = "SubMultibranchPipeline";
+        final String organizationFolderName = "SubOrganizationFolder";
 
         return new Object[][]{
-                {FREESTYLE_PROJECT_NAME, "Freestyle project"},
-                {PIPELINE_NAME, "Pipeline"},
-                {MULTICONFIGURATION_PROJECT_NAME, "Multi-configuration project"},
-                {SUB_FOLDER_NAME, "Folder"},
-                {MULTIBRANCH_PIPELINE_NAME, "Multibranch Pipeline"},
-                {ORGANIZATION_FOLDER_NAME, "Organization Folder"}
+                {freestyleProjectName, "Freestyle project"},
+                {pipelineName, "Pipeline"},
+                {multiconfigurationProjectName, "Multi-configuration project"},
+                {subFolderName, "Folder"},
+                {multibranchPipelineName, "Multibranch Pipeline"},
+                {organizationFolderName, "Organization Folder"}
         };
     }
 
