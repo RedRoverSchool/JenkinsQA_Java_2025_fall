@@ -21,7 +21,7 @@ public class Dashboard3Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         getWait5().until(ExpectedConditions
-                .elementToBeClickable(By.cssSelector("span.jenkins-mobile-hide"))).click();
+                .elementToBeClickable(By.id("jenkins-head-icon"))).click();
     }
 
     @Test
