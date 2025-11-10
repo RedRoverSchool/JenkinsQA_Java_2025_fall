@@ -1,32 +1,19 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 import java.util.UUID;
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
 
-    private final String projectName = getRandomAlphaNumericText();
-
-    private void createMultibranchPipelineProject(String projectName) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-
-        ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].click();",
-                getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']"))
-        );
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
-    }
+    private static final String PROJECT_NAME = "multibranchProjectName";
 
     private void clickOnTheToggle() {
         getDriver().findElement(By.cssSelector("[data-title='Disabled']")).click();
@@ -54,15 +41,38 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.tagName("form")).submit();
     }
 
-    private void clickRenameLinkInSideMenu() {
-        getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
+    private void openProjectRenamePage(String projectName) {
+        TestUtils.clickJS(getDriver(), By.cssSelector("td > a[href='job/%s/']".formatted(projectName)));
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
+                .click();
+    }
+
+    private void openProjectConfigurationPage(String projectName) {
+        TestUtils.clickJS(getDriver(), By.cssSelector("td > a[href='job/%s/']".formatted(projectName)));
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']")))
                 .click();
     }
 
     @Test
+    public void testCreateMultibranchPipelineProject() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
+        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
+
+        TestUtils.clickJS(getDriver(), By.cssSelector("[class$='MultiBranchProject']"));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+
+        getWait5().until(ExpectedConditions.urlContains("/configure"));
+        submitForm();
+
+        WebElement heading = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+        Assert.assertEquals(heading.getText(), PROJECT_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
     public void testDisableToggle() {
-        createMultibranchPipelineProject(projectName);
+        openProjectConfigurationPage(PROJECT_NAME);
         clickOnTheToggle();
 
         WebElement disabledTitle = getDriver().findElement(By.cssSelector("[class$='unchecked-title'"));
@@ -71,11 +81,11 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertTrue(disabledTitle.isDisplayed());
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
     public void testTooltipOnToggleHover() {
         final String expectedTooltip = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
-        createMultibranchPipelineProject(projectName);
+        openProjectConfigurationPage(PROJECT_NAME);
 
         WebElement toggleElement = getWait5()
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("toggle-switch-enable-disable-project")));
@@ -89,11 +99,11 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(actualTooltip, expectedTooltip);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
     public void testDisabledMessageOnStatusPage() {
         final String expectedDisabledMessage = "This Multibranch Pipeline is currently disabled";
 
-        createMultibranchPipelineProject(projectName);
+        openProjectConfigurationPage(PROJECT_NAME);
         clickOnTheToggle();
         submitForm();
 
@@ -102,11 +112,11 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(actualDisabledMessage.getText(), expectedDisabledMessage);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
     public void testProjectDescriptionPreview() {
         final String projectDescription = getRandomAlphaNumericText();
 
-        createMultibranchPipelineProject(projectName);
+        openProjectConfigurationPage(PROJECT_NAME);
         addProjectDescription(projectDescription);
 
         getDriver().findElement(By.className("textarea-show-preview")).click();
@@ -116,11 +126,11 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(previewTextarea.getText(), projectDescription);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
     public void testMultibranchProjectDescription() {
         final String projectDescriptionText = getRandomAlphaNumericText();
 
-        createMultibranchPipelineProject(projectName);
+        openProjectConfigurationPage(PROJECT_NAME);
         addProjectDescription(projectDescriptionText);
         submitForm();
 
@@ -129,12 +139,12 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(actualProjectDescription.getText(), projectDescriptionText);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
     public void testUpdateProjectDescription() {
         final String initialProjectDescription = getRandomAlphaNumericText();
         final String updatedProjectDescription = getRandomAlphaNumericText();
 
-        createMultibranchPipelineProject(projectName);
+        openProjectConfigurationPage(PROJECT_NAME);
         addProjectDescription(initialProjectDescription);
         submitForm();
 
@@ -150,13 +160,13 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(actualProjectDescription.getText(), updatedProjectDescription);
     }
 
-    @Test
+    @Test(dependsOnMethods = {"testCreateMultibranchPipelineProject", "testDisableToggle", "testTooltipOnToggleHover",
+            "testDisabledMessageOnStatusPage", "testProjectDescriptionPreview", "testMultibranchProjectDescription",
+            "testUpdateProjectDescription", "testRenameProjectNameUsingDotAtTheEnd"})
     public void testRenameProject() {
-        final String updatedProjectName = getRandomAlphaNumericText();
+        final String updatedProjectName = "updatedProjectName";
 
-        createMultibranchPipelineProject(projectName);
-        submitForm();
-        clickRenameLinkInSideMenu();
+        openProjectRenamePage(PROJECT_NAME);
         renameProject(updatedProjectName);
         submitForm();
 
@@ -167,14 +177,12 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(actualHeading.getText(), updatedProjectName);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
     public void testRenameProjectNameUsingDotAtTheEnd() {
-        final String updatedProjectName = getRandomAlphaNumericText() + ".";
+        final String updatedProjectName = PROJECT_NAME + ".";
         final String expectedErrorMessageText = "A name cannot end with ‘.’";
 
-        createMultibranchPipelineProject(projectName);
-        submitForm();
-        clickRenameLinkInSideMenu();
+        openProjectRenamePage(PROJECT_NAME);
         renameProject(updatedProjectName);
         submitForm();
 
