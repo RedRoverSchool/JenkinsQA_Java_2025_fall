@@ -43,7 +43,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(actualDescription, expectedDescription, actualDescription + " and " + expectedDescription + " don't match");
     }
-    @Ignore
+
     @Test
     @Ignore
     public void testTryCreateProjectExistName() {
@@ -107,6 +107,26 @@ public class MultibranchPipelineTest extends BaseTest {
                 visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']"))).getText();
 
         Assert.assertEquals(actualSavedMessage, "Saved");
+    }
+
+    @Test
+    public void testCreateItemWithSpecialCharacters() {
+        final String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        WebElement nameField = getDriver().findElement(By.id("name"));
+
+        for (String specChar: specialCharacters){
+            String errorMessage = "» ‘" + specChar + "’ is an unsafe character";
+
+            nameField.clear();
+            nameField.sendKeys("multi" + specChar + "branch");
+
+            String actualMessage = getWait5().until(ExpectedConditions.
+                    visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+
+            Assert.assertEquals(actualMessage, errorMessage, "Error message isn't displayed");
+        }
     }
 
     @Test
