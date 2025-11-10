@@ -21,6 +21,7 @@ import java.util.UUID;
 public class Folder2Test extends BaseTest {
 
     private static final String FOLDER_NAME_1 = "Folder1";
+    private static final String MAIN_FOLDER_NAME = "MainFolder";
 
     private void createItem(String itemName, String itemType) {
         getDriver().findElement(By.linkText("New Item")).click();
@@ -29,8 +30,8 @@ public class Folder2Test extends BaseTest {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", selectedItemType);
         selectedItemType.click();
         getDriver().findElement(By.id("ok-button")).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
-        getWait10().until(driver -> Objects.requireNonNull(driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+        getWait5().until(driver -> Objects.requireNonNull(driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
     }
 
     private List<String> getTextsOfItems(String xpathLocator) {
@@ -43,11 +44,11 @@ public class Folder2Test extends BaseTest {
 
     @Test
     public void testCreateFolder() {
-        createItem(FOLDER_NAME_1, "Folder");
+        createItem(MAIN_FOLDER_NAME, "Folder");
 
         Assert.assertEquals(
                 getDriver().findElement(By.tagName("h1")).getText(),
-                FOLDER_NAME_1,
+                MAIN_FOLDER_NAME,
                 "Неверное название папки");
         Assert.assertTrue(
                 getDriver().findElement(By.className("empty-state-section")).getText().contains("This folder is empty"),
