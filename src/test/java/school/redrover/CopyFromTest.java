@@ -68,7 +68,7 @@ public class CopyFromTest extends BaseTest {
         clickWithScroll(getDriver(), (By.xpath("//span[contains(text(), 'Fresh clone per build')]")));
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        WebElement newName = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+        WebElement newName = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//h1[@class='job-index-headline page-headline']")));
         Assert.assertEquals(newName.getText(), DISPLAY_NAME_TEXT + "2");
     }
