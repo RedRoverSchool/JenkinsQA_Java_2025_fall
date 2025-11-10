@@ -41,7 +41,7 @@ public class ConfigureAppearanceTest extends BaseTest {
 
     }
     @Test
-    public void testChangeThemeOld() throws InterruptedException {
+    public void testChangeThemeOld(){
 
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
         getDriver().findElement(By.cssSelector("a[href='appearance']")).click();

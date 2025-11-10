@@ -61,7 +61,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testAddNewFolder() throws InterruptedException {
+    public void testAddNewFolder(){
 
         String folder = "NewFolder";
 
