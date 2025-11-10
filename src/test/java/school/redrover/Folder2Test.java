@@ -10,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,6 +19,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Folder2Test extends BaseTest {
+
+    private static final String FOLDER_NAME_1 = "Folder1";
 
     private void createItem(String itemName, String itemType) {
         getDriver().findElement(By.linkText("New Item")).click();
@@ -40,31 +43,27 @@ public class Folder2Test extends BaseTest {
 
     @Test
     public void testCreateFolder() {
-        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
-        createItem(folderName, "Folder");
+        createItem(FOLDER_NAME_1, "Folder");
 
         Assert.assertEquals(
                 getDriver().findElement(By.tagName("h1")).getText(),
-                folderName,
+                FOLDER_NAME_1,
                 "Неверное название папки");
         Assert.assertTrue(
                 getDriver().findElement(By.className("empty-state-section")).getText().contains("This folder is empty"),
                 "Отсутствует сообщение 'This folder is empty'");
-        Assert.assertTrue(getTextsOfItems("//a[contains(@class, 'jenkins-table__link')]").isEmpty(),
-                "Элементы должны отсутствовать в новой таблице");
     }
 
-    @Test
-    public void testNewFolderDefaultAddedToExistingFolder() {
-        final String parentFolderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
+    @Test(dependsOnMethods = {"testCreateFolder"})
+    public void testNewFolderDefaultAddedToExistingFolder() throws InterruptedException {
         final String childFolderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
 
-        createItem(parentFolderName, "Folder");
+        TestUtils.clickJS(getDriver(), By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NAME_1)));
         createItem(childFolderName, "Folder");
 
         Assert.assertEquals(
                 getTextsOfItems("//ol[@id='breadcrumbs']/li/a"),
-                List.of(parentFolderName, childFolderName),
+                List.of(FOLDER_NAME_1, childFolderName),
                 "Путь хлебных крошек не соответствует ожиданию");
     }
 
@@ -206,5 +205,25 @@ public class Folder2Test extends BaseTest {
         Assert.assertTrue(getTextsOfItems("//div[@id='search-results']//a").
                         contains("%s » %s".formatted(folderName, freestyleName)),
                 "Список результатов поиска не содержит нужный элемент");
+    }
+
+    @Test(dataProvider = "itemsProvider")
+    public void testFolderIsIdentifiedByIcon(String itemType, String itemName) {
+        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
+        final String dAttributeOfFolderIcon = "M440 432H72a40 40 0 01-40-40V120a40 40 0 0140-40h75.89a40 40 0 0122.19 6.72";
+
+        createItem(folderName, "Folder");
+        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+        createItem(itemName, itemType);
+        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+
+        String xpathForItemNameByIconAttribute = "//tr[.//*[contains(@d,'%s')]]//a//span".formatted(dAttributeOfFolderIcon);
+        List<String> expectedItems = itemType.equals("Folder")
+                ? List.of(folderName, itemName)
+                : List.of(folderName);
+        Assert.assertEquals(
+                new HashSet<>(getTextsOfItems(xpathForItemNameByIconAttribute)),
+                new HashSet<>(expectedItems),
+                "Ошибка в отображении иконок");
     }
 }

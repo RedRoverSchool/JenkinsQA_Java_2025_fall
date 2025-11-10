@@ -11,7 +11,6 @@ public class OrganisationFolder1Test extends BaseTest {
 
     @Test
     public void testCreateOrganisationFolder() {
-
         final String folderName = "Organization Folder";
 
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
