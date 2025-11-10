@@ -10,6 +10,7 @@ import school.redrover.common.BaseTest;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 
 public class NewItemPageTest extends BaseTest {
     private final By newItemButtonFromHomePage = By.xpath(".//div[@id='tasks']/div[1]/span/a");
@@ -82,5 +83,15 @@ public class NewItemPageTest extends BaseTest {
             Assert.assertTrue(actualItemTypes.get(i).isDisplayed());
         }
         Assert.assertTrue(sectionTitle.isDisplayed());
+    }
+
+    @Test
+    public void testSelectItemTypeAfterNameEnter() {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Test Project");
+        WebElement pipelineType = getDriver().findElement(By.cssSelector("[class$='WorkflowJob']"));
+        pipelineType.click();
+        Assert.assertEquals(pipelineType.getAttribute("aria-checked"), "true");
     }
 }
