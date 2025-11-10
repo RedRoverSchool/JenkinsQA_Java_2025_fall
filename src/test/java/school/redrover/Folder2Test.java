@@ -90,7 +90,7 @@ public class Folder2Test extends BaseTest {
     public void testPutItemToFolder(String itemName, String itemType) {
         createItem(itemName, itemType);
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath("//a[contains(@href, 'move')]")))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath("//a[contains(@href, 'move')]")))).click();
         Select selectObject = new Select(getDriver().findElement(By.className("jenkins-select__input")));
         selectObject.selectByVisibleText("Jenkins » %s".formatted(MAIN_FOLDER_NAME));
         getDriver().findElement(By.name("Submit")).click();
