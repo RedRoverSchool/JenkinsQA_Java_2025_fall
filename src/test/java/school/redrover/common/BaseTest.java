@@ -44,11 +44,7 @@ public abstract class BaseTest {
     }
 
     private void stopDriver() {
-        try {
-            JenkinsUtils.logout(getDriver());
-        } catch (Exception ignore) {
-        }
-
+        JenkinsUtils.logout(getDriver());
         closeDriver();
     }
 
