@@ -51,7 +51,7 @@ public class ConfigureAppearanceTest extends BaseTest {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("label:has(> div[data-theme='dark'])")));
 
         getDriver().findElement(By.cssSelector("label:has(> div[data-theme='dark'])")).click();
-        getDriver().findElement(By.xpath("//label[contains(., 'Do not allow users to select a different theme')]")).click();
+
         getDriver().findElement(By.cssSelector("button.jenkins-submit-button")).click();
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector("html")).getAttribute("data-theme"),
