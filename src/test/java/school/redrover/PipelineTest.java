@@ -163,6 +163,46 @@ public class PipelineTest extends BaseTest {
                 "Alias " + timePeriod + " не прошёл валидацию");
     }
 
+    @DataProvider
+    public Object[][] invalidCronSyntaxAndAliases() {
+        return new String[][]{
+                {"60 * * * *", "60 is an invalid value. Must be within 0 and 59"},
+                {"* 25 * * *", "25 is an invalid value. Must be within 0 and 23"},
+                {"* * 32 * *", "32 is an invalid value. Must be within 1 and 31"},
+                {"* * * 13 * *", "13 is an invalid value. Must be within 1 and 12"},
+                {"* * * * 8", "8 is an invalid value. Must be within 0 and 7"},
+                {"@", "mismatched input"},
+                {"*****", "missing whitespace"}
+        };
+    }
+
+    @Test(dataProvider = "invalidCronSyntaxAndAliases")
+    public void testScheduleWithInvalidData(String invalidTimePeriod, String expectedErrorMessage) {
+        createPipeline(PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
+
+        WebElement triggersSectionButton = getDriver().findElement(By.xpath("//button[@data-section-id = 'triggers']"));
+        triggersSectionButton.click();
+        getWait2()
+                .until(ExpectedConditions.attributeContains(triggersSectionButton, "class", "task-link--active"));
+
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = '_.spec']")).sendKeys(invalidTimePeriod);
+        getDriver().findElement(By.xpath("//button[text() = 'Apply']")).click();
+
+        WebElement actualTextErrorMessage = getDriver()
+                .findElement(By.xpath("//div[contains(text(), 'Schedule')]/following-sibling::div" +
+                        "//div[@class = 'error']"));
+        WebElement errorDescriptionModalWindow = getDriver().findElement(By.cssSelector("#error-description > h2"));
+        getWait2().until(ExpectedConditions.visibilityOf(errorDescriptionModalWindow));
+
+        Assert.assertTrue(
+                actualTextErrorMessage.getText().contains(expectedErrorMessage),
+                String.format("Сообщение: '%s', не содержит ожидаемую ключевую информацию об ошибке: '%s'",
+                        actualTextErrorMessage.getText(), expectedErrorMessage));
+        Assert.assertEquals(errorDescriptionModalWindow.getText(), "A problem occurred while processing the request");
+    }
+
     @Test
     public void testEditDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
