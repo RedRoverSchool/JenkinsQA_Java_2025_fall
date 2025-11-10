@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -69,7 +70,7 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#j-add-item-type-nested-projects > ul > :nth-child(1)")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
-        Thread.sleep(1500);
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#page-header > div.jenkins-header__main > div > a > span")));
         getDriver().findElement(By.cssSelector("#page-header > div.jenkins-header__main > div > a > span")).click();
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#job_NewFolder > td:nth-child(3) > a > span")).getText(), folder);
