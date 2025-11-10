@@ -6,7 +6,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -16,10 +15,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.frequency;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 public class ConfigureSystem1Test extends BaseTest {
 
-    @Test(testName = "US_10.001 SystemMessage. Create system message")
+    @Test
     public void testCreateSystemMessage() {
 
         final String systemMessage = "Hello redRover School!";
@@ -36,7 +36,7 @@ public class ConfigureSystem1Test extends BaseTest {
                 systemMessage);
     }
 
-    @Test(testName = "US_10.001 SystemMessage. Change system message")
+    @Test
     public void testChangeSystemMessage() {
 
         final String firstPartSystemMessage = "Hello";
@@ -59,7 +59,7 @@ public class ConfigureSystem1Test extends BaseTest {
                 firstPartSystemMessage + secondPartSystemMessage);
     }
 
-    @Test(testName = "US_10.001 SystemMessage. Check preview system message")
+    @Test
     public void testSystemMessagePreview() {
 
         final String systemMessage = "Hello redRover School!";
@@ -77,7 +77,7 @@ public class ConfigureSystem1Test extends BaseTest {
                 systemMessage);
     }
 
-    @Test(testName = "US_10.001 #ofExecutors. Change number of executors")
+    @Test
     public void testChangeNumberOfExecutors() {
 
         final String numberOfExecutors = "12";
@@ -104,7 +104,7 @@ public class ConfigureSystem1Test extends BaseTest {
         Assert.assertEquals(frequency, 1);
     }
 
-    @Test(testName = "US_10.001 Usage. Check tooltip of usage")
+    @Test
     public void testTooltipOfUsageOption() {
 
         getSystemConfigurePage();
@@ -122,7 +122,7 @@ public class ConfigureSystem1Test extends BaseTest {
                 numberOfHelpDisplayBlockAfterClick - 1);
     }
 
-    @Test(testName = "US_10.001 Usage. Check select of usage")
+    @Test
     public void testUserOptionSelectCheck() {
 
         final List<String> expectedUsageOptions = List.of("Use this node as much as possible",
@@ -140,7 +140,7 @@ public class ConfigureSystem1Test extends BaseTest {
                 expectedUsageOptions.get(0));
     }
 
-    @Test(testName = "US_10.001 ComputerRetentionCheckInterval. Change computer retention check interval. Positive")
+    @Test
     public void testChangeComputerRetentionCheckIntervalPositive() {
 
         final String testInterval = "59";
@@ -159,7 +159,7 @@ public class ConfigureSystem1Test extends BaseTest {
         Assert.assertEquals(actualInterval, testInterval);
     }
 
-    @Test(testName = "US_10.001 ComputerRetentionCheckInterval. Change computer retention check interval. Negative")
+    @Test
     public void testChangeComputerRetentionCheckIntervalNegative() {
 
         final String incorrectInterval = "61";
@@ -179,7 +179,7 @@ public class ConfigureSystem1Test extends BaseTest {
         Assert.assertEquals(actualInterval, oldValue);
     }
 
-    @Test(testName = "US_10.001 ComputerRetentionCheckInterval. Check hint of computer retention check interval")
+    @Test
     public void testHintOfComputerRetentionCheckInterval() {
 
         final String incorrectInterval = "61";
@@ -196,7 +196,7 @@ public class ConfigureSystem1Test extends BaseTest {
         Assert.assertTrue(hint.getAttribute("class").contains("--visible"));
     }
 
-    @Test(testName = "US_10.001 QuietPeriod. Check tooltip of quiet period")
+    @Test
     public void testTooltipOfQuietPeriod() {
 
         getSystemConfigurePage();
@@ -217,7 +217,7 @@ public class ConfigureSystem1Test extends BaseTest {
     }
 
 
-    @Test(testName = "US_10.001 QuietPeriod. Check hint of quiet period")
+    @Test
     public void testHintOfQuietPeriod() {
 
         final String incorrectQuietPeriod = "-2";
@@ -234,7 +234,7 @@ public class ConfigureSystem1Test extends BaseTest {
         Assert.assertTrue(hint.getAttribute("class").contains("--visible"));
     }
 
-    @Test(testName = "US_10.001 QuietPeriod. Change quiet period. Positive")
+    @Test
     public void testChangeQuietPeriodPositive() {
 
         final String testQuietPeriod = "10";
@@ -253,7 +253,7 @@ public class ConfigureSystem1Test extends BaseTest {
         Assert.assertEquals(actualQuietPeriod, testQuietPeriod);
     }
 
-    @Test(testName = "US_10.001 GlobalProperties. Check global properties")
+    @Test
     public void testGlobalProperties() {
 
         final List<String> expectedGlobalProperties = List.of(
@@ -272,7 +272,7 @@ public class ConfigureSystem1Test extends BaseTest {
         Assert.assertEquals(actualGlobalProperties, expectedGlobalProperties);
     }
 
-    @Test(testName = "US_10.001 GlobalProperties. Check tooltip of disable deferred wipe out on this node")
+    @Test
     public void testTooltipOfDisableDeferredWipeoutOnThisNode() {
 
         getSystemConfigurePage();
@@ -293,8 +293,7 @@ public class ConfigureSystem1Test extends BaseTest {
                 numberOfHelpDisplayBlockAfterClick - 1);
     }
 
-    @Ignore
-    @Test(testName = "US_10.001 GlobalProperties. Change disk space monitoring thresholds")
+    @Test
     public void testDiskSpaceMonitoringThresholds() {
 
         final String testFreeDiskSpaceThreshold = "1.1GiB";
@@ -343,7 +342,7 @@ public class ConfigureSystem1Test extends BaseTest {
                 testTempSpaceWarningThreshold);
     }
 
-    @Test(testName = "US_10.001 GlobalProperties. Add environment variable")
+    @Test
     public void testEnvironmentVariables() {
 
         final String testVariableName = UUID.randomUUID().toString();
@@ -389,8 +388,8 @@ public class ConfigureSystem1Test extends BaseTest {
     }
 
     private void getSystemConfigurePage() {
-        getDriver().findElement(By.cssSelector("a[href$='manage']")).click();
-        getDriver().findElement(By.cssSelector("a[href$='configure']")).click();
+        getWait10().until(visibilityOfElementLocated(By.cssSelector("a[href$='manage']"))).click();
+        getWait10().until(visibilityOfElementLocated(By.cssSelector("a[href$='configure']"))).click();
     }
 
     private <T> T getLastElement(List<T> list) {
