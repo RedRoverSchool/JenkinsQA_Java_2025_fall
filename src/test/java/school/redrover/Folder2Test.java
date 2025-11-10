@@ -67,44 +67,42 @@ public class Folder2Test extends BaseTest {
                 "Путь хлебных крошек не соответствует ожиданию");
     }
 
-    @DataProvider(name = "itemsProvider")
+    @DataProvider
     public Object[][] itemsProvider() {
-        String freestyleName = "Freestyle" + UUID.randomUUID().toString().substring(0, 3);
-        String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);
-        String multiConfigPrName = "MultiConfigPr" + UUID.randomUUID().toString().substring(0, 3);
-        String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
-        String multibrPipName = "MultibrPip" + UUID.randomUUID().toString().substring(0, 3);
-        String orgFolderName = "OrgFolder" + UUID.randomUUID().toString().substring(0, 3);
+        final String SUB_FOLDER_NAME = "SubFolder";
+        final String FREESTYLE_PROJECT_NAME = "SubFreestyleProject";
+        final String PIPELINE_NAME = "SubPipeline";
+        final String MULTICONFIGURATION_PROJECT_NAME = "SubMulticonfigurationProject";
+        final String MULTIBRANCH_PIPELINE_NAME = "SubMultibranchPipeline";
+        final String ORGANIZATION_FOLDER_NAME = "SubOrganizationFolder";
 
         return new Object[][]{
-                {"Freestyle project", freestyleName},
-                {"Pipeline", pipelineName},
-                {"Multi-configuration project", multiConfigPrName},
-                {"Folder", folderName},
-                {"Multibranch Pipeline", multibrPipName},
-                {"Organization Folder", orgFolderName}
+                {FREESTYLE_PROJECT_NAME, "Freestyle project"},
+                {PIPELINE_NAME, "Pipeline"},
+                {MULTICONFIGURATION_PROJECT_NAME, "Multi-configuration project"},
+                {SUB_FOLDER_NAME, "Folder"},
+                {MULTIBRANCH_PIPELINE_NAME, "Multibranch Pipeline"},
+                {ORGANIZATION_FOLDER_NAME, "Organization Folder"}
         };
     }
 
-    @Test(dataProvider = "itemsProvider")
-    public void testPutItemToFolder(String itemType, String itemName) {
-        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
-
-        createItem(folderName, "Folder");
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+    @Test(dependsOnMethods = {"testCreateFolder"}, dataProvider = "itemsProvider")
+    public void testPutItemToFolder(String itemName, String itemType) {
         createItem(itemName, itemType);
 
         getDriver().findElement(By.xpath("//a[contains(@href, 'move')]")).click();
         Select selectObject = new Select(getDriver().findElement(By.className("jenkins-select__input")));
-        selectObject.selectByVisibleText("Jenkins » %s".formatted(folderName));
+        selectObject.selectByVisibleText("Jenkins » %s".formatted(MAIN_FOLDER_NAME));
         getDriver().findElement(By.name("Submit")).click();
 
-        getWait10().until(driver -> Objects.requireNonNull(
+        getWait5().until(driver -> Objects.requireNonNull(
                 driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
 
+        List<String> breadcrumbTexts = getTextsOfItems("//ol[@id='breadcrumbs']/li/a");
+        Assert.assertFalse(breadcrumbTexts.isEmpty(), "Хлебные крошки не должны быть пусты");
         Assert.assertEquals(
-                getTextsOfItems("//ol[@id='breadcrumbs']/li/a"),
-                List.of(folderName, itemName),
+                breadcrumbTexts,
+                List.of(MAIN_FOLDER_NAME, itemName),
                 "Путь хлебных крошек не соответствует ожиданию");
     }
 
