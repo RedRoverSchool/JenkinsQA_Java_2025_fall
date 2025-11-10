@@ -110,6 +110,26 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
+    public void testCreateItemWithSpecialCharacters() {
+        final String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        WebElement nameField = getDriver().findElement(By.id("name"));
+
+        for (String specChar: specialCharacters){
+            String errorMessage = "» ‘" + specChar + "’ is an unsafe character";
+
+            nameField.clear();
+            nameField.sendKeys("multi" + specChar + "branch");
+
+            String actualMessage = getWait5().until(ExpectedConditions.
+                    visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+
+            Assert.assertEquals(actualMessage, errorMessage, "Error message isn't displayed");
+        }
+    }
+
+    @Test
     public void testAddDescription() {
         final String expectedDescription = "This is a test of the possibility of adding a description";
 
