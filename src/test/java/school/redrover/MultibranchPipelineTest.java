@@ -5,13 +5,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
-import java.time.Duration;
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -27,6 +24,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         getDriver().findElement(By.name("Submit")).click();
     }
+
 
     @Test
     public void testAddingDescriptionCreatingMultibranch() {
@@ -46,8 +44,8 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualDescription, expectedDescription, actualDescription + " and " + expectedDescription + " don't match");
     }
 
-    @Ignore
     @Test
+    @Ignore
     public void testTryCreateProjectExistName() {
         final String errorMessage = "» A job already exists with the name " + "‘" + MULTIBRANCH_PIPELINE_NAME + "’";
 

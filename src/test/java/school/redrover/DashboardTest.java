@@ -43,6 +43,8 @@ public class DashboardTest extends BaseTest {
         List<WebElement> contentBlockLinks = getWait5()
                 .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".content-block > a")));
 
+        Assert.assertFalse(contentBlockLinks.isEmpty());
+
         for (int i = 0; i < contentBlockLinks.size(); i++) {
             WebElement currentLink = contentBlockLinks.get(i);
 
