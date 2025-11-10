@@ -249,6 +249,7 @@ public class Folder2Test extends BaseTest {
             tooltipTexts.add(getDriver().findElement(By.xpath("//*[@id='%s']/div/div".formatted(tooltipIDByAttribute))).getText());
         }
 
+        Assert.assertEquals(tooltipTexts.size(), 2);
         if (itemType.equals("Folder")) {
             Assert.assertEquals(
                     tooltipTexts.get(0),
