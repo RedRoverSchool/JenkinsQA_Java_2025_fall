@@ -16,12 +16,12 @@ public class Footer1RestApiTest extends BaseTest {
         return getDriver().findElement(By.cssSelector("h1")).getText();
     }
 
-        @Test
-        public void testRestApiMainPage(){
-            Assert.assertEquals(
-                    getRestApiHeader(),
-                    "REST API");
-        }
+    @Test
+    public void testRestApiMainPage() {
+        Assert.assertEquals(
+                getRestApiHeader(),
+                "REST API");
+    }
 
     @Test
     public void testRestApiUserPage() {
