@@ -69,8 +69,8 @@ public class CopyFromTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         WebElement newName = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//h1[@class='job-index-headline page-headline']")));
-        Assert.assertEquals(newName.getText(), DISPLAY_NAME_TEXT + "2");
+                By.id("view-message")));
+        Assert.assertEquals(newName.getText(), "DescriptionTextDescriptionText2");
     }
 
     private void makeFolder() {
