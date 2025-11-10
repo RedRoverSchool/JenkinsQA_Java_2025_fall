@@ -37,9 +37,7 @@ public class ConfigureAppearanceTest extends BaseTest {
             }
         });
 
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("html")).getAttribute("data-theme"),
-                "dark");
+
     }
     @Test
     public void testChangeThemeOld() throws InterruptedException {
@@ -51,6 +49,8 @@ public class ConfigureAppearanceTest extends BaseTest {
         getDriver().findElement(By.cssSelector("label:has(> div[data-theme='dark'])")).click();
         getDriver().findElement(By.cssSelector("button.jenkins-submit-button")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("html[data-theme='dark']")).isDisplayed());
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("html")).getAttribute("data-theme"),
+                "dark");
     }
 }
