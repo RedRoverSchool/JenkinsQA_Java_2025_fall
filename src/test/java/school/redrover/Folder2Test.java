@@ -67,8 +67,26 @@ public class Folder2Test extends BaseTest {
                 "Путь хлебных крошек не соответствует ожиданию");
     }
 
-    @DataProvider
+    @DataProvider(name = "itemsProvider")
     public Object[][] itemsProvider() {
+        String freestyleName = "Freestyle" + UUID.randomUUID().toString().substring(0, 3);
+        String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);
+        String multiConfigPrName = "MultiConfigPr" + UUID.randomUUID().toString().substring(0, 3);
+        String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
+        String multibrPipName = "MultibrPip" + UUID.randomUUID().toString().substring(0, 3);
+        String orgFolderName = "OrgFolder" + UUID.randomUUID().toString().substring(0, 3);
+
+        return new Object[][]{
+                {"Freestyle project", freestyleName},
+                {"Pipeline", pipelineName},
+                {"Multi-configuration project", multiConfigPrName},
+                {"Folder", folderName},
+                {"Multibranch Pipeline", multibrPipName},
+                {"Organization Folder", orgFolderName}
+        };}
+
+    @Test(dependsOnMethods = {"testCreateFolder"})
+    public void testPutItemToFolder() {
         final String subFolderName = "SubFolder";
         final String freestyleProjectName = "SubFreestyleProject";
         final String pipelineName = "SubPipeline";
@@ -76,34 +94,36 @@ public class Folder2Test extends BaseTest {
         final String multibranchPipelineName = "SubMultibranchPipeline";
         final String organizationFolderName = "SubOrganizationFolder";
 
-        return new Object[][]{
+        final Object[][] items = {
+                {subFolderName, "Folder"},
                 {freestyleProjectName, "Freestyle project"},
                 {pipelineName, "Pipeline"},
                 {multiconfigurationProjectName, "Multi-configuration project"},
-                {subFolderName, "Folder"},
                 {multibranchPipelineName, "Multibranch Pipeline"},
-                {organizationFolderName, "Organization Folder"}
-        };
-    }
+                {organizationFolderName, "Organization Folder"}};
 
-    @Test(dependsOnMethods = {"testCreateFolder"}, dataProvider = "itemsProvider")
-    public void testPutItemToFolder(String itemName, String itemType) {
-        createItem(itemName, itemType);
+        for (Object[] item : items) {
+            String itemName = (String) item[0];
+            String itemType = (String) item[1];
+            createItem(itemName, itemType);
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath("//a[contains(@href, 'move')]")))).click();
-        Select selectObject = new Select(getDriver().findElement(By.className("jenkins-select__input")));
-        selectObject.selectByVisibleText("Jenkins » %s".formatted(MAIN_FOLDER_NAME));
-        getDriver().findElement(By.name("Submit")).click();
+            getDriver().findElement(By.xpath("//a[contains(@href, 'move')]")).click();
+            Select selectObject = new Select(getDriver().findElement(By.className("jenkins-select__input")));
+            selectObject.selectByVisibleText("Jenkins » %s".formatted(MAIN_FOLDER_NAME));
+            getDriver().findElement(By.name("Submit")).click();
 
-        getWait5().until(driver -> Objects.requireNonNull(
-                driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
+            getWait5().until(driver -> Objects.requireNonNull(
+                    driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
 
-        List<String> breadcrumbTexts = getTextsOfItems("//ol[@id='breadcrumbs']/li/a");
-        Assert.assertFalse(breadcrumbTexts.isEmpty(), "Хлебные крошки не должны быть пусты");
-        Assert.assertEquals(
-                breadcrumbTexts,
-                List.of(MAIN_FOLDER_NAME, itemName),
-                "Путь хлебных крошек не соответствует ожиданию");
+            List<String> breadcrumbTexts = getTextsOfItems("//ol[@id='breadcrumbs']/li/a");
+            Assert.assertFalse(breadcrumbTexts.isEmpty(), "Хлебные крошки не должны быть пусты");
+            Assert.assertEquals(
+                    breadcrumbTexts,
+                    List.of(MAIN_FOLDER_NAME, itemName),
+                    "Путь хлебных крошек не соответствует ожиданию");
+
+            getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+        }
     }
 
     @Test
