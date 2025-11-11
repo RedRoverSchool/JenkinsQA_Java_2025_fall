@@ -7,6 +7,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class CreateNewItem7Test extends BaseTest {
 
     @Test
@@ -23,6 +26,30 @@ public class CreateNewItem7Test extends BaseTest {
         WebElement projectTitle = getDriver().findElement(By.xpath("//h1"));
 
         Assert.assertEquals(projectTitle.getText(), "Freestyle Project Name");
+    }
+
+    @Test
+    public void listOfItemsTypesTest() {
+        getDriver().findElement(By.cssSelector("#tasks > :nth-child(1)")).click();
+
+        List<String> expectedResult = List.of(
+                "Freestyle project",
+                "Pipeline",
+                "Multi-configuration project",
+                "Folder",
+                "Multibranch Pipeline",
+                "Organization Folder"
+        );
+
+        List<WebElement> elements = getWait2().until(
+                ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("label .label"))
+        );
+
+        List<String> actualResult = elements.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        Assert.assertEquals(actualResult, expectedResult, "All Item Types are available");
     }
 
 }
