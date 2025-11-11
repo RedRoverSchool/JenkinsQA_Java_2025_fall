@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import java.util.List;
 
 public class PipelineConfigurationAdvancedTest extends BaseTest {
 
@@ -138,5 +139,25 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 .id("job_%s".formatted(pipelineName)))).getText().split("\\n")[0];
 
         Assert.assertEquals(actualDisplayNameInHomePage, displayName);
+    }
+
+    @Test
+    public void testAdvancedSectionVerifyTooltips() {
+        final String newPipelineName = "newPipeline_07";
+        final List<String> expectedTooltipList = List.of(
+                "Help for feature: Quiet period",
+                "Help for feature: Display Name"
+        );
+
+        createNewPipeline(newPipelineName);
+        advancedButtonClick();
+
+        List<String> actualTooltipList = getDriver()
+                .findElements(By.xpath(".//div[@id='advanced']/parent::section/descendant::a[@tooltip]"))
+                .stream()
+                .map(webElement -> webElement.getAttribute("title"))
+                .toList();
+
+        Assert.assertEquals(actualTooltipList, expectedTooltipList);
     }
 }
