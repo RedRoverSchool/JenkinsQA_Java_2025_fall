@@ -2,6 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -38,12 +40,19 @@ public class CreateNewFolderTest extends BaseTest {
                 getDriver().findElement(By.xpath("//button[contains(@class, 'jenkins-submit-button')]"));
         saveButton.click();
 
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(
+                By.tagName("h1"), folderName
+        ));
         WebElement folderTitleIn =
-                getDriver().findElement(By.xpath("//h1[contains(@class,'job-index-headline page-headline')]"));
+                getDriver().findElement(By.tagName("h1"));
 
         WebElement logoJenkins =
                 getDriver().findElement(By.xpath("//*[@id='jenkins-head-icon']"));
         logoJenkins.click();
+
+
         List<WebElement> trElements = getDriver().findElements(
                 By.xpath("//tr[@id]"));
         List<String> jobNames = new ArrayList<>();
