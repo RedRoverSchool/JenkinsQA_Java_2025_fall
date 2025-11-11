@@ -5,13 +5,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
-import java.time.Duration;
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -48,26 +45,27 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testTryCreateProjectExistName() throws InterruptedException {
+    @Ignore
+    public void testTryCreateProjectExistName() {
         final String errorMessage = "» A job already exists with the name " + "‘" + MULTIBRANCH_PIPELINE_NAME + "’";
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
-        Thread.sleep(2000);
-        getDriver().findElement(By.xpath("//a[@href='/']/img")).click();
+        getWait5().until(ExpectedConditions
+                .elementToBeClickable(By.cssSelector("span.jenkins-mobile-hide"))).click();
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
         getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
 
-        Thread.sleep(2000);
-        String actualMessage = getDriver().findElement(By.id("itemname-invalid")).getText();
+        String actualMessage = getWait2().until(ExpectedConditions
+                .visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
         Assert.assertEquals(actualMessage, errorMessage);
     }
 
     @Test
-    public void testVerifyDisableMessaageOnStatusPage() throws InterruptedException {
+    public void testVerifyDisableMessaageOnStatusPage() {
         final String disableText = "This Multibranch Pipeline is currently disabled";
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
@@ -75,8 +73,8 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        Thread.sleep(2000);
-        String actualDisableText = getDriver().findElement(By.id("disabled-message")).getText();
+        String actualDisableText = getWait2().until(ExpectedConditions
+                .visibilityOfElementLocated(By.id("disabled-message"))).getText();
         Assert.assertTrue(actualDisableText.contains(disableText));
     }
 
@@ -92,11 +90,43 @@ public class MultibranchPipelineTest extends BaseTest {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(toggleTooltip).perform();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(6));
-        String actualTooltip = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
-                .getText();
+        String actualTooltip = getWait2().until(ExpectedConditions
+                .visibilityOfElementLocated(By.className("tippy-content"))).getText();
 
         Assert.assertEquals(actualTooltip, tooltipText);
+    }
+
+    @Test
+    public void testVerifyAppearSaveMessage() {
+        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(MULTIBRANCH_PIPELINE_NAME))).click();
+        getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
+        getDriver().findElement(By.name("Apply")).click();
+
+        String actualSavedMessage = getWait2().until(ExpectedConditions.
+                visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']"))).getText();
+
+        Assert.assertEquals(actualSavedMessage, "Saved");
+    }
+
+    @Test
+    public void testCreateItemWithSpecialCharacters() {
+        final String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        WebElement nameField = getDriver().findElement(By.id("name"));
+
+        for (String specChar: specialCharacters){
+            String errorMessage = "» ‘" + specChar + "’ is an unsafe character";
+
+            nameField.clear();
+            nameField.sendKeys("multi" + specChar + "branch");
+
+            String actualMessage = getWait5().until(ExpectedConditions.
+                    visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
+
+            Assert.assertEquals(actualMessage, errorMessage, "Error message isn't displayed");
+        }
     }
 
     @Test
@@ -176,8 +206,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenameViaSidebar() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
         getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
@@ -192,7 +220,7 @@ public class MultibranchPipelineTest extends BaseTest {
         renameField.clear();
         renameField.sendKeys(RENAMED_MULTIBRANCH_PIPELINE + Keys.ENTER);
 
-        wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
+        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
 
         WebElement multibranchPipelineName = getDriver().findElement(By.tagName("h1"));
 

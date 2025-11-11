@@ -5,23 +5,17 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.time.Duration;
 import java.util.List;
 
 public class DashboardTest extends BaseTest {
 
-    private WebDriverWait getWait() {
-        return new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-    }
-
     @Test
     public void testHomePageHeading() {
-        WebElement actualHeading = getWait()
+        WebElement actualHeading = getWait5()
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block > h1")));
 
         Assert.assertEquals(actualHeading.getText(), "Welcome to Jenkins!");
@@ -32,7 +26,7 @@ public class DashboardTest extends BaseTest {
         final String expectedParagraphText = "This page is where your Jenkins jobs will be displayed. " +
                 "To get started, you can set up distributed builds or start building a software project.";
 
-        WebElement actualParagraph = getWait().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("p")));
+        WebElement actualParagraph = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("p")));
 
         Assert.assertEquals(actualParagraph.getText(), expectedParagraphText);
     }
@@ -46,8 +40,10 @@ public class DashboardTest extends BaseTest {
                 "/#distributed-builds-architecture"
         );
 
-        List<WebElement> contentBlockLinks = getWait()
+        List<WebElement> contentBlockLinks = getWait5()
                 .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".content-block > a")));
+
+        Assert.assertFalse(contentBlockLinks.isEmpty());
 
         for (int i = 0; i < contentBlockLinks.size(); i++) {
             WebElement currentLink = contentBlockLinks.get(i);
@@ -55,9 +51,10 @@ public class DashboardTest extends BaseTest {
             new Actions(getDriver())
                     .keyDown(Keys.CONTROL)
                     .click(currentLink)
+                    .keyUp(Keys.CONTROL)
                     .perform();
 
-            getWait().until(ExpectedConditions.numberOfWindowsToBe(2));
+            getWait5().until(ExpectedConditions.numberOfWindowsToBe(2));
 
             Object[] windowHandles = getDriver().getWindowHandles().toArray();
             getDriver().switchTo().window((String) windowHandles[1]);
