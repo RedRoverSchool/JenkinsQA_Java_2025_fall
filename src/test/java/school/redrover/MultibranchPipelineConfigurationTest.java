@@ -174,7 +174,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         submitForm();
 
         WebElement actualHeading = getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel h1")));
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='view-message']/../h1")));
 
         Assert.assertEquals(actualHeading.getText(), updatedProjectName);
     }
