@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
 import java.time.Duration;
 
 public class FolderConfigurationTest extends BaseTest {
@@ -51,7 +50,10 @@ public class FolderConfigurationTest extends BaseTest {
                 .visibilityOfElementLocated(By.xpath("//input[@class='jenkins-dropdown__filter-input']")));
 
         Assert.assertTrue(getDriver()
-                .findElement(By.xpath("//input[@class='jenkins-dropdown__filter-input']"))
+                .findElement(By.xpath("//button[normalize-space(text())='Child item with the given name']"))
+                .isDisplayed());
+        Assert.assertTrue(getDriver()
+                .findElement(By.xpath("//button[normalize-space(text())='Child item with worst health']"))
                 .isDisplayed());
     }
 }
