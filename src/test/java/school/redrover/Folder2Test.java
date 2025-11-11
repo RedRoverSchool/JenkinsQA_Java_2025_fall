@@ -21,6 +21,7 @@ import java.util.UUID;
 public class Folder2Test extends BaseTest {
 
     private static final String MAIN_FOLDER_NAME = "MainFolder";
+    private static final String SUB_FOLDER_NAME = "SubFolder";
 
     private void createItem(String itemName, String itemType) {
         getDriver().findElement(By.linkText("New Item")).click();
@@ -87,7 +88,6 @@ public class Folder2Test extends BaseTest {
 
     @Test(dependsOnMethods = {"testCreateFolder"})
     public void testPutItemToFolder() {
-        final String subFolderName = "SubFolder";
         final String freestyleProjectName = "SubFreestyleProject";
         final String pipelineName = "SubPipeline";
         final String multiconfigurationProjectName = "SubMulticonfigurationProject";
@@ -95,7 +95,7 @@ public class Folder2Test extends BaseTest {
         final String organizationFolderName = "SubOrganizationFolder";
 
         final Object[][] items = {
-                {subFolderName, "Folder"},
+                {SUB_FOLDER_NAME, "Folder"},
                 {freestyleProjectName, "Freestyle project"},
                 {pipelineName, "Pipeline"},
                 {multiconfigurationProjectName, "Multi-configuration project"},
@@ -225,23 +225,21 @@ public class Folder2Test extends BaseTest {
                 "Список результатов поиска не содержит нужный элемент");
     }
 
-    @Test(dataProvider = "itemsProvider")
-    public void testFolderIsIdentifiedByIcon(String itemType, String itemName) {
-        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
-        final String dAttributeOfFolderIcon = "M440 432H72a40 40 0 01-40-40V120a40 40 0 0140-40h75.89a40 40 0 0122.19 6.72";
+    @Test(dependsOnMethods = {"testPutItemToFolder"})
+    public void testFolderIsIdentifiedByIcon() {
+        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(MAIN_FOLDER_NAME))).click();
 
-        createItem(folderName, "Folder");
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-        createItem(itemName, itemType);
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+        String dAttributeOfFolderIcon = getDriver().findElement(By.xpath("//tr[td[a[span[text()='%s']]]]//*[@d]".
+                formatted(SUB_FOLDER_NAME))).getAttribute("d");
+        System.out.println(dAttributeOfFolderIcon);
 
         String xpathForItemNameByIconAttribute = "//tr[.//*[contains(@d,'%s')]]//a//span".formatted(dAttributeOfFolderIcon);
-        List<String> expectedItems = itemType.equals("Folder")
-                ? List.of(folderName, itemName)
-                : List.of(folderName);
+
+        List<String> itemNames = getTextsOfItems(xpathForItemNameByIconAttribute);
+        Assert.assertFalse(itemNames.isEmpty(), "Список элементов по XPath пуст");
         Assert.assertEquals(
-                new HashSet<>(getTextsOfItems(xpathForItemNameByIconAttribute)),
-                new HashSet<>(expectedItems),
+                itemNames,
+                List.of(SUB_FOLDER_NAME),
                 "Ошибка в отображении иконок");
     }
 
