@@ -84,7 +84,8 @@ public class Folder2Test extends BaseTest {
                 {"Folder", folderName},
                 {"Multibranch Pipeline", multibrPipName},
                 {"Organization Folder", orgFolderName}
-        };}
+        };
+    }
 
     @Test(dependsOnMethods = {"testCreateFolder"})
     public void testPutItemToFolder() {
