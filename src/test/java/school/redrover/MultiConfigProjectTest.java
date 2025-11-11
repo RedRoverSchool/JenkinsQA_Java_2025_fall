@@ -10,7 +10,7 @@ import school.redrover.common.BaseTest;
 public class MultiConfigProjectTest extends BaseTest {
 
     @Test
-    private void renameViaDropDownMenu() {
+    public void renameViaDropDownMenu() {
 
         final String ProjectName = "New Project";
         final String ChangedProjectName = "Multi-configuration project";
