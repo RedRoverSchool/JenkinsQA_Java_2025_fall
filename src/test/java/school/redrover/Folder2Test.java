@@ -232,7 +232,6 @@ public class Folder2Test extends BaseTest {
 
         String dAttributeOfFolderIcon = getDriver().findElement(By.xpath("//tr[td[a[span[text()='%s']]]]//*[@d]".
                 formatted(SUB_FOLDER_NAME))).getAttribute("d");
-        System.out.println(dAttributeOfFolderIcon);
 
         String xpathForItemNameByIconAttribute = "//tr[.//*[contains(@d,'%s')]]//a//span".formatted(dAttributeOfFolderIcon);
 
