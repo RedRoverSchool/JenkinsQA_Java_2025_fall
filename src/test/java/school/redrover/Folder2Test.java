@@ -21,6 +21,7 @@ import java.util.UUID;
 public class Folder2Test extends BaseTest {
 
     private static final String MAIN_FOLDER_NAME = "MainFolder";
+    private static final String SUB_FOLDER_NAME = "SubFolder";
 
     private void createItem(String itemName, String itemType) {
         getDriver().findElement(By.linkText("New Item")).click();
@@ -54,7 +55,7 @@ public class Folder2Test extends BaseTest {
                 "Отсутствует сообщение 'This folder is empty'");
     }
 
-    @Test(dependsOnMethods = {"testCreateFolder"})
+    @Test(dependsOnMethods = {"testFolderIsIdentifiedByTooltip"})
     public void testNewFolderDefaultAddedToExistingFolder() {
         final String childFolderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
 
@@ -87,7 +88,6 @@ public class Folder2Test extends BaseTest {
 
     @Test(dependsOnMethods = {"testCreateFolder"})
     public void testPutItemToFolder() {
-        final String subFolderName = "SubFolder";
         final String freestyleProjectName = "SubFreestyleProject";
         final String pipelineName = "SubPipeline";
         final String multiconfigurationProjectName = "SubMulticonfigurationProject";
@@ -95,7 +95,7 @@ public class Folder2Test extends BaseTest {
         final String organizationFolderName = "SubOrganizationFolder";
 
         final Object[][] items = {
-                {subFolderName, "Folder"},
+                {SUB_FOLDER_NAME, "Folder"},
                 {freestyleProjectName, "Freestyle project"},
                 {pipelineName, "Pipeline"},
                 {multiconfigurationProjectName, "Multi-configuration project"},
@@ -245,38 +245,38 @@ public class Folder2Test extends BaseTest {
                 "Ошибка в отображении иконок");
     }
 
-    @Test(dataProvider = "itemsProvider")
-    public void testFolderIsIdentifiedByTooltip(String itemType, String itemName) {
-        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
+    @Test(dependsOnMethods = {"testPutItemToFolder"})
+    public void testFolderIsIdentifiedByTooltip() {
         Actions actions = new Actions(getDriver());
 
-        createItem(folderName, "Folder");
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-        createItem(itemName, itemType);
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(MAIN_FOLDER_NAME))).click();
+
+        WebElement folderStatusIcon = getDriver().findElement(By.xpath(("//tr[td//a[span[text()='%s']]]" +
+                "//*[contains(@class, 'symbol-folder-outline')]").formatted(SUB_FOLDER_NAME)));
+        actions
+                .moveToElement(folderStatusIcon)
+                .perform();
+        String folderTooltipIDByAttribute = getDriver().findElement(By.xpath("//*[@aria-describedby]"))
+                .getAttribute("aria-describedby");
+        String folderTooltip = getDriver().findElement(By.xpath("//*[@id='%s']/div/div".formatted(folderTooltipIDByAttribute))).getText();
 
         List<String> tooltipTexts = new ArrayList<>();
         for (WebElement statusIcon : getDriver().findElements(By.xpath("//tr[contains(@class, 'job')]/td[1]//*[@tooltip]"))) {
             actions
                     .moveToElement(statusIcon)
                     .perform();
-            String tooltipIDByAttribute = getDriver().findElement(By.xpath("//*[@aria-describedby]"))
+            String itemTooltipIDByAttribute = getDriver().findElement(By.xpath("//*[@aria-describedby]"))
                     .getAttribute("aria-describedby");
-            getWait10().until(ExpectedConditions.presenceOfElementLocated(By.id(Objects.requireNonNull(tooltipIDByAttribute))));
-            tooltipTexts.add(getDriver().findElement(By.xpath("//*[@id='%s']/div/div".formatted(tooltipIDByAttribute))).getText());
+            tooltipTexts.add(getDriver().findElement(By.xpath("//*[@id='%s']/div/div".formatted(itemTooltipIDByAttribute))).getText());
         }
 
-        Assert.assertEquals(tooltipTexts.size(), 2);
-        if (itemType.equals("Folder")) {
-            Assert.assertEquals(
-                    tooltipTexts.get(0),
-                    tooltipTexts.get(1),
-                    "Тултипы у Folder не должны отличаться");
-        } else {
-            Assert.assertNotEquals(
-                    tooltipTexts.get(0),
-                    tooltipTexts.get(1),
-                    "Тултипы других элементов должны отличаться от тултипа Folder");
+        Assert.assertFalse(tooltipTexts.isEmpty(), "Список тултипов пуст");
+        int count = 0;
+        for (String tooltip : tooltipTexts) {
+            if (tooltip.equals(folderTooltip)) {
+                count++;
+            }
         }
+        Assert.assertEquals(count, 1, "В списке должно быть ровно одно значение тултип Folder");
     }
 }
