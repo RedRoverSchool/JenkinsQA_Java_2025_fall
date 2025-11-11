@@ -9,18 +9,13 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 
-import java.util.UUID;
-
 public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     private static final String PROJECT_NAME = "multibranchProjectName";
+    private static final String PROJECT_DESCRIPTION = "This is a project description";
 
     private void clickOnTheToggle() {
         getDriver().findElement(By.cssSelector("[data-title='Disabled']")).click();
-    }
-
-    private String getRandomAlphaNumericText() {
-        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     private void addProjectDescription(String projectDescription) {
@@ -114,38 +109,33 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
     public void testProjectDescriptionPreview() {
-        final String projectDescription = getRandomAlphaNumericText();
-
         openProjectConfigurationPage(PROJECT_NAME);
-        addProjectDescription(projectDescription);
+        addProjectDescription(PROJECT_DESCRIPTION);
 
         getDriver().findElement(By.className("textarea-show-preview")).click();
 
         WebElement previewTextarea = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview")));
 
-        Assert.assertEquals(previewTextarea.getText(), projectDescription);
+        Assert.assertEquals(previewTextarea.getText(), PROJECT_DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
     public void testMultibranchProjectDescription() {
-        final String projectDescriptionText = getRandomAlphaNumericText();
-
         openProjectConfigurationPage(PROJECT_NAME);
-        addProjectDescription(projectDescriptionText);
+        addProjectDescription(PROJECT_DESCRIPTION);
         submitForm();
 
         WebElement actualProjectDescription = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
 
-        Assert.assertEquals(actualProjectDescription.getText(), projectDescriptionText);
+        Assert.assertEquals(actualProjectDescription.getText(), PROJECT_DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
     public void testUpdateProjectDescription() {
-        final String initialProjectDescription = getRandomAlphaNumericText();
-        final String updatedProjectDescription = getRandomAlphaNumericText();
+        final String updatedProjectDescription = "This is a new project description";
 
         openProjectConfigurationPage(PROJECT_NAME);
-        addProjectDescription(initialProjectDescription);
+        addProjectDescription(PROJECT_DESCRIPTION);
         submitForm();
 
         getWait5()
