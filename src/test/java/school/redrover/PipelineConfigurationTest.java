@@ -64,8 +64,7 @@ public class PipelineConfigurationTest extends BaseTest {
         WebElement configureOptionMenu = getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]"));
         configureOptionMenu.click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        WebElement enableDisableToggle = wait.until(ExpectedConditions.visibilityOfElementLocated(toggleSwitch));
+        WebElement enableDisableToggle = getWait5().until(ExpectedConditions.visibilityOfElementLocated(toggleSwitch));
         enableDisableToggle.click();
 
         getDriver().findElement(By.name("Submit")).click();
