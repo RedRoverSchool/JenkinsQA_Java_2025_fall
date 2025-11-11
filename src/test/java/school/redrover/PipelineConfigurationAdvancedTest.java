@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
+
 import java.util.List;
 
 public class PipelineConfigurationAdvancedTest extends BaseTest {
@@ -159,5 +161,28 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 .toList();
 
         Assert.assertEquals(actualTooltipList, expectedTooltipList);
+    }
+
+    @Test(dependsOnMethods = {"testAdvancedSectionVerifyTooltips"})
+    public void testAdvancedSectionHelpAreaIsDisplayed() {
+        final String newPipelineName = "newPipeline_07";
+
+        TestUtils.clickJS(getDriver(), By.xpath(".//td/a[@href='job/%s/']".formatted(newPipelineName)));
+        getDriver().findElement(By
+                .xpath(".//a[@href='/job/%s/configure']".formatted(newPipelineName))).click();
+        advancedButtonClick();
+
+        List<WebElement> actualTooltipList = getDriver().findElements(By
+                .xpath(".//div[@id='advanced']/parent::section/descendant::a[@tooltip]"));
+        for (WebElement webElement : actualTooltipList) {
+            new Actions(getDriver())
+                    .moveToElement(webElement)
+                    .click()
+                    .perform();
+
+            Assert.assertTrue((getDriver().findElement(By
+                    .xpath(".//div[@id='advanced']/parent::section/descendant::div[@class = 'help']")))
+                    .isDisplayed());
+        }
     }
 }
