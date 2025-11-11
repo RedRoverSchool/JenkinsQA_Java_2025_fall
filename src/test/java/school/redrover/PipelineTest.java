@@ -3,13 +3,11 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 
@@ -86,13 +84,11 @@ public class PipelineTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(6));
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("jenkins-build-history"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-build-history"))).click();
         getDriver().findElement(By.xpath("//a[substring-before(@href, 'console')]")).click();
 
         WebElement consoleOutput = getDriver().findElement(By.id("out"));
-        wait.until(d -> consoleOutput.getText().contains("Finished:"));
+        getWait10().until(d -> consoleOutput.getText().contains("Finished:"));
 
         Assert.assertTrue(consoleOutput.getText().contains("Finished: SUCCESS"),
                 "Build output should contain 'Finished: SUCCESS'");
@@ -108,8 +104,7 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.name("description")).sendKeys(textDescription);
         getDriver().findElement(By.name("Submit")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
-        WebElement descriptionText = wait.until(
+        WebElement descriptionText = getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
 
         Assert.assertEquals(
@@ -198,26 +193,22 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(errorDescriptionModalWindow.getText(), "A problem occurred while processing the request");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testAddDescription")
     public void testEditDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
-        createPipeline(PIPELINE_NAME);
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'job/%s/']".formatted(PIPELINE_NAME))))
+                .click();
 
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys("description");
-        getDriver().findElement(By.name("Submit")).click();
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
                 .click();
         WebElement descriptionField = getDriver().findElement(By.name("description"));
         descriptionField.clear();
         descriptionField.sendKeys(textDescription);
         getDriver().findElement(By.name("Submit")).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
-        WebElement descriptionText = wait.until(
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
+        WebElement descriptionText = getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
 
         Assert.assertEquals(
