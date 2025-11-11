@@ -55,7 +55,7 @@ public class Folder2Test extends BaseTest {
                 "Отсутствует сообщение 'This folder is empty'");
     }
 
-    @Test(dependsOnMethods = {"testCreateFolder"})
+    @Test(dependsOnMethods = {"testFolderIsIdentifiedByIcon"})
     public void testNewFolderDefaultAddedToExistingFolder() {
         final String childFolderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
 
