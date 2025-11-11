@@ -94,4 +94,16 @@ public class NewItemPageTest extends BaseTest {
         pipelineType.click();
         Assert.assertEquals(pipelineType.getAttribute("aria-checked"), "true");
     }
+
+    @Test
+    public void testItemTypeChangesColorAndOkButtonEnables() {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Test Project");
+        WebElement pipelineType = getDriver().findElement(By.cssSelector("[class$='WorkflowJob']"));
+        pipelineType.click();
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        Assert.assertTrue(Objects.requireNonNull(pipelineType.getAttribute("class")).contains("active"));
+        Assert.assertTrue(okButton.isEnabled());
+    }
 }
