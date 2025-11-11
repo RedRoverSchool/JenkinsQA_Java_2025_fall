@@ -20,9 +20,7 @@ public class CreateNewItem7Test extends BaseTest{
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Freestyle Project"));
+        getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Freestyle Project"));
 
         WebElement projectTitle = getDriver().findElement(By.xpath("//h1"));
 
