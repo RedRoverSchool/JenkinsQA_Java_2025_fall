@@ -21,6 +21,12 @@ import java.util.UUID;
 public class Folder2Test extends BaseTest {
 
     private static final String MAIN_FOLDER_NAME = "MainFolder";
+    private static final String SUB_FOLDER_NAME = "SubFolder";
+    private static final String FREESTYLE_PROJECT_NAME = "SubFreestyleProject";
+    private static final String PIPELINE_NAME = "SubPipeline";
+    private static final String MULTICONFIGURATION_PROJECT_NAME = "SubMulticonfigurationProject";
+    private static final String MULTIBRANCH_PIPELINE_NAME = "SubMultibranchPipeline";
+    private static final String ORGANIZATION_FOLDER_NAME = "SubOrganizationFolder";
 
     private void createItem(String itemName, String itemType) {
         getDriver().findElement(By.linkText("New Item")).click();
@@ -54,7 +60,7 @@ public class Folder2Test extends BaseTest {
                 "Отсутствует сообщение 'This folder is empty'");
     }
 
-    @Test(dependsOnMethods = {"testCreateFolder"})
+    @Test(dependsOnMethods = {"testFindFolderContents"})
     public void testNewFolderDefaultAddedToExistingFolder() {
         final String childFolderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
 
@@ -87,20 +93,14 @@ public class Folder2Test extends BaseTest {
 
     @Test(dependsOnMethods = {"testCreateFolder"})
     public void testPutItemToFolder() {
-        final String subFolderName = "SubFolder";
-        final String freestyleProjectName = "SubFreestyleProject";
-        final String pipelineName = "SubPipeline";
-        final String multiconfigurationProjectName = "SubMulticonfigurationProject";
-        final String multibranchPipelineName = "SubMultibranchPipeline";
-        final String organizationFolderName = "SubOrganizationFolder";
-
         final Object[][] items = {
-                {subFolderName, "Folder"},
-                {freestyleProjectName, "Freestyle project"},
-                {pipelineName, "Pipeline"},
-                {multiconfigurationProjectName, "Multi-configuration project"},
-                {multibranchPipelineName, "Multibranch Pipeline"},
-                {organizationFolderName, "Organization Folder"}};
+                {FREESTYLE_PROJECT_NAME, "Freestyle project"},
+                {PIPELINE_NAME, "Pipeline"},
+                {MULTICONFIGURATION_PROJECT_NAME, "Multi-configuration project"},
+                {SUB_FOLDER_NAME, "Folder"},
+                {MULTIBRANCH_PIPELINE_NAME, "Multibranch Pipeline"},
+                {ORGANIZATION_FOLDER_NAME, "Organization Folder"}
+        };
 
         for (Object[] item : items) {
             String itemName = (String) item[0];
@@ -185,44 +185,48 @@ public class Folder2Test extends BaseTest {
                 "Несоответствие содержимого папок");
     }
 
-    @Test
+    @Test(dependsOnMethods = {"testPutItemToFolder"})
     public void testFindFolderContents() {
-        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
-        final String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);
-        final String freestyleName = "Freestyle" + UUID.randomUUID().toString().substring(0, 3);
+        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(MAIN_FOLDER_NAME))).click();
 
-        createItem(folderName, "Folder");
-        createItem(pipelineName, "Pipeline");
-        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(folderName))).click();
-        createItem(freestyleName, "Freestyle project");
-        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(folderName))).click();
-
+        List<String> itemNames = getTextsOfItems("//a[contains(@class, 'jenkins-table__link')]");
         Assert.assertEquals(
-                new HashSet<>(getTextsOfItems("//a[contains(@class, 'jenkins-table__link')]")),
-                new HashSet<>(List.of(freestyleName, pipelineName)),
+                itemNames.size(),
+                6,
+                "Неверное ожидаемое количество элементов");
+        Assert.assertEquals(
+                itemNames,
+                List.of(SUB_FOLDER_NAME, FREESTYLE_PROJECT_NAME, MULTIBRANCH_PIPELINE_NAME,
+                        MULTICONFIGURATION_PROJECT_NAME, ORGANIZATION_FOLDER_NAME, PIPELINE_NAME),
                 "Неверное отображение элементов");
 
         getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-        getDriver().findElement(By.id("root-action-SearchAction")).click();
-        WebElement searchInput = getDriver().findElement(By.id("command-bar"));
-        searchInput.sendKeys(pipelineName);
-        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
-                "//a[contains(text(), 'Get help using Jenkins search')]")));
-        Assert.assertTrue(getTextsOfItems("//div[@id='search-results']//a").
-                        contains("%s » %s".formatted(folderName, pipelineName)),
-                "Список результатов поиска не содержит нужный элемент");
 
-        new Actions(getDriver())
-                .moveToElement(searchInput, 0, -50)
-                .click()
-                .perform();
-        getDriver().findElement(By.id("root-action-SearchAction")).click();
-        getDriver().findElement(By.id("command-bar")).sendKeys(freestyleName);
-        getWait10().until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
-                "//div[contains(text(), 'Get help using Jenkins search')]")));
-        Assert.assertTrue(getTextsOfItems("//div[@id='search-results']//a").
-                        contains("%s » %s".formatted(folderName, freestyleName)),
-                "Список результатов поиска не содержит нужный элемент");
+        String previousItemName = "";
+        for (String itemName : itemNames) {
+            getDriver().findElement(By.id("root-action-SearchAction")).click();
+            WebElement searchInput = getDriver().findElement(By.id("command-bar"));
+            searchInput.clear();
+            searchInput.sendKeys(itemName);
+            getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-command-palette__results__heading")));
+
+            if (!previousItemName.isEmpty()) {
+                String finalPreviousItemName = previousItemName;
+                getWait5().until(driver ->
+                        !driver.findElement(By.xpath("//div[@id='search-results']//a")).getText().contains(finalPreviousItemName));
+            }
+
+            List<String> searchResults = getTextsOfItems("//div[@id='search-results']//a");
+            Assert.assertFalse(searchResults.isEmpty(), "Результаты поиска не должны быть пусты");
+            Assert.assertTrue(searchResults.contains("%s » %s".formatted(MAIN_FOLDER_NAME, itemName)),
+                    "Список результатов поиска не содержит нужный элемент (%s)".formatted(itemName));
+
+            new Actions(getDriver())
+                    .moveToElement(searchInput, 0, -50)
+                    .click()
+                    .perform();
+            previousItemName = itemName;
+        }
     }
 
     @Test(dataProvider = "itemsProvider")
