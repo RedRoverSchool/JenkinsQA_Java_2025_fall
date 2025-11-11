@@ -1,11 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class CreateUser3Test extends BaseTest {
+
     @Test
     public void testSuccessfulUserCreation() {
         final String username = "new_test";
@@ -20,6 +22,9 @@ public class CreateUser3Test extends BaseTest {
         getDriver().findElement(By.name("password2")).sendKeys(password);
         getDriver().findElement(By.name("email")).sendKeys(email);
         getDriver().findElement(By.name("Submit")).click();
+
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//table[@id='people']")));
 
         getDriver().findElement(By.xpath("//a[contains(@href, 'securityRealm')]")).click();
         boolean userExists = getDriver().findElement(By.xpath("//table//a[text()='" + username + "']")).isDisplayed();
