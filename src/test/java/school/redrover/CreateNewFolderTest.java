@@ -9,7 +9,10 @@ import school.redrover.common.BaseTest;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.testng.Assert.assertTrue;
 
 public class CreateNewFolderTest extends BaseTest {
 
@@ -41,15 +44,14 @@ public class CreateNewFolderTest extends BaseTest {
         WebElement logoJenkins =
                 getDriver().findElement(By.xpath("//*[@id='jenkins-head-icon']"));
         logoJenkins.click();
-
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-        List<WebElement> allFolders = getDriver().findElements(By.cssSelector(".jenkins-jobs-list__item__label"));
-        boolean folderFound = false;
-        for (WebElement folder : allFolders) {
-            if (folder.getText().trim().equals(folderName)) {
-                folderFound = true;
-                break;
-            }
+        List<WebElement> trElements = getDriver().findElements(
+                By.xpath("//tr[@id]"));
+        List<String> jobNames = new ArrayList<>();
+        for (WebElement tr : trElements) {
+            String id = tr.getAttribute("id");
+            String name = id.replaceFirst("^job_", "");
+            jobNames.add(name);
         }
+        assertTrue(jobNames.contains(folderName), "Folder NOT found: " + folderName);
     }
 }
