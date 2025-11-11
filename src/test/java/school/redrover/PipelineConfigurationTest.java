@@ -51,27 +51,25 @@ public class PipelineConfigurationTest extends BaseTest {
         Assert.assertEquals(disabledText, "Disabled");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testDisableProject")
     public void testActivityStatusProject() {
-        final String projectName = "Disable Project";
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        final String projectName = "ChangeStatusDisabledTest";
 
-        createFreestyleProject(projectName);
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@href='job/%s/']".formatted(projectName)))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@href='/job/%s/configure']".formatted(projectName)))).click();
 
         getDriver().findElement(toggleSwitch).click();
         getDriver().findElement(By.name("Submit")).click();
-        wait.until(ExpectedConditions.elementToBeClickable((By.id("jenkins-head-icon")))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable((By.id("jenkins-head-icon")))).click();
 
-        WebElement status = getDriver().findElement(By.xpath("//*[@id='job_%s']/td[1]/div".formatted(projectName)));
-
-        Actions actions = new Actions(getDriver());
-        actions
-                .moveToElement(status)
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//*[@id='job_%s']/td[1]/div".formatted(projectName))))
                 .perform();
 
-        String actualStatus = wait.until(ExpectedConditions.visibilityOfElementLocated(
+        String actualStatus = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.cssSelector("[data-tippy-root]"))).getText();
-
         Assert.assertEquals(actualStatus, "Disabled");
     }
 }
