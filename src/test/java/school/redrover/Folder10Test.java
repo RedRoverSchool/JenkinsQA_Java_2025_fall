@@ -47,7 +47,7 @@ public class Folder10Test extends BaseTest {
 
     @Test
     public void testCreate() {
-        final String folderName = "Folder1";
+        final String folderName = "Folder name";
 
         List<String> myList = new HomePage(getDriver())
                 .clickNewItem()
