@@ -47,7 +47,9 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testCreateMultibranchPipeline(){
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), MULTIBRANCH_PIPELINE_NAME);
+        String actualName = getWait2().until(ExpectedConditions
+                        .visibilityOfElementLocated(By.tagName("h1"))).getText();
+        Assert.assertEquals(actualName, MULTIBRANCH_PIPELINE_NAME);
 
         Assert.assertTrue(getDriver().findElement(By.className("empty-state-section"))
                         .getText().contains("This folder is empty"));
