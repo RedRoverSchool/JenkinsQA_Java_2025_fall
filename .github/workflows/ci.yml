@@ -22,8 +22,10 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
-      - name: Get list of changed files
-        run: bash .github/changed_files.sh
+      - name: Get list of deleted and changed files
+        run: |
+          echo "CHANGED_FILES=$(git diff --diff-filter=ACMRT --name-only --find-renames=100% $(git merge-base origin/main HEAD) HEAD | tr '\n' ';')" >> $GITHUB_ENV
+          echo "DELETED_FILES=$(git diff --diff-filter=D --name-only $(git merge-base origin/main HEAD) HEAD | tr '\n' ';')" >> $GITHUB_ENV
 
 # tar -cvf jenkins_backup.tar ./jenkins_backup
 # split -b 90m -d jenkins_backup.tar jenkins_backup

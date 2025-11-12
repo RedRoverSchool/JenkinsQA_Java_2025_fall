@@ -5,19 +5,36 @@ import org.testng.*;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FilterForTests implements IMethodInterceptor {
 
     @Override
     public List<IMethodInstance> intercept(List<IMethodInstance> methods, ITestContext context) {
+        String changed = System.getenv("CHANGED_TEST_FILES");
+        String deleted = System.getenv("DELETED_TEST_FILES");
 
-        String files = System.getenv("LIST_OF_CHANGED_FILES");
-        if (files != null) {
-            if (files.equals("FULL_RUN")) {
+        if (changed != null || deleted != null) {
+            Set<String> changedFiles = new HashSet<>();
+            Set<String> deletedFiles = new HashSet<>();
+
+            for (String f : changed.split(";")) {
+                String path = f.trim();
+                changedFiles.add(path);
+            }
+
+            for (String f : deleted.split(";")) {
+                String path = f.trim();
+                deletedFiles.add(path);
+            }
+
+            boolean hasNonTest = Stream.concat(deletedFiles.stream(), changedFiles.stream())
+                    .anyMatch(f -> !f.endsWith("Test.java"));
+
+            if (hasNonTest) {
                 return methods;
             }
 
-            Set<String> fileSet = new HashSet<>(Arrays.asList(files.split(";")));
             Map<Class<?>, String> classMap = methods.stream()
                     .map(IMethodInstance::getMethod).map(ITestNGMethod::getTestClass).map(IClass::getRealClass)
                     .collect(Collectors.toMap(
@@ -26,9 +43,9 @@ public class FilterForTests implements IMethodInterceptor {
                             (pathA, pathB) -> pathA
                     ));
 
-            if (classMap.values().containsAll(fileSet)) {
-                return methods.stream().filter(method -> fileSet.contains(classMap.get(method.getMethod().getTestClass().getRealClass()))).collect(Collectors.toList());
-            }
+            return methods.stream()
+                    .filter(method -> changedFiles.contains(classMap.get(method.getMethod().getTestClass().getRealClass())))
+                    .collect(Collectors.toList());
         }
 
         return methods;
