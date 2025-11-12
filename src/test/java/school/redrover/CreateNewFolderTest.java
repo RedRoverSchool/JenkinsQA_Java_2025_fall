@@ -34,17 +34,18 @@ public class CreateNewFolderTest extends BaseTest {
 
         getDriver().findElement(By.id("ok-button")).click();
 
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//span[text()='General']")));
+        
         WebElement generalHeader = getDriver().findElement(By.xpath("//span[text()='General']"));
 
         WebElement saveButton =
                 getDriver().findElement(By.xpath("//button[contains(@class, 'jenkins-submit-button')]"));
         saveButton.click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        getWait2().until(ExpectedConditions.textToBePresentInElementLocated(
+                By.tagName("h1"), folderName));
 
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(
-                By.tagName("h1"), folderName
-        ));
         WebElement folderTitleIn =
                 getDriver().findElement(By.tagName("h1"));
 
@@ -52,6 +53,7 @@ public class CreateNewFolderTest extends BaseTest {
                 getDriver().findElement(By.xpath("//*[@id='jenkins-head-icon']"));
         logoJenkins.click();
 
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[@id]")));
 
         List<WebElement> trElements = getDriver().findElements(
                 By.xpath("//tr[@id]"));
