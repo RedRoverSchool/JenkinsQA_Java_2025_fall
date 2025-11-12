@@ -9,8 +9,8 @@ import school.redrover.common.BaseTest;
 
 public class FolderSettingsTest extends BaseTest {
 
-    private static String FOLDER_NAME = "Just folder";
-    private static String DISPLAY_NAME = "Look at this";
+    private static final String FOLDER_NAME = "Just folder";
+    private static final String DISPLAY_NAME = "Look at this";
 
     @Test
     public void testDisplayName() {
