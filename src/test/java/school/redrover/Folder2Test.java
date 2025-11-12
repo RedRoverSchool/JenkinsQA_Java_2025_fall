@@ -20,7 +20,7 @@ import java.util.UUID;
 
 public class Folder2Test extends BaseTest {
 
-    private static final String FOLDER_NAME_1 = "Folder1";
+    private static final String MAIN_FOLDER_NAME = "MainFolder";
 
     private void createItem(String itemName, String itemType) {
         getDriver().findElement(By.linkText("New Item")).click();
@@ -29,8 +29,8 @@ public class Folder2Test extends BaseTest {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", selectedItemType);
         selectedItemType.click();
         getDriver().findElement(By.id("ok-button")).click();
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
-        getWait10().until(driver -> Objects.requireNonNull(driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+        getWait5().until(driver -> Objects.requireNonNull(driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
     }
 
     private List<String> getTextsOfItems(String xpathLocator) {
@@ -43,11 +43,11 @@ public class Folder2Test extends BaseTest {
 
     @Test
     public void testCreateFolder() {
-        createItem(FOLDER_NAME_1, "Folder");
+        createItem(MAIN_FOLDER_NAME, "Folder");
 
         Assert.assertEquals(
                 getDriver().findElement(By.tagName("h1")).getText(),
-                FOLDER_NAME_1,
+                MAIN_FOLDER_NAME,
                 "Неверное название папки");
         Assert.assertTrue(
                 getDriver().findElement(By.className("empty-state-section")).getText().contains("This folder is empty"),
@@ -55,15 +55,15 @@ public class Folder2Test extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testCreateFolder"})
-    public void testNewFolderDefaultAddedToExistingFolder() throws InterruptedException {
+    public void testNewFolderDefaultAddedToExistingFolder() {
         final String childFolderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
 
-        TestUtils.clickJS(getDriver(), By.xpath("//td/a[@href='job/%s/']".formatted(FOLDER_NAME_1)));
+        TestUtils.clickJS(getDriver(), By.xpath("//td/a[@href='job/%s/']".formatted(MAIN_FOLDER_NAME)));
         createItem(childFolderName, "Folder");
 
         Assert.assertEquals(
                 getTextsOfItems("//ol[@id='breadcrumbs']/li/a"),
-                List.of(FOLDER_NAME_1, childFolderName),
+                List.of(MAIN_FOLDER_NAME, childFolderName),
                 "Путь хлебных крошек не соответствует ожиданию");
     }
 
@@ -83,29 +83,47 @@ public class Folder2Test extends BaseTest {
                 {"Folder", folderName},
                 {"Multibranch Pipeline", multibrPipName},
                 {"Organization Folder", orgFolderName}
-        };
-    }
+        };}
 
-    @Test(dataProvider = "itemsProvider")
-    public void testPutItemToFolder(String itemType, String itemName) {
-        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
+    @Test(dependsOnMethods = {"testCreateFolder"})
+    public void testPutItemToFolder() {
+        final String subFolderName = "SubFolder";
+        final String freestyleProjectName = "SubFreestyleProject";
+        final String pipelineName = "SubPipeline";
+        final String multiconfigurationProjectName = "SubMulticonfigurationProject";
+        final String multibranchPipelineName = "SubMultibranchPipeline";
+        final String organizationFolderName = "SubOrganizationFolder";
 
-        createItem(folderName, "Folder");
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-        createItem(itemName, itemType);
+        final Object[][] items = {
+                {subFolderName, "Folder"},
+                {freestyleProjectName, "Freestyle project"},
+                {pipelineName, "Pipeline"},
+                {multiconfigurationProjectName, "Multi-configuration project"},
+                {multibranchPipelineName, "Multibranch Pipeline"},
+                {organizationFolderName, "Organization Folder"}};
 
-        getDriver().findElement(By.xpath("//a[contains(@href, 'move')]")).click();
-        Select selectObject = new Select(getDriver().findElement(By.className("jenkins-select__input")));
-        selectObject.selectByVisibleText("Jenkins » %s".formatted(folderName));
-        getDriver().findElement(By.name("Submit")).click();
+        for (Object[] item : items) {
+            String itemName = (String) item[0];
+            String itemType = (String) item[1];
+            createItem(itemName, itemType);
 
-        getWait10().until(driver -> Objects.requireNonNull(
-                driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
+            getDriver().findElement(By.xpath("//a[contains(@href, 'move')]")).click();
+            Select selectObject = new Select(getDriver().findElement(By.className("jenkins-select__input")));
+            selectObject.selectByVisibleText("Jenkins » %s".formatted(MAIN_FOLDER_NAME));
+            getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(
-                getTextsOfItems("//ol[@id='breadcrumbs']/li/a"),
-                List.of(folderName, itemName),
-                "Путь хлебных крошек не соответствует ожиданию");
+            getWait5().until(driver -> Objects.requireNonNull(
+                    driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
+
+            List<String> breadcrumbTexts = getTextsOfItems("//ol[@id='breadcrumbs']/li/a");
+            Assert.assertFalse(breadcrumbTexts.isEmpty(), "Хлебные крошки не должны быть пусты");
+            Assert.assertEquals(
+                    breadcrumbTexts,
+                    List.of(MAIN_FOLDER_NAME, itemName),
+                    "Путь хлебных крошек не соответствует ожиданию");
+
+            getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+        }
     }
 
     @Test
@@ -225,5 +243,40 @@ public class Folder2Test extends BaseTest {
                 new HashSet<>(getTextsOfItems(xpathForItemNameByIconAttribute)),
                 new HashSet<>(expectedItems),
                 "Ошибка в отображении иконок");
+    }
+
+    @Test(dataProvider = "itemsProvider")
+    public void testFolderIsIdentifiedByTooltip(String itemType, String itemName) {
+        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
+        Actions actions = new Actions(getDriver());
+
+        createItem(folderName, "Folder");
+        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+        createItem(itemName, itemType);
+        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
+
+        List<String> tooltipTexts = new ArrayList<>();
+        for (WebElement statusIcon : getDriver().findElements(By.xpath("//tr[contains(@class, 'job')]/td[1]//*[@tooltip]"))) {
+            actions
+                    .moveToElement(statusIcon)
+                    .perform();
+            String tooltipIDByAttribute = getDriver().findElement(By.xpath("//*[@aria-describedby]"))
+                    .getAttribute("aria-describedby");
+            getWait10().until(ExpectedConditions.presenceOfElementLocated(By.id(Objects.requireNonNull(tooltipIDByAttribute))));
+            tooltipTexts.add(getDriver().findElement(By.xpath("//*[@id='%s']/div/div".formatted(tooltipIDByAttribute))).getText());
+        }
+
+        Assert.assertEquals(tooltipTexts.size(), 2);
+        if (itemType.equals("Folder")) {
+            Assert.assertEquals(
+                    tooltipTexts.get(0),
+                    tooltipTexts.get(1),
+                    "Тултипы у Folder не должны отличаться");
+        } else {
+            Assert.assertNotEquals(
+                    tooltipTexts.get(0),
+                    tooltipTexts.get(1),
+                    "Тултипы других элементов должны отличаться от тултипа Folder");
+        }
     }
 }
