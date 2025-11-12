@@ -16,4 +16,11 @@ public class MultibranchPipelineProjectPage extends BasePage {
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='view-message']/../h1")))
                 .getText();
     }
+
+    public ConfigurationMultibranchPipelinePage clickConfigureLinkInSideMenu() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']")))
+                .click();
+
+        return new ConfigurationMultibranchPipelinePage(getDriver());
+    }
 }

@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
 
 import java.util.List;
 
@@ -24,5 +25,11 @@ public class HomePage extends BasePage {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public <T extends BasePage> T openProjectPage(String projectName, T resultPage) {
+        TestUtils.clickJS(getDriver(), By.cssSelector("td > a[href='job/%s/']".formatted(projectName)));
+
+        return resultPage;
     }
 }
