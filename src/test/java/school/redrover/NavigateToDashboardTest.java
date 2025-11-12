@@ -14,7 +14,7 @@ import java.util.List;
 public class NavigateToDashboardTest extends BaseTest {
 
     @Test
-    public void testCheckAccessDashboardFromLogo(){
+    public void testCheckAccessDashboardFromLogo() {
         clickElement(By.id("root-action-ManageJenkinsAction"));
         clickElement(By.linkText("Jenkins"));
 
@@ -22,7 +22,7 @@ public class NavigateToDashboardTest extends BaseTest {
     }
 
     @Test
-    public void testVerifyDashboardDisplay(){
+    public void testVerifyDashboardDisplay() {
         int countOfItem = 4;
         for (int i = 1; i <= countOfItem; i++) {
             createItem("TestProject_" + i);
@@ -32,7 +32,7 @@ public class NavigateToDashboardTest extends BaseTest {
         Assert.assertTrue(items.size() >= countOfItem,
                 "Not all created Jenkins items are displayed on the Dashboard");
 
-        for (WebElement element: items){
+        for (WebElement element : items) {
             System.out.println(element.getDomAttribute("id"));
             WebElement status = element.findElement(By.cssSelector("td[data='12']"));
             String itemName = element.getText().split(" ")[0];
@@ -42,7 +42,7 @@ public class NavigateToDashboardTest extends BaseTest {
         }
     }
 
-    void createItem(String name){
+    void createItem(String name) {
         clickElement(By.linkText("New Item"));
         sendText(By.id("name"), name);
         clickElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']"));
@@ -51,12 +51,12 @@ public class NavigateToDashboardTest extends BaseTest {
         clickLogoToGoHome();
     }
 
-    private void clickElement(By locator){
+    private void clickElement(By locator) {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 getDriver().findElement(locator))).click();
     }
 
-    private void sendText(By locator, String text){
+    private void sendText(By locator, String text) {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(locator)).clear();
         getDriver().findElement(locator).sendKeys(text);
     }
