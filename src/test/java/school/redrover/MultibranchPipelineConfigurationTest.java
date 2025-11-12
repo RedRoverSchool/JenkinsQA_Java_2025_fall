@@ -173,9 +173,8 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         renameProject(updatedProjectName);
         submitForm();
 
-        getWait5().until(ExpectedConditions.urlContains("/job"));
-
-        WebElement actualHeading = getDriver().findElement(By.tagName("h1"));
+        WebElement actualHeading = getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='view-message']/../h1")));
 
         Assert.assertEquals(actualHeading.getText(), updatedProjectName);
     }
