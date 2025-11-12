@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
 
@@ -52,17 +53,14 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @Test
     public void testCreateMultibranchPipelineProject() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
-        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
+        String actualHeadingText = new HomePage(getDriver())
+                .clickNewItem()
+                .sendName(PROJECT_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .submitForm()
+                .getHeadingText();
 
-        TestUtils.clickJS(getDriver(), By.cssSelector("[class$='MultiBranchProject']"));
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-
-        getWait5().until(ExpectedConditions.urlContains("/configure"));
-        submitForm();
-
-        WebElement actualHeading = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel > h1")));
-        Assert.assertEquals(actualHeading.getText(), PROJECT_NAME);
+        Assert.assertEquals(actualHeadingText, PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
