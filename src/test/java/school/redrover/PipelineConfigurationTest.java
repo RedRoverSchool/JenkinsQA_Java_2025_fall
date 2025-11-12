@@ -2,12 +2,14 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import javax.swing.*;
 import java.time.Duration;
 
 public class PipelineConfigurationTest extends BaseTest {
@@ -18,6 +20,14 @@ public class PipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(name);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
+    }
+
+    private void createPipelineProject(String name) {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(name);
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
+        getDriver().findElement(By.name("Submit")).click();
     }
 
     @Test
@@ -47,5 +57,44 @@ public class PipelineConfigurationTest extends BaseTest {
                         By.className("jenkins-toggle-switch__label__unchecked-title")
                 )).getText();
         Assert.assertEquals(disabledText, "Disabled");
+    }
+
+    @Test(dependsOnMethods = "testDisableProject")
+    public void testActivityStatusProject() {
+        final String projectName = "ChangeStatusDisabledTest";
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@href='job/%s/']".formatted(projectName)))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@href='/job/%s/configure']".formatted(projectName)))).click();
+
+        getDriver().findElement(toggleSwitch).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable((By.id("jenkins-head-icon")))).click();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//*[@id='job_%s']/td[1]/div".formatted(projectName))))
+                .perform();
+
+        String actualStatus = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("[data-tippy-root]"))).getText();
+        Assert.assertEquals(actualStatus, "Disabled");
+    }
+
+    @Test
+    public void testDisablePipelineProject() {
+        createPipelineProject("PipelineProject");
+
+        WebElement configureOptionMenu = getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]"));
+        configureOptionMenu.click();
+
+        WebElement enableDisableToggle = getWait5().until(ExpectedConditions.visibilityOfElementLocated(toggleSwitch));
+        enableDisableToggle.click();
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        String message = getDriver().findElement(By.id("enable-project")).getText();
+        Assert.assertEquals(message, "This project is currently disabled\n" +
+                "Enable");
     }
 }
