@@ -10,6 +10,7 @@ import school.redrover.common.BaseTest;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 
 public class NewItemPageTest extends BaseTest {
     private final By newItemButtonFromHomePage = By.xpath(".//div[@id='tasks']/div[1]/span/a");
@@ -60,5 +61,37 @@ public class NewItemPageTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#projectstatus > :nth-child(2) > :nth-child(1) > :nth-child(3) > a > span")).getText(), itemName);
 
+    }
+
+    @Test
+    public void testSelectItemTypeIsVisible() {
+        final List<String> expectedItemTypes = List.of(
+                "Freestyle project",
+                "Pipeline",
+                "Multi-configuration project",
+                "Folder",
+                "Multibranch Pipeline",
+                "Organization Folder"
+        );
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        WebElement sectionTitle = getDriver().findElement(By.xpath("//div[text()='Select an item type']"));
+        List<WebElement> actualItemTypes = getDriver().findElements(By.xpath("//div[@id='items']//label"));
+        Assert.assertNotEquals(actualItemTypes.size(), 0);
+        for (int i = 0; i < expectedItemTypes.size(); i++) {
+            Assert.assertTrue(actualItemTypes.get(i).isDisplayed());
+        }
+        Assert.assertTrue(sectionTitle.isDisplayed());
+    }
+
+    @Test
+    public void testSelectItemTypeAfterNameEnter() {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Test Project");
+        WebElement pipelineType = getDriver().findElement(By.cssSelector("[class$='WorkflowJob']"));
+        pipelineType.click();
+        Assert.assertEquals(pipelineType.getAttribute("aria-checked"), "true");
     }
 }

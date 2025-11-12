@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -13,7 +14,7 @@ import school.redrover.common.BaseTest;
 public class MultibranchPipeline2Test extends BaseTest {
 
     @Test
-    public void testCreateMultibranchPipelineByNew() throws InterruptedException {
+    public void testCreateMultibranchPipelineByNew() {
         final String multibranchName = "MultibranchName";
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
@@ -26,15 +27,10 @@ public class MultibranchPipeline2Test extends BaseTest {
         multibranchPipline.click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
-
-        Thread.sleep(2000);
-
-        getDriver().findElement(By.xpath("//a[@href='/']")).click();
-
-        Thread.sleep(2000);
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']"))).click();
 
         Assert.assertEquals(
-                getDriver().findElement(By.xpath("//a[@href='job/%s/']".formatted(multibranchName))).getText(),
+                getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='job/%s/']".formatted(multibranchName)))).getText(),
                 multibranchName);
     }
 }
