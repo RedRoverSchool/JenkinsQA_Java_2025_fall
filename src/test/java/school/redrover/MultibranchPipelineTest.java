@@ -25,7 +25,6 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-
     @Test
     public void testAddingDescriptionCreatingMultibranch() {
         final String expectedDescription = "AddedDescription";
@@ -45,14 +44,18 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    @Ignore
-    public void testTryCreateProjectExistName() {
-        final String errorMessage = "» A job already exists with the name " + "‘" + MULTIBRANCH_PIPELINE_NAME + "’";
-
+    public void testCreateMultibranchPipeline(){
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
-        getWait5().until(ExpectedConditions
-                .elementToBeClickable(By.cssSelector("span.jenkins-mobile-hide"))).click();
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), MULTIBRANCH_PIPELINE_NAME);
+
+        Assert.assertTrue(getDriver().findElement(By.className("empty-state-section"))
+                        .getText().contains("This folder is empty"));
+    }
+
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testTryCreateProjectExistName() {
+        final String errorMessage = "» A job already exists with the name " + "‘" + MULTIBRANCH_PIPELINE_NAME + "’";
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
