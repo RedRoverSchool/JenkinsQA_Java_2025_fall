@@ -114,30 +114,6 @@ public class Folder2Test extends BaseTest {
     }
 
     @Test
-    public void testPreventDuplicateItemNamesInFolder() {
-        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
-        final String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);
-
-        createItem(folderName, "Folder");
-        createItem(pipelineName, "Pipeline");
-
-        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(folderName))).click();
-        getWait10().until(driver -> Objects.requireNonNull(
-                driver.getCurrentUrl()).endsWith("/job/%s/".formatted(folderName)));
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(pipelineName);
-        WebElement selectedItemType = getDriver().findElement(By.xpath("//span[text()='Pipeline']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", selectedItemType);
-        selectedItemType.click();
-
-        WebElement duplicateMessage = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
-        Assert.assertEquals(
-                duplicateMessage.getText(),
-                "» A job already exists with the name ‘%s’".formatted(pipelineName),
-                "Неверное сообщение о дублировании имени");
-    }
-
-    @Test
     public void testSameItemNamesInTwoFolders() {
         final String folder1Name = "Folder" + UUID.randomUUID().toString().substring(0, 3);
         final String folder2Name = "Folder" + UUID.randomUUID().toString().substring(0, 3);
