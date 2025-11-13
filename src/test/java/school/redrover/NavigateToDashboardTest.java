@@ -32,7 +32,6 @@ public class NavigateToDashboardTest extends BaseTest {
             String itemName = "TestProject_" + i;
             createItem(itemName);
             createdProjects.add(itemName);
-
         }
 
         List<WebElement> items = getDriver().findElements(By.cssSelector("tr[id]"));
@@ -76,8 +75,8 @@ public class NavigateToDashboardTest extends BaseTest {
     }
 
     private void clickElement(By locator) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                getDriver().findElement(locator))).click();
+        getWait5().until(
+                ExpectedConditions.elementToBeClickable(getDriver().findElement(locator))).click();
     }
 
     private void sendText(By locator, String text) {
