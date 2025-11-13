@@ -6,10 +6,9 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.FolderPage;
 import school.redrover.page.HomePage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
-import java.util.Map;
+
 
 public class FolderSettingsTest extends BaseTest {
 
