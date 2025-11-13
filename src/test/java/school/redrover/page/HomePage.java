@@ -31,6 +31,8 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName))).click();
 
         return new FolderPage(getDriver());
+    }
+    
     public <T extends BasePage> T openJobPage(String jobName, T resultPage) {
         TestUtils.clickJS(getDriver(), By.cssSelector("#projectstatus a[href='job/%s/']".formatted(jobName)));
 
