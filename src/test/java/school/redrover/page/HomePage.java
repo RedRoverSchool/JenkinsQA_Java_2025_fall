@@ -32,4 +32,10 @@ public class HomePage extends BasePage {
 
         return resultPage;
     }
+
+    public FolderPage openFolderPage(String folderName) {
+        getDriver().findElement(By.linkText(folderName)).click();
+
+        return new FolderPage(getDriver());
+    }
 }
