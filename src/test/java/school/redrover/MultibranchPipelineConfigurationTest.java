@@ -83,7 +83,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         String actualTooltipText = new HomePage(getDriver())
                 .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
-                .getToggleTooltipText();
+                .getToggleTooltipTextOnHover();
 
         Assert.assertEquals(actualTooltipText, expectedTooltipText);
     }

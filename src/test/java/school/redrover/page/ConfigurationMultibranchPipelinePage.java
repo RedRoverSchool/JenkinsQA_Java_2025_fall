@@ -35,7 +35,7 @@ public class ConfigurationMultibranchPipelinePage extends BasePage {
         return "Enabled";
     }
 
-    public String getToggleTooltipText() {
+    public String getToggleTooltipTextOnHover() {
         WebElement toggleElement = getWait5()
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("toggle-switch-enable-disable-project")));
 
