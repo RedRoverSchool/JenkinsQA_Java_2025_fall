@@ -23,7 +23,7 @@ public class MultibranchPipeline2Test extends BaseTest {
                 .gotoHomePage()
                 .getProjectList();
 
-        Assert.assertNotEquals(projectList.size(),0);
+        Assert.assertNotEquals(projectList.size(), 0);
         Assert.assertEquals(projectList.get(0), multibranchName);
     }
 }
