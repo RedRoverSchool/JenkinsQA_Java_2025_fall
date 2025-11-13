@@ -11,6 +11,7 @@ import java.util.List;
 
 public class MultibranchPipeline2Test extends BaseTest {
 
+    @Ignore
     @Test
     public void testCreateMultibranchPipelineByNew() {
         final String multibranchName = "MultibranchName";

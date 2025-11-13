@@ -7,21 +7,26 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.time.Duration;
+import java.util.List;
 
-public class NewItemFolderTest extends BaseTest {
+public class Folder10Test extends BaseTest {
 
     public WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-    public void clickMethod(WebElement element){
+
+    public void clickMethod(WebElement element) {
         wait.until(ExpectedConditions.elementToBeClickable(element));
         element.click();
     }
-    public void sendKeysMethod(WebElement element, String text){
+
+    public void sendKeysMethod(WebElement element, String text) {
         wait.until(ExpectedConditions.visibilityOf(element));
         element.sendKeys(text);
     }
-    public void createNewFolderMethod(String folderName){
+
+    public void createNewFolderMethod(String folderName) {
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='New Item']/.."))
         );
@@ -41,23 +46,22 @@ public class NewItemFolderTest extends BaseTest {
     }
 
     @Test
-    public void testCreateFolder(){
-        String folderName = "My Folder Name";
-        createNewFolderMethod(folderName);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
-        );
+    public void testCreate() {
+        final String folderName = "Folder name";
 
-        WebElement newFolder = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)));
-        Assert.assertTrue(newFolder.isDisplayed());
+        List<String> myList = new HomePage(getDriver())
+                .clickNewItem()
+                .sendName(folderName)
+                .selectFolderAndSubmit()
+                .gotoHomePage()
+                .getProjectList();
+
+        Assert.assertNotEquals(myList.size(), 0);
+        Assert.assertEquals(myList.get(0), folderName);
     }
+
     @Test
-    public void testFolderIsEmpty(){
+    public void testFolderIsEmpty() {
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
         try {
@@ -74,10 +78,11 @@ public class NewItemFolderTest extends BaseTest {
 
         String actualContext = getDriver().findElement(By.xpath("//h2[text()='This folder is empty']")).getText();
         String expectedContext = "This folder is empty";
-        Assert.assertEquals(actualContext,expectedContext);
+        Assert.assertEquals(actualContext, expectedContext);
     }
+
     @Test
-    public void testCreateJobToFolder(){
+    public void testCreateJobToFolder() {
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
         try {
@@ -96,7 +101,7 @@ public class NewItemFolderTest extends BaseTest {
         );
         String freestyleJob = "new freestyle job";
         sendKeysMethod(
-                getDriver().findElement(By.id("name")),freestyleJob
+                getDriver().findElement(By.id("name")), freestyleJob
         );
         clickMethod(
                 getDriver().findElement(By.xpath("//span[text()='Freestyle project']"))
@@ -118,8 +123,9 @@ public class NewItemFolderTest extends BaseTest {
         WebElement freestyleJobElement = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(freestyleJob)));
         Assert.assertTrue(freestyleJobElement.isDisplayed());
     }
+
     @Test
-    public void testAddNewItemToFolder(){
+    public void testAddNewItemToFolder() {
         String folderName = "My Folder Name";
         createNewFolderMethod(folderName);
         try {
@@ -162,8 +168,9 @@ public class NewItemFolderTest extends BaseTest {
         WebElement freestyleJobElement = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(freestyleJob)));
         Assert.assertTrue(freestyleJobElement.isDisplayed());
     }
+
     @Test
-    public void testSameNameItemsInDiffFolders(){
+    public void testSameNameItemsInDiffFolders() {
         String folderName1 = "Folder1";
         createNewFolderMethod(folderName1);
 
@@ -255,6 +262,6 @@ public class NewItemFolderTest extends BaseTest {
         );
         String folder2pipeline = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(pipeline))).getText();
 
-        Assert.assertEquals(folder1pipeline,folder2pipeline);
+        Assert.assertEquals(folder1pipeline, folder2pipeline);
     }
 }
