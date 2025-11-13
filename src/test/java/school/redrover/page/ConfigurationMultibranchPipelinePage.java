@@ -11,10 +11,10 @@ public class ConfigurationMultibranchPipelinePage extends BasePage {
         super(driver);
     }
 
-    public MultibranchPipelineProjectPage submitForm() {
+    public MultibranchPipelineJobPage submitForm() {
         getDriver().findElement(By.tagName("form")).submit();
 
-        return new MultibranchPipelineProjectPage(getDriver());
+        return new MultibranchPipelineJobPage(getDriver());
     }
 
     public ConfigurationMultibranchPipelinePage clickToggle() {

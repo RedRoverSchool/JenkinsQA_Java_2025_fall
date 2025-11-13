@@ -5,9 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
-public class MultibranchPipelineProjectPage extends BasePage {
+public class MultibranchPipelineJobPage extends BasePage {
 
-    public MultibranchPipelineProjectPage(WebDriver driver) {
+    public MultibranchPipelineJobPage(WebDriver driver) {
         super(driver);
     }
 
