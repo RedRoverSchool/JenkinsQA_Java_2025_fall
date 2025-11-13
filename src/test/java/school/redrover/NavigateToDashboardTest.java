@@ -9,14 +9,18 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NavigateToDashboardTest extends BaseTest {
+    private final List<String> createdProjects = new ArrayList<>();
+    private final String logoText = "Jenkins";
+    private final String newItemText = "New Item";
 
     @Test
     public void testCheckAccessDashboardFromLogo() {
         clickElement(By.id("root-action-ManageJenkinsAction"));
-        clickElement(By.linkText("Jenkins"));
+        clickElement(By.linkText(logoText));
 
         Assert.assertTrue(getDriver().getTitle().toLowerCase().contains("dashboard"));
     }
@@ -25,7 +29,10 @@ public class NavigateToDashboardTest extends BaseTest {
     public void testVerifyDashboardDisplay() {
         int countOfItem = 4;
         for (int i = 1; i <= countOfItem; i++) {
-            createItem("TestProject_" + i);
+            String itemName = "TestProject_" + i;
+            createItem(itemName);
+            createdProjects.add(itemName);
+
         }
 
         List<WebElement> items = getDriver().findElements(By.cssSelector("tr[id]"));
@@ -42,8 +49,25 @@ public class NavigateToDashboardTest extends BaseTest {
         }
     }
 
+    @Test(dependsOnMethods = "testVerifyDashboardDisplay")
+    public void testVerifyNavigationBehavior(){
+        String item1 = createdProjects.get(0);
+        clickElement(By.linkText(item1));
+        Assert.assertTrue(getDriver().getCurrentUrl().contains(item1));
+        Assert.assertEquals(getDriver().getTitle(),"TestProject_1 - Jenkins");
+
+        clickElement(By.linkText(logoText));
+        Assert.assertTrue(getDriver().getTitle().toLowerCase().contains("dashboard"));
+
+        clickElement(By.linkText(newItemText));
+        Assert.assertTrue(getDriver().getCurrentUrl().contains("newJob"));
+
+        clickElement(By.linkText(logoText));
+        Assert.assertTrue(getDriver().getTitle().toLowerCase().contains("dashboard"));
+    }
+
     void createItem(String name) {
-        clickElement(By.linkText("New Item"));
+        clickElement(By.linkText(newItemText));
         sendText(By.id("name"), name);
         clickElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']"));
         clickElement(By.id("ok-button"));
