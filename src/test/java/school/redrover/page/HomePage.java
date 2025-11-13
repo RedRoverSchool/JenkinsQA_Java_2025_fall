@@ -14,7 +14,7 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
-    public NewItemPage clickNewItem() {
+    public NewItemPage clickCreateJob() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
 
         return new NewItemPage(getDriver());
@@ -31,5 +31,11 @@ public class HomePage extends BasePage {
         TestUtils.clickJS(getDriver(), By.cssSelector("#projectstatus a[href='job/%s/']".formatted(jobName)));
 
         return resultPage;
+    }
+
+    public NewItemPage clickSidebarNewItem() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        return new NewItemPage(getDriver());
     }
 }

@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
-import school.redrover.common.TestUtils;
 
 public class NewItemPage extends BasePage {
 
@@ -28,13 +27,13 @@ public class NewItemPage extends BasePage {
 
     }
 
-    public ConfigurationMultibranchPipelinePage selectMultibranchPipelineAndSubmit() {
-        TestUtils.clickJS(getDriver(), By.cssSelector("[class$='MultiBranchProject']"));
+    public MultibranchPipelineConfigPage selectMultibranchPipelineAndSubmit() {
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
 
-        return new ConfigurationMultibranchPipelinePage(getDriver());
+        return new MultibranchPipelineConfigPage(getDriver());
     }
 
     public ConfigurationPipelinePage selectPipelineAndSubmit() {

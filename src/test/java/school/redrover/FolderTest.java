@@ -15,7 +15,7 @@ public class FolderTest extends BaseTest {
     @Test
     public void testCreate() {
         List<String> projectList = new HomePage(getDriver())
-                .clickNewItem()
+                .clickCreateJob()
                 .sendName(FOLDER_NAME)
                 .selectFolderAndSubmit()
                 .gotoHomePage()
