@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
@@ -25,6 +26,12 @@ public class HomePage extends BasePage {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public FolderPage clickFolder(String folderName) {
+        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName))).click();
+
+        return new FolderPage(getDriver());
     }
 
     public <T extends BasePage> T openJobPage(String jobName, T resultPage) {
