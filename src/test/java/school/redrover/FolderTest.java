@@ -29,15 +29,16 @@ public class FolderTest extends BaseTest {
     public void testNewFolderDefaultAddedToExistingFolder() {
         final String childFolderName = "ChildFolder";
 
-        FolderPage childFolderPage = new HomePage(getDriver())
+        List<String> childFolderBreadcrumbList = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickNewItem()
                 .sendName(childFolderName)
                 .selectFolderAndSubmit()
-                .clickSave();
+                .clickSave()
+                .getBreadcrumbTexts();
 
         Assert.assertEquals(
-                childFolderPage.getBreadcrumbTexts(),
+                childFolderBreadcrumbList,
                 List.of(FOLDER_NAME, childFolderName),
                 "Путь хлебных крошек не соответствует ожидаемому");
     }
