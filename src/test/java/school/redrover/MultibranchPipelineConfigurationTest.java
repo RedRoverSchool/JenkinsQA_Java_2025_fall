@@ -8,6 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
+import school.redrover.page.MultibranchPipelineProjectPage;
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
 
@@ -52,28 +54,27 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @Test
     public void testCreateMultibranchPipelineProject() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
-        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
+        String actualHeadingText = new HomePage(getDriver())
+                .clickNewItem()
+                .sendName(PROJECT_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .submitForm()
+                .getHeadingText();
 
-        TestUtils.clickJS(getDriver(), By.cssSelector("[class$='MultiBranchProject']"));
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-
-        getWait5().until(ExpectedConditions.urlContains("/configure"));
-        submitForm();
-
-        WebElement actualHeading = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#main-panel > h1")));
-        Assert.assertEquals(actualHeading.getText(), PROJECT_NAME);
+        Assert.assertEquals(actualHeadingText, PROJECT_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
     public void testDisableToggle() {
-        openProjectConfigurationPage(PROJECT_NAME);
-        clickOnTheToggle();
+        final String expectedToggleState = "Disabled";
 
-        WebElement disabledTitle = getDriver().findElement(By.cssSelector("[class$='unchecked-title'"));
-        getWait5().until(ExpectedConditions.textToBePresentInElement(disabledTitle, "Disabled"));
+        String actualToggleState = new HomePage(getDriver())
+                .openProjectPage(PROJECT_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .clickToggle()
+                .getToggleState();
 
-        Assert.assertTrue(disabledTitle.isDisplayed());
+        Assert.assertEquals(actualToggleState, expectedToggleState);
     }
 
     @Test(dependsOnMethods = "testDisableToggle")

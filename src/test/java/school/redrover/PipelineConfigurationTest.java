@@ -22,6 +22,14 @@ public class PipelineConfigurationTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
     }
 
+    private void createPipelineProject(String name) {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(name);
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
     @Test
     public void testEnableProject() {
         createFreestyleProject("ChangeStatusEnabledTest");
@@ -71,5 +79,22 @@ public class PipelineConfigurationTest extends BaseTest {
         String actualStatus = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.cssSelector("[data-tippy-root]"))).getText();
         Assert.assertEquals(actualStatus, "Disabled");
+    }
+
+    @Test
+    public void testDisablePipelineProject() {
+        createPipelineProject("PipelineProject");
+
+        WebElement configureOptionMenu = getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]"));
+        configureOptionMenu.click();
+
+        WebElement enableDisableToggle = getWait5().until(ExpectedConditions.visibilityOfElementLocated(toggleSwitch));
+        enableDisableToggle.click();
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        String message = getDriver().findElement(By.id("enable-project")).getText();
+        Assert.assertEquals(message, "This project is currently disabled\n" +
+                "Enable");
     }
 }
