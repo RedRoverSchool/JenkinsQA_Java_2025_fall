@@ -2,6 +2,7 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 
@@ -19,7 +20,7 @@ public class FolderPage extends BasePage {
 
     public FolderInfo getInfo() {
 
-        String displayName = getDriver().findElement(By.className("page-headline")).getText();
+        String displayName = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("page-headline"))).getText();
         String description = getDriver().findElement(By.id("view-message")).getText();
 
         return new FolderInfo(displayName, description);
