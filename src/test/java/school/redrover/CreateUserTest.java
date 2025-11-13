@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.time.Duration;
 import java.util.List;
@@ -14,22 +15,21 @@ import java.util.List;
 public class CreateUserTest extends BaseTest {
 
     @Test
-    public void testCreateUserPos() {
+    public void testCreateUser() {
         final String userName = "testUserLogin";
         final String userPassword = "testUserPassword";
         final String userEmail = "testUser@jenkins.com";
 
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
-        getDriver().findElement(By.id("username")).sendKeys(userName);
-        getDriver().findElement(By.name("password1")).sendKeys(userPassword);
-        getDriver().findElement(By.name("password2")).sendKeys(userPassword);
-        getDriver().findElement(By.name("email")).sendKeys(userEmail);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String actualUserName = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//td[text()='%s']".formatted(userName)))).getText();
+        String actualUserName = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserLink()
+                .clickCreateUserButton()
+                .sendUserName(userName)
+                .sendPassword(userPassword)
+                .sendConfirmPassword(userPassword)
+                .sendEmail(userEmail)
+                .clickCreateUserButton()
+                .getCreatedUserName(userName);
 
         Assert.assertEquals(actualUserName, userName);
     }
