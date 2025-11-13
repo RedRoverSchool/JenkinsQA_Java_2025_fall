@@ -43,7 +43,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualDescription, expectedDescription, actualDescription + " and " + expectedDescription + " don't match");
     }
 
-    @Ignore
+    @Ignore //Test failed on CI
     @Test
     public void testCreateMultibranchPipeline(){
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
