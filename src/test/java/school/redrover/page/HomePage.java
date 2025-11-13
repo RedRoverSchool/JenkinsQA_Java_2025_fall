@@ -27,8 +27,8 @@ public class HomePage extends BasePage {
                 .toList();
     }
 
-    public <T extends BasePage> T openProjectPage(String projectName, T resultPage) {
-        TestUtils.clickJS(getDriver(), By.cssSelector("td > a[href='job/%s/']".formatted(projectName)));
+    public <T extends BasePage> T openJobPage(String jobName, T resultPage) {
+        TestUtils.clickJS(getDriver(), By.cssSelector("#projectstatus a[href='job/%s/']".formatted(jobName)));
 
         return resultPage;
     }
