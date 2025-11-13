@@ -2,38 +2,27 @@ package school.redrover.common;
 
 import org.testng.*;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FilterForTests implements IMethodInterceptor {
 
     @Override
     public List<IMethodInstance> intercept(List<IMethodInstance> methods, ITestContext context) {
-        String changed = System.getenv("CHANGED_TEST_FILES");
-        String deleted = System.getenv("DELETED_TEST_FILES");
+        String files = System.getenv("LIST_OF_CHANGED_FILES");
 
-        if (changed != null || deleted != null) {
-            Set<String> changedFiles = new HashSet<>();
-            Set<String> deletedFiles = new HashSet<>();
+        if (files != null) {
+            List<String> entryList = Arrays.stream(files.split(";"))
+                    .toList();
 
-            for (String f : changed.split(";")) {
-                String path = f.trim();
-                changedFiles.add(path);
-            }
-
-            for (String f : deleted.split(";")) {
-                String path = f.trim();
-                deletedFiles.add(path);
-            }
-
-            boolean hasNonTest = Stream.concat(deletedFiles.stream(), changedFiles.stream())
-                    .anyMatch(f -> !f.endsWith("Test.java"));
-
-            if (hasNonTest) {
-                return methods;
-            }
+            Set<String> changedFiles = entryList.stream()
+                    .filter(e -> e.startsWith("A="))
+                    .map(e -> e.substring(2))
+                    .collect(Collectors.toSet());
 
             Map<Class<?>, String> classMap = methods.stream()
                     .map(IMethodInstance::getMethod).map(ITestNGMethod::getTestClass).map(IClass::getRealClass)
