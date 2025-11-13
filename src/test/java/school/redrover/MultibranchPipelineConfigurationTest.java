@@ -38,14 +38,14 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     }
 
     private void openJobRenamePage(String jobName) {
-        TestUtils.clickJS(getDriver(), By.cssSelector("td > a[href='job/%s/']".formatted(jobName)));
+        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
                 .click();
     }
 
     private void openMultibranchPipelineConfigurationPage(String jobName) {
-        TestUtils.clickJS(getDriver(), By.cssSelector("td > a[href='job/%s/']".formatted(jobName)));
+        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']")))
                 .click();
@@ -56,7 +56,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         String actualHeadingText = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(JOB_NAME)
-                .selectMultibranchPipelineAndSubmit()
+                .selectMultibranchPipelineWithJsAndSubmit()
                 .clickSaveButton()
                 .getHeadingText();
 
