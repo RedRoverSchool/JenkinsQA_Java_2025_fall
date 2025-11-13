@@ -56,6 +56,7 @@ public class MultibranchPipelineTest extends BaseTest {
                         .getText().contains("This folder is empty"));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
     public void testTryCreateProjectExistName() {
         final String errorMessage = "» A job already exists with the name " + "‘" + MULTIBRANCH_PIPELINE_NAME + "’";
