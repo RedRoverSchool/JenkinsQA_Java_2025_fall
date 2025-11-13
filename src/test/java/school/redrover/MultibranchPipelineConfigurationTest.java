@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
+import school.redrover.page.MultibranchPipelineProjectPage;
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
 
@@ -65,13 +66,15 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateMultibranchPipelineProject")
     public void testDisableToggle() {
-        openProjectConfigurationPage(PROJECT_NAME);
-        clickOnTheToggle();
+        final String expectedToggleState = "Disabled";
 
-        WebElement disabledTitle = getDriver().findElement(By.cssSelector("[class$='unchecked-title'"));
-        getWait5().until(ExpectedConditions.textToBePresentInElement(disabledTitle, "Disabled"));
+        String actualToggleState = new HomePage(getDriver())
+                .openProjectPage(PROJECT_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .clickToggle()
+                .getToggleState();
 
-        Assert.assertTrue(disabledTitle.isDisplayed());
+        Assert.assertEquals(actualToggleState, expectedToggleState);
     }
 
     @Test(dependsOnMethods = "testDisableToggle")

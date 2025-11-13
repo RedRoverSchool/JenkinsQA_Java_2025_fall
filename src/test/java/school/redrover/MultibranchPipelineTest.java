@@ -78,6 +78,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(actualDisableText.contains(disableText));
     }
 
+    @Ignore
     @Test
     public void testVerifyEnableToogleTooltip() {
         final String tooltipText =

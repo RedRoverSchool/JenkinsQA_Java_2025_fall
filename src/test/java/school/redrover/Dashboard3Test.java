@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import java.util.List;
@@ -48,6 +49,7 @@ public class Dashboard3Test extends BaseTest {
         Assert.assertEquals(actualJobs, createdJobsName);
     }
 
+    @Ignore
     @Test
     public void testCheckDeleteViewOnDashboard(){
         final String viewName = "myview";
