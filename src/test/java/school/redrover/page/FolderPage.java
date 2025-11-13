@@ -15,8 +15,8 @@ public class FolderPage extends BasePage {
         super(driver);
     }
 
-    public NewItemPage clickNewItem() {
-        getDriver().findElement(By.xpath("//a[contains(@href, 'newJob')]")).click();
+    public NewItemPage clickSidebarNewItem() {
+        getDriver().findElement(By.xpath("//a[contains(@href, '/newJob')]")).click();
         return new NewItemPage(getDriver());
     }
 
@@ -31,5 +31,34 @@ public class FolderPage extends BasePage {
         }
 
         return breadcrumbTexts;
+    }
+
+    public <T extends BasePage> T openJobPage(String jobName, T resultPage) {
+        getDriver().findElement(By.cssSelector("#projectstatus a[href='job/%s/']".formatted(jobName))).click();
+
+        return resultPage;
+    }
+
+    public FolderPage clickDeleteFolder() {
+        WebElement deleteButton = getWait2().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("//a[@data-title='Delete Folder']"))
+        );
+        deleteButton.click();
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//dialog[@open]")));
+
+        return this;
+    }
+
+    public <T extends BasePage> T confirmDelete(T resultPage) {
+        WebElement yesButton = getWait2().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("//dialog[@open]//button[@data-id='ok']"))
+        );
+        yesButton.click();
+
+        return resultPage;
     }
 }

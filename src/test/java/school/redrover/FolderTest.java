@@ -30,7 +30,7 @@ public class FolderTest extends BaseTest {
     public void testNewFolderDefaultAddedToExistingFolder() {
         List<String> childFolderBreadcrumbList = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickNewItem()
+                .clickSidebarNewItem()
                 .sendName(CHILD_FOLDER_NAME)
                 .selectFolderAndSubmit()
                 .clickSave()
@@ -46,7 +46,7 @@ public class FolderTest extends BaseTest {
     public void testPreventDuplicateItemNamesInFolder() {
         String duplicateErrorMessage = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickNewItem()
+                .clickSidebarNewItem()
                 .sendName(CHILD_FOLDER_NAME)
                 .getDuplicateErrorMessage();
 
@@ -54,6 +54,22 @@ public class FolderTest extends BaseTest {
                 duplicateErrorMessage,
                 "» A job already exists with the name ‘%s’".formatted(CHILD_FOLDER_NAME),
                 "Неверное сообщение о дублировании имени");
+    }
+
+    @Test(dependsOnMethods = "testPreventDuplicateItemNamesInFolder")
+    public void deleteFolder() {
+        boolean isFolderDeleted = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openJobPage(CHILD_FOLDER_NAME, new FolderPage(getDriver()))
+                .clickDeleteFolder()
+                .confirmDelete(new FolderPage(getDriver()))
+                .gotoHomePage()
+                .clickSearchButton()
+                .searchFor(CHILD_FOLDER_NAME)
+                .isNoResultsFound(CHILD_FOLDER_NAME);
+
+        Assert.assertTrue(isFolderDeleted,
+                "%s не должна отображаться в поиске после удаления".formatted(CHILD_FOLDER_NAME));
     }
 
     @Test(testName = "Добавление описания к Folder")
