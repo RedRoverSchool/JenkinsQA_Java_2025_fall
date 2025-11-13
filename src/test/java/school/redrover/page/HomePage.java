@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
@@ -34,6 +35,6 @@ public class HomePage extends BasePage {
     }
 
     public String getTitle() {
-        return getDriver().findElement(By.tagName("h1")).getText();
+        return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1"))).getText();
     }
 }
