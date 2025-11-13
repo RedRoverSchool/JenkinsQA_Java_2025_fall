@@ -4,42 +4,36 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.time.Duration;
 
 public class FreestyleProjectConfigurationSCMTest extends BaseTest {
 
-    private WebDriverWait wait;
-    private static final String SCM_TITLE_EXPECTED = "Source Code Management";
+    final String scmTitleExpected = "Source Code Management";
     final String freestyleProjectName = "FreestyleProject2025";
 
     private void createFreestyleProject(String freestyleProjectName) {
-        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/view/all/newJob']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/view/all/newJob']"))).click();
         getDriver().findElement(By.id("name")).sendKeys(freestyleProjectName);
         getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
     }
 
     @Test
     public void testAccessSCMInNewJob() {
-        // 02.003.01
         createFreestyleProject(freestyleProjectName);
 
         WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
-        wait.until(ExpectedConditions.visibilityOf(scmTitle));
+        getWait5().until(ExpectedConditions.visibilityOf(scmTitle));
 
-        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+        Assert.assertEquals(scmTitle.getText(), scmTitleExpected);
     }
 
     @Test
     public void testSCMSectionElements() {
-        // 02.003.05
         createFreestyleProject(freestyleProjectName);
 
         WebElement scmDescription = getDriver().findElement(By.xpath("//div[normalize-space()='Connect and manage " +
@@ -63,38 +57,34 @@ public class FreestyleProjectConfigurationSCMTest extends BaseTest {
 
     @Test
     public void testAccessSCMInExistingJob() {
-        // 02.003.02
         createFreestyleProject(freestyleProjectName);
 
-        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='jenkins-mobile-hide']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='jenkins-mobile-hide']"))).click();
 
         getDriver().findElement(By.xpath("//a[@href='job/%s/']".formatted(freestyleProjectName))).click();
         getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(freestyleProjectName))).click();
         WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
 
-        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+        Assert.assertEquals(scmTitle.getText(), scmTitleExpected);
     }
 
     @Test
     public void testNavigationToSCMViaMenu() {
-        // 02.003.03
         createFreestyleProject(freestyleProjectName);
 
         getDriver().findElement(By.xpath("//button[@data-section-id='source-code-management']")).click();
         WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
 
-        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+        Assert.assertEquals(scmTitle.getText(), scmTitleExpected);
     }
 
     @Test
     public void testNavigationToSCMByScrollingDown() {
-        // 02.003.04
         createFreestyleProject(freestyleProjectName);
 
         WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", scmTitle);
 
-        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+        Assert.assertEquals(scmTitle.getText(), scmTitleExpected);
     }
 }

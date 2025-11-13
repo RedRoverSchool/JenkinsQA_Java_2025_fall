@@ -86,18 +86,14 @@ public class CreateNewItem1Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
-        WebElement addBuildStep = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Add build')]")));
+        WebElement addBuildStep = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Add build')]")));
 
         ((JavascriptExecutor) getDriver())
                 .executeScript("arguments[0].scrollIntoView({block: 'center'});", addBuildStep);
 
         addBuildStep.click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//button[normalize-space()='Execute Windows batch command']")
-        ));
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[normalize-space()='Execute Windows batch command']")));
 
 
         for (int i = 0; i < expectedBuildSteps.length; i++) {
@@ -125,16 +121,13 @@ public class CreateNewItem1Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
-        WebElement addBuildStep = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Add build')]")));
+        WebElement addBuildStep = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Add build')]")));
 
-        ((JavascriptExecutor) getDriver())
-                .executeScript("arguments[0].scrollIntoView({block: 'center'});", addBuildStep);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addBuildStep);
 
         addBuildStep.click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//button[normalize-space()='Execute Windows batch command']")
         ));
 
@@ -148,11 +141,9 @@ public class CreateNewItem1Test extends BaseTest {
 
             WebElement actualBuildStep = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
                     .until(ExpectedConditions.visibilityOfElementLocated(
-                            By.xpath("//button[contains(@style,'inline-flex') and normalize-space()='%s']"
-                                    .formatted(expectedStep))));
+                            By.xpath("//button[contains(@style,'inline-flex') and normalize-space()='%s']".formatted(expectedStep))));
 
             Assert.assertEquals(actualBuildStep.getText(),expectedStep, "Filter didn't match expected build step");
         }
-
     }
 }

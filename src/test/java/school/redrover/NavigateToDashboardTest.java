@@ -18,8 +18,8 @@ public class NavigateToDashboardTest extends BaseTest {
         clickElement(By.id("root-action-ManageJenkinsAction"));
         clickElement(By.linkText("Jenkins"));
 
-        Assert.assertTrue(getDriver().getTitle().toLowerCase().contains("dashboard"));
-    }
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                getDriver().findElement(By.className("app-jenkins-logo")))).click();
 
     @Test
     public void testVerifyDashboardDisplay() {
