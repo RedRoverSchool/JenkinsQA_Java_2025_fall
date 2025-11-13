@@ -10,7 +10,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -70,7 +69,8 @@ public class Folder2Test extends BaseTest {
                 {"Folder", folderName},
                 {"Multibranch Pipeline", multibrPipName},
                 {"Organization Folder", orgFolderName}
-        };}
+        };
+    }
 
     @Test(dependsOnMethods = {"testCreateFolder"})
     public void testPutItemToFolder() {
