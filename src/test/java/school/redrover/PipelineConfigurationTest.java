@@ -91,7 +91,7 @@ public class PipelineConfigurationTest extends BaseTest {
     public void testDisablePipelineProject() {
 
         String message = new HomePage(getDriver())
-                .clickNewItem()
+                .clickCreateJob()
                 .sendName(PIPELINE_NAME)
                 .createPipelineProject()
                 .gotoHomePage()
