@@ -5,15 +5,15 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.common.BasePage;
+import school.redrover.common.BaseModel;
 
-public class SearchContainer extends BasePage {
+public class SearchModalPage extends BaseModel {
 
-    public SearchContainer(WebDriver driver) {
+    public SearchModalPage(WebDriver driver) {
         super(driver);
     }
 
-    public SearchContainer searchFor(String jobName) {
+    public SearchModalPage searchFor(String jobName) {
         WebElement input = getWait2().until(ExpectedConditions.elementToBeClickable(By.id("command-bar")));
         input.sendKeys(jobName);
         return this;

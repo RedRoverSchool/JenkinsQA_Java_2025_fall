@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
 import school.redrover.page.ManageJenkinsPage;
-import school.redrover.page.SearchContainer;
+import school.redrover.page.SearchModalPage;
 
 public abstract class BasePage extends BaseModel {
 
@@ -25,8 +25,8 @@ public abstract class BasePage extends BaseModel {
         return new ManageJenkinsPage(getDriver());
     }
 
-    public SearchContainer clickSearchButton() {
+    public SearchModalPage clickSearchButton() {
         getDriver().findElement(By.id("root-action-SearchAction")).click();
-        return new SearchContainer(getDriver());
+        return new SearchModalPage(getDriver());
     }
 }
