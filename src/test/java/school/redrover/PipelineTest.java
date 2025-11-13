@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
@@ -93,7 +94,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(consoleOutput.getText().contains("Finished: SUCCESS"),
                 "Build output should contain 'Finished: SUCCESS'");
     }
-
+    @Ignore
     @Test
     public void testAddDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();

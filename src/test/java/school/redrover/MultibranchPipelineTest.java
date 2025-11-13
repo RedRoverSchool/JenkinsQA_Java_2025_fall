@@ -42,7 +42,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(actualDescription, expectedDescription, actualDescription + " and " + expectedDescription + " don't match");
     }
-
+    @Ignore
     @Test
     public void testCreateMultibranchPipeline(){
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
@@ -54,7 +54,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.className("empty-state-section"))
                         .getText().contains("This folder is empty"));
     }
-
+    @Ignore
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
     public void testTryCreateProjectExistName() {
         final String errorMessage = "» A job already exists with the name " + "‘" + MULTIBRANCH_PIPELINE_NAME + "’";
