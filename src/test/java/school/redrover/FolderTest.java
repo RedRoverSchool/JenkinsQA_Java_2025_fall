@@ -48,6 +48,7 @@ public class FolderTest extends BaseTest {
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickSidebarNewItem()
                 .sendName(CHILD_FOLDER_NAME)
+                .selectFolder()
                 .getDuplicateErrorMessage();
 
         Assert.assertEquals(
@@ -60,9 +61,9 @@ public class FolderTest extends BaseTest {
     public void deleteFolder() {
         boolean isFolderDeleted = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .openJobPage(CHILD_FOLDER_NAME, new FolderPage(getDriver()))
+                .openFolderPage(CHILD_FOLDER_NAME)
                 .clickDeleteFolder()
-                .confirmDelete(new FolderPage(getDriver()))
+                .confirmDeleteChild()
                 .gotoHomePage()
                 .clickSearchButton()
                 .searchFor(CHILD_FOLDER_NAME)

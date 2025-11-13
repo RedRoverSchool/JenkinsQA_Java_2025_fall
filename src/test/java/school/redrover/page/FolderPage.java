@@ -33,10 +33,10 @@ public class FolderPage extends BasePage {
         return breadcrumbTexts;
     }
 
-    public <T extends BasePage> T openJobPage(String jobName, T resultPage) {
-        getDriver().findElement(By.cssSelector("#projectstatus a[href='job/%s/']".formatted(jobName))).click();
+    public FolderPage openFolderPage(String folderName) {
+        getDriver().findElement(By.linkText(folderName)).click();
 
-        return resultPage;
+        return new FolderPage(getDriver());
     }
 
     public FolderPage clickDeleteFolder() {
@@ -52,13 +52,13 @@ public class FolderPage extends BasePage {
         return this;
     }
 
-    public <T extends BasePage> T confirmDelete(T resultPage) {
+    public FolderPage confirmDeleteChild() {
         WebElement yesButton = getWait2().until(
                 ExpectedConditions.elementToBeClickable(
                         By.xpath("//dialog[@open]//button[@data-id='ok']"))
         );
         yesButton.click();
 
-        return resultPage;
+        return new FolderPage(getDriver());
     }
 }
