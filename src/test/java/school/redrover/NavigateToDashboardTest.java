@@ -30,7 +30,7 @@ public class NavigateToDashboardTest extends BaseTest {
 
         List<WebElement> items = getDriver().findElements(By.cssSelector("tr[id]"));
         Assert.assertTrue(items.size() >= countOfItem,
-                "Not all created Jenkins items are displayed on the Dashboard");
+                "Not all created Jenkins items are displayed on the dashboard");
 
         for (WebElement element : items) {
             System.out.println(element.getDomAttribute("id"));
