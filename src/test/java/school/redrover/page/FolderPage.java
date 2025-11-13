@@ -4,8 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import school.redrover.common.BasePage;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class FolderPage extends BasePage {
 

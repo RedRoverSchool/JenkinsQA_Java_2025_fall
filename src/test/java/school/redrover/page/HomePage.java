@@ -3,9 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
-import school.redrover.common.TestUtils;
 
 import java.util.List;
 
