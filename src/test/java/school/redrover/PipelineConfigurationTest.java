@@ -6,13 +6,19 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
+import school.redrover.page.ConfigurationPipelinePage;
+import school.redrover.page.HomePage;
+import school.redrover.page.PipelinePage;
 
 import javax.swing.*;
 import java.time.Duration;
 
 public class PipelineConfigurationTest extends BaseTest {
+    private static final String PIPELINE_NAME = "Pipeline Project";
     private final By toggleSwitch = By.xpath("//span[@id='toggle-switch-enable-disable-project']");
 
     private void createFreestyleProject(String name) {
@@ -83,17 +89,18 @@ public class PipelineConfigurationTest extends BaseTest {
 
     @Test
     public void testDisablePipelineProject() {
-        createPipelineProject("PipelineProject");
 
-        WebElement configureOptionMenu = getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]"));
-        configureOptionMenu.click();
+        String message = new HomePage(getDriver())
+                .clickNewItem()
+                .sendName(PIPELINE_NAME)
+                .createPipelineProject()
+                .gotoHomePage()
+                .navigateToJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .getConfigurationPipelinePage()
+                .toggleEnableSwitch()
+                .clickSubmitButton()
+                .getMessageText();
 
-        WebElement enableDisableToggle = getWait5().until(ExpectedConditions.visibilityOfElementLocated(toggleSwitch));
-        enableDisableToggle.click();
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        String message = getDriver().findElement(By.id("enable-project")).getText();
         Assert.assertEquals(message, "This project is currently disabled\n" +
                 "Enable");
     }

@@ -45,4 +45,13 @@ public class NewItemPage extends BasePage {
 
         return new ConfigurationPipelinePage(getDriver());
     }
+
+    public PipelinePage createPipelineProject() {
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        return new PipelinePage(getDriver());
+    }
 }
