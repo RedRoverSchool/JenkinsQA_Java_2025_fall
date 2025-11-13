@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.FolderPage;
@@ -43,7 +42,6 @@ public class FolderTest extends BaseTest {
                 "Путь хлебных крошек не соответствует ожидаемому");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testNewFolderDefaultAddedToExistingFolder")
     public void testPreventDuplicateItemNamesInFolder() {
         String duplicateErrorMessage = new HomePage(getDriver())
