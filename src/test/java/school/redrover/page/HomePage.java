@@ -32,4 +32,8 @@ public class HomePage extends BasePage {
 
         return resultPage;
     }
+
+    public String getTitle() {
+        return getDriver().findElement(By.tagName("h1")).getText();
+    }
 }
