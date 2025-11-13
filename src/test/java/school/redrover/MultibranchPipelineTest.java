@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -25,34 +26,38 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-
     @Test
     public void testAddingDescriptionCreatingMultibranch() {
         final String expectedDescription = "AddedDescription";
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
-        getDriver().findElement(By.id("name")).sendKeys("MultibranchPipeline");
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getDriver().findElement(By.name("_.description")).sendKeys(expectedDescription);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String actualDescription = getDriver().findElement(By.id("view-message")).getText();
+        String actualDescription = new HomePage(getDriver())
+                .clickSidebarNewItem()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .enterDescription(expectedDescription)
+                .clickSaveButton()
+                .getDescription();
 
         Assert.assertEquals(actualDescription, expectedDescription, actualDescription + " and " + expectedDescription + " don't match");
     }
 
-    @Test
     @Ignore
-    public void testTryCreateProjectExistName() {
-        final String errorMessage = "» A job already exists with the name " + "‘" + MULTIBRANCH_PIPELINE_NAME + "’";
-
+    @Test
+    public void testCreateMultibranchPipeline() {
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
-        getWait5().until(ExpectedConditions
-                .elementToBeClickable(By.cssSelector("span.jenkins-mobile-hide"))).click();
+        String actualName = getWait2().until(ExpectedConditions
+                .visibilityOfElementLocated(By.tagName("h1"))).getText();
+        Assert.assertEquals(actualName, MULTIBRANCH_PIPELINE_NAME);
+
+        Assert.assertTrue(getDriver().findElement(By.className("empty-state-section"))
+                .getText().contains("This folder is empty"));
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testTryCreateProjectExistName() {
+        final String errorMessage = "» A job already exists with the name " + "‘" + MULTIBRANCH_PIPELINE_NAME + "’";
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
@@ -117,7 +122,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         WebElement nameField = getDriver().findElement(By.id("name"));
 
-        for (String specChar: specialCharacters){
+        for (String specChar : specialCharacters) {
             String errorMessage = "» ‘" + specChar + "’ is an unsafe character";
 
             nameField.clear();
