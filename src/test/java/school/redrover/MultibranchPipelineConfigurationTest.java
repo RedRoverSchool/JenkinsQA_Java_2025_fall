@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -79,20 +78,14 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testDisableToggle")
     public void testTooltipOnToggleHover() {
-        final String expectedTooltip = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
+        final String expectedTooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
-        openMultibranchPipelineConfigurationPage(JOB_NAME);
+        String actualTooltipText = new HomePage(getDriver())
+                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .getToggleTooltipText();
 
-        WebElement toggleElement = getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("toggle-switch-enable-disable-project")));
-
-        new Actions(getDriver()).moveToElement(toggleElement).perform();
-
-        String actualTooltip = getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
-                .getText();
-
-        Assert.assertEquals(actualTooltip, expectedTooltip);
+        Assert.assertEquals(actualTooltipText, expectedTooltipText);
     }
 
     @Test(dependsOnMethods = "testTooltipOnToggleHover")
