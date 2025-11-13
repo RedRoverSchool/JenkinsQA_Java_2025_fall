@@ -15,7 +15,7 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItem() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//span[text()='New Item']/..")).click();
 
         return new NewItemPage(getDriver());
     }

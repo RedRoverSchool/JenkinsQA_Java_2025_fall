@@ -1,267 +1,108 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.FolderPage;
 import school.redrover.page.HomePage;
 
-import java.time.Duration;
 import java.util.List;
 
 public class Folder10Test extends BaseTest {
 
-    public WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-
-    public void clickMethod(WebElement element) {
-        wait.until(ExpectedConditions.elementToBeClickable(element));
-        element.click();
-    }
-
-    public void sendKeysMethod(WebElement element, String text) {
-        wait.until(ExpectedConditions.visibilityOf(element));
-        element.sendKeys(text);
-    }
-
-    public void createNewFolderMethod(String folderName) {
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='New Item']/.."))
-        );
-        sendKeysMethod(
-                getDriver().findElement(By.id("name")),
-                folderName
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Folder']"))
-        );
-        clickMethod(
-                getDriver().findElement(By.id("ok-button"))
-        );
-        clickMethod(
-                getDriver().findElement(By.name("Submit"))
-        );
-    }
+    private static final String FOLDER_NAME = "Folder_name";
 
     @Test
     public void testCreate() {
-        final String folderName = "Folder name";
-
         List<String> myList = new HomePage(getDriver())
                 .clickNewItem()
-                .sendName(folderName)
+                .sendName(FOLDER_NAME)
                 .selectFolderAndSubmit()
                 .gotoHomePage()
                 .getProjectList();
 
         Assert.assertNotEquals(myList.size(), 0);
-        Assert.assertEquals(myList.get(0), folderName);
+        Assert.assertEquals(myList.get(0), FOLDER_NAME);
     }
 
-    @Test
-    public void testFolderIsEmpty() {
-        String folderName = "My Folder Name";
-        createNewFolderMethod(folderName);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
-        );
+    @Test(dependsOnMethods = "testCreate")
+    public void testIsEmpty() {
+        String actualContext = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .getFolderContext();
 
-        String actualContext = getDriver().findElement(By.xpath("//h2[text()='This folder is empty']")).getText();
         String expectedContext = "This folder is empty";
         Assert.assertEquals(actualContext, expectedContext);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreate")
     public void testCreateJobToFolder() {
-        String folderName = "My Folder Name";
-        createNewFolderMethod(folderName);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//a[@href='newJob']"))
-        );
-        String freestyleJob = "new freestyle job";
-        sendKeysMethod(
-                getDriver().findElement(By.id("name")), freestyleJob
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Freestyle project']"))
-        );
-        clickMethod(
-                getDriver().findElement(By.id("ok-button"))
-        );
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
-        );
-        WebElement freestyleJobElement = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(freestyleJob)));
-        Assert.assertTrue(freestyleJobElement.isDisplayed());
+        final String newJob = "multibrunch pipeline";
+
+        WebElement jobCreated = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickCreateJob()
+                .sendName(newJob)
+                .selectMultibranchPipelineAndSubmit()
+                .gotoHomePage()
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .getElement(newJob);
+
+        Assert.assertTrue(jobCreated.isDisplayed());
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreate")
     public void testAddNewItemToFolder() {
-        String folderName = "My Folder Name";
-        createNewFolderMethod(folderName);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='New Item']/.."))
-        );
-        String freestyleJob = "new freestyle job";
-        sendKeysMethod(
-                getDriver().findElement(By.id("name")),
-                freestyleJob
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Freestyle project']"))
-        );
-        clickMethod(
-                getDriver().findElement(By.id("ok-button"))
-        );
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName)))
-        );
+        final String newJob = "multibrunch pipeline";
 
-        WebElement freestyleJobElement = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(freestyleJob)));
-        Assert.assertTrue(freestyleJobElement.isDisplayed());
+        WebElement jobCreated = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickNewItem()
+                .sendName(newJob)
+                .selectMultibranchPipelineAndSubmit()
+                .gotoHomePage()
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .getElement(newJob);
+
+        Assert.assertTrue(jobCreated.isDisplayed());
     }
 
     @Test
     public void testSameNameItemsInDiffFolders() {
-        String folderName1 = "Folder1";
-        createNewFolderMethod(folderName1);
+        final String folderName1 = "Folder1";
+        final String folderName2 = "Folder2";
+        final String multibrunchPipeline = "pipeline1";
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName1)))
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='New Item']/.."))
-        );
-        String pipeline = "pipeline1";
-        sendKeysMethod(
-                getDriver().findElement(By.id("name")),
-                pipeline
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Pipeline']"))
-        );
-        clickMethod(
-                getDriver().findElement(By.id("ok-button"))
-        );
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
-        );
+        String sameNamedJobInFirstFolder = new HomePage(getDriver())
+                .clickNewItem()
+                .sendName(folderName1)
+                .selectFolderAndSubmit()
+                .gotoHomePage()
+                .openJobPage(folderName1, new FolderPage(getDriver()))
+                .clickCreateJob()
+                .sendName(multibrunchPipeline)
+                .selectMultibranchPipelineAndSubmit()
+                .gotoHomePage()
+                .openJobPage(folderName1, new FolderPage(getDriver()))
+                .getElement(multibrunchPipeline)
+                .getText();
 
-        String folderName2 = "Folder2";
-        createNewFolderMethod(folderName2);
+        String sameNamedJobInSecondFolder = new HomePage(getDriver())
+                .gotoHomePage()
+                .clickNewItem()
+                .sendName(folderName2)
+                .selectFolderAndSubmit()
+                .gotoHomePage()
+                .openJobPage(folderName2, new FolderPage(getDriver()))
+                .clickCreateJob()
+                .sendName(multibrunchPipeline)
+                .selectMultibranchPipelineAndSubmit()
+                .gotoHomePage()
+                .openJobPage(folderName2, new FolderPage(getDriver()))
+                .getElement(multibrunchPipeline)
+                .getText();
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName2)))
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='New Item']/.."))
-        );
-        sendKeysMethod(
-                getDriver().findElement(By.id("name")),
-                pipeline
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Pipeline']"))
-        );
-        clickMethod(
-                getDriver().findElement(By.id("ok-button"))
-        );
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
-        );
-
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName1)))
-        );
-        String folder1pipeline = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(pipeline))).getText();
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='Jenkins']"))
-        );
-        clickMethod(
-                getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName2)))
-        );
-        String folder2pipeline = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(pipeline))).getText();
-
-        Assert.assertEquals(folder1pipeline, folder2pipeline);
+        Assert.assertEquals(sameNamedJobInFirstFolder, sameNamedJobInSecondFolder);
     }
 }

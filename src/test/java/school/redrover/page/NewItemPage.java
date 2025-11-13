@@ -13,7 +13,7 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage sendName(String name) {
-        getDriver().findElement(By.id("name")).sendKeys(name);
+        getWait2().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("name")))).sendKeys(name);
 
         return this;
     }
