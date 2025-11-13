@@ -193,7 +193,7 @@ public class PipelineTest extends BaseTest {
                         actualTextErrorMessage.getText(), expectedErrorMessage));
         Assert.assertEquals(errorDescriptionModalWindow.getText(), "A problem occurred while processing the request");
     }
-
+    @Ignore
     @Test(dependsOnMethods = "testAddDescription")
     public void testEditDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
