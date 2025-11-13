@@ -21,7 +21,7 @@ public class FilterForTests implements IMethodInterceptor {
 
             Set<String> changedFiles = entryList.stream()
                     .filter(e -> !e.startsWith("D="))
-                    .map(e -> e.substring(2))
+                    .map(e -> e.substring(e.lastIndexOf('=') + 1))
                     .collect(Collectors.toSet());
 
             Map<Class<?>, String> classMap = methods.stream()
