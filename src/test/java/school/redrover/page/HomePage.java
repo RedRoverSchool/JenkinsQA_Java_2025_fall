@@ -14,7 +14,7 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
-    public NewItemPage clickNewItem() {
+    public NewItemPage clickCreateJob() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
 
         return new NewItemPage(getDriver());
@@ -33,9 +33,9 @@ public class HomePage extends BasePage {
         return resultPage;
     }
 
-    public FolderPage openFolderPage(String folderName) {
-        getDriver().findElement(By.linkText(folderName)).click();
+    public NewItemPage clickSidebarNewItem() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
-        return new FolderPage(getDriver());
+        return new NewItemPage(getDriver());
     }
 }

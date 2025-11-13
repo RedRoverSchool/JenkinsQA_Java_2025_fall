@@ -17,7 +17,7 @@ public class MultibranchPipeline2Test extends BaseTest {
         final String multibranchName = "MultibranchName";
 
         List<String> projectList = new HomePage(getDriver())
-                .clickNewItem()
+                .clickCreateJob()
                 .sendName(multibranchName)
                 .selectMultibranchPipelineAndSubmit()
                 .gotoHomePage()
