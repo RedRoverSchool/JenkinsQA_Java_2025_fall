@@ -36,7 +36,7 @@ public class FolderPage extends BasePage {
     public FolderPage openFolderPage(String folderName) {
         getDriver().findElement(By.linkText(folderName)).click();
 
-        return new FolderPage(getDriver());
+        return this;
     }
 
     public FolderPage clickDeleteFolder() {
@@ -59,6 +59,6 @@ public class FolderPage extends BasePage {
         );
         yesButton.click();
 
-        return new FolderPage(getDriver());
+        return this;
     }
 }
