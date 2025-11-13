@@ -9,10 +9,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
 
 import java.util.List;
 
 public class PipelineConfigurationAdvancedTest extends BaseTest {
+
+    private static final String PIPELINE_NAME = "newPipeline";
 
     private void createNewPipeline(String newPipelineName) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -35,13 +38,14 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     @Test
     public void testNavigationToAdvancedByScrollingDown() {
-        final String newPipelineName = "newPipeline_01";
-        createNewPipeline(newPipelineName);
+        String actualAdvancedSectionTitle = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .ScrollDownToAdvancedSection()
+                .getAdvancedTitleText();
 
-        WebElement actualAdvancedSectionTitle = getDriver().findElement(By.id("advanced"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", actualAdvancedSectionTitle);
-
-        Assert.assertEquals(actualAdvancedSectionTitle.getText(), "Advanced");
+        Assert.assertEquals(actualAdvancedSectionTitle, "Advanced");
     }
 
     @Test

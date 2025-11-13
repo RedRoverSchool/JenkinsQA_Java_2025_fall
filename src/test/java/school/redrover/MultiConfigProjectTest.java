@@ -10,7 +10,6 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
 public class MultiConfigProjectTest extends BaseTest {
-
     @Ignore
     @Test
     public void testRenameViaDropDownMenu() {

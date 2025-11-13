@@ -54,10 +54,10 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     @Test
     public void testCreateMultibranchPipelineJob() {
         String actualHeadingText = new HomePage(getDriver())
-                .clickNewItem()
+                .clickCreateJob()
                 .sendName(JOB_NAME)
                 .selectMultibranchPipelineAndSubmit()
-                .submitForm()
+                .clickSaveButton()
                 .getHeadingText();
 
         Assert.assertEquals(actualHeadingText, JOB_NAME.trim());
