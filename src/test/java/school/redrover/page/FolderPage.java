@@ -6,34 +6,30 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FolderPage extends BasePage {
 
     public FolderPage(WebDriver driver) {
         super(driver);
     }
 
-    public String getFolderContext() {
-        return getWait2()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[text()='This folder is empty']")))
-                .getText();
-    }
-
-    public NewItemPage clickCreateJob() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-
-        return new NewItemPage(getDriver());
-    }
-
     public NewItemPage clickNewItem() {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
-        getDriver().findElement(By.xpath("//span[text()='New Item']/..")).click();
-
+        getDriver().findElement(By.xpath("//a[contains(@href, 'newJob')]")).click();
         return new NewItemPage(getDriver());
     }
 
-    public WebElement getElement(String name){
-        return getDriver().findElement(By.xpath("//span[text()='%s']".formatted(name)));
+    public List<String> getBreadcrumbTexts() {
+        List<WebElement> breadcrumbElements = getWait2().until(
+                ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                        By.xpath("//ol[@id='breadcrumbs']/li/a")));
+
+        List<String> breadcrumbTexts = new ArrayList<>();
+        for (WebElement element : breadcrumbElements) {
+            breadcrumbTexts.add(element.getText());
+        }
+
+        return breadcrumbTexts;
     }
-
-
 }
