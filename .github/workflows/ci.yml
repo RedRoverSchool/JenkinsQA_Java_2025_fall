@@ -25,18 +25,7 @@ jobs:
       - name: Get list of changed files
         run: |
           BASE=$(git merge-base origin/$GITHUB_HEAD_REF origin/main)
-
-          RESULT=$(git diff --name-status $BASE origin/$GITHUB_HEAD_REF | awk '{
-            if ($1 == "D") {
-              print "D="$2";"
-            } else if ($1 ~ /^R/) {
-              print "A="$3";"
-            }else {
-              print "A="$2";"
-            }
-          }' | tr -d '\n')
-
-          echo "LIST_OF_CHANGED_FILES=$RESULT" >> $GITHUB_ENV
+          echo "LIST_OF_CHANGED_FILES=$(git diff --name-status $BASE origin/$GITHUB_HEAD_REF | awk '{k=substr($1,1,1); printf "%s=%s;", k, (k=="R" ? $3 : $2)}')" >> $GITHUB_ENV
 
 # tar -cvf jenkins_backup.tar ./jenkins_backup
 # split -b 90m -d jenkins_backup.tar jenkins_backup

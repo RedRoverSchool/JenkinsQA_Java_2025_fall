@@ -20,7 +20,7 @@ public class FilterForTests implements IMethodInterceptor {
                     .toList();
 
             Set<String> changedFiles = entryList.stream()
-                    .filter(e -> e.startsWith("A="))
+                    .filter(e -> !e.startsWith("D="))
                     .map(e -> e.substring(2))
                     .collect(Collectors.toSet());
 
