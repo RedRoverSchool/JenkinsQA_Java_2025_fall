@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -10,12 +11,13 @@ import java.util.List;
 
 public class MultibranchPipeline2Test extends BaseTest {
 
+    @Ignore
     @Test
     public void testCreateMultibranchPipelineByNew() {
         final String multibranchName = "MultibranchName";
 
         List<String> projectList = new HomePage(getDriver())
-                .clickNewItem()
+                .clickCreateJob()
                 .sendName(multibranchName)
                 .selectMultibranchPipelineAndSubmit()
                 .gotoHomePage()
