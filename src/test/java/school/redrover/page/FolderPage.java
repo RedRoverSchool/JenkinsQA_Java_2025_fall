@@ -20,7 +20,7 @@ public class FolderPage extends BasePage {
 
     public FolderInfo getInfo() {
 
-        String displayName = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("page-headline"))).getText();
+        String displayName = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("job-index-headline"))).getText();
         String description = getDriver().findElement(By.id("view-message")).getText();
 
         return new FolderInfo(displayName, description);
