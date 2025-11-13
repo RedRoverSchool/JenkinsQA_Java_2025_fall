@@ -56,7 +56,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         String actualHeadingText = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(JOB_NAME)
-                .selectMultibranchPipelineAndSubmit()
+                .selectMultibranchPipelineWithJsAndSubmit()
                 .clickSaveButton()
                 .getHeadingText();
 
