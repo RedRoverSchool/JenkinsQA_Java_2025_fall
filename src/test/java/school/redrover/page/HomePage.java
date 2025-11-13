@@ -38,4 +38,10 @@ public class HomePage extends BasePage {
 
         return resultPage;
     }
+
+    public NewItemPage clickSidebarNewItem() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        return new NewItemPage(getDriver());
+    }
 }

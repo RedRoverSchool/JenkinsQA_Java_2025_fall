@@ -11,11 +11,12 @@ import java.util.List;
 
 public class FolderTest extends BaseTest {
     private static final String FOLDER_NAME = "TestFolder";
+    private static final String CHILD_FOLDER_NAME = "ChildFolder";
 
     @Test
     public void testCreate() {
         List<String> projectList = new HomePage(getDriver())
-                .clickNewItem()
+                .clickCreateJob()
                 .sendName(FOLDER_NAME)
                 .selectFolderAndSubmit()
                 .gotoHomePage()
@@ -27,20 +28,32 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreate")
     public void testNewFolderDefaultAddedToExistingFolder() {
-        final String childFolderName = "ChildFolder";
-
         List<String> childFolderBreadcrumbList = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickNewItem()
-                .sendName(childFolderName)
+                .sendName(CHILD_FOLDER_NAME)
                 .selectFolderAndSubmit()
                 .clickSave()
                 .getBreadcrumbTexts();
 
         Assert.assertEquals(
                 childFolderBreadcrumbList,
-                List.of(FOLDER_NAME, childFolderName),
+                List.of(FOLDER_NAME, CHILD_FOLDER_NAME),
                 "Путь хлебных крошек не соответствует ожидаемому");
+    }
+
+    @Test(dependsOnMethods = "testNewFolderDefaultAddedToExistingFolder")
+    public void testPreventDuplicateItemNamesInFolder() {
+        String duplicateErrorMessage = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickNewItem()
+                .sendName(CHILD_FOLDER_NAME)
+                .getDuplicateErrorMessage();
+
+        Assert.assertEquals(
+                duplicateErrorMessage,
+                "» A job already exists with the name ‘%s’".formatted(CHILD_FOLDER_NAME),
+                "Неверное сообщение о дублировании имени");
     }
 
     @Test(testName = "Добавление описания к Folder")
