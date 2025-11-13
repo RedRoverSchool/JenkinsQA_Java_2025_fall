@@ -39,7 +39,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
     @Test
     public void testNavigationToAdvancedByScrollingDown() {
         String actualAdvancedSectionTitle = new HomePage(getDriver())
-                .clickNewItem()
+                .clickCreateJob()
                 .sendName(PIPELINE_NAME)
                 .selectPipelineAndSubmit()
                 .ScrollDownToAdvancedSection()
