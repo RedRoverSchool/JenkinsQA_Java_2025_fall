@@ -13,8 +13,8 @@ import school.redrover.page.MultibranchPipelineJobPage;
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
 
-    private static final String JOB_NAME = "multibranchProjectName";
-    private static final String JOB_DESCRIPTION = "This is a project description";
+    private static final String JOB_NAME = "multibranchJobName";
+    private static final String JOB_DESCRIPTION = "This is a job description";
 
     private void clickOnTheToggle() {
         getDriver().findElement(By.cssSelector("[data-title='Disabled']")).click();
