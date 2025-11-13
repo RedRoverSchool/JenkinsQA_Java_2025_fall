@@ -18,8 +18,8 @@ public class NavigateToDashboardTest extends BaseTest {
         clickElement(By.id("root-action-ManageJenkinsAction"));
         clickElement(By.linkText("Jenkins"));
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                getDriver().findElement(By.className("app-jenkins-logo")))).click();
+        Assert.assertTrue(getDriver().getTitle().toLowerCase().contains("dashboard"));
+    }
 
     @Test
     public void testVerifyDashboardDisplay() {
@@ -30,7 +30,7 @@ public class NavigateToDashboardTest extends BaseTest {
 
         List<WebElement> items = getDriver().findElements(By.cssSelector("tr[id]"));
         Assert.assertTrue(items.size() >= countOfItem,
-                "Not all created Jenkins items are displayed on the dashboard");
+                "Not all created Jenkins items are displayed on the Dashboard");
 
         for (WebElement element : items) {
             System.out.println(element.getDomAttribute("id"));
