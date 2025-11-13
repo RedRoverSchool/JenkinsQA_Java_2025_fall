@@ -60,7 +60,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
                 .clickSaveButton()
                 .getHeadingText();
 
-        Assert.assertEquals(actualHeadingText, JOB_NAME.trim());
+        Assert.assertEquals(actualHeadingText, JOB_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateMultibranchPipelineJob")
