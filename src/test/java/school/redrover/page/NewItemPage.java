@@ -41,7 +41,7 @@ public class NewItemPage extends BasePage {
     public MultibranchPipelineConfigPage selectMultibranchPipelineWithJsAndSubmit() {
         TestUtils.clickJS(getDriver(), By.cssSelector("[class$='MultiBranchProject']"));
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
 
         return new MultibranchPipelineConfigPage(getDriver());
