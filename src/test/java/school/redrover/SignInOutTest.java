@@ -35,8 +35,9 @@ public class SignInOutTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#j_username")).sendKeys(ProjectUtils.getUserName());
         getDriver().findElement(By.cssSelector("#j_password")).sendKeys(ProjectUtils.getPassword());
         getDriver().findElement(By.xpath("//button")).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[.='Welcome to Jenkins!']")));
 
-        Assert.assertEquals(getWait2().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1"))).getText(),
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(),
                 "Welcome to Jenkins!");
     }
 }
