@@ -36,4 +36,13 @@ public class NewItemPage extends BasePage {
 
         return new ConfigurationMultibranchPipelinePage(getDriver());
     }
+
+    public ConfigurationPipelinePage selectPipelineAndSubmit() {
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
+
+        return new ConfigurationPipelinePage(getDriver());
+    }
 }
