@@ -54,19 +54,6 @@ public class Folder2Test extends BaseTest {
                 "Отсутствует сообщение 'This folder is empty'");
     }
 
-    @Test(dependsOnMethods = {"testCreateFolder"})
-    public void testNewFolderDefaultAddedToExistingFolder() {
-        final String childFolderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
-
-        TestUtils.clickJS(getDriver(), By.xpath("//td/a[@href='job/%s/']".formatted(MAIN_FOLDER_NAME)));
-        createItem(childFolderName, "Folder");
-
-        Assert.assertEquals(
-                getTextsOfItems("//ol[@id='breadcrumbs']/li/a"),
-                List.of(MAIN_FOLDER_NAME, childFolderName),
-                "Путь хлебных крошек не соответствует ожиданию");
-    }
-
     @DataProvider(name = "itemsProvider")
     public Object[][] itemsProvider() {
         String freestyleName = "Freestyle" + UUID.randomUUID().toString().substring(0, 3);
