@@ -6,8 +6,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.common.BasePage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +86,8 @@ public class FolderPage extends BasePage {
     }
 
     public FolderPage confirmDeleteChild() {
+        String urlBeforeDelete = getDriver().getCurrentUrl();
+
         WebElement yesButton = getWait2().until(
                 ExpectedConditions.elementToBeClickable(
                         By.xpath("//dialog[@open]//button[@data-id='ok']"))
