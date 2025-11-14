@@ -14,7 +14,7 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage sendName(String name) {
-        getDriver().findElement(By.id("name")).sendKeys(name);
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
 
         return this;
     }
@@ -66,5 +66,23 @@ public class NewItemPage extends BasePage {
         WebElement errorMessage = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
         return errorMessage.getText();
+    }
+
+    public ConfigurationFreestyleProjectPage selectFreestyleProjectAndSubmit() {
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[@id = 'general']")));
+
+        return new ConfigurationFreestyleProjectPage(getDriver());
+    }
+
+    public HomePage sendNewNameAndOriginalNameAndSubmit (String newItemName, String originalItemName) {
+        this.sendName(newItemName);
+        getDriver().findElement(By.id("from")).sendKeys(originalItemName);
+
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new HomePage(getDriver());
     }
 }

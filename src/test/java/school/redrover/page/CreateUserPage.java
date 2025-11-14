@@ -2,7 +2,10 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import school.redrover.common.BasePage;
+
+import java.util.List;
 
 public class CreateUserPage extends BasePage {
 
@@ -35,5 +38,20 @@ public class CreateUserPage extends BasePage {
         getDriver().findElement(By.name("Submit")).click();
 
         return new ManageUsersPage(getDriver());
+    }
+
+    public CreateUserPage clickCreateUserButtonNegative() {
+        getDriver().findElement(By.name("Submit")).click();
+
+        return this;
+    }
+
+    public List<String> getAllErrors() {
+
+        return getDriver()
+                .findElements(By.xpath("//*[@class='error jenkins-!-margin-bottom-2']"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 }
