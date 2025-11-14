@@ -100,14 +100,13 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testDisabledMessageOnStatusPage")
     public void testJobDescriptionPreview() {
-        openMultibranchPipelineConfigurationPage(JOB_NAME);
-        addJobDescription(JOB_DESCRIPTION);
+        String jobDescriptionPreviewText = new HomePage(getDriver())
+                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .enterDescription(JOB_DESCRIPTION)
+                .getJobDescriptionPreviewText();
 
-        getDriver().findElement(By.className("textarea-show-preview")).click();
-
-        WebElement previewTextarea = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview")));
-
-        Assert.assertEquals(previewTextarea.getText(), JOB_DESCRIPTION);
+        Assert.assertEquals(jobDescriptionPreviewText, JOB_DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testJobDescriptionPreview")
