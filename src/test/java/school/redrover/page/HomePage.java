@@ -65,7 +65,7 @@ public class HomePage extends BasePage {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(getDriver().findElement(By.xpath("//span[text()='%s']".formatted(itemName)))).perform();
         actions.moveToElement(getDriver().findElement(By.xpath(("//a[.//span[text()='%s']]//" +
-                "button[@class='jenkins-menu-dropdown-chevron']").formatted(itemName)))).click();
+                "button[@class='jenkins-menu-dropdown-chevron']").formatted(itemName)))).click().perform();
         return this;
     }
 
