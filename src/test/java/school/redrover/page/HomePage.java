@@ -45,4 +45,8 @@ public class HomePage extends BasePage {
 
         return new NewItemPage(getDriver());
     }
+
+    public String getTitle() {
+        return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1"))).getText();
+    }
 }
