@@ -19,6 +19,12 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
+    public NewItemPage selectFolder() {
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+
+        return this;
+    }
+
     public ConfigurationFolderPage selectFolderAndSubmit() {
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
 
@@ -57,9 +63,27 @@ public class NewItemPage extends BasePage {
     }
 
     public String getDuplicateErrorMessage() {
-        WebElement errorMessage = getWait5().until(
+        WebElement errorMessage = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
         return errorMessage.getText();
+    }
+
+    public ConfigurationFreestyleProjectPage selectFreestyleProjectAndSubmit() {
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[@id = 'general']")));
+
+        return new ConfigurationFreestyleProjectPage(getDriver());
+    }
+
+    public HomePage sendNewNameAndOriginalNameAndSubmit (String newItemName, String originalItemName) {
+        this.sendName(newItemName);
+        getDriver().findElement(By.id("from")).sendKeys(originalItemName);
+
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new HomePage(getDriver());
     }
 
     public PipelinePage createPipelineProject() {
