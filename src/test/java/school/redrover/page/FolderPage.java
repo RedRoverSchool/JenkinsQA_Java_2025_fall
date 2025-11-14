@@ -6,8 +6,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.common.BasePage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +46,8 @@ public class FolderPage extends BasePage {
         public String getDescription() {
             return description;
         }
-    }    
-    
+    }
+
     public NewItemPage clickSidebarNewItem() {
         getDriver().findElement(By.xpath("//a[contains(@href, '/newJob')]")).click();
         return new NewItemPage(getDriver());
@@ -88,13 +86,32 @@ public class FolderPage extends BasePage {
     }
 
     public FolderPage confirmDeleteChild() {
+        String urlBeforeDelete = getDriver().getCurrentUrl();
+
         WebElement yesButton = getWait2().until(
                 ExpectedConditions.elementToBeClickable(
                         By.xpath("//dialog[@open]//button[@data-id='ok']"))
         );
         yesButton.click();
 
+        getWait5().until(ExpectedConditions.not(ExpectedConditions.urlToBe(urlBeforeDelete)));
         return this;
+    }
+
+    public FolderPage clickAddDescriptionButton() {
+        getDriver().findElement(By.id("description-link")).click();
+        return this;
+    }
+
+    public FolderPage addDescriptionAndSave(String description) {
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        getDriver().findElement(By.name("Submit")).click();
+        return this;
+    }
+
+    public String getDescription() {
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("description-content"))).getText();
     }
 
     public String getFolderContext() {
