@@ -6,7 +6,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import school.redrover.common.BasePage;
+
+import java.util.List;
 
 public class ConfigurationPipelinePage extends BasePage {
 
@@ -102,5 +105,22 @@ public class ConfigurationPipelinePage extends BasePage {
 
     public WebElement getNumberOfSecondsInput() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("quiet_period")));
+    }
+
+    public WebElement getHelpElement() {
+        return getDriver().findElement(By
+                .xpath(".//div[@id='advanced']/parent::section/descendant::div[@class = 'help']"));
+    }
+
+    public List<String> getTooltipList() {
+        return getTooltipListWeb()
+                .stream()
+                .map(webElement -> webElement.getAttribute("title"))
+                .toList();
+    }
+
+    public List<WebElement> getTooltipListWeb() {
+        return getDriver().findElements(By
+                .xpath(".//div[@id='advanced']/parent::section/descendant::a[@tooltip]"));
     }
 }
