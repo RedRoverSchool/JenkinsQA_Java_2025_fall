@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -20,32 +21,32 @@ public class PipelineBuildTriggersTest extends BaseTest {
 
         Actions actions = new Actions(getDriver());
         actions.sendKeys(Keys.PAGE_DOWN).build().perform();
+
         WebElement[] checkboxes = new WebElement[5];
 
-        checkboxes[0] = getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/section/div[4]/div[1]/div/span"));
-        checkboxes[0].click();
-        Assert.assertTrue(checkboxes[0].isEnabled());
+        String[] checkboxesXpaths = {
+                "//*[@id='main-panel']/form/div[1]/section[1]/section/div[4]/div[1]/div/span",
+                "//*[@id='main-panel']/form/div[1]/section[1]/section/div[5]/div[1]/div/span",
+                "//*[@id='main-panel']/form/div[1]/section[1]/section/div[6]/div[1]/div/span",
+                "//*[@id='main-panel']/form/div[1]/section[1]/section/div[7]/div[1]/div/span",
+                "//*[@id='main-panel']/form/div[1]/div[5]/div[1]/div/span"
+        };
 
-        checkboxes[1] = getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/section/div[5]/div[1]/div/span"));
-        checkboxes[1].click();
-        Assert.assertTrue(checkboxes[1].isEnabled());
+        for (int i = 0; i < 5; i++){
+            try {
+                checkboxes[i] = getDriver().findElement(By.xpath(checkboxesXpaths[i]));
+                checkboxes[i].click();
+            }
+            catch (ElementClickInterceptedException e) {
+                actions.sendKeys(Keys.PAGE_DOWN).build().perform();
+                checkboxes[i] = getDriver().findElement(By.xpath(checkboxesXpaths[i]));
+                checkboxes[i].click();
+            }
 
-        actions.sendKeys(Keys.PAGE_DOWN).build().perform();
-
-        checkboxes[2] = getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/section/div[6]/div[1]/div/span"));
-        checkboxes[2].click();
-        Assert.assertTrue(checkboxes[2].isEnabled());
-
-        checkboxes[3] = getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/section/div[7]/div[1]/div/span"));
-        checkboxes[3].click();
-        Assert.assertTrue(checkboxes[3].isEnabled());
-
-        checkboxes[4] = getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[5]/div[1]/div/span"));
-        checkboxes[4].click();
-        Assert.assertTrue(checkboxes[4].isEnabled());
+            Assert.assertTrue(checkboxes[i].isEnabled());
+        }
 
         getDriver().findElement(By.name("Submit")).click();
-
 
     }
 }
