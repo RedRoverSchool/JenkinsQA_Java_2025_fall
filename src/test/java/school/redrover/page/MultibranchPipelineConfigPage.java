@@ -59,6 +59,13 @@ public class MultibranchPipelineConfigPage extends BasePage {
         return this;
     }
 
+    public MultibranchPipelineConfigPage updateJobDescription(String description) {
+        getDriver().findElement(By.name("_.description")).clear();
+        enterDescription(description);
+
+        return this;
+    }
+
     public String getJobDescriptionPreviewText() {
         getDriver().findElement(By.className("textarea-show-preview")).click();
 
