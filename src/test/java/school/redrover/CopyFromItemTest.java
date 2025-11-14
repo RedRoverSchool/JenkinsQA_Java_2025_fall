@@ -20,7 +20,7 @@ public class CopyFromItemTest extends BaseTest {
         final String buildsUrl = "example.com/test";
 
         HomePage homePage = new HomePage(getDriver())
-                .clickNewItem()
+                .clickCreateJob()
                 .sendName(firstJobName)
                 .selectFreestyleProjectAndSubmit()
                 .setDescription(descriptionText)
