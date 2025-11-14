@@ -19,7 +19,18 @@ public class CreateUserPage extends BasePage {
         return this;
     }
 
+    public CreateUserPage sendUserName(CharSequence userName) {
+        getDriver().findElement(By.id("username")).sendKeys(userName);
+
+        return this;
+    }
+
     public CreateUserPage sendPassword(String password) {
+        getDriver().findElement(By.name("password1")).sendKeys(password);
+        return this;
+    }
+
+    public CreateUserPage sendPassword(CharSequence password) {
         getDriver().findElement(By.name("password1")).sendKeys(password);
         return this;
     }
@@ -34,16 +45,33 @@ public class CreateUserPage extends BasePage {
         return this;
     }
 
-    public ManageUsersPage clickCreateUserButton() {
+    public CreateUserPage sendEmail(CharSequence email) {
+        getDriver().findElement(By.name("email")).sendKeys(email);
+        return this;
+    }
+
+    public void clickSubmitButton() {
         getDriver().findElement(By.name("Submit")).click();
+    }
+
+    public ManageUsersPage clickCreateUserButton() {
+        clickSubmitButton();
 
         return new ManageUsersPage(getDriver());
     }
 
     public CreateUserPage clickCreateUserButtonNegative() {
-        getDriver().findElement(By.name("Submit")).click();
+        clickSubmitButton();
 
         return this;
+    }
+
+    public String getUserNameField() {
+        return getDriver().findElement(By.xpath("//input[@name='username']")).getAttribute("value");
+    }
+
+    public String getFullUserNameField() {
+        return getDriver().findElement(By.xpath("//input[@name='fullname']")).getAttribute("value");
     }
 
     public List<String> getAllErrors() {
