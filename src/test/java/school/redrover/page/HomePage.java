@@ -69,7 +69,7 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public HomePage clickDeleteItem() {
+    public HomePage clickDeleteItemInDropdownMenu() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[.//text()[contains(., 'Delete')]]"))).click();
 
         return this;
