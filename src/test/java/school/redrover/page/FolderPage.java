@@ -69,7 +69,7 @@ public class FolderPage extends BasePage {
     }
 
     public NewItemPage clickCreateJob() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='newJob']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='newJob']"))).click();
 
         return new NewItemPage(getDriver());
     }
