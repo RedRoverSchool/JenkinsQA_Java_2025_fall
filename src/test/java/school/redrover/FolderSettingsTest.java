@@ -18,7 +18,7 @@ public class FolderSettingsTest extends BaseTest {
     @Test
     public void testDisplayName() {
         List<String> projectList = new HomePage(getDriver())
-                .clickNewItem()
+                .clickCreateJob()
                 .sendName(FOLDER_NAME)
                 .selectFolderAndSubmit()
                 .setDisplayName(DISPLAY_NAME)
