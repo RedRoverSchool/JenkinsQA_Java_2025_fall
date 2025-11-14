@@ -61,4 +61,21 @@ public class FolderPage extends BasePage {
 
         return this;
     }
+
+    public String getFolderContext() {
+        return getWait2()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block>section>h2")))
+                .getText();
+    }
+
+    public NewItemPage clickNewItem() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+        getDriver().findElement(By.xpath("//span[text()='New Item']/..")).click();
+
+        return new NewItemPage(getDriver());
+    }
+
+    public WebElement getElement(String name){
+        return getDriver().findElement(By.xpath("//span[text()='%s']".formatted(name)));
+    }
 }
