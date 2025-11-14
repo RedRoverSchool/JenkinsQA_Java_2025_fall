@@ -37,22 +37,6 @@ public class Folder10Test extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreate")
-    public void testCreateJobToFolder() {
-        final String newJob = "multibrunch pipeline";
-
-        WebElement jobCreated = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickCreateJob()
-                .sendName(newJob)
-                .selectMultibranchPipelineAndSubmit()
-                .gotoHomePage()
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .getElement(newJob);
-
-        Assert.assertTrue(jobCreated.isDisplayed());
-    }
-
-    @Test(dependsOnMethods = "testCreate")
     public void testAddNewItemToFolder() {
         final String newJob = "multibrunch pipeline";
 
@@ -80,7 +64,7 @@ public class Folder10Test extends BaseTest {
                 .selectFolderAndSubmit()
                 .gotoHomePage()
                 .openJobPage(folderName1, new FolderPage(getDriver()))
-                .clickCreateJob()
+                .clickNewItem()
                 .sendName(multibrunchPipeline)
                 .selectMultibranchPipelineAndSubmit()
                 .gotoHomePage()
@@ -95,7 +79,7 @@ public class Folder10Test extends BaseTest {
                 .selectFolderAndSubmit()
                 .gotoHomePage()
                 .openJobPage(folderName2, new FolderPage(getDriver()))
-                .clickCreateJob()
+                .clickNewItem()
                 .sendName(multibrunchPipeline)
                 .selectMultibranchPipelineAndSubmit()
                 .gotoHomePage()
