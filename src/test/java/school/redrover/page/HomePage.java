@@ -1,9 +1,9 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
@@ -62,15 +62,20 @@ public class HomePage extends BasePage {
     }
 
     public HomePage openDropdownMenu(String itemName) {
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(getDriver().findElement(By.xpath("//span[text()='%s']".formatted(itemName)))).perform();
-        actions.moveToElement(getDriver().findElement(By.xpath(
-                "//a[.//span[text()='%s']]//button[@class='jenkins-menu-dropdown-chevron']".formatted(itemName)))).click().perform();
+        WebElement dropdownButton = getWait5().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//a[.//span[text()='%s']]//button[@class='jenkins-menu-dropdown-chevron']".formatted(itemName))));
+
+        ((JavascriptExecutor) getDriver())
+                .executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", dropdownButton);
+        ((JavascriptExecutor) getDriver())
+                .executeScript("arguments[0].dispatchEvent(new Event('click'));", dropdownButton);
+
         return this;
     }
 
     public HomePage clickDeleteItemInDropdownMenu() {
-        TestUtils.clickJS(getDriver(), By.xpath("//button[.//text()[contains(., 'Delete')]]"));
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[.//text()[contains(., 'Delete')]]"))).click();
 
         return this;
     }
