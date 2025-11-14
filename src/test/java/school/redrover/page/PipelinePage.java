@@ -18,4 +18,14 @@ public class PipelinePage extends BasePage {
 
         return new ConfigurationPipelinePage(getDriver());
     }
+
+    public String getDisplayNameInStatus() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .tagName("h1"))).getText();
+    }
+
+    public String getDisplayNameInBreadcrumbBar(String displayName) {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath(".//a[text()='%s']".formatted(displayName)))).getText();
+    }
 }
