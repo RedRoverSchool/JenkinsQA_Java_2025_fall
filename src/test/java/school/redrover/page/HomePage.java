@@ -59,4 +59,10 @@ public class HomePage extends BasePage {
     public WebElement findItem(String itemName) {
         return getDriver().findElement(By.xpath("//a[@href='job/" + itemName + "/']"));
     }
+
+    public <T extends BasePage> T navigateToJobPage(String jobName, T resultPage) {
+        getDriver().findElement(By.xpath("//span[text()='" + jobName + "']")).click();
+
+        return resultPage;
+    }
 }

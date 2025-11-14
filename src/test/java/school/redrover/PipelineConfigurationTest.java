@@ -8,11 +8,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+import school.redrover.page.PipelinePage;
 
 import javax.swing.*;
 import java.time.Duration;
 
 public class PipelineConfigurationTest extends BaseTest {
+    private static final String PIPELINE_NAME = "Pipeline Project";
     private final By toggleSwitch = By.xpath("//span[@id='toggle-switch-enable-disable-project']");
 
     private void createFreestyleProject(String name) {
@@ -83,17 +86,16 @@ public class PipelineConfigurationTest extends BaseTest {
 
     @Test
     public void testDisablePipelineProject() {
-        createPipelineProject("PipelineProject");
-
-        WebElement configureOptionMenu = getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]"));
-        configureOptionMenu.click();
-
-        WebElement enableDisableToggle = getWait5().until(ExpectedConditions.visibilityOfElementLocated(toggleSwitch));
-        enableDisableToggle.click();
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        String message = getDriver().findElement(By.id("enable-project")).getText();
+        String message = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PIPELINE_NAME)
+                .createPipelineProject()
+                .gotoHomePage()
+                .navigateToJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .getConfigurationPipelinePage()
+                .toggleEnableSwitch()
+                .clickSubmitButton()
+                .getMessageText();
         Assert.assertEquals(message, "This project is currently disabled\n" +
                 "Enable");
     }
