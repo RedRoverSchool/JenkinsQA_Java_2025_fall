@@ -111,13 +111,14 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testJobDescriptionPreview")
     public void testMultibranchJobDescription() {
-        openMultibranchPipelineConfigurationPage(JOB_NAME);
-        addJobDescription(JOB_DESCRIPTION);
-        submitForm();
+        String actualJobDescription = new HomePage(getDriver())
+                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .enterDescription(JOB_DESCRIPTION)
+                .clickSaveButton()
+                .getDescription();
 
-        WebElement actualJobDescription = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
-
-        Assert.assertEquals(actualJobDescription.getText(), JOB_DESCRIPTION);
+        Assert.assertEquals(actualJobDescription, JOB_DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testMultibranchJobDescription")
