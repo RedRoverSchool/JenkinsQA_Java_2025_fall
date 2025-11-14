@@ -1,163 +1,171 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
-import java.time.Duration;
-import java.util.UUID;
+import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
+import school.redrover.page.MultibranchPipelineJobPage;
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
 
-    private WebDriverWait wait;
-    private final String projectName = getRandomAlphaNumericText();
+    private static final String JOB_NAME = "multibranchJobName";
+    private static final String JOB_DESCRIPTION = "This is a job description";
 
-    private void createMultibranchPipelineProject(String projectName) {
-        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(By.linkText("New Item"))).click();
+    private void addJobDescription(String jobDescription) {
+        WebElement jobDescriptionField = getDriver().findElement(By.name("_.description"));
 
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-
-        ((JavascriptExecutor) getDriver()).executeScript(
-                "arguments[0].click();",
-                getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']"))
-        );
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
+        jobDescriptionField.clear();
+        jobDescriptionField.sendKeys(jobDescription);
     }
 
-    private void clickOnTheToggle() {
-        getDriver().findElement(By.cssSelector("[data-title='Disabled']")).click();
-    }
+    private void renameJob(String updatedJobName) {
+        WebElement newNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
 
-    private String getRandomAlphaNumericText() {
-        return UUID.randomUUID().toString().replaceAll("-", "");
-    }
-
-    private void addProjectDescription(String projectDescription) {
-        WebElement projectDescriptionField = getDriver().findElement(By.name("_.description"));
-
-        projectDescriptionField.clear();
-        projectDescriptionField.sendKeys(projectDescription);
+        newNameField.clear();
+        newNameField.sendKeys(updatedJobName);
     }
 
     private void submitForm() {
         getDriver().findElement(By.tagName("form")).submit();
     }
 
+    private void openJobRenamePage(String jobName) {
+        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
+                .click();
+    }
+
+    private void openMultibranchPipelineConfigurationPage(String jobName) {
+        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']")))
+                .click();
+    }
+
     @Test
+    public void testCreateMultibranchPipelineJob() {
+        String actualHeadingText = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(JOB_NAME)
+                .selectMultibranchPipelineWithJsAndSubmit()
+                .clickSaveButton()
+                .getHeadingText();
+
+        Assert.assertEquals(actualHeadingText, JOB_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateMultibranchPipelineJob")
     public void testDisableToggle() {
-        createMultibranchPipelineProject(projectName);
-        clickOnTheToggle();
+        final String expectedToggleState = "Disabled";
 
-        WebElement disabledTitle = getDriver().findElement(By.cssSelector("[class$='unchecked-title'"));
-        wait.until(ExpectedConditions.textToBePresentInElement(disabledTitle, "Disabled"));
+        String actualToggleState = new HomePage(getDriver())
+                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .clickToggle()
+                .getToggleState();
 
-        Assert.assertTrue(disabledTitle.isDisplayed());
+        Assert.assertEquals(actualToggleState, expectedToggleState);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testDisableToggle")
     public void testTooltipOnToggleHover() {
-        final String expectedTooltip = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
+        final String expectedTooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
-        createMultibranchPipelineProject(projectName);
+        String actualTooltipText = new HomePage(getDriver())
+                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .getToggleTooltipTextOnHover();
 
-        WebElement toggleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("toggle-switch-enable-disable-project")
-        ));
-
-        new Actions(getDriver()).moveToElement(toggleElement).perform();
-
-        String actualTooltip = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
-                .getText();
-
-        Assert.assertEquals(actualTooltip, expectedTooltip);
+        Assert.assertEquals(actualTooltipText, expectedTooltipText);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testTooltipOnToggleHover")
     public void testDisabledMessageOnStatusPage() {
         final String expectedDisabledMessage = "This Multibranch Pipeline is currently disabled";
 
-        createMultibranchPipelineProject(projectName);
-        clickOnTheToggle();
-        submitForm();
+        String actualDisabledMessage = new HomePage(getDriver())
+                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .clickToggle()
+                .clickSaveButton()
+                .getDisabledText();
 
-        WebElement actualDisabledMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("disabled-message")));
-
-        Assert.assertEquals(actualDisabledMessage.getText(), expectedDisabledMessage);
+        Assert.assertEquals(actualDisabledMessage, expectedDisabledMessage);
     }
 
-    @Test
-    public void testProjectDescriptionPreview() {
-        final String projectDescription = getRandomAlphaNumericText();
+    @Test(dependsOnMethods = "testDisabledMessageOnStatusPage")
+    public void testJobDescriptionPreview() {
+        String jobDescriptionPreviewText = new HomePage(getDriver())
+                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .enterDescription(JOB_DESCRIPTION)
+                .getJobDescriptionPreviewText();
 
-        createMultibranchPipelineProject(projectName);
-        addProjectDescription(projectDescription);
-
-        getDriver().findElement(By.className("textarea-show-preview")).click();
-
-        WebElement previewTextarea = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview")));
-
-        Assert.assertEquals(previewTextarea.getText(), projectDescription);
+        Assert.assertEquals(jobDescriptionPreviewText, JOB_DESCRIPTION);
     }
 
-    @Test
-    public void testMultibranchProjectDescription() {
-        final String projectDescriptionText = getRandomAlphaNumericText();
-
-        createMultibranchPipelineProject(projectName);
-        addProjectDescription(projectDescriptionText);
+    @Test(dependsOnMethods = "testJobDescriptionPreview")
+    public void testMultibranchJobDescription() {
+        openMultibranchPipelineConfigurationPage(JOB_NAME);
+        addJobDescription(JOB_DESCRIPTION);
         submitForm();
 
-        WebElement actualProjectDescription = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
+        WebElement actualJobDescription = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
 
-        Assert.assertEquals(actualProjectDescription.getText(), projectDescriptionText);
+        Assert.assertEquals(actualJobDescription.getText(), JOB_DESCRIPTION);
     }
 
-    @Test
-    public void testUpdateProjectDescription() {
-        final String initialProjectDescription = getRandomAlphaNumericText();
-        final String updatedProjectDescription = getRandomAlphaNumericText();
+    @Test(dependsOnMethods = "testMultibranchJobDescription")
+    public void testUpdateJobDescription() {
+        final String updatedJobDescription = "This is a new project description";
 
-        createMultibranchPipelineProject(projectName);
-        addProjectDescription(initialProjectDescription);
+        openMultibranchPipelineConfigurationPage(JOB_NAME);
+        addJobDescription(JOB_DESCRIPTION);
         submitForm();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']"))).click();
+        getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']")))
+                .click();
 
-        addProjectDescription(updatedProjectDescription);
+        addJobDescription(updatedJobDescription);
         submitForm();
 
-        WebElement actualProjectDescription = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
+        WebElement actualJobDescription = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
 
-        Assert.assertEquals(actualProjectDescription.getText(), updatedProjectDescription);
+        Assert.assertEquals(actualJobDescription.getText(), updatedJobDescription);
     }
 
-    @Test
-    public void testUpdateProjectName() {
-        final String updatedProjectName = getRandomAlphaNumericText();
+    @Test(dependsOnMethods = "testUpdateJobDescription")
+    public void testRenameJobNameUsingDotAtTheEnd() {
+        final String updatedJobName = JOB_NAME + ".";
+        final String expectedErrorMessageText = "A name cannot end with ‘.’";
 
-        createMultibranchPipelineProject(projectName);
+        openJobRenamePage(JOB_NAME);
+        renameJob(updatedJobName);
         submitForm();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']"))).click();
+        WebElement actualErrorMessage = getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Error']/../p")));
 
-        WebElement newNameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
-        newNameField.clear();
-        newNameField.sendKeys(updatedProjectName);
+        Assert.assertEquals(actualErrorMessage.getText(), expectedErrorMessageText);
+    }
+
+    @Test(dependsOnMethods = "testRenameJobNameUsingDotAtTheEnd")
+    public void testRenameJob() {
+        final String updatedJobName = "updatedProjectName";
+
+        openJobRenamePage(JOB_NAME);
+        renameJob(updatedJobName);
         submitForm();
 
-        wait.until(ExpectedConditions.urlContains("/job"));
+        WebElement actualHeading = getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='view-message']/../h1")));
 
-        WebElement actualHeading = getDriver().findElement(By.tagName("h1"));
-
-        Assert.assertEquals(actualHeading.getText(), updatedProjectName);
+        Assert.assertEquals(actualHeading.getText(), updatedJobName);
     }
 }

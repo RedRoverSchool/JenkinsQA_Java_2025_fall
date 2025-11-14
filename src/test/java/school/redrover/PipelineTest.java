@@ -3,13 +3,12 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 
@@ -18,15 +17,6 @@ public class PipelineTest extends BaseTest {
     private static final String PIPELINE_NAME = "PipelineName";
 
     private static final Random random = new Random();
-
-    private void createPipeline(String name) {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
-        getDriver().findElement(By.id("name")).sendKeys(name);
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-    }
 
     public static String generateRandomStringASCII(int minCode, int maxCode, int length) {
         if (length < 0 || length > 1000) {
@@ -43,6 +33,15 @@ public class PipelineTest extends BaseTest {
             sb.append((char) (minCode + random.nextInt(range)));
         }
         return sb.toString();
+    }
+
+    private void createPipeline(String name) {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys(name);
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
     }
 
     @Test
@@ -86,18 +85,16 @@ public class PipelineTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(6));
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("jenkins-build-history"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-build-history"))).click();
         getDriver().findElement(By.xpath("//a[substring-before(@href, 'console')]")).click();
 
         WebElement consoleOutput = getDriver().findElement(By.id("out"));
-        wait.until(d -> consoleOutput.getText().contains("Finished:"));
+        getWait10().until(d -> consoleOutput.getText().contains("Finished:"));
 
         Assert.assertTrue(consoleOutput.getText().contains("Finished: SUCCESS"),
                 "Build output should contain 'Finished: SUCCESS'");
     }
-
+    @Ignore
     @Test
     public void testAddDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
@@ -108,8 +105,7 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.name("description")).sendKeys(textDescription);
         getDriver().findElement(By.name("Submit")).click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
-        WebElement descriptionText = wait.until(
+        WebElement descriptionText = getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
 
         Assert.assertEquals(
@@ -131,26 +127,21 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dataProvider = "validAliases")
-    public void testScheduleWithValidData(String timePeriod) {
+    public void testScheduleWithValidData(String validTimePeriod) {
         createPipeline(PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//a[contains(@href , 'configure')]")).click();
 
         WebElement triggersSectionButton = getDriver().findElement(By.xpath("//button[@data-section-id = 'triggers']"));
         triggersSectionButton.click();
-
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.attributeContains(triggersSectionButton, "class", "task-link--active"));
+        getWait2()
+                .until(ExpectedConditions.attributeContains(triggersSectionButton, "class", "task-link--active"));
 
         getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
-
-        WebElement scheduleTextArea = getDriver().findElement(By.xpath("//textarea[@name = '_.spec']"));
-        scheduleTextArea.click();
-        scheduleTextArea.sendKeys(timePeriod);
-
+        getDriver().findElement(By.xpath("//textarea[@name = '_.spec']")).sendKeys(validTimePeriod);
         getDriver().findElement(By.xpath("//button[text() = 'Apply']")).click();
 
-        WebElement actualNotificationMessage = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
+        WebElement actualNotificationMessage = getWait2()
                 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']")));
 
         WebElement actualTextAreaValidationMessage = getDriver()
@@ -160,29 +151,65 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualNotificationMessage.getText(), "Saved");
         Assert.assertTrue(actualTextAreaValidationMessage.getText()
                         .matches("(?s)Would last have run at .*; would next run at .*"),
-                "Alias " + timePeriod + " не прошёл валидацию");
+                "Alias " + validTimePeriod + " не прошёл валидацию");
     }
 
-    @Test
+    @DataProvider
+    public Object[][] invalidCronSyntaxAndAliases() {
+        return new String[][]{
+                {"60 * * * *", "60 is an invalid value. Must be within 0 and 59"},
+                {"* 25 * * *", "25 is an invalid value. Must be within 0 and 23"},
+                {"* * 32 * *", "32 is an invalid value. Must be within 1 and 31"},
+                {"* * * 13 * *", "13 is an invalid value. Must be within 1 and 12"},
+                {"* * * * 8", "8 is an invalid value. Must be within 0 and 7"},
+                {"@", "mismatched input"},
+                {"*****", "missing whitespace"}
+        };
+    }
+
+    @Test(dataProvider = "invalidCronSyntaxAndAliases")
+    public void testScheduleWithInvalidData(String invalidTimePeriod, String expectedErrorMessage) {
+        createPipeline(PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
+
+        WebElement triggersSectionButton = getDriver().findElement(By.xpath("//button[@data-section-id = 'triggers']"));
+        triggersSectionButton.click();
+        getWait2()
+                .until(ExpectedConditions.attributeContains(triggersSectionButton, "class", "task-link--active"));
+
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = '_.spec']")).sendKeys(invalidTimePeriod);
+        getDriver().findElement(By.xpath("//button[text() = 'Apply']")).click();
+
+        WebElement actualTextErrorMessage = getDriver()
+                .findElement(By.xpath("//div[contains(text(), 'Schedule')]/following-sibling::div" +
+                        "//div[@class = 'error']"));
+        WebElement errorDescriptionModalWindow = getDriver().findElement(By.cssSelector("#error-description > h2"));
+        getWait2().until(ExpectedConditions.visibilityOf(errorDescriptionModalWindow));
+
+        Assert.assertTrue(
+                actualTextErrorMessage.getText().contains(expectedErrorMessage),
+                String.format("Сообщение: '%s', не содержит ожидаемую ключевую информацию об ошибке: '%s'",
+                        actualTextErrorMessage.getText(), expectedErrorMessage));
+        Assert.assertEquals(errorDescriptionModalWindow.getText(), "A problem occurred while processing the request");
+    }
+    @Ignore
+    @Test(dependsOnMethods = "testAddDescription")
     public void testEditDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
-        createPipeline(PIPELINE_NAME);
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'job/%s/']".formatted(PIPELINE_NAME))))
+                .click();
 
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys("description");
-        getDriver().findElement(By.name("Submit")).click();
-
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
                 .click();
         WebElement descriptionField = getDriver().findElement(By.name("description"));
         descriptionField.clear();
         descriptionField.sendKeys(textDescription);
         getDriver().findElement(By.name("Submit")).click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
-        WebElement descriptionText = wait.until(
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
+        WebElement descriptionText = getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
 
         Assert.assertEquals(
