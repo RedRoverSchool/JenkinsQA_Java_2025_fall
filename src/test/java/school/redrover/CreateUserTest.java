@@ -48,7 +48,7 @@ public class CreateUserTest extends BaseTest {
                 .clickUserLink()
                 .clickCreateUserButton()
                 .clickCreateUserButton()
-                .getAllEros();
+                .getAllErrors();
 
         Assert.assertEquals(expectedErrors, actualErrors);
     }
