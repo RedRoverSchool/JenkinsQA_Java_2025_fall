@@ -70,4 +70,29 @@ public class CreateUserTest extends BaseTest {
 
         Assert.assertEquals(actualErrors, expectedErrors);
     }
+
+    @Test
+    public void testUnmatchedPasswords() {
+        final String userName = "testUserLogin";
+        final String userPassword = "testUserPassword";
+        final String userUnmatchedPassword = "testNotUserPassword";
+        final String userEmail = "testUser@jenkins.com";
+
+        final List<String> expectedErrors = List.of(
+                "Password didn't match",
+                "Password didn't match");
+
+        List <String> actualErrors = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserLink()
+                .clickCreateUserButton()
+                .sendUserName(userName)
+                .sendPassword(userPassword)
+                .sendConfirmPassword(userUnmatchedPassword)
+                .sendEmail(userEmail)
+                .clickCreateUserButtonNegative()
+                .getAllErrors();
+
+        Assert.assertEquals(actualErrors, expectedErrors);
+    }
 }
