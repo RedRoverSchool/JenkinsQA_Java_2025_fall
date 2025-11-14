@@ -11,6 +11,7 @@ import java.util.List;
 public class FolderTest extends BaseTest {
     private static final String FOLDER_NAME = "TestFolder";
     private static final String CHILD_FOLDER_NAME = "ChildFolder";
+    private static final String FOLDER_NAME_2 = "Folder2";
 
     @Test
     public void testCreate() {
@@ -90,7 +91,6 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCreate")
     public void testSameItemNamesInTwoFolders() {
         final String pipelineName = "SubPipeline";
-        final String folderName2 = "Folder2";
 
         List<String> jobsInFirstFolder = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
@@ -104,19 +104,33 @@ public class FolderTest extends BaseTest {
         List<String> jobsInSecondFolder = new HomePage(getDriver())
                 .gotoHomePage()
                 .clickSidebarNewItem()
-                .sendName(folderName2)
+                .sendName(FOLDER_NAME_2)
                 .selectFolderAndSubmit()
                 .clickSave()
                 .clickSidebarNewItem()
                 .sendName(pipelineName)
                 .selectPipelineAndSubmit()
                 .gotoHomePage()
-                .openJobPage(folderName2,new FolderPage(getDriver()))
+                .openJobPage(FOLDER_NAME_2,new FolderPage(getDriver()))
                 .getProjectList();
 
         Assert.assertTrue(jobsInFirstFolder.contains(pipelineName),
                 "Пайплайн '%s' должен присутствовать в первой папке '%s'".formatted(pipelineName, FOLDER_NAME));
         Assert.assertTrue(jobsInSecondFolder.contains(pipelineName),
-                "Пайплайн '%s' должен присутствовать во второй папке '%s'".formatted(pipelineName, folderName2));
+                "Пайплайн '%s' должен присутствовать во второй папке '%s'".formatted(pipelineName, FOLDER_NAME_2));
+    }
+
+    @Test(dependsOnMethods = "testSameItemNamesInTwoFolders")
+    public void deleteFolderByDashboardDropdownMenu() {
+        boolean isFolderDeleted = new HomePage(getDriver())
+                .openDropdownMenu(FOLDER_NAME_2)
+                .clickDeleteItem()
+                .confirmDelete()
+                .clickSearchButton()
+                .searchFor(FOLDER_NAME_2)
+                .isNoResultsFound(FOLDER_NAME_2);
+
+        Assert.assertTrue(isFolderDeleted,
+                "%s не должна отображаться в поиске после удаления".formatted(FOLDER_NAME_2));
     }
 }

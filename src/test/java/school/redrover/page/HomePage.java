@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
@@ -58,5 +59,30 @@ public class HomePage extends BasePage {
 
     public WebElement findItem(String itemName) {
         return getDriver().findElement(By.xpath("//a[@href='job/" + itemName + "/']"));
+    }
+
+    public HomePage openDropdownMenu(String itemName) {
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(getDriver().findElement(By.xpath("//span[text()='%s']".formatted(itemName)))).perform();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath(
+                "//a[.//span[text()='%s']]//button[@class='jenkins-menu-dropdown-chevron']".formatted(itemName)))).click();
+        return this;
+    }
+
+    public HomePage clickDeleteItem() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[.//text()[contains(., 'Delete')]]"))).click();
+
+        return this;
+    }
+
+    public HomePage confirmDelete() {
+        WebElement yesButton = getWait2().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("//dialog[@open]//button[@data-id='ok']"))
+        );
+        yesButton.click();
+        getWait5().until(ExpectedConditions.stalenessOf(yesButton));
+
+        return this;
     }
 }
