@@ -18,6 +18,12 @@ public class ConfigurationFolderPage extends BasePage {
         return this;
     }
 
+    public ConfigurationFolderPage setDescription(String text) {
+        getDriver().findElement(By.name("_.description")).sendKeys(text);
+
+        return this;
+    }
+
     public FolderPage clickSave() {
         WebElement button = getDriver().findElement(By.name("Submit"));
         button.click();

@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -30,7 +29,7 @@ public class FolderTest extends BaseTest {
     public void testNewFolderDefaultAddedToExistingFolder() {
         List<String> childFolderBreadcrumbList = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickNewItem()
+                .clickSidebarNewItem()
                 .sendName(CHILD_FOLDER_NAME)
                 .selectFolderAndSubmit()
                 .clickSave()
@@ -46,8 +45,9 @@ public class FolderTest extends BaseTest {
     public void testPreventDuplicateItemNamesInFolder() {
         String duplicateErrorMessage = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickNewItem()
+                .clickSidebarNewItem()
                 .sendName(CHILD_FOLDER_NAME)
+                .selectFolder()
                 .getDuplicateErrorMessage();
 
         Assert.assertEquals(
@@ -56,25 +56,34 @@ public class FolderTest extends BaseTest {
                 "Неверное сообщение о дублировании имени");
     }
 
-    @Test(testName = "Добавление описания к Folder")
-    public void testAddDescriptionToFolder() throws InterruptedException {
-        getDriver().findElement(By.cssSelector("a[href='newJob']")).click();
+    @Test(dependsOnMethods = "testPreventDuplicateItemNamesInFolder")
+    public void deleteFolder() {
+        boolean isFolderDeleted = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openFolderPage(CHILD_FOLDER_NAME)
+                .clickDeleteFolder()
+                .confirmDeleteChild()
+                .clickSearchButton()
+                .searchFor(CHILD_FOLDER_NAME)
+                .isNoResultsFound(CHILD_FOLDER_NAME);
 
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).
-                sendKeys(FOLDER_NAME);
-        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']"))
-                .click();
-        getDriver().findElement(By.id("ok-button")).click();
+        Assert.assertTrue(isFolderDeleted,
+                "%s не должна отображаться в поиске после удаления".formatted(CHILD_FOLDER_NAME));
+    }
 
-        getDriver().findElement(By.name("Submit")).click();
+    @Test(dependsOnMethods = "testCreate")
+    public void testAddDescriptionToFolder() {
+        final String descriptionText = "Folder description";
 
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']")).
-                sendKeys(FOLDER_NAME);
-        getDriver().findElement(By.name("Submit")).click();
+        String actualDescription = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickAddDescriptionButton()
+                .addDescriptionAndSave(descriptionText)
+                .getDescription();
 
-        Thread.sleep(1500);
-
-        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), FOLDER_NAME);
+        Assert.assertEquals(
+                actualDescription,
+                descriptionText,
+                "Описание папки не соответствует ожидаемому");
     }
 }
