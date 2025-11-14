@@ -13,8 +13,16 @@ public class MultibranchPipelineConfigPage extends BasePage {
         super(driver);
     }
 
+    public MultibranchPipelineConfigPage sendDisplayName(String name) {
+        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(name);
+
+        return this;
+    }
+
     public MultibranchPipelineJobPage clickSaveButton() {
         getDriver().findElement(By.name("Submit")).click();
+        getWait2().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.cssSelector(".empty-state-section h2")));
 
         return new MultibranchPipelineJobPage(getDriver());
     }
