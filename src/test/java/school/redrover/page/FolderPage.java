@@ -64,7 +64,7 @@ public class FolderPage extends BasePage {
 
     public String getFolderContext() {
         return getWait2()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[text()='This folder is empty']")))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block>section>h2")))
                 .getText();
     }
 
