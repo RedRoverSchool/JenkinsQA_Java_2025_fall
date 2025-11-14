@@ -34,6 +34,7 @@ public class Folder10Test extends BaseTest {
 
         String expectedContext = "This folder is empty";
         Assert.assertEquals(actualContext, expectedContext);
+
     }
 
     @Test(dependsOnMethods = "testCreate")
