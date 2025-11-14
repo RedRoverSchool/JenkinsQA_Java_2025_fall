@@ -61,4 +61,20 @@ public class FolderPage extends BasePage {
 
         return this;
     }
+
+    public FolderPage clickAddDescriptionButton() {
+        getDriver().findElement(By.id("description-link")).click();
+        return this;
+    }
+
+    public FolderPage addDescriptionAndSave(String description) {
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        getDriver().findElement(By.name("Submit")).click();
+        return this;
+    }
+
+    public String getDescription() {
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("description-content"))).getText();
+    }
 }
