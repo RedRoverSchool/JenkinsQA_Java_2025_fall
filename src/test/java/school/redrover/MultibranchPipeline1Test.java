@@ -20,7 +20,7 @@ public class MultibranchPipeline1Test extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        getWait2().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                 By.xpath("//h1[.='" + MULTIBRANCH_PIPELINE_NAME + "']")));
 
         getDriver().findElement(By.xpath("//a[@href='/']/img")).click();
@@ -41,7 +41,7 @@ public class MultibranchPipeline1Test extends BaseTest {
                 .sendKeys(MULTIBRANCH_PIPELINE_DISPLAY_NAME);
         getDriver().findElement(By.name("Submit")).click();
 
-        getWait2().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                 By.xpath("//h1[.='" + MULTIBRANCH_PIPELINE_DISPLAY_NAME + "']")));
 
         getDriver().findElement(By.xpath("//a[@href='/']/img")).click();
