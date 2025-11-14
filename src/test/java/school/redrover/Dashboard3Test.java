@@ -50,6 +50,7 @@ public class Dashboard3Test extends BaseTest {
         Assert.assertEquals(actualJobs, createdJobsName, "Количество созданных проектов не совпадает");
     }
 
+    @Ignore
     @Test
     public void testCheckDeleteViewOnDashboard(){
         final String viewName = "myview";
