@@ -114,41 +114,6 @@ public class Folder2Test extends BaseTest {
     }
 
     @Test
-    public void testSameItemNamesInTwoFolders() {
-        final String folder1Name = "Folder" + UUID.randomUUID().toString().substring(0, 3);
-        final String folder2Name = "Folder" + UUID.randomUUID().toString().substring(0, 3);
-        final String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);
-
-        createItem(folder1Name, "Folder");
-        createItem(pipelineName, "Pipeline");
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-        createItem(folder2Name, "Folder");
-
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(pipelineName);
-        Assert.assertFalse(getDriver().findElement(By.id("itemname-invalid")).isDisplayed());
-
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        getWait10().until(driver -> Objects.requireNonNull(
-                driver.getCurrentUrl()).endsWith("/job/%s/".formatted(pipelineName)));
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folder1Name))).click();
-        List<String> folder1Items = getTextsOfItems("//a[contains(@class, 'jenkins-table__link')]");
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folder2Name))).click();
-        List<String> folder2Items = getTextsOfItems("//a[contains(@class, 'jenkins-table__link')]");
-
-        Assert.assertEquals(
-                folder1Items,
-                folder2Items,
-                "Несоответствие содержимого папок");
-    }
-
-    @Test
     public void testFindFolderContents() {
         final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
         final String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);

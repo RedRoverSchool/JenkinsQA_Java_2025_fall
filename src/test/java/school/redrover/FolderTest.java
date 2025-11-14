@@ -86,4 +86,37 @@ public class FolderTest extends BaseTest {
                 descriptionText,
                 "Описание папки не соответствует ожидаемому");
     }
+
+    @Test(dependsOnMethods = "testCreate")
+    public void testSameItemNamesInTwoFolders() {
+        final String pipelineName = "SubPipeline";
+        final String folderName2 = "Folder2";
+
+        List<String> jobsInFirstFolder = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickSidebarNewItem()
+                .sendName(pipelineName)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
+                .openJobPage(FOLDER_NAME,new FolderPage(getDriver()))
+                .getProjectList();
+
+        List<String> jobsInSecondFolder = new HomePage(getDriver())
+                .gotoHomePage()
+                .clickSidebarNewItem()
+                .sendName(folderName2)
+                .selectFolderAndSubmit()
+                .clickSave()
+                .clickSidebarNewItem()
+                .sendName(pipelineName)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
+                .openJobPage(folderName2,new FolderPage(getDriver()))
+                .getProjectList();
+
+        Assert.assertTrue(jobsInFirstFolder.contains(pipelineName),
+                "Пайплайн '%s' должен присутствовать в первой папке '%s'".formatted(pipelineName, FOLDER_NAME));
+        Assert.assertTrue(jobsInSecondFolder.contains(pipelineName),
+                "Пайплайн '%s' должен присутствовать во второй папке '%s'".formatted(pipelineName, folderName2));
+    }
 }
