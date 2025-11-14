@@ -34,16 +34,10 @@ public class CreateUserPage extends BasePage {
         return this;
     }
 
-    public ManageUsersPage clickCreateUserButton() {
+    public <P extends BasePage> P clickCreateUserButton(P page) {
         getDriver().findElement(By.name("Submit")).click();
 
-        return new ManageUsersPage(getDriver());
-    }
-
-    public CreateUserPage clickCreateUserButtonNegative() {
-        getDriver().findElement(By.name("Submit")).click();
-
-        return this;
+        return page;
     }
 
     public List<String> getAllErrors() {
