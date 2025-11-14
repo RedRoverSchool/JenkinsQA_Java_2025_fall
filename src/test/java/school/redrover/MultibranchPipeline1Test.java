@@ -21,7 +21,7 @@ public class MultibranchPipeline1Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                By.xpath("//h1[.='" + MULTIBRANCH_PIPELINE_NAME + "']")));
+                By.cssSelector(".empty-state-section h2")));
 
         getDriver().findElement(By.xpath("//a[@href='/']/img")).click();
 
