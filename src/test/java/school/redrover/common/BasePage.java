@@ -26,7 +26,7 @@ public abstract class BasePage extends BaseModel {
     }
 
     public SearchModalPage clickSearchButton() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("root-action-SearchAction")))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("root-action-SearchAction")))).click();
         return new SearchModalPage(getDriver());
     }
 }
