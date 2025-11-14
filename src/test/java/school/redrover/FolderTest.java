@@ -63,7 +63,6 @@ public class FolderTest extends BaseTest {
                 .openFolderPage(CHILD_FOLDER_NAME)
                 .clickDeleteFolder()
                 .confirmDeleteChild()
-                .gotoHomePage()
                 .clickSearchButton()
                 .searchFor(CHILD_FOLDER_NAME)
                 .isNoResultsFound(CHILD_FOLDER_NAME);
