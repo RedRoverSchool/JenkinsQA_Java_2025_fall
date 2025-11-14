@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.FolderPage;
@@ -27,7 +26,6 @@ public class Folder10Test extends BaseTest {
         Assert.assertEquals(myList.get(0), FOLDER_NAME);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testIsEmpty() {
         String actualContext = new HomePage(getDriver())
