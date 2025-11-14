@@ -64,7 +64,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 "Default Display Name field should be empty");
     }
 
-    @Test(dependsOnMethods = {"testAdvancedSectionQuietPeriodElements", "testAdvancedSectionDisplayNameFieldElements"})
+    @Test(dependsOnMethods = {"testAdvancedSectionDisplayNameFieldElements", "testAdvancedSectionQuietPeriodElements"})
     public void testAdvancedSectionQuietPeriodElementsAfterSelecting() {
         String actualNumberOfSecondsLabel = new HomePage(getDriver())
                 .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
