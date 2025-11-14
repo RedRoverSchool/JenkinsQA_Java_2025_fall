@@ -80,7 +80,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 .getNumberOfSecondsInput().isDisplayed());
     }
 
-    @Test(dependsOnMethods = "testAdvancedSectionQuietPeriodElementsAfterSelecting")
+    @Test(dependsOnMethods = {"testAdvancedSectionQuietPeriodElementsAfterSelecting", "testAdvancedSectionVerifyTooltips"})
     public void testAdvancedSectionSetDisplayName() {
         final String displayName = "PL_01";
 
