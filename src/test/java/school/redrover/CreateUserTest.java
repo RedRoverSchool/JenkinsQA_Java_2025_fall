@@ -1,8 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -47,10 +44,10 @@ public class CreateUserTest extends BaseTest {
                 .clickGearManageJenkinsButton()
                 .clickUserLink()
                 .clickCreateUserButton()
-                .clickCreateUserButton()
+                .clickCreateUserButtonNegative()
                 .getAllErrors();
 
-        Assert.assertEquals(expectedErrors, actualErrors);
+        Assert.assertEquals(actualErrors, expectedErrors);
     }
 
     @Test
@@ -61,19 +58,40 @@ public class CreateUserTest extends BaseTest {
                 "User name is already taken",
                 "Invalid e-mail address");
 
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
-        getDriver().findElement(By.id("username")).sendKeys(userName);
-        getDriver().findElement(By.name("password1")).sendKeys(userPassword);
-        getDriver().findElement(By.name("password2")).sendKeys(userPassword);
-        getDriver().findElement(By.name("Submit")).click();
+        List <String> actualErrors = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserLink()
+                .clickCreateUserButton()
+                .sendUserName(userName)
+                .sendPassword(userPassword)
+                .sendConfirmPassword(userPassword)
+                .clickCreateUserButtonNegative()
+                .getAllErrors();
 
-        List<String> actualErrors = getWait2().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
-                .xpath("//*[@class='error jenkins-!-margin-bottom-2']")))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
+        Assert.assertEquals(actualErrors, expectedErrors);
+    }
+
+    @Test
+    public void testUnmatchedPasswords() {
+        final String userName = "testUserLogin";
+        final String userPassword = "testUserPassword";
+        final String userUnmatchedPassword = "testNotUserPassword";
+        final String userEmail = "testUser@jenkins.com";
+
+        final List<String> expectedErrors = List.of(
+                "Password didn't match",
+                "Password didn't match");
+
+        List <String> actualErrors = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserLink()
+                .clickCreateUserButton()
+                .sendUserName(userName)
+                .sendPassword(userPassword)
+                .sendConfirmPassword(userUnmatchedPassword)
+                .sendEmail(userEmail)
+                .clickCreateUserButtonNegative()
+                .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);
     }

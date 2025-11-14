@@ -34,6 +34,12 @@ public class HomePage extends BasePage {
                 .toList();
     }
 
+    public FolderPage clickFolder(String folderName) {
+        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName))).click();
+
+        return new FolderPage(getDriver());
+    }
+
     public <T extends BasePage> T openJobPage(String jobName, T resultPage) {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
 
@@ -50,5 +56,13 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
         return new NewItemPage(getDriver());
+    }
+
+    public String getTitle() {
+        return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1"))).getText();
+    }
+
+    public WebElement findItem(String itemName) {
+        return getDriver().findElement(By.xpath("//a[@href='job/" + itemName + "/']"));
     }
 }

@@ -15,10 +15,6 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     private static final String JOB_NAME = "multibranchJobName";
     private static final String JOB_DESCRIPTION = "This is a job description";
 
-    private void clickOnTheToggle() {
-        getDriver().findElement(By.cssSelector("[data-title='Disabled']")).click();
-    }
-
     private void addJobDescription(String jobDescription) {
         WebElement jobDescriptionField = getDriver().findElement(By.name("_.description"));
 
@@ -92,25 +88,25 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     public void testDisabledMessageOnStatusPage() {
         final String expectedDisabledMessage = "This Multibranch Pipeline is currently disabled";
 
-        openMultibranchPipelineConfigurationPage(JOB_NAME);
-        clickOnTheToggle();
-        submitForm();
+        String actualDisabledMessage = new HomePage(getDriver())
+                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .clickToggle()
+                .clickSaveButton()
+                .getDisabledText();
 
-        WebElement actualDisabledMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("disabled-message")));
-
-        Assert.assertEquals(actualDisabledMessage.getText(), expectedDisabledMessage);
+        Assert.assertEquals(actualDisabledMessage, expectedDisabledMessage);
     }
 
     @Test(dependsOnMethods = "testDisabledMessageOnStatusPage")
     public void testJobDescriptionPreview() {
-        openMultibranchPipelineConfigurationPage(JOB_NAME);
-        addJobDescription(JOB_DESCRIPTION);
+        String jobDescriptionPreviewText = new HomePage(getDriver())
+                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .enterDescription(JOB_DESCRIPTION)
+                .getJobDescriptionPreviewText();
 
-        getDriver().findElement(By.className("textarea-show-preview")).click();
-
-        WebElement previewTextarea = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview")));
-
-        Assert.assertEquals(previewTextarea.getText(), JOB_DESCRIPTION);
+        Assert.assertEquals(jobDescriptionPreviewText, JOB_DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testJobDescriptionPreview")
