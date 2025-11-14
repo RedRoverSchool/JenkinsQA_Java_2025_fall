@@ -89,6 +89,5 @@ public class Folder10Test extends BaseTest {
                 .getText();
 
         Assert.assertEquals(sameNamedJobInFirstFolder, sameNamedJobInSecondFolder);
-
     }
 }
