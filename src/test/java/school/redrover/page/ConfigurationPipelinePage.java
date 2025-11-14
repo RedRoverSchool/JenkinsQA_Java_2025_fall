@@ -14,10 +14,15 @@ public class ConfigurationPipelinePage extends BasePage {
         super(driver);
     }
 
+    public PipelinePage clickSaveButton() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
+
+        return new PipelinePage(getDriver());
+    }
+
     public ConfigurationPipelinePage clickAdvancedLinkInSideMenu() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                        .xpath(".//button[@data-section-id='advanced']")))
-                .click();
+                .xpath(".//button[@data-section-id='advanced']"))).click();
 
         return this;
     }
@@ -60,6 +65,16 @@ public class ConfigurationPipelinePage extends BasePage {
         return getDriver().findElement(By.name("hasCustomQuietPeriod")).isSelected();
     }
 
+    public ConfigurationPipelinePage clickQuitePeriod() {
+        new Actions(getDriver())
+                .moveToElement(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .xpath(".//label[text()='Quiet period']"))))
+                .click()
+                .perform();
+
+        return this;
+    }
+
     public String getDisplayNameLabelText() {
         WebElement displayNameLabel = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.
                 xpath(".//div[text()='Display Name']")));
@@ -68,8 +83,25 @@ public class ConfigurationPipelinePage extends BasePage {
         return displayNameLabel.getText().split("\\n")[0];
     }
 
-    public Boolean displayNameInputIsEmpty() {
-        return getDriver().findElement(By.name("_.displayNameOrNull"))
-                .getAttribute("value").isEmpty();
+    public WebElement displayNameInput() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .name("_.displayNameOrNull")));
+    }
+
+    public ConfigurationPipelinePage setDisplayName(String displayName) {
+        new Actions(getDriver()).moveToElement(displayNameInput()).perform();
+        displayNameInput().sendKeys(displayName);
+
+        return this;
+    }
+
+    public String getNumberOfSecondsLabelText() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath(".//div[text()='Number of seconds']"))).getText();
+    }
+
+    public String getNumberOfSecondsInputValue() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .name("quiet_period"))).getAttribute("value");
     }
 }
