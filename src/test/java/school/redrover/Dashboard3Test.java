@@ -22,13 +22,7 @@ public class Dashboard3Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
-
-//        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h2")));
         getDriver().findElement(By.id("jenkins-head-icon")).click();
-
-//        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-table__link >span:first-child")));
-
-        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("configure"))); // ставим ПОСЛЕ клика и ждем пока ещё на странице!
     }
 
     @Test
