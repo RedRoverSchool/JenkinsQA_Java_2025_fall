@@ -8,7 +8,9 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.time.Duration;
 import java.util.List;
@@ -17,19 +19,12 @@ public class FooterJenkinsVersionTest extends BaseTest {
 
     @Test
     public void testDropdownMenu() {
-        final List<String> expectedDropdownItems = List.of("About Jenkins", "Get involved", "Website");
+        final List<String> expectedDropdownList = List.of("About Jenkins", "Get involved", "Website");
 
-        getDriver().findElement(By.cssSelector(".page-footer__links > button")).click();
+        List<String> dropdownList = new HomePage(getDriver())
+                .clickJenkinsVersion()
+                .getDropdownList();
 
-        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        List<WebElement> dropdownElements = wait.until(
-                ExpectedConditions.visibilityOfAllElementsLocatedBy(By.className("jenkins-dropdown__item")));
-
-        List<String> dropdownItems = dropdownElements
-                .stream()
-                .map(x -> x.getText())
-                .toList();
-
-        Assert.assertEquals(dropdownItems, expectedDropdownItems);
+        Assert.assertEquals(dropdownList, expectedDropdownList);
     }
 }
