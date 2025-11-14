@@ -2,6 +2,7 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.ProjectUtils;
 
@@ -24,6 +25,7 @@ public class LoginPage extends BasePage {
         getDriver().findElement(By.cssSelector("#j_username")).sendKeys(ProjectUtils.getUserName());
         getDriver().findElement(By.cssSelector("#j_password")).sendKeys(ProjectUtils.getPassword());
         getDriver().findElement(By.xpath("//button")).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[.='Welcome to Jenkins!']")));
 
         return new HomePage(getDriver());
     }
