@@ -70,8 +70,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickDeleteItemInDropdownMenu() {
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(getDriver().findElement(By.xpath("//button[.//text()[contains(., 'Delete')]]"))).click().perform();
+        TestUtils.clickJS(getDriver(), By.xpath("//button[.//text()[contains(., 'Delete')]]"));
 
         return this;
     }
