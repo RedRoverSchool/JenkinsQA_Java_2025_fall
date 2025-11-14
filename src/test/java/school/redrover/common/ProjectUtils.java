@@ -39,6 +39,11 @@ public final class ProjectUtils {
             }
         }
 
+        String chromeDriverPath = getValue("webdriver.chrome.driver");
+        if (chromeDriverPath != null && !chromeDriverPath.isEmpty()) {
+            System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+        }
+
         chromeOptions = new ChromeOptions();
         String options = getValue(PREFIX_BROWSER_OPTIONS + "chrome");
         if (options != null) {
