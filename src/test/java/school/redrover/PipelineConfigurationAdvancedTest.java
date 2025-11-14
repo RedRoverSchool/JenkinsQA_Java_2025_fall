@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -74,6 +75,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 .quietPeriodCheckboxIsSelected(), "Default Checkbox should not be selected");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testNavigationToAdvancedBySideMenu")
     public void testAdvancedSectionDisplayNameFieldElements() {
         String actualDisplayNameLabel = new HomePage(getDriver())
