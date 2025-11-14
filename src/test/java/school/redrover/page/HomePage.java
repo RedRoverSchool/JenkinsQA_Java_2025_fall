@@ -34,6 +34,12 @@ public class HomePage extends BasePage {
                 .toList();
     }
 
+    public FolderPage clickFolder(String folderName) {
+        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName))).click();
+
+        return new FolderPage(getDriver());
+    }
+
     public <T extends BasePage> T openJobPage(String jobName, T resultPage) {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
 
