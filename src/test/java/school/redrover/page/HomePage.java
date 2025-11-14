@@ -64,13 +64,14 @@ public class HomePage extends BasePage {
     public HomePage openDropdownMenu(String itemName) {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(getDriver().findElement(By.xpath("//span[text()='%s']".formatted(itemName)))).perform();
-        actions.moveToElement(getDriver().findElement(By.xpath(("//a[.//span[text()='%s']]//" +
-                "button[@class='jenkins-menu-dropdown-chevron']").formatted(itemName)))).click().perform();
+        actions.moveToElement(getDriver().findElement(By.xpath(
+                "//a[.//span[text()='%s']]//button[@class='jenkins-menu-dropdown-chevron']".formatted(itemName)))).click().perform();
         return this;
     }
 
     public HomePage clickDeleteItemInDropdownMenu() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[.//text()[contains(., 'Delete')]]"))).click();
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(getDriver().findElement(By.xpath("//button[.//text()[contains(., 'Delete')]]"))).click().perform();
 
         return this;
     }
