@@ -1,40 +1,76 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.FolderPage;
+import school.redrover.page.HomePage;
+
+import java.util.List;
 
 public class FolderTest extends BaseTest {
-    private static final String FOLDER_NAME = "best folder in the world";
+    private static final String FOLDER_NAME = "TestFolder";
+    private static final String CHILD_FOLDER_NAME = "ChildFolder";
 
-    @Test(testName = "Создание Folder")
-    public void testCreateFolder() throws InterruptedException {
-        WebElement createJobButton = getDriver().findElement(By.cssSelector("a[href='newJob']"));
-        createJobButton.click();
+    @Test
+    public void testCreate() {
+        List<String> projectList = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(FOLDER_NAME)
+                .selectFolderAndSubmit()
+                .gotoHomePage()
+                .getProjectList();
 
-        WebElement inputName = getDriver().findElement(By.cssSelector("input#name"));
-        inputName.sendKeys(FOLDER_NAME);
+        Assert.assertNotEquals(projectList.size(), 0);
+        Assert.assertEquals(projectList.get(0), FOLDER_NAME);
+    }
 
-        WebElement folder = getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder"));
-        folder.click();
+    @Test(dependsOnMethods = "testCreate")
+    public void testNewFolderDefaultAddedToExistingFolder() {
+        List<String> childFolderBreadcrumbList = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickSidebarNewItem()
+                .sendName(CHILD_FOLDER_NAME)
+                .selectFolderAndSubmit()
+                .clickSave()
+                .getBreadcrumbTexts();
 
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
-        okButton.click();
+        Assert.assertEquals(
+                childFolderBreadcrumbList,
+                List.of(FOLDER_NAME, CHILD_FOLDER_NAME),
+                "Путь хлебных крошек не соответствует ожидаемому");
+    }
 
-        WebElement saveButton = getDriver().findElement(By.cssSelector("button[value='Save']"));
-        saveButton.click();
+    @Test(dependsOnMethods = "testNewFolderDefaultAddedToExistingFolder")
+    public void testPreventDuplicateItemNamesInFolder() {
+        String duplicateErrorMessage = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickSidebarNewItem()
+                .sendName(CHILD_FOLDER_NAME)
+                .selectFolder()
+                .getDuplicateErrorMessage();
 
-        Thread.sleep(1500);
+        Assert.assertEquals(
+                duplicateErrorMessage,
+                "» A job already exists with the name ‘%s’".formatted(CHILD_FOLDER_NAME),
+                "Неверное сообщение о дублировании имени");
+    }
 
-        WebElement logo = getDriver().findElement(By.className("app-jenkins-logo"));
-        logo.click();
+    @Test(dependsOnMethods = "testPreventDuplicateItemNamesInFolder")
+    public void deleteFolder() {
+        boolean isFolderDeleted = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openFolderPage(CHILD_FOLDER_NAME)
+                .clickDeleteFolder()
+                .confirmDeleteChild()
+                .gotoHomePage()
+                .clickSearchButton()
+                .searchFor(CHILD_FOLDER_NAME)
+                .isNoResultsFound(CHILD_FOLDER_NAME);
 
-        Thread.sleep(1500);
-
-        WebElement createdFolder = getDriver().findElement(By.xpath("//span[text()='" + FOLDER_NAME + "']"));
-        Assert.assertNotNull(createdFolder);
+        Assert.assertTrue(isFolderDeleted,
+                "%s не должна отображаться в поиске после удаления".formatted(CHILD_FOLDER_NAME));
     }
 
     @Test(testName = "Добавление описания к Folder")
@@ -56,22 +92,6 @@ public class FolderTest extends BaseTest {
 
         Thread.sleep(1500);
 
-        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(),FOLDER_NAME);
-    }
-
-    @Test
-    public void testAddNewFolder() throws InterruptedException {
-
-        String folder = "NewFolder";
-
-        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(1)")).click();
-        getDriver().findElement((By.id("name"))).sendKeys(folder);
-        getDriver().findElement(By.cssSelector("#j-add-item-type-nested-projects > ul > :nth-child(1)")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        Thread.sleep(1500);
-        getDriver().findElement(By.cssSelector("#page-header > div.jenkins-header__main > div > a > span")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("#job_NewFolder > td:nth-child(3) > a > span")).getText(), folder);
+        Assert.assertEquals(getDriver().findElement(By.id("description-content")).getText(), FOLDER_NAME);
     }
 }
