@@ -14,6 +14,7 @@ import java.util.List;
 public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "newPipeline";
+    private static final String PIPELINE_NAME_FOR_CHANGE = "pipeline_01";
 
     @Test
     public void testNavigationToAdvancedByScrollingDown() {
@@ -64,7 +65,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 "Default Display Name field should be empty");
     }
 
-    @Test(dependsOnMethods = {"testAdvancedSectionDisplayNameFieldElements", "testAdvancedSectionQuietPeriodElements"})
+    @Test(dependsOnMethods = "testAdvancedSectionQuietPeriodElements")
     public void testAdvancedSectionQuietPeriodElementsAfterSelecting() {
         String actualNumberOfSecondsLabel = new HomePage(getDriver())
                 .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
@@ -80,13 +81,14 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 .getNumberOfSecondsInput().isDisplayed());
     }
 
-    @Test(dependsOnMethods = {"testAdvancedSectionQuietPeriodElementsAfterSelecting", "testAdvancedSectionVerifyTooltips"})
+    @Test
     public void testAdvancedSectionSetDisplayName() {
         final String displayName = "PL_01";
 
         String actualDisplayNameInStatus = new HomePage(getDriver())
-                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickCreateJob()
+                .sendName(PIPELINE_NAME_FOR_CHANGE)
+                .selectPipelineAndSubmit()
                 .clickAdvancedButton()
                 .setDisplayName(displayName)
                 .clickSaveButton()
@@ -118,7 +120,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
         Assert.assertEquals(actualTooltipList, expectedTooltipList);
     }
 
-    @Test(dependsOnMethods = {"testAdvancedSectionVerifyTooltips"})
+    @Test(dependsOnMethods = "testAdvancedSectionVerifyTooltips")
     public void testAdvancedSectionHelpAreaIsDisplayed() {
         List<WebElement> tooltipList = new HomePage(getDriver())
                 .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
