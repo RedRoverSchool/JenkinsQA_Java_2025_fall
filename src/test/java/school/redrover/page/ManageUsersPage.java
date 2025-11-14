@@ -23,13 +23,4 @@ public class ManageUsersPage extends BasePage {
 
         return getDriver().findElement(By.xpath("//td[text()='%s']".formatted(userName))).getText();
     }
-
-    public List <String> getAllErrors() {
-
-        return getDriver()
-                .findElements(By.xpath("//*[@class='error jenkins-!-margin-bottom-2']"))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
-    }
 }
