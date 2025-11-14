@@ -3,7 +3,9 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
 
 import java.util.List;
 
@@ -13,8 +15,14 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
-    public NewItemPage clickNewItem() {
+    public NewItemPage clickCreateJob() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        return new NewItemPage(getDriver());
+    }
+
+    public NewItemPage clickNewItemOnLeftMenu() {
+        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
 
         return new NewItemPage(getDriver());
     }
@@ -24,5 +32,31 @@ public class HomePage extends BasePage {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public FolderPage clickFolder(String folderName) {
+        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folderName))).click();
+
+        return new FolderPage(getDriver());
+    }
+
+    public <T extends BasePage> T openJobPage(String jobName, T resultPage) {
+        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
+
+        return resultPage;
+    }
+
+    public NewItemPage clickSidebarNewItem() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        return new NewItemPage(getDriver());
+    }
+
+    public String getTitle() {
+        return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1"))).getText();
+    }
+
+    public WebElement findItem(String itemName) {
+        return getDriver().findElement(By.xpath("//a[@href='job/" + itemName + "/']"));
     }
 }

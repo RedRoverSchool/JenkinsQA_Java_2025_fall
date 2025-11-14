@@ -14,7 +14,7 @@ public class Folder100Test extends BaseTest {
         final String folderName = "Test Folder";
 
         List<String> projectList = new HomePage(getDriver())
-                .clickNewItem()
+                .clickCreateJob()
                 .sendName(folderName)
                 .selectFolderAndSubmit()
                 .gotoHomePage()

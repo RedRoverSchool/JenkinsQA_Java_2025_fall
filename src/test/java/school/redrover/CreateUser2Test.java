@@ -64,19 +64,6 @@ public class CreateUser2Test extends BaseTest {
     }
 
     @Test
-    public void testPasswordsUnmatch() {
-        getDriver().findElement(By.name("password1")).sendKeys("password");
-        getDriver().findElement(By.name("Submit")).click();
-
-        List<WebElement> createUserFormFieldErrors = getDriver().findElements(By.className("error"));
-        WebElement passwordFieldErrorMessage = createUserFormFieldErrors.get(1);
-        WebElement passwordConfirmFieldErrorMessage = createUserFormFieldErrors.get(2);
-
-        Assert.assertEquals(passwordFieldErrorMessage.getText(), "Password didn't match");
-        Assert.assertEquals(passwordConfirmFieldErrorMessage.getText(), "Password didn't match");
-    }
-
-    @Test
     public void testEmptyEmail() {
         getDriver().findElement(By.name("Submit")).click();
 

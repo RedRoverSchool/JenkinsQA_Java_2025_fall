@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -11,37 +10,43 @@ import java.time.Duration;
 
 public class FolderConfigurationTest extends BaseTest {
 
-    public void createMyFolder() {
+   private static final String FOLDER_NAME = "my folder";
 
-        final String folderName = "my folder";
-
-        WebElement createJobButton = getDriver().findElement(By.xpath("//a[@href='newJob']"));
-        createJobButton.click();
-        getDriver().findElement(By.id("name")).sendKeys(folderName);
+    @Test
+    public void testHealthMetricLinkIsDisplayed(){
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
         getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
         getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertTrue(getDriver()
+                .findElement(By.xpath("//span[normalize-space(text())='Health metrics']"))
+                .isDisplayed());
     }
 
-    @Test
-    public void testHealthMetricVisibility(){
-        createMyFolder();
-        WebElement healthMetricLink = getDriver()
-                .findElement(By.xpath("//span[normalize-space(text())='Health metrics']"));
-        Assert.assertTrue(healthMetricLink.isDisplayed());
+    @Test(dependsOnMethods = {"testHealthMetricLinkIsDisplayed"})
+    public void testHealthMetricButtonIsDisplayed(){
+        getDriver().findElement(By.linkText(FOLDER_NAME)).click();
+        getDriver().findElement(By.linkText("Configure")).click();
+
+        Assert.assertTrue(getDriver()
+                .findElement(By.xpath("//button[normalize-space(text())='Health metrics']"))
+                .isDisplayed());
     }
 
-    @Test
-    public void testHealthMetricButton(){
-        createMyFolder();
-        WebElement healthMetricButton = getDriver()
-                .findElement(By.cssSelector("#main-panel section:nth-child(5) button"));
-        Assert.assertTrue(healthMetricButton.isDisplayed());
+    @Test(dependsOnMethods = {"testHealthMetricLinkIsDisplayed"})
+    public void testHealthMetricSectionNavigation(){
+        getDriver().findElement(By.linkText(FOLDER_NAME)).click();
+        getDriver().findElement(By.linkText("Configure")).click();
+        getDriver().findElement(By.cssSelector("button.task-link[data-section-id='health-metrics']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.id("health-metrics")).isDisplayed());
     }
 
-    @Test
+    @Test(dependsOnMethods = {"testHealthMetricSectionNavigation"})
     public void testVerifyMetricTypeList(){
-        createMyFolder();
-
+        getDriver().findElement(By.linkText(FOLDER_NAME)).click();
+        getDriver().findElement(By.linkText("Configure")).click();
         getDriver().findElement(By.xpath("//button[normalize-space(text())='Health metrics']")).click();
         getDriver().findElement(By.xpath("//button[normalize-space(text())='Add metric']")).click();
 

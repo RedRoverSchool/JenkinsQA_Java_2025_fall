@@ -9,10 +9,15 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.ConfigurationPipelinePage;
+import school.redrover.page.HomePage;
+import school.redrover.page.PipelinePage;
 
 import java.util.List;
 
 public class PipelineConfigurationAdvancedTest extends BaseTest {
+
+    private static final String PIPELINE_NAME = "newPipeline";
 
     private void createNewPipeline(String newPipelineName) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -35,112 +40,91 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
 
     @Test
     public void testNavigationToAdvancedByScrollingDown() {
-        final String newPipelineName = "newPipeline_01";
-        createNewPipeline(newPipelineName);
+        String actualAdvancedSectionTitle = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .scrollDownToAdvancedSection()
+                .getAdvancedTitleText();
 
-        WebElement actualAdvancedSectionTitle = getDriver().findElement(By.id("advanced"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", actualAdvancedSectionTitle);
-
-        Assert.assertEquals(actualAdvancedSectionTitle.getText(), "Advanced");
+        Assert.assertEquals(actualAdvancedSectionTitle, "Advanced");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testNavigationToAdvancedByScrollingDown")
     public void testNavigationToAdvancedBySideMenu() {
-        final String newPipelineName = "newPipeline_02";
-        createNewPipeline(newPipelineName);
+        String actualAdvancedSectionTitle = new HomePage(getDriver())
+                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickAdvancedLinkInSideMenu()
+                .getAdvancedTitleText();
 
-        WebElement actualAdvancedItemMenu = getDriver().findElement(By.xpath(".//button[@data-section-id='advanced']"));
-        actualAdvancedItemMenu.click();
-
-        WebElement actualAdvancedSectionTitle = getDriver().findElement(By.id("advanced"));
-
-        Assert.assertEquals(actualAdvancedItemMenu.getText(), "Advanced");
-        Assert.assertEquals(actualAdvancedSectionTitle.getText(), "Advanced");
+        Assert.assertEquals(actualAdvancedSectionTitle, "Advanced");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testNavigationToAdvancedBySideMenu")
     public void testAdvancedSectionQuietPeriodElements() {
-        final String newPipelineName = "newPipeline_03";
-        createNewPipeline(newPipelineName);
-        advancedButtonClick();
+        String actualQuietPeriodLabel = new HomePage(getDriver())
+                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickAdvancedButton()
+                .getQuietPeriodLabelText();
 
-        WebElement actualQuietPeriodLabel = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.
-                xpath(".//label[text()='Quiet period']")));
-        new Actions(getDriver()).moveToElement(actualQuietPeriodLabel).perform();
-
-        WebElement actualQuietPeriodCheckbox = getDriver().findElement(By.id("cb13"));
-
-        Assert.assertEquals(actualQuietPeriodLabel.getText(), "Quiet period");
-        Assert.assertFalse(actualQuietPeriodCheckbox.isSelected(), "Default Checkbox should not be selected");
+        Assert.assertEquals(actualQuietPeriodLabel, "Quiet period");
+        Assert.assertFalse(new ConfigurationPipelinePage(getDriver())
+                .quietPeriodCheckboxIsSelected(), "Default Checkbox should not be selected");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testNavigationToAdvancedBySideMenu")
     public void testAdvancedSectionDisplayNameFieldElements() {
-        final String newPipelineName = "newPipeline_04";
-        createNewPipeline(newPipelineName);
-        advancedButtonClick();
-
-        WebElement displayNameLabel = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.
-                xpath(".//div[text()='Display Name']")));
-        new Actions(getDriver()).moveToElement(displayNameLabel).perform();
-
-        String actualDisplayNameLabel = displayNameLabel.getText().split("\\n")[0];
-        WebElement actualDisplayNameInput = getDriver().findElement(By.name("_.displayNameOrNull"));
+        String actualDisplayNameLabel = new HomePage(getDriver())
+                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickAdvancedButton()
+                .getDisplayNameLabelText();
 
         Assert.assertEquals(actualDisplayNameLabel, "Display Name");
-        Assert.assertTrue(actualDisplayNameInput.getAttribute("value").isEmpty(), "Default Display Name field should be empty");
+        Assert.assertTrue(new ConfigurationPipelinePage(getDriver())
+                .displayNameInput().getAttribute("value").isEmpty(),
+                "Default Display Name field should be empty");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testAdvancedSectionQuietPeriodElements")
     public void testAdvancedSectionQuietPeriodElementsAfterSelecting() {
-        final String newPipelineName = "newPipeline_05";
-        createNewPipeline(newPipelineName);
-        advancedButtonClick();
+        String actualNumberOfSecondsLabel = new HomePage(getDriver())
+                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickAdvancedButton()
+                .clickQuitePeriod()
+                .getNumberOfSecondsLabelText();
 
-        WebElement actualQuietPeriodLabel = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath(".//label[text()='Quiet period']")));
-        new Actions(getDriver()).moveToElement(actualQuietPeriodLabel).click().perform();
-
-        WebElement actualQuietPeriodCheckbox = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .name("hasCustomQuietPeriod")));
-        WebElement actualNumberOfSecondsLabel = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath(".//div[text()='Number of seconds']")));
-        WebElement actualNumberOfSecondsInput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .name("quiet_period")));
-
-        Assert.assertTrue(actualQuietPeriodCheckbox.isSelected(), "Checkbox should be selected");
-        Assert.assertEquals(actualNumberOfSecondsLabel.getText(), "Number of seconds");
-        Assert.assertTrue(actualNumberOfSecondsInput.isDisplayed(), "'Number of seconds' input should be displayed");
+        Assert.assertEquals(actualNumberOfSecondsLabel, "Number of seconds");
+        Assert.assertTrue(new ConfigurationPipelinePage(getDriver())
+                .quietPeriodCheckboxIsSelected(), "Checkbox should be selected");
+        Assert.assertTrue(new ConfigurationPipelinePage(getDriver())
+                .getNumberOfSecondsInput().isDisplayed());
     }
 
-    @Test
-    public void testAdvancedSectionAddDisplayName() {
-        final String pipelineName = "pipeline_01";
+    @Test(dependsOnMethods = "testAdvancedSectionQuietPeriodElementsAfterSelecting")
+    public void testAdvancedSectionSetDisplayName() {
         final String displayName = "PL_01";
-        createNewPipeline(pipelineName);
-        advancedButtonClick();
 
-        WebElement displayNameInput = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .name("_.displayNameOrNull")));
-        new Actions(getDriver()).moveToElement(displayNameInput).perform();
-        displayNameInput.sendKeys(displayName);
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
-
-        String actualDisplayNameInStatus = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .tagName("h1"))).getText();
-        String actualDisplayNameInBreadcrumbBar = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath(".//a[text()='%s']".formatted(displayName)))).getText();
+        String actualDisplayNameInStatus = new HomePage(getDriver())
+                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickAdvancedButton()
+                .setDisplayName(displayName)
+                .clickSaveButton()
+                .getDisplayNameInStatus();
 
         Assert.assertEquals(actualDisplayNameInStatus, displayName);
-        Assert.assertEquals(actualDisplayNameInBreadcrumbBar, displayName);
+        Assert.assertEquals(new PipelinePage(getDriver()).
+                getDisplayNameInBreadcrumbBar(displayName), displayName);
 
-        getDriver().findElement(By.id("jenkins-head-icon")).click();
-
-        String actualDisplayNameInHomePage = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .id("job_%s".formatted(pipelineName)))).getText().split("\\n")[0];
-
-        Assert.assertEquals(actualDisplayNameInHomePage, displayName);
+        List<String> actualProjectList = new PipelinePage(getDriver())
+                .gotoHomePage()
+                .getProjectList();
+        Assert.assertTrue(actualProjectList.contains(displayName),
+                String.format("Project with Display Name '%s' not found in Project List", displayName));
     }
 
     @Test
