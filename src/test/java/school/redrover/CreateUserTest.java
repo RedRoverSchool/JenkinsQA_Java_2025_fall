@@ -38,7 +38,7 @@ public class CreateUserTest extends BaseTest {
         final List<String> expectedErrors = List.of(
                 "\"\" is prohibited as a username for security reasons.",
                 "Password is required",
-                   "Password is required",
+                "Password is required",
                 "\"\" is prohibited as a full name for security reasons.",
                 "Invalid e-mail address"
         );
