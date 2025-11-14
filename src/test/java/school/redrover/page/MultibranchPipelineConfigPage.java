@@ -50,4 +50,11 @@ public class MultibranchPipelineConfigPage extends BasePage {
 
         return this;
     }
+
+    public String getJobDescriptionPreviewText() {
+        getDriver().findElement(By.className("textarea-show-preview")).click();
+
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview")))
+                .getText();
+    }
 }
