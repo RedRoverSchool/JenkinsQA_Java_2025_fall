@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.FolderPage;
@@ -31,7 +30,7 @@ public class FolderTest extends BaseTest {
     public void testNewFolderDefaultAddedToExistingFolder() {
         List<String> childFolderBreadcrumbList = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickNewItem()
+                .clickSidebarNewItem()
                 .sendName(CHILD_FOLDER_NAME)
                 .selectFolderAndSubmit()
                 .clickSave()
@@ -43,19 +42,35 @@ public class FolderTest extends BaseTest {
                 "Путь хлебных крошек не соответствует ожидаемому");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testNewFolderDefaultAddedToExistingFolder")
     public void testPreventDuplicateItemNamesInFolder() {
         String duplicateErrorMessage = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickNewItem()
+                .clickSidebarNewItem()
                 .sendName(CHILD_FOLDER_NAME)
+                .selectFolder()
                 .getDuplicateErrorMessage();
 
         Assert.assertEquals(
                 duplicateErrorMessage,
                 "» A job already exists with the name ‘%s’".formatted(CHILD_FOLDER_NAME),
                 "Неверное сообщение о дублировании имени");
+    }
+
+    @Test(dependsOnMethods = "testPreventDuplicateItemNamesInFolder")
+    public void deleteFolder() {
+        boolean isFolderDeleted = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openFolderPage(CHILD_FOLDER_NAME)
+                .clickDeleteFolder()
+                .confirmDeleteChild()
+                .gotoHomePage()
+                .clickSearchButton()
+                .searchFor(CHILD_FOLDER_NAME)
+                .isNoResultsFound(CHILD_FOLDER_NAME);
+
+        Assert.assertTrue(isFolderDeleted,
+                "%s не должна отображаться в поиске после удаления".formatted(CHILD_FOLDER_NAME));
     }
 
     @Test(testName = "Добавление описания к Folder")
