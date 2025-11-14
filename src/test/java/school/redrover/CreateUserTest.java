@@ -44,7 +44,7 @@ public class CreateUserTest extends BaseTest {
                 .clickGearManageJenkinsButton()
                 .clickUserLink()
                 .clickCreateUserButton()
-                .clickCreateUserButton()
+                .clickCreateUserButtonNegative()
                 .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);
@@ -65,7 +65,7 @@ public class CreateUserTest extends BaseTest {
                 .sendUserName(userName)
                 .sendPassword(userPassword)
                 .sendConfirmPassword(userPassword)
-                .clickCreateUserButton()
+                .clickCreateUserButtonNegative()
                 .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);
