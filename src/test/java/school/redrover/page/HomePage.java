@@ -1,7 +1,6 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -66,10 +65,8 @@ public class HomePage extends BasePage {
                 ExpectedConditions.visibilityOfElementLocated(By.xpath(
                         "//a[.//span[text()='%s']]//button[@class='jenkins-menu-dropdown-chevron']".formatted(itemName))));
 
-        ((JavascriptExecutor) getDriver())
-                .executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", dropdownButton);
-        ((JavascriptExecutor) getDriver())
-                .executeScript("arguments[0].dispatchEvent(new Event('click'));", dropdownButton);
+        TestUtils.mouseEnterJS(getDriver(), dropdownButton);
+        TestUtils.clickJS(getDriver(), dropdownButton);
 
         return this;
     }
