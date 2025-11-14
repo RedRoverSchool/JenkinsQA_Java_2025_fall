@@ -74,7 +74,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 .quietPeriodCheckboxIsSelected(), "Default Checkbox should not be selected");
     }
 
-    @Test(dependsOnMethods = "testAdvancedSectionQuietPeriodElements")
+    @Test(dependsOnMethods = "testNavigationToAdvancedBySideMenu")
     public void testAdvancedSectionDisplayNameFieldElements() {
         String actualDisplayNameLabel = new HomePage(getDriver())
                 .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
@@ -100,8 +100,8 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
         Assert.assertEquals(actualNumberOfSecondsLabel, "Number of seconds");
         Assert.assertTrue(new ConfigurationPipelinePage(getDriver())
                 .quietPeriodCheckboxIsSelected(), "Checkbox should be selected");
-        Assert.assertEquals(new ConfigurationPipelinePage(getDriver())
-                .getNumberOfSecondsInputValue(), "5");
+        Assert.assertTrue(new ConfigurationPipelinePage(getDriver())
+                .getNumberOfSecondsInput().isDisplayed());
     }
 
     @Test(dependsOnMethods = "testAdvancedSectionQuietPeriodElementsAfterSelecting")

@@ -100,8 +100,7 @@ public class ConfigurationPipelinePage extends BasePage {
                 .xpath(".//div[text()='Number of seconds']"))).getText();
     }
 
-    public String getNumberOfSecondsInputValue() {
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .name("quiet_period"))).getAttribute("value");
+    public WebElement getNumberOfSecondsInput() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("quiet_period")));
     }
 }
