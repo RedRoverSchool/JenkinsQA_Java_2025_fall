@@ -90,6 +90,11 @@ public class ConfigurationPipelinePage extends BasePage {
                 .name("_.displayNameOrNull")));
     }
 
+    public boolean displayNameValueIsEmpty() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .name("_.displayNameOrNull"))).getAttribute("value").isEmpty();
+    }
+
     public ConfigurationPipelinePage setDisplayName(String displayName) {
         new Actions(getDriver()).moveToElement(displayNameInput()).perform();
         displayNameInput().sendKeys(displayName);

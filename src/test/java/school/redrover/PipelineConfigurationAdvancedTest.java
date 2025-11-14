@@ -60,8 +60,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 .getDisplayNameLabelText();
 
         Assert.assertEquals(actualDisplayNameLabel, "Display Name");
-        Assert.assertTrue(new ConfigurationPipelinePage(getDriver())
-                        .displayNameInput().getAttribute("value").isEmpty(),
+        Assert.assertTrue(new ConfigurationPipelinePage(getDriver()).displayNameValueIsEmpty(),
                 "Default Display Name field should be empty");
     }
 
