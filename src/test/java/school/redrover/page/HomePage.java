@@ -55,4 +55,8 @@ public class HomePage extends BasePage {
     public String getTitle() {
         return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1"))).getText();
     }
+
+    public WebElement findItem(String itemName) {
+        return getDriver().findElement(By.xpath("//a[@href='job/" + itemName + "/']"));
+    }
 }
