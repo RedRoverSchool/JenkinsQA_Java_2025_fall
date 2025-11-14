@@ -103,4 +103,17 @@ public class ConfigurationPipelinePage extends BasePage {
     public WebElement getNumberOfSecondsInput() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("quiet_period")));
     }
+
+    public ConfigurationPipelinePage toggleEnableSwitch() {
+        WebElement enableDisableToggle = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@id='toggle-switch-enable-disable-project']")));
+        enableDisableToggle.click();
+
+        return new ConfigurationPipelinePage(getDriver());
+    }
+
+    public PipelinePage clickSubmitButton() {
+        getDriver().findElement(By.name("Submit")).click();
+
+        return new PipelinePage(getDriver());
+    }
 }
