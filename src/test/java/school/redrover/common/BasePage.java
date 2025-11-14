@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.HomePage;
 import school.redrover.page.LoginPage;
 import school.redrover.page.ManageJenkinsPage;
+import school.redrover.page.SearchModalPage;
 
 public abstract class BasePage extends BaseModel {
 
@@ -24,6 +25,11 @@ public abstract class BasePage extends BaseModel {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
 
         return new ManageJenkinsPage(getDriver());
+    }
+
+    public SearchModalPage clickSearchButton() {
+        getDriver().findElement(By.id("root-action-SearchAction")).click();
+        return new SearchModalPage(getDriver());
     }
 
     public LoginPage clickSignOut() {

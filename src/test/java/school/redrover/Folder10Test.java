@@ -50,7 +50,7 @@ public class Folder10Test extends BaseTest {
         final String folderName = "Folder name";
 
         List<String> myList = new HomePage(getDriver())
-                .clickNewItem()
+                .clickCreateJob()
                 .sendName(folderName)
                 .selectFolderAndSubmit()
                 .gotoHomePage()

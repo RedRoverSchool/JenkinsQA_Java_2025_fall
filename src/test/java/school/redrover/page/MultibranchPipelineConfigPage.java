@@ -7,19 +7,19 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
-public class ConfigurationMultibranchPipelinePage extends BasePage {
+public class MultibranchPipelineConfigPage extends BasePage {
 
-    public ConfigurationMultibranchPipelinePage(WebDriver driver) {
+    public MultibranchPipelineConfigPage(WebDriver driver) {
         super(driver);
     }
 
-    public MultibranchPipelineJobPage submitForm() {
-        getDriver().findElement(By.tagName("form")).submit();
+    public MultibranchPipelineJobPage clickSaveButton() {
+        getDriver().findElement(By.name("Submit")).click();
 
         return new MultibranchPipelineJobPage(getDriver());
     }
 
-    public ConfigurationMultibranchPipelinePage clickToggle() {
+    public MultibranchPipelineConfigPage clickToggle() {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-title='Disabled']"))).click();
 
         return this;
@@ -42,6 +42,12 @@ public class ConfigurationMultibranchPipelinePage extends BasePage {
         new Actions(getDriver()).moveToElement(toggleElement).perform();
 
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
-            .getText();
+                .getText();
+    }
+
+    public MultibranchPipelineConfigPage enterDescription(String description) {
+        getDriver().findElement(By.name("_.description")).sendKeys(description);
+
+        return this;
     }
 }
