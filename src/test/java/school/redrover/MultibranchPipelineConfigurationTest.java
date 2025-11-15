@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.ErrorPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.MultibranchPipelineJobPage;
 
@@ -126,17 +127,16 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testUpdateJobDescription")
     public void testRenameJobNameUsingDotAtTheEnd() {
-        final String updatedJobName = JOB_NAME + ".";
-        final String expectedErrorMessageText = "A name cannot end with ‘.’";
+        final String expectedErrorMessage = "A name cannot end with ‘.’";
 
-        openJobRenamePage(JOB_NAME);
-        renameJob(updatedJobName);
-        submitForm();
+        String actualErrorMessage = new HomePage(getDriver())
+                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickRenameLinkInSideMenu()
+                .renameJob(JOB_NAME + ".")
+                .submitForm(new ErrorPage(getDriver()))
+                .getErrorMessage();
 
-        WebElement actualErrorMessage = getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Error']/../p")));
-
-        Assert.assertEquals(actualErrorMessage.getText(), expectedErrorMessageText);
+        Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 
     @Test(dependsOnMethods = "testRenameJobNameUsingDotAtTheEnd")
