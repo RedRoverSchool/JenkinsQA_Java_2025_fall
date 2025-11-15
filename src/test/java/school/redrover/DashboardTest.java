@@ -16,8 +16,9 @@ public class DashboardTest extends BaseTest {
 
     @Test
     public void testHomePageHeading() {
-        Assert.assertEquals(new HomePage(getDriver())
-                .getHeading(), "Welcome to Jenkins!");
+        Assert.assertEquals(
+                new HomePage(getDriver()).getHeadingText(),
+                "Welcome to Jenkins!");
     }
 
     @Test
@@ -25,8 +26,9 @@ public class DashboardTest extends BaseTest {
         final String expectedParagraphText = "This page is where your Jenkins jobs will be displayed. " +
                 "To get started, you can set up distributed builds or start building a software project.";
 
-        Assert.assertEquals(new HomePage(getDriver())
-                .getParagraghText(), expectedParagraphText);
+        Assert.assertEquals(
+                new HomePage(getDriver()).getParagraghText(),
+                expectedParagraphText);
     }
 
     @Test

@@ -52,7 +52,7 @@ public class HomePage extends BasePage {
         return new NewItemPage(getDriver());
     }
 
-    public String getHeading() {
+    public String getHeadingText() {
         return getWait2()
                 .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".empty-state-block > h1")))
                 .getText();
