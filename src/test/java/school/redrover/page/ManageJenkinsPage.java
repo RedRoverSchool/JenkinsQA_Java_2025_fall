@@ -23,7 +23,7 @@ public class ManageJenkinsPage extends BasePage {
         return new ConfigurationSystemPage(getDriver());
     }
 
-    public String getTitle() {
+    public String getHeadingText() {
         return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.
                 tagName("h1"))).getText().trim();
     }

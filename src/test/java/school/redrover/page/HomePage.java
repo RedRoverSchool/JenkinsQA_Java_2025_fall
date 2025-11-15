@@ -52,7 +52,7 @@ public class HomePage extends BasePage {
         return new NewItemPage(getDriver());
     }
 
-    public String getTitle() {
+    public String getHeadingText() {
         return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1"))).getText();
     }
 
