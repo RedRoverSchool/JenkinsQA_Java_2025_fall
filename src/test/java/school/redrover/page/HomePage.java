@@ -119,6 +119,25 @@ public class HomePage extends BasePage {
 
     public HomePage submitDescription(){
         getDriver().findElement(By.name("Submit")).click();
+    public String getActiveViewName() {
+        return getDriver().findElement(By.cssSelector(".tab.active a")).getText();
+    }
+
+    public CreateViewPage clickPlusToCreateView(){
+        getDriver().findElement(By.cssSelector("[href='/newView']")).click();
+
+        return new CreateViewPage(getDriver());
+    }
+
+    public HomePage clickViewName(String viewName) {
+        getDriver().findElement(By.linkText(viewName)).click();
+
+        return new HomePage(getDriver());
+    }
+
+    public HomePage clickDeleteViewOnSidebar(){
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@data-title='Delete View']"))).click();
 
         return this;
     }
@@ -127,6 +146,23 @@ public class HomePage extends BasePage {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
     }
     
+    public HomePage clickYesToConfirmDelete() {
+        String urlBeforeDelete = getDriver().getCurrentUrl();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[@data-id='ok']"))).click();
+
+        getWait5().until(ExpectedConditions.not(ExpectedConditions.urlToBe(urlBeforeDelete)));
+
+        return new HomePage(getDriver());
+    }
+
+    public int getSizeOfViewNameList() {
+        List<WebElement> viewNameList = getDriver().findElements(By.xpath("//div[@class='tabBar']/div"));
+
+        return viewNameList.size();
+    }
+
     public String getParagraghText() {
         return getWait2()
                 .until(ExpectedConditions.presenceOfElementLocated(By.tagName("p")))

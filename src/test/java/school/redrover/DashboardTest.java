@@ -14,6 +14,14 @@ import java.util.List;
 
 public class DashboardTest extends BaseTest {
 
+    private static final List<String> CREATED_JOBS_NAME = List.of(
+            "FreestyleName1",
+            "FreestyleName2",
+            "FreestyleName3",
+            "FreestyleName4",
+            "FreestyleName5"
+    );
+
     @Test
     public void testHomePageHeading() {
         Assert.assertEquals(
@@ -67,5 +75,42 @@ public class DashboardTest extends BaseTest {
             getDriver().close();
             getDriver().switchTo().window((String) windowHandles[0]);
         }
+    }
+
+    @Test
+    public void testCheckCreatedJobsOnDashboard(){
+        HomePage homePage = new HomePage(getDriver());
+
+        for (int i = 0; i < CREATED_JOBS_NAME.size(); i++){
+            homePage
+                    .clickNewItemOnLeftMenu()
+                    .sendName(CREATED_JOBS_NAME.get(i))
+                    .selectFreestyleProjectAndSubmit()
+                    .gotoHomePage();
+        }
+        List<String> actualJobs = homePage.getProjectList();
+
+        Assert.assertFalse(actualJobs.isEmpty(), "Item's list is empty!");
+        Assert.assertEquals(actualJobs, CREATED_JOBS_NAME, "Имена созданных jobs не совпадают!");
+    }
+
+    @Test
+    public void testCheckDeleteViewOnDashboard() {
+        final String viewName = "myView";
+
+        int viewListSize = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(CREATED_JOBS_NAME.get(0))
+                .selectFreestyleProjectAndSubmit()
+                .gotoHomePage()
+                .clickPlusToCreateView()
+                .sendViewName(viewName)
+                .clickMyViewName()
+                .clickCreateButtonForNewView()
+                .clickDeleteViewOnSidebar()
+                .clickYesToConfirmDelete()
+                .getSizeOfViewNameList();
+
+        Assert.assertEquals(viewListSize, 2, "Есть созданный пользователем View на Dashboard");
     }
 }
