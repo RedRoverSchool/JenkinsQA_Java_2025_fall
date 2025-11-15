@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.util.List;
 
@@ -15,10 +16,10 @@ public class DashboardTest extends BaseTest {
 
     @Test
     public void testHomePageHeading() {
-        WebElement actualHeading = getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block > h1")));
+        String actualHeading = new HomePage(getDriver())
+                .getHeading();
 
-        Assert.assertEquals(actualHeading.getText(), "Welcome to Jenkins!");
+        Assert.assertEquals(actualHeading, "Welcome to Jenkins!");
     }
 
     @Test
@@ -26,9 +27,9 @@ public class DashboardTest extends BaseTest {
         final String expectedParagraphText = "This page is where your Jenkins jobs will be displayed. " +
                 "To get started, you can set up distributed builds or start building a software project.";
 
-        WebElement actualParagraph = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("p")));
-
-        Assert.assertEquals(actualParagraph.getText(), expectedParagraphText);
+        String actualParagraph = new HomePage(getDriver())
+                .getParagraghText();
+        Assert.assertEquals(actualParagraph, expectedParagraphText);
     }
 
     @Test
