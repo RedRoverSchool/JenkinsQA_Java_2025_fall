@@ -147,9 +147,6 @@ public class HomePage extends BasePage {
         return viewNameList.size();
     }
 
-    public String getHeadingText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block > h1")))
-                  .getText();
     public String getParagraghText() {
         return getWait2()
                 .until(ExpectedConditions.presenceOfElementLocated(By.tagName("p")))
