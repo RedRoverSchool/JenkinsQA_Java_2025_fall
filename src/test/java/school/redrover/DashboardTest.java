@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.util.List;
 
@@ -67,5 +68,16 @@ public class DashboardTest extends BaseTest {
             getDriver().close();
             getDriver().switchTo().window((String) windowHandles[0]);
         }
+    }
+
+    @Test
+    public void testGoToManageJenkinsPage(){
+        final String expectedTitle = "Manage Jenkins";
+
+        String actualTitle = new HomePage(getDriver())
+                .clickManageJenkinsIcon()
+                .getTitle();
+
+        Assert.assertEquals(actualTitle, expectedTitle);
     }
 }

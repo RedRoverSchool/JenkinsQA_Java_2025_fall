@@ -103,4 +103,10 @@ public class HomePage extends BasePage {
 
         return this;
     }
+
+    public ManageJenkinsPage clickManageJenkinsIcon() {
+        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+
+        return new ManageJenkinsPage(getDriver());
+    }
 }
