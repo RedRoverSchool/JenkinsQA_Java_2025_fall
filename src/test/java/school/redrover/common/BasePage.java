@@ -4,10 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.page.HomePage;
-import school.redrover.page.LoginPage;
-import school.redrover.page.ManageJenkinsPage;
-import school.redrover.page.SearchModalPage;
+import school.redrover.page.*;
 
 public abstract class BasePage extends BaseModel {
 
@@ -28,7 +25,7 @@ public abstract class BasePage extends BaseModel {
     }
 
     public SearchModalPage clickSearchButton() {
-        getDriver().findElement(By.id("root-action-SearchAction")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("root-action-SearchAction")))).click();
         return new SearchModalPage(getDriver());
     }
 
@@ -39,5 +36,12 @@ public abstract class BasePage extends BaseModel {
         getDriver().findElement(By.cssSelector(".jenkins-dropdown__item:last-child")).click();
 
         return new LoginPage(getDriver());
+    }
+
+    public FooterDropdownPage clickJenkinsVersion() {
+        getDriver().findElement(By.cssSelector(".page-footer__links > button")).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown")));
+
+        return new FooterDropdownPage(getDriver());
     }
 }
