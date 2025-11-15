@@ -17,11 +17,11 @@ public class MultibranchPipelineJobPage extends BasePage {
                 .getText();
     }
 
-    public MultibranchPipelineConfigPage clickConfigureLinkInSideMenu() {
+    public ConfigurationMultibranchPipelinePage clickConfigureLinkInSideMenu() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']")))
                 .click();
 
-        return new MultibranchPipelineConfigPage(getDriver());
+        return new ConfigurationMultibranchPipelinePage(getDriver());
     }
 
     public String getDescription() {

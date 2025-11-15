@@ -7,13 +7,13 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
-public class MultibranchPipelineConfigPage extends BasePage {
+public class ConfigurationMultibranchPipelinePage extends BasePage {
 
-    public MultibranchPipelineConfigPage(WebDriver driver) {
+    public ConfigurationMultibranchPipelinePage(WebDriver driver) {
         super(driver);
     }
 
-    public MultibranchPipelineConfigPage sendDisplayName(String name) {
+    public ConfigurationMultibranchPipelinePage sendDisplayName(String name) {
         getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(name);
 
         return this;
@@ -27,7 +27,7 @@ public class MultibranchPipelineConfigPage extends BasePage {
         return new MultibranchPipelineJobPage(getDriver());
     }
 
-    public MultibranchPipelineConfigPage clickToggle() {
+    public ConfigurationMultibranchPipelinePage clickToggle() {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-title='Disabled']"))).click();
 
         return this;
@@ -53,13 +53,13 @@ public class MultibranchPipelineConfigPage extends BasePage {
                 .getText();
     }
 
-    public MultibranchPipelineConfigPage enterDescription(String description) {
+    public ConfigurationMultibranchPipelinePage enterDescription(String description) {
         getDriver().findElement(By.name("_.description")).sendKeys(description);
 
         return this;
     }
 
-    public MultibranchPipelineConfigPage updateJobDescription(String description) {
+    public ConfigurationMultibranchPipelinePage updateJobDescription(String description) {
         getDriver().findElement(By.name("_.description")).clear();
 
         return enterDescription(description);

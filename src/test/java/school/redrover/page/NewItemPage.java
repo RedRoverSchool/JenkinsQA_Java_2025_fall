@@ -35,22 +35,22 @@ public class NewItemPage extends BasePage {
 
     }
 
-    public MultibranchPipelineConfigPage selectMultibranchPipelineAndSubmit() {
+    public ConfigurationMultibranchPipelinePage selectMultibranchPipelineAndSubmit() {
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
 
-        return new MultibranchPipelineConfigPage(getDriver());
+        return new ConfigurationMultibranchPipelinePage(getDriver());
     }
 
-    public MultibranchPipelineConfigPage selectMultibranchPipelineWithJsAndSubmit() {
+    public ConfigurationMultibranchPipelinePage selectMultibranchPipelineWithJsAndSubmit() {
         TestUtils.clickJS(getDriver(), By.cssSelector("[class$='MultiBranchProject']"));
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
 
-        return new MultibranchPipelineConfigPage(getDriver());
+        return new ConfigurationMultibranchPipelinePage(getDriver());
     }
 
     public ConfigurationPipelinePage selectPipelineAndSubmit() {
@@ -83,6 +83,50 @@ public class NewItemPage extends BasePage {
 
         getDriver().findElement(By.id("ok-button")).click();
 
+        return new HomePage(getDriver());
+    }
+
+    public ConfigurationMultibranchPipelinePage selectMultiConfigurationAndSubmit() {
+        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Multi-configuration project']"));
+
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(), 'General')]")));
+
+        return new ConfigurationMultibranchPipelinePage(getDriver());
+    }
+
+    public ConfigurationOrganizationFolderPage selectOrganizationFolderAndSubmit() {
+        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Organization Folder']"));
+
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(), 'General')]")));
+
+        return new ConfigurationOrganizationFolderPage(getDriver());
+    }
+
+    public HomePage selectItemTypeAndSubmitAndGoHome(String itemType) {
+        switch (itemType) {
+            case "Folder":
+                selectFolderAndSubmit().gotoHomePage();
+                break;
+            case "Freestyle project":
+                selectFreestyleProjectAndSubmit().gotoHomePage();
+                break;
+            case "Pipeline":
+                selectPipelineAndSubmit().gotoHomePage();
+                break;
+            case "Multi-configuration project":
+                selectMultiConfigurationAndSubmit().gotoHomePage();
+                break;
+            case "Multibranch Pipeline":
+                selectMultibranchPipelineWithJsAndSubmit().gotoHomePage();
+                break;
+            case "Organization Folder":
+                selectOrganizationFolderAndSubmit().gotoHomePage();
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown item type: " + itemType);
+        }
         return new HomePage(getDriver());
     }
 }
