@@ -35,22 +35,22 @@ public class NewItemPage extends BasePage {
 
     }
 
-    public ConfigurationMultibranchPipelinePage selectMultibranchPipelineAndSubmit() {
+    public MultibranchPipelineConfigPage selectMultibranchPipelineAndSubmit() {
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
 
-        return new ConfigurationMultibranchPipelinePage(getDriver());
+        return new MultibranchPipelineConfigPage(getDriver());
     }
 
-    public ConfigurationMultibranchPipelinePage selectMultibranchPipelineWithJsAndSubmit() {
+    public MultibranchPipelineConfigPage selectMultibranchPipelineWithJsAndSubmit() {
         TestUtils.clickJS(getDriver(), By.cssSelector("[class$='MultiBranchProject']"));
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
 
-        return new ConfigurationMultibranchPipelinePage(getDriver());
+        return new MultibranchPipelineConfigPage(getDriver());
     }
 
     public ConfigurationPipelinePage selectPipelineAndSubmit() {
@@ -86,13 +86,13 @@ public class NewItemPage extends BasePage {
         return new HomePage(getDriver());
     }
 
-    public ConfigurationMultibranchPipelinePage selectMultiConfigurationAndSubmit() {
+    public MultibranchPipelineConfigPage selectMultiConfigurationAndSubmit() {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Multi-configuration project']"));
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(), 'General')]")));
 
-        return new ConfigurationMultibranchPipelinePage(getDriver());
+        return new MultibranchPipelineConfigPage(getDriver());
     }
 
     public ConfigurationOrganizationFolderPage selectOrganizationFolderAndSubmit() {
