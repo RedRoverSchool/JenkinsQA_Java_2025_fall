@@ -87,4 +87,9 @@ public class HomePage extends BasePage {
 
         return this;
     }
+
+    public String getHeadingText() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block > h1")))
+                  .getText();
+    }
 }

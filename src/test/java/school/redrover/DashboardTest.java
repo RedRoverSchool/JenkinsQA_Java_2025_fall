@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.util.List;
 
@@ -15,10 +16,9 @@ public class DashboardTest extends BaseTest {
 
     @Test
     public void testHomePageHeading() {
-        WebElement actualHeading = getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block > h1")));
-
-        Assert.assertEquals(actualHeading.getText(), "Welcome to Jenkins!");
+        Assert.assertEquals(
+                new HomePage(getDriver()).getHeadingText(),
+                "Welcome to Jenkins!");
     }
 
     @Test
