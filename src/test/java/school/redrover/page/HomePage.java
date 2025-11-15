@@ -103,4 +103,23 @@ public class HomePage extends BasePage {
 
         return this;
     }
+
+    public HomePage clickDescription(){
+        getDriver().findElement(By.id("description-link")).click();
+        return this;
+    }
+
+    public HomePage sendDescriptionText(String text){
+        getDriver().findElement(By.name("description")).sendKeys(text);
+        return this;
+    }
+
+    public HomePage submitDescription(){
+        getDriver().findElement(By.name("Submit")).click();
+        return this;
+    }
+
+    public String getDescription() {
+        return getDriver().findElement(By.id("description-content")).getText();
+    }
 }
