@@ -110,20 +110,24 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickDeleteViewOnSidebar(){
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-title='Delete View']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@data-title='Delete View']"))).click();
 
         return this;
     }
 
     public HomePage clickYesToConfirmDelete() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-id='ok']"))).click();
+        String urlBeforeDelete = getDriver().getCurrentUrl();
 
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[@data-id='ok']"))).click();
+
+        getWait5().until(ExpectedConditions.not(ExpectedConditions.urlToBe(urlBeforeDelete)));
 
         return new HomePage(getDriver());
     }
 
     public int getSizeOfViewNameList() {
-        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.className("app-jenkins-logo")));
         List<WebElement> viewNameList = getDriver().findElements(By.xpath("//div[@class='tabBar']/div"));
 
         return viewNameList.size();
