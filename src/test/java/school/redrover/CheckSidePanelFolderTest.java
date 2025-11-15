@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -37,7 +38,13 @@ public class CheckSidePanelFolderTest extends BaseTest {
     }
 
     private void goToMainPage() {
-        WebElement linkToMainPage = getDriver().findElement(By.className("app-jenkins-logo"));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+
+        WebElement linkToMainPage = wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        By.className("app-jenkins-logo")
+                )
+        );
         linkToMainPage.click();
     }
 
