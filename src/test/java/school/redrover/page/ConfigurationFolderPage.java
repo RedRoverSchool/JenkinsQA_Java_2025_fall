@@ -31,4 +31,10 @@ public class ConfigurationFolderPage extends BasePage {
 
         return new FolderPage(getDriver());
     }
+
+    public WebElement findHealthMetricsLink() {
+
+        return getDriver()
+                .findElement(By.xpath("//button[normalize-space(text())='Health metrics']"));
+    }
 }
