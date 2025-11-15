@@ -57,6 +57,19 @@ public class PipelineTest extends BaseTest {
                 String.format("Pipeline with name '%s' was not created", PIPELINE_NAME));
     }
 
+    @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testDeletePipelineViaDropDownMenu() {
+        final String expectedHomePageTitle = "Welcome to Jenkins!";
+
+        String actualHomePageTitle = new HomePage(getDriver())
+                .openDropdownMenu(PIPELINE_NAME)
+                .clickDeleteItemInDropdownMenu()
+                .confirmDelete()
+                .getTitle();
+
+        Assert.assertEquals(actualHomePageTitle, expectedHomePageTitle);
+    }
+
     @Test
     public void testCreatePipeline() throws InterruptedException {
         getDriver().findElement(By.cssSelector(".task:nth-child(1) a")).click();
