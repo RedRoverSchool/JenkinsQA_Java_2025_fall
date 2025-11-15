@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.ConfigurationPipelinePage;
@@ -40,7 +39,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
         Assert.assertEquals(actualAdvancedSectionTitle, "Advanced");
     }
 
-    @Test(dependsOnMethods = "testNavigationToAdvancedBySideMenu")
+    @Test(dependsOnMethods = "testNavigationToAdvancedByScrollingDown")
     public void testAdvancedSectionQuietPeriodElements() {
         String actualQuietPeriodLabel = new HomePage(getDriver())
                 .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
@@ -53,8 +52,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 .quietPeriodCheckboxIsSelected(), "Default Checkbox should not be selected");
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testNavigationToAdvancedBySideMenu")
+    @Test(dependsOnMethods = "testNavigationToAdvancedByScrollingDown")
     public void testAdvancedSectionDisplayNameFieldElements() {
         String actualDisplayNameLabel = new HomePage(getDriver())
                 .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
@@ -107,7 +105,7 @@ public class PipelineConfigurationAdvancedTest extends BaseTest {
                 String.format("Project with Display Name '%s' not found in Project List", displayName));
     }
 
-    @Test(dependsOnMethods = "testNavigationToAdvancedBySideMenu")
+    @Test(dependsOnMethods = "testNavigationToAdvancedByScrollingDown")
     public void testAdvancedSectionVerifyTooltips() {
         final List<String> expectedTooltipList = List.of(
                 "Help for feature: Quiet period",
