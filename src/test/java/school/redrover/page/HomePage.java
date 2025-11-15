@@ -59,4 +59,9 @@ public class HomePage extends BasePage {
     public WebElement findItem(String itemName) {
         return getDriver().findElement(By.xpath("//a[@href='job/" + itemName + "/']"));
     }
+
+    public String getSystemMessage() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("systemmessage"))).getText();
+    }
 }
