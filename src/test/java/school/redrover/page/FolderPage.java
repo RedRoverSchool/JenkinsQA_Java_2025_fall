@@ -95,7 +95,7 @@ public class FolderPage extends BasePage {
         yesButton.click();
 
         getWait5().until(ExpectedConditions.not(ExpectedConditions.urlToBe(urlBeforeDelete)));
-        return this;
+        return new FolderPage(getDriver());
     }
 
     public FolderPage clickAddDescriptionButton() {
@@ -129,5 +129,12 @@ public class FolderPage extends BasePage {
 
     public WebElement getElement(String name){
         return getDriver().findElement(By.xpath("//span[text()='%s']".formatted(name)));
+    }
+
+    public List<String> getProjectList() {
+        return getDriver().findElements(By.cssSelector(".jenkins-table__link >span:first-child"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 }

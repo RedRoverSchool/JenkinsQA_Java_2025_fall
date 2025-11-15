@@ -3,7 +3,10 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.CreateUserPage;
 import school.redrover.page.HomePage;
+import school.redrover.page.ManageUsersPage;
+
 import java.util.List;
 
 
@@ -23,7 +26,7 @@ public class CreateUserTest extends BaseTest {
                 .sendPassword(userPassword)
                 .sendConfirmPassword(userPassword)
                 .sendEmail(userEmail)
-                .clickCreateUserButton()
+                .clickCreateUserButton(new ManageUsersPage(getDriver()))
                 .getCreatedUserName(userName);
 
         Assert.assertEquals(actualUserName, userName);
@@ -44,7 +47,7 @@ public class CreateUserTest extends BaseTest {
                 .clickGearManageJenkinsButton()
                 .clickUserLink()
                 .clickCreateUserButton()
-                .clickCreateUserButtonNegative()
+                .clickCreateUserButton(new CreateUserPage(getDriver()))
                 .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);
@@ -65,7 +68,7 @@ public class CreateUserTest extends BaseTest {
                 .sendUserName(userName)
                 .sendPassword(userPassword)
                 .sendConfirmPassword(userPassword)
-                .clickCreateUserButtonNegative()
+                .clickCreateUserButton(new CreateUserPage(getDriver()))
                 .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);
@@ -90,7 +93,7 @@ public class CreateUserTest extends BaseTest {
                 .sendPassword(userPassword)
                 .sendConfirmPassword(userUnmatchedPassword)
                 .sendEmail(userEmail)
-                .clickCreateUserButtonNegative()
+                .clickCreateUserButton(new CreateUserPage(getDriver()))
                 .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);

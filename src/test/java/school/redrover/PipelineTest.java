@@ -5,9 +5,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.util.List;
 import java.util.Random;
@@ -94,23 +94,45 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(consoleOutput.getText().contains("Finished: SUCCESS"),
                 "Build output should contain 'Finished: SUCCESS'");
     }
-    @Ignore
+
     @Test
     public void testAddDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
 
-        createPipeline(PIPELINE_NAME);
+        String descriptionText = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .clickSaveButton()
+                .clickAddDescriptionButton()
+                .addDescriptionAndSave(textDescription)
+                .getDescription();
 
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(textDescription);
+        Assert.assertEquals(descriptionText, textDescription);
+    }
+
+    @Test(dependsOnMethods = "testAddDescription")
+    public void testEditDescription() {
+        final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
+
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'job/%s/']".formatted(PIPELINE_NAME))))
+                .click();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
+                .click();
+        WebElement descriptionField = getDriver().findElement(By.name("description"));
+        descriptionField.clear();
+        descriptionField.sendKeys(textDescription);
         getDriver().findElement(By.name("Submit")).click();
 
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
         WebElement descriptionText = getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
 
         Assert.assertEquals(
                 descriptionText.getText(),
-                textDescription);
+                textDescription,
+                "Не совпал текст description после его редактирования");
     }
 
     @DataProvider
@@ -192,29 +214,5 @@ public class PipelineTest extends BaseTest {
                 String.format("Сообщение: '%s', не содержит ожидаемую ключевую информацию об ошибке: '%s'",
                         actualTextErrorMessage.getText(), expectedErrorMessage));
         Assert.assertEquals(errorDescriptionModalWindow.getText(), "A problem occurred while processing the request");
-    }
-    @Ignore
-    @Test(dependsOnMethods = "testAddDescription")
-    public void testEditDescription() {
-        final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
-
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'job/%s/']".formatted(PIPELINE_NAME))))
-                .click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
-                .click();
-        WebElement descriptionField = getDriver().findElement(By.name("description"));
-        descriptionField.clear();
-        descriptionField.sendKeys(textDescription);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
-        WebElement descriptionText = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
-
-        Assert.assertEquals(
-                descriptionText.getText(),
-                textDescription,
-                "Не совпал текст description после его редактирования");
     }
 }

@@ -59,4 +59,37 @@ public class HomePage extends BasePage {
     public WebElement findItem(String itemName) {
         return getDriver().findElement(By.xpath("//a[@href='job/" + itemName + "/']"));
     }
+
+    public String getSystemMessage() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("systemmessage"))).getText();
+    }
+  
+    public HomePage openDropdownMenu(String itemName) {
+        WebElement dropdownButton = getWait5().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//a[.//span[text()='%s']]//button[@class='jenkins-menu-dropdown-chevron']".formatted(itemName))));
+
+        TestUtils.mouseEnterJS(getDriver(), dropdownButton);
+        TestUtils.clickJS(getDriver(), dropdownButton);
+
+        return this;
+    }
+
+    public HomePage clickDeleteItemInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[.//text()[contains(., 'Delete')]]"))).click();
+
+        return this;
+    }
+
+    public HomePage confirmDelete() {
+        WebElement yesButton = getWait2().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("//dialog[@open]//button[@data-id='ok']"))
+        );
+        yesButton.click();
+        getWait5().until(ExpectedConditions.stalenessOf(yesButton));
+
+        return this;
+    }
 }

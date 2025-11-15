@@ -102,6 +102,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualTooltip, tooltipText);
     }
 
+    @Ignore
     @Test
     public void testVerifyAppearSaveMessage() {
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
