@@ -23,7 +23,8 @@ jobs:
           cache: 'maven'
 
       - name: Get list of changed files
-        run: echo "LIST_OF_CHANGED_FILES=$(git diff --name-only origin/$GITHUB_HEAD_REF $(git merge-base origin/$GITHUB_HEAD_REF origin/main) | tr '\n' ';')" >> $GITHUB_ENV
+        run: |
+          echo "LIST_OF_CHANGED_FILES=$(git diff --name-status $(git merge-base origin/$GITHUB_HEAD_REF origin/main) origin/$GITHUB_HEAD_REF | tr '\n' ';' | tr '\t' '=')" >> $GITHUB_ENV
 
 # tar -cvf jenkins_backup.tar ./jenkins_backup
 # split -b 90m -d jenkins_backup.tar jenkins_backup
