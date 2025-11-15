@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.annotations.Test;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
@@ -88,14 +87,12 @@ public class NewItemPage extends BasePage {
     }
 
     public String getTextHintFromCopyField() {
-        WebElement textHint = getDriver().findElement(By.xpath("//*[@id='createItem']/div[3]/p"));
-
-        return textHint.getText();
+        return getDriver().findElement(By.xpath("//p[@class='jenkins-form-label']")).getText();
     }
 
-    public NewItemPage CopyFromField() {
-        WebElement copyFromField = getDriver().findElement(By.id("from"));
+    public NewItemPage findCopyFromField() {
+        getDriver().findElement(By.id("from"));
 
-        return new NewItemPage(getDriver());
+        return this;
     }
 }
