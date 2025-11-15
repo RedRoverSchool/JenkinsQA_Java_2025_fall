@@ -1,54 +1,48 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
+
+import java.util.List;
 
 public class CreateFolderFromCopy extends BaseTest {
 
-    final private static String FOLDER_NAME = "MY_FIRST_FOLDER";
+    private static final String FOLDER_NAME = "MY_FIRST_FOLDER";
 
     @Test
-    public void createCopy() {
-        createFolder();
-        boolean fieldExists = true;
+    public void createFolder() {
+        final String folderName = "My First Folder";
 
-        WebElement newItemButton = getDriver().
-                findElement(By.xpath("//a[@href='/job/MY_FIRST_FOLDER/newJob']"));
-        newItemButton.click();
-        ((JavascriptExecutor) getDriver()).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        HomePage homePage = new HomePage(getDriver());
+        List<String> projectList = homePage.clickCreateJob()
+                .sendName(folderName)
+                .selectFolderAndSubmit()
+                .clickSave()
+                .gotoHomePage()
+                .getProjectList();
 
-        try {
-            getDriver().findElement(By.id("from")).sendKeys(FOLDER_NAME);
-        } catch (Exception e) {
-            fieldExists = false;
-        }
-
-        Assert.assertTrue(fieldExists);
-        Assert.assertEquals(
-                getDriver().findElement(By.className("add-item-copy")).getText(), "Copy from");
+        Assert.assertNotEquals(projectList.size(), 0);
+        Assert.assertEquals(projectList.get(0), folderName);
     }
 
-    private void createFolder() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+    @Test(dependsOnMethods = "createFolder")
+    public void testLocateTextHintAndCopyFromField() {
+        boolean textHintExists = true;
+        boolean copyFromFieldExists = true;
 
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", okButton);
-        okButton.click();
+        HomePage homePage = new HomePage(getDriver());
+        homePage.clickNewItemOnLeftMenu()
+                .getTextHintFromCopyField();
 
-        getDriver()
-                .findElement(By.xpath("//div[@class='setting-main']//input"))
-                .sendKeys("Name for Autotest attempt");
-        getDriver()
-                .findElement(By.xpath("//div[@class='setting-main']//textarea"))
-                .sendKeys("Description for Autotest attempt");
-        WebElement submitButton = getDriver().findElement(By.className("jenkins-submit-button"));
-        submitButton.click();
+        NewItemPage newItemPage = new NewItemPage(getDriver());
+        newItemPage.CopyFromField();
+
+
+        Assert.assertEquals(textHintExists, true);
+        Assert.assertEquals(copyFromFieldExists, true);
     }
 }
 

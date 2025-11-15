@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.annotations.Test;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
@@ -84,5 +85,17 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.id("ok-button")).click();
 
         return new HomePage(getDriver());
+    }
+
+    public String getTextHintFromCopyField() {
+        WebElement textHint = getDriver().findElement(By.xpath("//*[@id='createItem']/div[3]/p"));
+
+        return textHint.getText();
+    }
+
+    public NewItemPage CopyFromField() {
+        WebElement copyFromField = getDriver().findElement(By.id("from"));
+
+        return new NewItemPage(getDriver());
     }
 }
