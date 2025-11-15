@@ -59,7 +59,7 @@ public class PipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testDeletePipelineViaDropDownMenu() {
-        final String expectedHomePageTitle = "Welcome to Jenkins!";
+        final String expectedHomePageHeading = "Welcome to Jenkins!";
 
         String actualHomePageTitle = new HomePage(getDriver())
                 .openDropdownMenu(PIPELINE_NAME)
@@ -67,7 +67,7 @@ public class PipelineTest extends BaseTest {
                 .confirmDelete()
                 .getHeading();
 
-        Assert.assertEquals(actualHomePageTitle, expectedHomePageTitle);
+        Assert.assertEquals(actualHomePageTitle, expectedHomePageHeading);
     }
 
     @Test
