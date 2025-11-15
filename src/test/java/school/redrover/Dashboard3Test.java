@@ -9,6 +9,8 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+
 import java.util.List;
 
 public class Dashboard3Test extends BaseTest {
@@ -20,9 +22,7 @@ public class Dashboard3Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
-
-        getWait5().until(ExpectedConditions
-                .elementToBeClickable(By.id("jenkins-head-icon"))).click();
+        getDriver().findElement(By.id("jenkins-head-icon")).click();
     }
 
     @Test
@@ -35,18 +35,19 @@ public class Dashboard3Test extends BaseTest {
                 "FreestyleName5"
         );
 
-        for (int i = 0; i < createdJobsName.size(); i++) {
-            createFreestyle(createdJobsName.get(i));
-        }
+        HomePage homePage = new HomePage(getDriver());
 
-        List<String> actualJobs = getDriver()
-                .findElements(By.cssSelector(".jenkins-table__link >span:first-child"))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
+        for (int i = 0; i < createdJobsName.size(); i++){
+            homePage
+                    .clickNewItemOnLeftMenu()
+                    .sendName(createdJobsName.get(i))
+                    .selectFreestyleProjectAndSubmit()
+                    .gotoHomePage();
+        }
+        List<String> actualJobs = homePage.getProjectList();
 
         Assert.assertFalse(actualJobs.isEmpty(), "Item's list is empty!");
-        Assert.assertEquals(actualJobs, createdJobsName);
+        Assert.assertEquals(actualJobs, createdJobsName, "Количество созданных проектов не совпадает");
     }
 
     @Ignore
