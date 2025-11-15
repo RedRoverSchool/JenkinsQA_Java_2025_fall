@@ -6,6 +6,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.FolderPage;
 import school.redrover.page.HomePage;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class FolderTest extends BaseTest {
@@ -90,7 +91,7 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreate")
     public void testSameItemNamesInTwoFolders() {
-        final String pipelineName = "SubPipeline";
+        final String pipelineName = "TwoPipelines";
 
         List<String> jobsInFirstFolder = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
@@ -98,7 +99,7 @@ public class FolderTest extends BaseTest {
                 .sendName(pipelineName)
                 .selectPipelineAndSubmit()
                 .gotoHomePage()
-                .openJobPage(FOLDER_NAME,new FolderPage(getDriver()))
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .getProjectList();
 
         List<String> jobsInSecondFolder = new HomePage(getDriver())
@@ -111,7 +112,7 @@ public class FolderTest extends BaseTest {
                 .sendName(pipelineName)
                 .selectPipelineAndSubmit()
                 .gotoHomePage()
-                .openJobPage(FOLDER_NAME_2,new FolderPage(getDriver()))
+                .openJobPage(FOLDER_NAME_2, new FolderPage(getDriver()))
                 .getProjectList();
 
         Assert.assertTrue(jobsInFirstFolder.contains(pipelineName),
@@ -132,5 +133,46 @@ public class FolderTest extends BaseTest {
 
         Assert.assertTrue(isFolderDeleted,
                 "%s не должна отображаться в поиске после удаления".formatted(FOLDER_NAME_2));
+    }
+
+    @Test(dependsOnMethods = "testCreate")
+    public void testPutItemsToFolder() {
+        final Object[][] items = {
+                {"SubFolder", "Folder"},
+                {"SubFreestyleProject", "Freestyle project"},
+                {"SubMultibranchPipeline", "Multibranch Pipeline"},
+                {"SubMulticonfigurationProject", "Multi-configuration project"},
+                {"SubOrganizationFolder", "Organization Folder"},
+                {"SubPipeline", "Pipeline"}
+        };
+        List<String> expectedItems = Arrays.stream(items)
+                .map(item -> (String) item[0])
+                .toList();
+
+        for (Object[] item : items) {
+            String itemName = (String) item[0];
+            String itemType = (String) item[1];
+            new HomePage(getDriver())
+                    .clickSidebarNewItem()
+                    .sendName(itemName)
+                    .selectItemTypeAndSubmitAndGoHome(itemType)
+                    .openDropdownMenu(itemName)
+                    .clickMoveInDropdownMenu()
+                    .selectDestinationFolder(FOLDER_NAME)
+                    .clickMoveButtonAndGoHome();
+        }
+
+        List<String> homeItemList = new HomePage(getDriver())
+                .getProjectList();
+        List<String> folderItemList = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME)
+                .getProjectList();
+
+        Assert.assertEquals(homeItemList.size(), 1);
+        Assert.assertNotEquals(folderItemList.size(), 0);
+        Assert.assertEquals(
+                folderItemList,
+                expectedItems,
+                "Неверный список перенесенных элементов");
     }
 }
