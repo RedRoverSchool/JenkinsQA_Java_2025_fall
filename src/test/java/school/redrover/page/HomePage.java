@@ -87,6 +87,7 @@ public class HomePage extends BasePage {
 
         return this;
     }
+
     public HomePage clickRenameItemInDropdownMenu() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/MyFolder/confirm-rename']"))).click();
 
@@ -102,6 +103,12 @@ public class HomePage extends BasePage {
         getWait5().until(ExpectedConditions.stalenessOf(yesButton));
 
         return this;
+    }
+
+    public String getParagraghText() {
+        return getWait2()
+                .until(ExpectedConditions.presenceOfElementLocated(By.tagName("p")))
+                .getText();
     }
 
     public ManageJenkinsPage clickManageJenkinsIcon() {
