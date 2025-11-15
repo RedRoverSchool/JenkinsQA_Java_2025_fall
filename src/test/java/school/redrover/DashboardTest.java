@@ -16,10 +16,8 @@ public class DashboardTest extends BaseTest {
 
     @Test
     public void testHomePageHeading() {
-        String actualHeading = new HomePage(getDriver())
-                .getHeading();
-
-        Assert.assertEquals(actualHeading, "Welcome to Jenkins!");
+        Assert.assertEquals(new HomePage(getDriver())
+                .getHeading(), "Welcome to Jenkins!");
     }
 
     @Test
