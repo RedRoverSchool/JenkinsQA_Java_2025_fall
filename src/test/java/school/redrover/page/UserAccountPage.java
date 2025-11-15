@@ -14,7 +14,7 @@ public class UserAccountPage extends BasePage {
 
     public String getUserName() {
 
-        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")))
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-app-bar']//h1")))
                 .getText();
     }
 }
