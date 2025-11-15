@@ -14,6 +14,7 @@ public class UserAccountPage extends BasePage {
 
     public String getUserName() {
 
-        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1"))).getText();
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")))
+                .getText();
     }
 }

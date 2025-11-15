@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
+
 public class ConfigureUserTest extends BaseTest {
 
     @Test
