@@ -14,7 +14,7 @@ import java.util.List;
 
 public class DashboardTest extends BaseTest {
 
-    private static final List<String> CRAETED_JOBS_NAME = List.of(
+    private static final List<String> CREATED_JOBS_NAME = List.of(
             "FreestyleName1",
             "FreestyleName2",
             "FreestyleName3",
@@ -81,17 +81,17 @@ public class DashboardTest extends BaseTest {
     public void testCheckCreatedJobsOnDashboard(){
         HomePage homePage = new HomePage(getDriver());
 
-        for (int i = 0; i < CRAETED_JOBS_NAME.size(); i++){
+        for (int i = 0; i < CREATED_JOBS_NAME.size(); i++){
             homePage
                     .clickNewItemOnLeftMenu()
-                    .sendName(CRAETED_JOBS_NAME.get(i))
+                    .sendName(CREATED_JOBS_NAME.get(i))
                     .selectFreestyleProjectAndSubmit()
                     .gotoHomePage();
         }
         List<String> actualJobs = homePage.getProjectList();
 
         Assert.assertFalse(actualJobs.isEmpty(), "Item's list is empty!");
-        Assert.assertEquals(actualJobs, CRAETED_JOBS_NAME, "Имена созданных jobs не совпадают!");
+        Assert.assertEquals(actualJobs, CREATED_JOBS_NAME, "Имена созданных jobs не совпадают!");
     }
 
     @Test
@@ -100,7 +100,7 @@ public class DashboardTest extends BaseTest {
 
         int viewListSize = new HomePage(getDriver())
                 .clickNewItemOnLeftMenu()
-                .sendName(CRAETED_JOBS_NAME.get(0))
+                .sendName(CREATED_JOBS_NAME.get(0))
                 .selectFreestyleProjectAndSubmit()
                 .gotoHomePage()
                 .clickPlusToCreateView()
