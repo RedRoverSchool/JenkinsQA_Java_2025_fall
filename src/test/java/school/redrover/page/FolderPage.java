@@ -95,7 +95,7 @@ public class FolderPage extends BasePage {
         yesButton.click();
 
         getWait5().until(ExpectedConditions.not(ExpectedConditions.urlToBe(urlBeforeDelete)));
-        return this;
+        return new FolderPage(getDriver());
     }
 
     public FolderPage clickAddDescriptionButton() {
