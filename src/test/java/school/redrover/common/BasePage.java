@@ -44,4 +44,10 @@ public abstract class BasePage extends BaseModel {
 
         return new FooterDropdownPage(getDriver());
     }
+
+    public UserAccountPage clickUserAccountButton() {
+        getDriver().findElement(By.cssSelector(".jenkins-avatar")).click();
+
+        return new UserAccountPage(getDriver());
+    }
 }
