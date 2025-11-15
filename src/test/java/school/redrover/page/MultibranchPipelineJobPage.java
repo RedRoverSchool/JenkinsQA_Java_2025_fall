@@ -31,4 +31,11 @@ public class MultibranchPipelineJobPage extends BasePage {
     public String getDisabledText() {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("disabled-message"))).getText();
     }
+
+    public MultibranchPipelineConfirmRenamePage clickRenameLinkInSideMenu() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
+                .click();
+
+        return new MultibranchPipelineConfirmRenamePage(getDriver());
+    }
 }
