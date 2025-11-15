@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.util.List;
 import java.util.Random;
@@ -41,6 +42,32 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
+    }
+
+    @Test
+    public void testCreateNewPipeline() {
+        List<String> actualProjectList = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
+                .getProjectList();
+
+        Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME),
+                String.format("Pipeline with name '%s' was not created", PIPELINE_NAME));
+    }
+
+    @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testDeletePipelineViaDropDownMenu() {
+        final String expectedHomePageTitle = "Welcome to Jenkins!";
+
+        String actualHomePageTitle = new HomePage(getDriver())
+                .openDropdownMenu(PIPELINE_NAME)
+                .clickDeleteItemInDropdownMenu()
+                .confirmDelete()
+                .getTitle();
+
+        Assert.assertEquals(actualHomePageTitle, expectedHomePageTitle);
     }
 
     @Test
@@ -98,19 +125,16 @@ public class PipelineTest extends BaseTest {
     public void testAddDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
 
-        createPipeline(PIPELINE_NAME);
+        String descriptionText = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .clickSaveButton()
+                .clickAddDescriptionButton()
+                .addDescriptionAndSave(textDescription)
+                .getDescription();
 
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(textDescription);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
-        WebElement descriptionText = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
-
-        Assert.assertEquals(
-                descriptionText.getText(),
-                textDescription);
+        Assert.assertEquals(descriptionText, textDescription);
     }
 
     @Test(dependsOnMethods = "testAddDescription")
