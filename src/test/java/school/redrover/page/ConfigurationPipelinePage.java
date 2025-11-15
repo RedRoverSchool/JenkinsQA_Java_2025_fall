@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -76,6 +77,20 @@ public class ConfigurationPipelinePage extends BasePage {
 
         return this;
     }
+
+    public ConfigurationPipelinePage toggleEnableSwitch() {
+        WebElement enableDisableToggle = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@id='toggle-switch-enable-disable-project']")));
+        enableDisableToggle.click();
+
+        return new ConfigurationPipelinePage(getDriver());
+    }
+
+    public PipelinePage clickSubmitButton() {
+        getDriver().findElement(By.name("Submit")).click();
+
+        return new PipelinePage(getDriver());
+    }
+}
 
     public String getDisplayNameLabelText() {
         WebElement displayNameLabel = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.

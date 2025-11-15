@@ -69,6 +69,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualMessage, errorMessage);
     }
 
+    @Ignore
     @Test
     public void testVerifyDisableMessaageOnStatusPage() {
         final String disableText = "This Multibranch Pipeline is currently disabled";

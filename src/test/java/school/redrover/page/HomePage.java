@@ -46,6 +46,12 @@ public class HomePage extends BasePage {
         return resultPage;
     }
 
+    public <T extends BasePage> T navigateToJobPage(String jobName, T resultPage) {
+        getDriver().findElement(By.xpath("//span[text()='" + jobName + "']")).click();
+
+        return resultPage;
+    }
+
     public NewItemPage clickSidebarNewItem() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
