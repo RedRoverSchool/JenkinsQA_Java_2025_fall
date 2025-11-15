@@ -15,13 +15,6 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     private static final String JOB_NAME = "multibranchJobName";
     private static final String JOB_DESCRIPTION = "This is a job description";
 
-    private void addJobDescription(String jobDescription) {
-        WebElement jobDescriptionField = getDriver().findElement(By.name("_.description"));
-
-        jobDescriptionField.clear();
-        jobDescriptionField.sendKeys(jobDescription);
-    }
-
     private void renameJob(String updatedJobName) {
         WebElement newNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
 
@@ -37,13 +30,6 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
-                .click();
-    }
-
-    private void openMultibranchPipelineConfigurationPage(String jobName) {
-        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']")))
                 .click();
     }
 
@@ -125,20 +111,17 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     public void testUpdateJobDescription() {
         final String updatedJobDescription = "This is a new project description";
 
-        openMultibranchPipelineConfigurationPage(JOB_NAME);
-        addJobDescription(JOB_DESCRIPTION);
-        submitForm();
+        String actualJobDescription = new HomePage(getDriver())
+                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .enterDescription(JOB_DESCRIPTION)
+                .clickSaveButton()
+                .clickConfigureLinkInSideMenu()
+                .updateJobDescription(updatedJobDescription)
+                .clickSaveButton()
+                .getDescription();
 
-        getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']")))
-                .click();
-
-        addJobDescription(updatedJobDescription);
-        submitForm();
-
-        WebElement actualJobDescription = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message")));
-
-        Assert.assertEquals(actualJobDescription.getText(), updatedJobDescription);
+        Assert.assertEquals(actualJobDescription, updatedJobDescription);
     }
 
     @Test(dependsOnMethods = "testUpdateJobDescription")
