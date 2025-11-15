@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.util.List;
 import java.util.Random;
@@ -98,19 +99,16 @@ public class PipelineTest extends BaseTest {
     public void testAddDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
 
-        createPipeline(PIPELINE_NAME);
+        String descriptionText = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .clickSaveButton()
+                .clickAddDescriptionButton()
+                .addDescriptionAndSave(textDescription)
+                .getDescription();
 
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(textDescription);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
-        WebElement descriptionText = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
-
-        Assert.assertEquals(
-                descriptionText.getText(),
-                textDescription);
+        Assert.assertEquals(descriptionText, textDescription);
     }
 
     @Test(dependsOnMethods = "testAddDescription")
