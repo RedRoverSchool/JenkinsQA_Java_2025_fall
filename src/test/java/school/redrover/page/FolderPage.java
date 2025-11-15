@@ -142,4 +142,10 @@ public class FolderPage extends BasePage {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1"))).getText();
 
     }
+
+    public FolderPage clickBreadcrumbsItem(String folderName) {
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(folderName))).click();
+
+        return this;
+    }
 }
