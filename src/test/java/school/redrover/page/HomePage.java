@@ -74,6 +74,6 @@ public class HomePage extends BasePage {
     }
 
     public String getDescription(){
-        return getDriver().findElement(By.id("description-content")).getText();
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
     }
 }
