@@ -65,7 +65,7 @@ public class PipelineTest extends BaseTest {
                 .openDropdownMenu(PIPELINE_NAME)
                 .clickDeleteItemInDropdownMenu()
                 .confirmDelete()
-                .getTitle();
+                .getHeading();
 
         Assert.assertEquals(actualHomePageTitle, expectedHomePageTitle);
     }
