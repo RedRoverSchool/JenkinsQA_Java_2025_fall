@@ -59,4 +59,21 @@ public class HomePage extends BasePage {
     public WebElement findItem(String itemName) {
         return getDriver().findElement(By.xpath("//a[@href='job/" + itemName + "/']"));
     }
+
+    public HomePage clickAddDescription(){
+        getDriver().findElement(By.id("description-link")).click();
+
+        return this;
+    }
+
+    public HomePage sendTextAndSubmit(String text) {
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(text);
+        getDriver().findElement(By.xpath("//button[@formNoValidate='formNoValidate']")).click();
+
+        return this;
+    }
+
+    public String getDescription(){
+        return getDriver().findElement(By.id("description-content")).getText();
+    }
 }
