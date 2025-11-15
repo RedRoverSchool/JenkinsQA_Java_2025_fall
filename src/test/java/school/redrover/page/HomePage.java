@@ -60,6 +60,11 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.xpath("//a[@href='job/" + itemName + "/']"));
     }
 
+    public String getSystemMessage() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("systemmessage"))).getText();
+    }
+  
     public HomePage openDropdownMenu(String itemName) {
         WebElement dropdownButton = getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath(
