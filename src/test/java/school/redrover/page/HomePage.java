@@ -52,8 +52,10 @@ public class HomePage extends BasePage {
         return new NewItemPage(getDriver());
     }
 
-    public String getTitle() {
-        return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1"))).getText();
+    public String getHeadingText() {
+        return getWait2()
+                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".empty-state-block > h1")))
+                .getText();
     }
 
     public WebElement findItem(String itemName) {
@@ -87,6 +89,7 @@ public class HomePage extends BasePage {
 
         return this;
     }
+
     public HomePage clickRenameItemInDropdownMenu() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/MyFolder/confirm-rename']"))).click();
 
@@ -104,8 +107,9 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public String getHeadingText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block > h1")))
-                  .getText();
+    public String getParagraghText() {
+        return getWait2()
+                .until(ExpectedConditions.presenceOfElementLocated(By.tagName("p")))
+                .getText();
     }
 }

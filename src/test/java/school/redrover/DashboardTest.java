@@ -26,9 +26,9 @@ public class DashboardTest extends BaseTest {
         final String expectedParagraphText = "This page is where your Jenkins jobs will be displayed. " +
                 "To get started, you can set up distributed builds or start building a software project.";
 
-        WebElement actualParagraph = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("p")));
-
-        Assert.assertEquals(actualParagraph.getText(), expectedParagraphText);
+        Assert.assertEquals(
+                new HomePage(getDriver()).getParagraghText(),
+                expectedParagraphText);
     }
 
     @Test
