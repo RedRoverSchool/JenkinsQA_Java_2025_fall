@@ -148,4 +148,5 @@ public class FolderPage extends BasePage {
 
         return this;
     }
+
 }
