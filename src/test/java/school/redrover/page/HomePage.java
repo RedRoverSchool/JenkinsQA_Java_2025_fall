@@ -76,6 +76,11 @@ public class HomePage extends BasePage {
 
         return this;
     }
+    public HomePage clickRenameItemInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/MyFolder/confirm-rename']"))).click();
+
+        return this;
+    }
 
     public HomePage confirmDelete() {
         WebElement yesButton = getWait2().until(

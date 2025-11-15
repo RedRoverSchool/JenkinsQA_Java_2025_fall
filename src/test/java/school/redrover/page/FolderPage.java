@@ -137,4 +137,9 @@ public class FolderPage extends BasePage {
                 .map(WebElement::getText)
                 .toList();
     }
+
+    public String getNameFolder(){
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1"))).getText();
+
+    }
 }
