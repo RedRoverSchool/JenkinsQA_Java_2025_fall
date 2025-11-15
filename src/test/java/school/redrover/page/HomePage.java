@@ -126,10 +126,7 @@ public class HomePage extends BasePage {
     public String getDescription() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
     }
-    public String getHeadingText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block > h1")))
-                  .getText();
-    }
+    
     public String getParagraghText() {
         return getWait2()
                 .until(ExpectedConditions.presenceOfElementLocated(By.tagName("p")))
