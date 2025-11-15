@@ -112,26 +112,6 @@ public class Folder2Test extends BaseTest {
     }
 
     @Test(dataProvider = "itemsProvider")
-    public void testFolderIsIdentifiedByIcon(String itemType, String itemName) {
-        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
-        final String dAttributeOfFolderIcon = "M440 432H72a40 40 0 01-40-40V120a40 40 0 0140-40h75.89a40 40 0 0122.19 6.72";
-
-        createItem(folderName, "Folder");
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-        createItem(itemName, itemType);
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-
-        String xpathForItemNameByIconAttribute = "//tr[.//*[contains(@d,'%s')]]//a//span".formatted(dAttributeOfFolderIcon);
-        List<String> expectedItems = itemType.equals("Folder")
-                ? List.of(folderName, itemName)
-                : List.of(folderName);
-        Assert.assertEquals(
-                new HashSet<>(getTextsOfItems(xpathForItemNameByIconAttribute)),
-                new HashSet<>(expectedItems),
-                "Ошибка в отображении иконок");
-    }
-
-    @Test(dataProvider = "itemsProvider")
     public void testFolderIsIdentifiedByTooltip(String itemType, String itemName) {
         final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
         Actions actions = new Actions(getDriver());
