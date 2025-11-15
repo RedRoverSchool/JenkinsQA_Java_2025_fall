@@ -64,7 +64,7 @@ public class FolderTest extends BaseTest {
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .openFolderPage(SUB_FOLDER_NAME)
                 .clickDeleteFolder()
-                .confirmDeleteChild()
+                .confirmDeleteChildItem()
                 .clickSearchButton()
                 .searchFor(SUB_FOLDER_NAME)
                 .isNoResultsFound(SUB_FOLDER_NAME);

@@ -85,7 +85,7 @@ public class FolderPage extends BasePage {
         return this;
     }
 
-    public FolderPage confirmDeleteChild() {
+    public FolderPage confirmDeleteChildItem() {
         String urlBeforeDelete = getDriver().getCurrentUrl();
 
         WebElement yesButton = getWait2().until(
