@@ -116,6 +116,7 @@ public class HomePage extends BasePage {
 
     public HomePage submitDescription(){
         getDriver().findElement(By.name("Submit")).click();
+
         return this;
     }
 
