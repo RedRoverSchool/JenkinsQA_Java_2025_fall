@@ -64,7 +64,7 @@ public class HomePage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.id("systemmessage"))).getText();
     }
-  
+
     public HomePage openDropdownMenu(String itemName) {
         WebElement dropdownButton = getWait5().until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath(
@@ -76,8 +76,19 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public MovePage clickMoveInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@class, 'jenkins-dropdown__item') and contains(., 'Move')]"))).click();
+
+        return new MovePage(getDriver());
+    }
+
     public HomePage clickDeleteItemInDropdownMenu() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[.//text()[contains(., 'Delete')]]"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'jenkins-dropdown__item') and contains(., 'Delete')]"))).click();
+
+        return this;
+    }
+    public HomePage clickRenameItemInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/MyFolder/confirm-rename']"))).click();
 
         return this;
     }

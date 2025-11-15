@@ -45,6 +45,19 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    public void testCreateNewPipeline() {
+        List<String> actualProjectList = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
+                .getProjectList();
+
+        Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME),
+                String.format("Pipeline with name '%s' was not created", PIPELINE_NAME));
+    }
+
+    @Test
     public void testCreatePipeline() throws InterruptedException {
         getDriver().findElement(By.cssSelector(".task:nth-child(1) a")).click();
         getDriver().findElement(By.cssSelector("#name")).sendKeys(PIPELINE_NAME);
