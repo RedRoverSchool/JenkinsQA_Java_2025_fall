@@ -46,7 +46,7 @@ public abstract class BasePage extends BaseModel {
     }
 
     public UserAccountPage clickUserAccountButton() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.cssSelector(".jenkins-avatar"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-UserAction"))).click();
 
         return new UserAccountPage(getDriver());
     }
