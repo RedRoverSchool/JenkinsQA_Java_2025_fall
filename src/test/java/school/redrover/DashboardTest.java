@@ -92,7 +92,7 @@ public class DashboardTest extends BaseTest {
         List<String> actualJobs = homePage.getProjectList();
 
         Assert.assertFalse(actualJobs.isEmpty(), "Item's list is empty!");
-        Assert.assertEquals(actualJobs, CRAETED_JOBS_NAME, "Имена не совпадают!");
+        Assert.assertEquals(actualJobs, CRAETED_JOBS_NAME, "Имена созданных jobs не совпадают!");
     }
 
     @Test
