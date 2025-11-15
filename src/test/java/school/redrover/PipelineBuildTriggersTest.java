@@ -1,13 +1,13 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+
+import java.time.Duration;
 
 public class PipelineBuildTriggersTest extends BaseTest {
     private static final String pipelineName = "pipeline_name";
@@ -19,10 +19,10 @@ public class PipelineBuildTriggersTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[2]")).click();
         getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
 
-        Actions actions = new Actions(getDriver());
-        actions.sendKeys(Keys.PAGE_DOWN).build().perform();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
-        WebElement[] checkboxes = new WebElement[5];
+
 
         String[] checkboxesXpaths = {
                 "//*[@id='main-panel']/form/div[1]/section[1]/section/div[4]/div[1]/div/span",
@@ -32,18 +32,13 @@ public class PipelineBuildTriggersTest extends BaseTest {
                 "//*[@id='main-panel']/form/div[1]/div[5]/div[1]/div/span"
         };
 
-        for (int i = 0; i < 5; i++){
-            try {
-                checkboxes[i] = getDriver().findElement(By.xpath(checkboxesXpaths[i]));
-                checkboxes[i].click();
-            }
-            catch (ElementClickInterceptedException e) {
-                actions.sendKeys(Keys.PAGE_DOWN).build().perform();
-                checkboxes[i] = getDriver().findElement(By.xpath(checkboxesXpaths[i]));
-                checkboxes[i].click();
-            }
+        for (String xpath : checkboxesXpaths) {
+            WebElement checkbox = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
+            js.executeScript("arguments[0].scrollIntoView({block: 'center'});", checkbox);
+            wait.until(ExpectedConditions.elementToBeClickable(checkbox));
+            checkbox.click();
 
-            Assert.assertTrue(checkboxes[i].isEnabled());
+            Assert.assertTrue(checkbox.isEnabled());
         }
 
         getDriver().findElement(By.name("Submit")).click();
