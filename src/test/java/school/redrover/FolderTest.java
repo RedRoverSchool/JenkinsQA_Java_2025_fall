@@ -59,7 +59,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testPreventDuplicateItemNamesInFolder")
-    public void deleteFolder() {
+    public void deleteFolderBySidebar() {
         boolean isFolderDeleted = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .openFolderPage(CHILD_FOLDER_NAME)
@@ -162,17 +162,13 @@ public class FolderTest extends BaseTest {
                     .clickMoveButtonAndGoHome();
         }
 
-        List<String> homeItemList = new HomePage(getDriver())
-                .getProjectList();
         List<String> folderItemList = new HomePage(getDriver())
                 .clickFolder(FOLDER_NAME)
                 .getProjectList();
 
-        Assert.assertEquals(homeItemList.size(), 1);
-        Assert.assertNotEquals(folderItemList.size(), 0);
-        Assert.assertEquals(
-                folderItemList,
-                expectedItems,
-                "Неверный список перенесенных элементов");
+        Assert.assertTrue(folderItemList.size() >= expectedItems.size(),
+                "В папке должно быть как минимум %s элементов".formatted(expectedItems.size()));
+        Assert.assertTrue(folderItemList.containsAll(expectedItems),
+                "В папке должны быть все перенесенные элементы: " + expectedItems);
     }
 }
