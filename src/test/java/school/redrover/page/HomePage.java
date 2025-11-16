@@ -178,4 +178,10 @@ public class HomePage extends BasePage {
 
         return new ManageJenkinsPage(getDriver());
     }
+
+    public <T extends BasePage> T clickHomePageSectionLink(String linkText) {
+        getDriver().findElement(By.xpath("//span[text()='%s']/..".formatted(linkText))).click();
+
+        return (T) this;
+    }
 }
