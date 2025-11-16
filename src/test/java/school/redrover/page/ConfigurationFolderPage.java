@@ -25,10 +25,11 @@ public class ConfigurationFolderPage extends BasePage {
     }
 
     public FolderPage clickSave() {
-        WebElement button = getDriver().findElement(By.name("Submit"));
-        button.click();
-        getWait2().until(ExpectedConditions.invisibilityOf(button));
-
+        WebElement submitButton = getWait5().until(
+                ExpectedConditions.elementToBeClickable(By.name("Submit")));
+        submitButton.click();
+        getWait5().until(ExpectedConditions.not(
+                ExpectedConditions.urlContains("configure")));
         return new FolderPage(getDriver());
     }
 
