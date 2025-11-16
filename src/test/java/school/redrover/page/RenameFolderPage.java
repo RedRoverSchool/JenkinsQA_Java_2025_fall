@@ -27,5 +27,6 @@ public class RenameFolderPage extends BasePage {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName"))).clear();
 
         return this;
+
     }
 }
