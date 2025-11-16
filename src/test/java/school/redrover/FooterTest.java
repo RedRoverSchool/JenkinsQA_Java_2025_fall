@@ -52,7 +52,7 @@ public class FooterTest extends BaseTest {
     public void testRestApiLinkByTabAndEnter(){
 
         new HomePage(getDriver())
-                .pressTabAndEnter(new HomePage(getDriver()).restApiLink());
+                .pressTabAndEnter(new HomePage(getDriver()).getRestApiLink());
 
         Assert.assertEquals(getDriver().getTitle(), "Remote API - Jenkins");
     }
@@ -60,7 +60,7 @@ public class FooterTest extends BaseTest {
     @Test
     public void testRestApiLinkByFocusAndEnter(){
 
-        TestUtils.focusAndEnterByKeyboard(getDriver(), new HomePage(getDriver()).restApiLink());
+        TestUtils.focusAndEnterByKeyboard(getDriver(), new HomePage(getDriver()).getRestApiLink());
 
         Assert.assertEquals(getDriver().getTitle(), "Remote API - Jenkins");
     }

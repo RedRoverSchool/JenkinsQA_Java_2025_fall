@@ -191,7 +191,7 @@ public class HomePage extends BasePage {
         return new UserAccountPage(getDriver());
     }
 
-    public WebElement restApiLink(){
+    public WebElement getRestApiLink(){
         return getDriver().findElement(By.xpath("//a[@href='api/']"));
     }
 
