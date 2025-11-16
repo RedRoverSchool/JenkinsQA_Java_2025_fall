@@ -42,7 +42,7 @@ public class FooterTest extends BaseTest {
 
         List<String> actualLinks = new HomePage(getDriver())
                 .clickRestApiLink()
-                .getXmlJsonPythonApiLinks();
+                .getXmlJsonPythonApiLinksText();
 
         Assert.assertEquals(actualLinks, expectedLinks);
     }
