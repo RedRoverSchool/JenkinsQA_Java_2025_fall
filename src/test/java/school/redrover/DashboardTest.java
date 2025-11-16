@@ -14,11 +14,18 @@ import java.util.List;
 
 public class DashboardTest extends BaseTest {
 
+    private static final List<String> CREATED_JOBS_NAME = List.of(
+            "FreestyleName1",
+            "FreestyleName2",
+            "FreestyleName3",
+            "FreestyleName4",
+            "FreestyleName5"
+    );
+
     @Test
     public void testHomePageHeading() {
         Assert.assertEquals(
-                new HomePage(getDriver()).getHeadingText(),
-                "Welcome to Jenkins!");
+                new HomePage(getDriver()).getHeadingText(), "Welcome to Jenkins!");
     }
 
     @Test
@@ -26,9 +33,9 @@ public class DashboardTest extends BaseTest {
         final String expectedParagraphText = "This page is where your Jenkins jobs will be displayed. " +
                 "To get started, you can set up distributed builds or start building a software project.";
 
-        WebElement actualParagraph = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("p")));
-
-        Assert.assertEquals(actualParagraph.getText(), expectedParagraphText);
+        Assert.assertEquals(
+                new HomePage(getDriver()).getParagraghText(),
+                expectedParagraphText);
     }
 
     @Test
@@ -67,5 +74,53 @@ public class DashboardTest extends BaseTest {
             getDriver().close();
             getDriver().switchTo().window((String) windowHandles[0]);
         }
+    }
+
+    @Test
+    public void testCheckCreatedJobsOnDashboard(){
+        HomePage homePage = new HomePage(getDriver());
+
+        for (int i = 0; i < CREATED_JOBS_NAME.size(); i++){
+            homePage
+                    .clickNewItemOnLeftMenu()
+                    .sendName(CREATED_JOBS_NAME.get(i))
+                    .selectFreestyleProjectAndSubmit()
+                    .gotoHomePage();
+        }
+        List<String> actualJobs = homePage.getProjectList();
+
+        Assert.assertFalse(actualJobs.isEmpty(), "Item's list is empty!");
+        Assert.assertEquals(actualJobs, CREATED_JOBS_NAME, "Имена созданных jobs не совпадают!");
+    }
+
+    @Test
+    public void testCheckDeleteViewOnDashboard() {
+        final String viewName = "myView";
+
+        int viewListSize = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(CREATED_JOBS_NAME.get(0))
+                .selectFreestyleProjectAndSubmit()
+                .gotoHomePage()
+                .clickPlusToCreateView()
+                .sendViewName(viewName)
+                .clickMyViewName()
+                .clickCreateButtonForNewView()
+                .clickDeleteViewOnSidebar()
+                .clickYesToConfirmDelete()
+                .getSizeOfViewNameList();
+
+        Assert.assertEquals(viewListSize, 2, "Есть созданный пользователем View на Dashboard");
+    }
+
+    @Test
+    public void testGoToManageJenkinsPage(){
+        final String expectedTitle = "Manage Jenkins";
+
+        String actualTitle = new HomePage(getDriver())
+                .clickManageJenkinsIcon()
+                .getHeadingText();
+
+        Assert.assertEquals(actualTitle, expectedTitle);
     }
 }

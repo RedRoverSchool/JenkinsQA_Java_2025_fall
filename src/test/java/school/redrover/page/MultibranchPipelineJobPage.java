@@ -24,6 +24,7 @@ public class MultibranchPipelineJobPage extends BasePage {
         return new MultibranchPipelineConfigPage(getDriver());
     }
 
+
     public String getDescription() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message"))).getText();
     }
