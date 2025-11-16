@@ -155,7 +155,6 @@ public class NewItemPage extends BasePage {
     }
 
     public boolean isOkButtonEnabled() {
-
         return getDriver().findElement(By.id("ok-button")).isEnabled();
     }
 
@@ -167,5 +166,9 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.id("from"));
 
         return this;
+    }
+
+    public String getHeadingText() {
+        return getDriver().findElement(By.tagName("h1")).getText();
     }
 }
