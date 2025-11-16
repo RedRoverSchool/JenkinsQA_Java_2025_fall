@@ -15,4 +15,9 @@ public class TestUtils {
     public static void clickJS(WebDriver driver, By locator) {
         clickJS(driver, driver.findElement(locator));
     }
+
+    public static void mouseEnterJS(WebDriver driver, WebElement element) {
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor.executeScript("arguments[0].dispatchEvent(new Event('mouseenter'));", element);
+    }
 }

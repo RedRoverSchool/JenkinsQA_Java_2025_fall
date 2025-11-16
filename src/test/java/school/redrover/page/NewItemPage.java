@@ -85,4 +85,60 @@ public class NewItemPage extends BasePage {
 
         return new HomePage(getDriver());
     }
+
+    public MultibranchPipelineConfigPage selectMultiConfigurationAndSubmit() {
+        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Multi-configuration project']"));
+
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(), 'General')]")));
+
+        return new MultibranchPipelineConfigPage(getDriver());
+    }
+
+    public ConfigurationOrganizationFolderPage selectOrganizationFolderAndSubmit() {
+        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Organization Folder']"));
+
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(), 'General')]")));
+
+        return new ConfigurationOrganizationFolderPage(getDriver());
+    }
+
+    public HomePage selectItemTypeAndSubmitAndGoHome(String itemType) {
+        switch (itemType) {
+            case "Folder":
+                selectFolderAndSubmit().gotoHomePage();
+                break;
+            case "Freestyle project":
+                selectFreestyleProjectAndSubmit().gotoHomePage();
+                break;
+            case "Pipeline":
+                selectPipelineAndSubmit().gotoHomePage();
+                break;
+            case "Multi-configuration project":
+                selectMultiConfigurationAndSubmit().gotoHomePage();
+                break;
+            case "Multibranch Pipeline":
+                selectMultibranchPipelineWithJsAndSubmit().gotoHomePage();
+                break;
+            case "Organization Folder":
+                selectOrganizationFolderAndSubmit().gotoHomePage();
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown item type: " + itemType);
+        }
+        return new HomePage(getDriver());
+    }
+
+    public NewItemPage selectPipeline() {
+        getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
+
+        return this;
+    }
+
+    public boolean isPipelineSelected() {
+        WebElement pipelineType = getDriver().findElement(By.xpath("//*[contains(@class, 'WorkflowJob')]"));
+
+        return "true".equals(pipelineType.getAttribute("aria-checked"));
+    }
 }

@@ -1,12 +1,9 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
+import school.redrover.page.ErrorPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.MultibranchPipelineJobPage;
 
@@ -14,24 +11,6 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     private static final String JOB_NAME = "multibranchJobName";
     private static final String JOB_DESCRIPTION = "This is a job description";
-
-    private void renameJob(String updatedJobName) {
-        WebElement newNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
-
-        newNameField.clear();
-        newNameField.sendKeys(updatedJobName);
-    }
-
-    private void submitForm() {
-        getDriver().findElement(By.tagName("form")).submit();
-    }
-
-    private void openJobRenamePage(String jobName) {
-        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
-                .click();
-    }
 
     @Test
     public void testCreateMultibranchPipelineJob() {
@@ -126,30 +105,29 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testUpdateJobDescription")
     public void testRenameJobNameUsingDotAtTheEnd() {
-        final String updatedJobName = JOB_NAME + ".";
-        final String expectedErrorMessageText = "A name cannot end with ‘.’";
+        final String expectedErrorMessage = "A name cannot end with ‘.’";
 
-        openJobRenamePage(JOB_NAME);
-        renameJob(updatedJobName);
-        submitForm();
+        String actualErrorMessage = new HomePage(getDriver())
+                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickRenameLinkInSideMenu()
+                .renameJob(JOB_NAME + ".")
+                .submitForm(new ErrorPage(getDriver()))
+                .getErrorMessage();
 
-        WebElement actualErrorMessage = getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Error']/../p")));
-
-        Assert.assertEquals(actualErrorMessage.getText(), expectedErrorMessageText);
+        Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 
     @Test(dependsOnMethods = "testRenameJobNameUsingDotAtTheEnd")
     public void testRenameJob() {
         final String updatedJobName = "updatedProjectName";
 
-        openJobRenamePage(JOB_NAME);
-        renameJob(updatedJobName);
-        submitForm();
+        String actualHeadingText = new HomePage(getDriver())
+                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickRenameLinkInSideMenu()
+                .renameJob(updatedJobName)
+                .submitForm(new MultibranchPipelineJobPage(getDriver()))
+                .getHeadingText();
 
-        WebElement actualHeading = getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='view-message']/../h1")));
-
-        Assert.assertEquals(actualHeading.getText(), updatedJobName);
+        Assert.assertEquals(actualHeadingText, updatedJobName);
     }
 }

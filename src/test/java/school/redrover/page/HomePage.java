@@ -52,11 +52,124 @@ public class HomePage extends BasePage {
         return new NewItemPage(getDriver());
     }
 
-    public String getTitle() {
-        return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1"))).getText();
+    public String getHeadingText() {
+        return getWait2()
+                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".empty-state-block > h1")))
+                .getText();
     }
 
     public WebElement findItem(String itemName) {
         return getDriver().findElement(By.xpath("//a[@href='job/" + itemName + "/']"));
+    }
+
+    public String getSystemMessage() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("systemmessage"))).getText();
+    }
+
+    public HomePage openDropdownMenu(String itemName) {
+        WebElement dropdownButton = getWait5().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//a[.//span[text()='%s']]//button[@class='jenkins-menu-dropdown-chevron']".formatted(itemName))));
+
+        TestUtils.mouseEnterJS(getDriver(), dropdownButton);
+        TestUtils.clickJS(getDriver(), dropdownButton);
+
+        return this;
+    }
+
+    public MovePage clickMoveInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@class, 'jenkins-dropdown__item') and contains(., 'Move')]"))).click();
+
+        return new MovePage(getDriver());
+    }
+
+    public HomePage clickDeleteItemInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'jenkins-dropdown__item') and contains(., 'Delete')]"))).click();
+
+        return this;
+    }
+
+    public HomePage clickRenameItemInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/MyFolder/confirm-rename']"))).click();
+
+        return this;
+    }
+
+    public HomePage confirmDelete() {
+        WebElement yesButton = getWait2().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("//dialog[@open]//button[@data-id='ok']"))
+        );
+        yesButton.click();
+        getWait5().until(ExpectedConditions.stalenessOf(yesButton));
+
+        return this;
+    }
+
+    public String getActiveViewName() {
+        return getDriver().findElement(By.cssSelector(".tab.active a")).getText();
+    }
+
+    public CreateViewPage clickPlusToCreateView() {
+        getDriver().findElement(By.cssSelector("[href='/newView']")).click();
+
+        return new CreateViewPage(getDriver());
+    }
+
+    public HomePage clickViewName(String viewName) {
+        getDriver().findElement(By.linkText(viewName)).click();
+
+        return new HomePage(getDriver());
+    }
+
+    public HomePage clickDeleteViewOnSidebar() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@data-title='Delete View']"))).click();
+
+        return this;
+    }
+
+    public HomePage clickYesToConfirmDelete() {
+        String urlBeforeDelete = getDriver().getCurrentUrl();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//button[@data-id='ok']"))).click();
+
+        getWait5().until(ExpectedConditions.not(ExpectedConditions.urlToBe(urlBeforeDelete)));
+
+        return new HomePage(getDriver());
+    }
+
+    public int getSizeOfViewNameList() {
+        List<WebElement> viewNameList = getDriver().findElements(By.xpath("//div[@class='tabBar']/div"));
+
+        return viewNameList.size();
+    }
+
+    public String getParagraghText() {
+        return getWait2()
+                .until(ExpectedConditions.presenceOfElementLocated(By.tagName("p")))
+                .getText();
+    }
+
+    public HomePage clickDescription() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
+        return this;
+    }
+
+    public HomePage sendDescriptionText(String text) {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(text);
+        return this;
+    }
+
+    public HomePage submitDescription() {
+        getDriver().findElement(By.name("Submit")).click();
+
+        return this;
+    }
+
+    public String getDescription() {
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
     }
 }
