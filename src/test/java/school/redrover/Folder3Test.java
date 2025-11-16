@@ -23,7 +23,7 @@ public class Folder3Test extends BaseTest {
                 .sendKeys(descriptionText);
         getDriver().findElement(By.xpath("//button[@name='Submit']"))
                 .click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[@class = 'job-index-headline page-headline']")));
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'content-block__link']")));
 
         getWait5()
                 .until(ExpectedConditions.elementToBeClickable(By.className("app-jenkins-logo")))

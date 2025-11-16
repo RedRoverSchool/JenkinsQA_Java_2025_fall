@@ -58,7 +58,7 @@ public class Folder1Test extends BaseTest {
         selectObject.selectByVisibleText("Jenkins » %s".formatted(folder1Name));
 
         getDriver().findElement(By.name("Submit")).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[@class = 'job-index-headline page-headline']")));
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'content-block__link']")));
 
         List<WebElement> list = getDriver().findElements(By.cssSelector(".jenkins-breadcrumbs__list-item > a"));
         Assert.assertEquals(list.get(0).getText(), folder1Name);

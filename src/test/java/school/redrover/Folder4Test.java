@@ -12,7 +12,7 @@ import school.redrover.common.BaseTest;
 public class Folder4Test extends BaseTest {
 
     @Test
-    public void testCreateFolder() throws InterruptedException {
+    public void testCreateFolder() {
         String folder = "Test Folder";
 
         getDriver().findElement(By.xpath("//a[@href='newJob']"))
@@ -32,7 +32,7 @@ public class Folder4Test extends BaseTest {
         getDriver().findElement(By.name("Submit"))
                 .click();
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[@class = 'job-index-headline page-headline']")));
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'content-block__link']")));
         WebElement message = getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li/a"));
 
         Assert.assertEquals(message.getText(), folder);
