@@ -25,13 +25,15 @@ public class MultibranchPipelineJobPage extends BasePage {
     }
 
     public MultibranchPipelineJobPage clickDeletePipeline() {
-        getDriver().findElement(By.className("confirmation-link")).click();
+        getDriver().findElement(By.className("confirmation-link"))
+                .click();
 
         return this;
     }
 
     public HomePage confirmDelete() {
-        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+        getDriver().findElement(By.cssSelector("[data-id='ok']"))
+                .click();
 
         return new HomePage(getDriver());
     }
