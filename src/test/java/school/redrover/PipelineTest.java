@@ -8,7 +8,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-import school.redrover.page.MultibranchPipelineJobPage;
+import school.redrover.page.PipelineJobPage;
 
 import java.util.List;
 import java.util.Random;
@@ -80,7 +80,7 @@ public class PipelineTest extends BaseTest {
                 .sendName(PIPELINE_NAME)
                 .selectPipelineAndSubmit()
                 .gotoHomePage()
-                .openJobPage(PIPELINE_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .openJobPage(PIPELINE_NAME, new PipelineJobPage(getDriver()))
                 .clickDeletePipeline()
                 .confirmDeleteAtJobPage()
                 .getHeadingText();
