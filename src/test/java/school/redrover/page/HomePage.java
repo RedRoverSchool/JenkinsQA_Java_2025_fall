@@ -209,4 +209,11 @@ public class HomePage extends BasePage {
             }
         }
     }
+
+    public <T extends BasePage> T clickHomePageSectionLink(String linkText) {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='%s']/..".formatted(linkText))))
+                .click();
+
+        return (T) this;
+    }
 }
