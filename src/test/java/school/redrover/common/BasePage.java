@@ -2,6 +2,7 @@ package school.redrover.common;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.*;
@@ -46,7 +47,19 @@ public abstract class BasePage extends BaseModel {
     }
 
     public UserAccountPage clickUserAccountButton() {
-        TestUtils.clickJS(getDriver(), By.id("root-action-UserAction"));
+//        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-UserAction"))).click();
+
+        WebElement accountButton = getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-UserAction")));
+        new Actions(getDriver()).moveToElement(accountButton, 2, 0).click().perform();
+
+//        new Actions(getDriver())
+//                .moveToElement(getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-UserAction"))))
+//                .click()
+//                .perform();
+
+//        TestUtils.clickJS(getDriver(), By.id("root-action-UserAction"));
+
+        getWait10().until(ExpectedConditions.urlContains("/user/")); //for debug
 
         return new UserAccountPage(getDriver());
     }
