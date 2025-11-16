@@ -199,6 +199,5 @@ public class FolderTest extends BaseTest {
                 .getNameFolder();
 
         Assert.assertEquals(newNameFolder, FOLDER_NAME_2);
-
     }
 }
