@@ -11,6 +11,8 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
+import java.util.List;
+
 public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchName";
@@ -41,32 +43,31 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualDescription, expectedDescription, actualDescription + " and " + expectedDescription + " don't match");
     }
 
-    @Ignore
     @Test
     public void testCreateMultibranchPipeline() {
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
+        List<String> projectList = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .clickSaveButton()
+                .gotoHomePage()
+                .getProjectList();
 
-        String actualName = getWait2().until(ExpectedConditions
-                .visibilityOfElementLocated(By.tagName("h1"))).getText();
-        Assert.assertEquals(actualName, MULTIBRANCH_PIPELINE_NAME);
-
-        Assert.assertTrue(getDriver().findElement(By.className("empty-state-section"))
-                .getText().contains("This folder is empty"));
+        Assert.assertNotEquals(projectList.size(), 0);
+        Assert.assertTrue(projectList.contains(MULTIBRANCH_PIPELINE_NAME));
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
     public void testTryCreateProjectExistName() {
-        final String errorMessage = "» A job already exists with the name " + "‘" + MULTIBRANCH_PIPELINE_NAME + "’";
+        final String errorMessage = "» A job already exists with the name ‘%s’".formatted(MULTIBRANCH_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        String dublicateProject = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .selectMultibranchPipeline()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .getDuplicateErrorMessage();
 
-        getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-
-        String actualMessage = getWait2().until(ExpectedConditions
-                .visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
-        Assert.assertEquals(actualMessage, errorMessage);
+        Assert.assertEquals(dublicateProject, errorMessage, "Incorrect error message");
     }
 
     @Test

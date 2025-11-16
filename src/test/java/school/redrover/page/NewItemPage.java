@@ -35,6 +35,12 @@ public class NewItemPage extends BasePage {
 
     }
 
+    public NewItemPage selectMultibranchPipeline() {
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+
+        return this;
+    }
+
     public MultibranchPipelineConfigPage selectMultibranchPipelineAndSubmit() {
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
 
