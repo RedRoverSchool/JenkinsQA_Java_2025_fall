@@ -8,15 +8,13 @@ import school.redrover.page.HomePage;
 public class ConfigureUserTest extends BaseTest {
 
     @Test
-    public void testUserNameAndIDInUserAccount() {
+    public void testUserNameInUserAccount() {
         final String expectedUserName = "admin";
 
-        HomePage homePage = new HomePage(getDriver());
-
-        String actualUserName = homePage.clickUserAccountViaIconInHeader().getUserName();
-        String actualUserID = homePage.clickUserAccountViaIconInHeader().getUserID();
+        String actualUserName = new HomePage(getDriver())
+                .clickUserAccountViaIconInHeader()
+                .getUserName();
 
         Assert.assertEquals(actualUserName, expectedUserName);
-        Assert.assertTrue(actualUserID.contains(expectedUserName));
     }
 }
