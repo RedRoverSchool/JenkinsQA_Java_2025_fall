@@ -24,6 +24,18 @@ public class MultibranchPipelineJobPage extends BasePage {
         return new MultibranchPipelineConfigPage(getDriver());
     }
 
+    public MultibranchPipelineJobPage clickDeletePipeline() {
+        getDriver().findElement(By.className("confirmation-link")).click();
+
+        return this;
+    }
+
+    public HomePage confirmDelete() {
+        getDriver().findElement(By.cssSelector("[data-id='ok']")).click();
+
+        return new HomePage(getDriver());
+    }
+
     public String getDescription() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message"))).getText();
     }
