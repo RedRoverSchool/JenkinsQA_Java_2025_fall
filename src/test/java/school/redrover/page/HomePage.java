@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
@@ -210,6 +211,14 @@ public class HomePage extends BasePage {
         }
     }
 
+    public String getProjectStatus(String projectName) {
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//*[@id='job_%s']/td[1]/div".formatted(projectName))))
+                .perform();
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-tippy-root]")))
+                .getText();
+    }
+      
     public <T extends BasePage> T clickHomePageSectionLink(String linkText) {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='%s']/..".formatted(linkText))))
                 .click();

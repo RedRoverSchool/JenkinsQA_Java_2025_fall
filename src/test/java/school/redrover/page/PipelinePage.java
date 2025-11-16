@@ -60,4 +60,8 @@ public class PipelinePage extends BasePage {
         return this;
     }
 
+    public String getWarningMessage() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("enable-project")))
+                .getText();
+    }
 }

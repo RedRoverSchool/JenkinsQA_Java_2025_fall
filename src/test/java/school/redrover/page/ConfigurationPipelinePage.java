@@ -127,4 +127,27 @@ public class ConfigurationPipelinePage extends BasePage {
         return getDriver().findElements(By
                 .xpath(".//div[@id='advanced']/parent::section/descendant::a[@tooltip]"));
     }
+
+    public String getToggleCheckedLabelText() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                .id("toggle-switch-enable-disable-project")));
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .className("jenkins-toggle-switch__label__checked-title")))
+                .getText();
+    }
+
+    public String getToggleUncheckedLabelText() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                .id("toggle-switch-enable-disable-project")));
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .className("jenkins-toggle-switch__label__unchecked-title")))
+                .getText();
+    }
+
+    public ConfigurationPipelinePage clickToggle() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .id("toggle-switch-enable-disable-project")))
+                .click();
+        return this;
+    }
 }
