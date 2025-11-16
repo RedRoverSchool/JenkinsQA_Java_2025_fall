@@ -1,6 +1,8 @@
 package school.redrover;
 
+import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -9,6 +11,8 @@ public class MultibranchPipeline1Test extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "Multibranch_Pipeline";
     private static final String MULTIBRANCH_PIPELINE_DISPLAY_NAME = "Multibranch_Pipeline_Display";
+    private static final String FIRST_DESCRIPTION = "First Description";
+    private static final String SECOND_DESCRIPTION = "Second Description";
 
     @Test
     public void testCreateClickCreateJob() {
@@ -16,7 +20,7 @@ public class MultibranchPipeline1Test extends BaseTest {
         String name = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(MULTIBRANCH_PIPELINE_NAME)
-                .selectMultibranchPipelineAndSubmit()
+                .selectMultibranchPipelineWithJsAndSubmit()
                 .clickSaveButton()
                 .gotoHomePage()
                 .findItem(MULTIBRANCH_PIPELINE_NAME)
@@ -31,7 +35,7 @@ public class MultibranchPipeline1Test extends BaseTest {
         String name = new HomePage(getDriver())
                 .clickNewItemOnLeftMenu()
                 .sendName(MULTIBRANCH_PIPELINE_NAME)
-                .selectMultibranchPipelineAndSubmit()
+                .selectMultibranchPipelineWithJsAndSubmit()
                 .sendDisplayName(MULTIBRANCH_PIPELINE_DISPLAY_NAME)
                 .clickSaveButton()
                 .gotoHomePage()
@@ -39,5 +43,21 @@ public class MultibranchPipeline1Test extends BaseTest {
                 .getText();
 
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_DISPLAY_NAME);
+    }
+
+@Test (dependsOnMethods = "testCreateClickCreateJob")
+    public void testChangeDescription() {
+
+        String name = new HomePage(getDriver())
+                .clickDescription()
+                .sendDescriptionText(FIRST_DESCRIPTION)
+                .submitDescription()
+                .clickDescription()
+                .clearTextDescription()
+                .sendDescriptionText(SECOND_DESCRIPTION)
+                .submitDescription()
+                .getDescription();
+
+        Assert.assertEquals(name, SECOND_DESCRIPTION);
     }
 }

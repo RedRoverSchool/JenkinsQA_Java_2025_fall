@@ -1,6 +1,7 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -90,10 +91,10 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public HomePage clickRenameItemInDropdownMenu() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/MyFolder/confirm-rename']"))).click();
+    public RenameFolderPage clickRenameItemInDropdownMenu() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='tippy-content']//div[@class='jenkins-dropdown']//a[normalize-space()='Rename']"))).click();
 
-        return this;
+        return new RenameFolderPage(getDriver());
     }
 
     public HomePage confirmDelete() {
@@ -177,6 +178,36 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
 
         return new ManageJenkinsPage(getDriver());
+    }
+
+    public HomePage clearTextDescription() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).clear();
+        return this;
+    }
+
+    public UserAccountPage clickUserAccountViaIconInHeader() {
+        TestUtils.clickJS(getDriver(), By.id("root-action-UserAction"));
+
+        return new UserAccountPage(getDriver());
+    }
+
+    public WebElement getRestApiLink(){
+        return getDriver().findElement(By.xpath("//a[@href='api/']"));
+    }
+
+    public void pressTabAndEnter(WebElement element) {
+        WebElement body = getDriver().findElement(By.tagName("body"));
+
+        int max_tabs = 50;
+
+        for (int i = 0; i < max_tabs; i++) {
+            body.sendKeys(Keys.TAB);
+            WebElement activeElement = getDriver().switchTo().activeElement();
+            if (activeElement.equals(element)) {
+                activeElement.sendKeys(Keys.ENTER);
+                break;
+            }
+        }
     }
 
     public <T extends BasePage> T clickHomePageSectionLink(String linkText) {

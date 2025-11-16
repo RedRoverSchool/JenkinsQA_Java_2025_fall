@@ -17,6 +17,12 @@ public class ManageJenkinsPage extends BasePage {
         return new ManageUsersPage(getDriver());
     }
 
+    public CredentialsPage clickCredentialsLink() {
+        getDriver().findElement(By.xpath("//a[@href = 'credentials']")).click();
+
+        return new CredentialsPage(getDriver());
+    }
+
     public ConfigurationSystemPage clickConfigurationSystem() {
         getDriver().findElement(By.xpath("//a[@href='configure']")).click();
 

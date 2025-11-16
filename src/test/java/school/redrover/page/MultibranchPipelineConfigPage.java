@@ -27,6 +27,17 @@ public class MultibranchPipelineConfigPage extends BasePage {
         return new MultibranchPipelineJobPage(getDriver());
     }
 
+    public MultibranchPipelineConfigPage clickApply() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("Apply"))).click();
+
+        return this;
+    }
+
+    public String getSavedMessage() {
+        return getWait5().until(ExpectedConditions.
+                visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']"))).getText();
+    }
+
     public MultibranchPipelineConfigPage clickToggle() {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-title='Disabled']"))).click();
 

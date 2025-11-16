@@ -13,6 +13,7 @@ public class FolderTest extends BaseTest {
     private static final String FOLDER_NAME = "TestFolder";
     private static final String SUB_FOLDER_NAME = "SubFolder";
     private static final String FOLDER_NAME_2 = "Folder2";
+    private static final String NEW_FOLDER_NAME_2 = "NewFolder2";
 
     @Test
     public void testCreate() {
@@ -121,21 +122,21 @@ public class FolderTest extends BaseTest {
                 "Пайплайн '%s' должен присутствовать во второй папке '%s'".formatted(pipelineName, FOLDER_NAME_2));
     }
 
-    @Test(dependsOnMethods = "testSameItemNamesInTwoFolders")
+    @Test(dependsOnMethods = "testRenameFolder")
     public void deleteFolderByDashboardDropdownMenu() {
         boolean isFolderDeleted = new HomePage(getDriver())
-                .openDropdownMenu(FOLDER_NAME_2)
+                .openDropdownMenu(NEW_FOLDER_NAME_2)
                 .clickDeleteItemInDropdownMenu()
                 .confirmDelete()
                 .clickSearchButton()
-                .searchFor(FOLDER_NAME_2)
-                .isNoResultsFound(FOLDER_NAME_2);
+                .searchFor(NEW_FOLDER_NAME_2)
+                .isNoResultsFound(NEW_FOLDER_NAME_2);
 
         Assert.assertTrue(isFolderDeleted,
-                "%s не должна отображаться в поиске после удаления".formatted(FOLDER_NAME_2));
+                "%s не должна отображаться в поиске после удаления".formatted(NEW_FOLDER_NAME_2));
     }
 
-    @Test(dependsOnMethods = {"testCreate","deleteFolderBySidebar"})
+    @Test(dependsOnMethods = {"testCreate", "deleteFolderBySidebar"})
     public void testPutItemsToFolder() {
         final Object[][] items = {
                 {SUB_FOLDER_NAME, "Folder"},
@@ -184,5 +185,32 @@ public class FolderTest extends BaseTest {
                 itemsWithIconAttribute,
                 List.of(SUB_FOLDER_NAME),
                 "Ошибка в отображении иконок");
+    }
+
+    @Test(dependsOnMethods = "testSameItemNamesInTwoFolders")
+    public void testRenameFolder() {
+        String newNameFolder = new HomePage(getDriver())
+                .openDropdownMenu(FOLDER_NAME_2)
+                .clickRenameItemInDropdownMenu()
+                .clearName()
+                .sendNewName(NEW_FOLDER_NAME_2)
+                .renameButtonClick()
+                .getNameFolder();
+
+        Assert.assertEquals(newNameFolder, NEW_FOLDER_NAME_2);
+    }
+
+    @Test(dependsOnMethods = "testPutItemsToFolder")
+    public void testFolderIsIdentifiedByTooltip() {
+        FolderPage folderPage = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME);
+        String folderTooltip = folderPage.getFolderTooltip(SUB_FOLDER_NAME);
+        List<String> itemsWithTooltip = folderPage.getItemsWithTooltip(folderTooltip);
+
+        Assert.assertNotEquals(itemsWithTooltip.size(), 0);
+        Assert.assertEquals(
+                itemsWithTooltip,
+                List.of(SUB_FOLDER_NAME),
+                "Ошибка в отображении тултипов");
     }
 }

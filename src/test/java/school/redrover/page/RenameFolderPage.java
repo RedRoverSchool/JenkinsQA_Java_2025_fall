@@ -17,15 +17,16 @@ public class RenameFolderPage extends BasePage {
         return this;
     }
 
-    public RenameFolderPage renameButtonClick () {
+    public FolderPage renameButtonClick () {
         getDriver().findElement(By.name("Submit")).click();
 
-        return this;
+        return new FolderPage(getDriver());
     }
 
     public RenameFolderPage clearName () {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName"))).clear();
 
         return this;
+
     }
 }

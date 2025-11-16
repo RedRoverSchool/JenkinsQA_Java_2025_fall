@@ -35,6 +35,12 @@ public class NewItemPage extends BasePage {
 
     }
 
+    public NewItemPage selectMultibranchPipeline() {
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+
+        return this;
+    }
+
     public MultibranchPipelineConfigPage selectMultibranchPipelineAndSubmit() {
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
 
@@ -151,5 +157,15 @@ public class NewItemPage extends BasePage {
     public boolean isOkButtonEnabled() {
 
         return getDriver().findElement(By.id("ok-button")).isEnabled();
+    }
+
+    public String getTextHintFromCopyField() {
+        return getDriver().findElement(By.xpath("//p[@class='jenkins-form-label']")).getText();
+    }
+
+    public NewItemPage findCopyFromField() {
+        getDriver().findElement(By.id("from"));
+
+        return this;
     }
 }
