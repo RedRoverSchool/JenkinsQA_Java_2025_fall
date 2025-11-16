@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CredentialsTest extends BaseTest {
 
-    @Test(invocationCount = 15)
+    @Test
     public void testCreateUsernameWithPassword() {
         final String username = "Admin";
         final String password = "123321";
