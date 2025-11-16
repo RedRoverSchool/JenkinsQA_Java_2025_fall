@@ -90,10 +90,10 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public HomePage clickRenameItemInDropdownMenu() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/MyFolder/confirm-rename']"))).click();
+    public RenameFolderPage clickRenameItemInDropdownMenu() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='tippy-content']//div[@class='jenkins-dropdown']//a[normalize-space()='Rename']"))).click();
 
-        return this;
+        return new RenameFolderPage(getDriver());
     }
 
     public HomePage confirmDelete() {
@@ -178,4 +178,10 @@ public class HomePage extends BasePage {
 
         return new ManageJenkinsPage(getDriver());
     }
+    public HomePage clearTextDescription() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).clear();
+        return this;
+    }
+
+
 }
