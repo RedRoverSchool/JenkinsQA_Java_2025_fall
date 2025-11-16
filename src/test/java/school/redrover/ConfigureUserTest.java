@@ -15,9 +15,8 @@ public class ConfigureUserTest extends BaseTest {
         final String expUserName = "admin";
 
         UserAccountPage userAccountPage = new HomePage(getDriver()).clickUserAccountButton();
-        System.out.println(getDriver().getCurrentUrl());
 
-        getWait2().until(ExpectedConditions.urlContains("/user/"));
+        getWait10().until(ExpectedConditions.urlContains("/user/"));
 
         String actUserName = userAccountPage.getUserName();
 
