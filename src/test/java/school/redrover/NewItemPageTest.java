@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
 
 import java.time.Duration;
 import java.util.List;
@@ -98,14 +99,13 @@ public class NewItemPageTest extends BaseTest {
      }
 
     @Test
-    public void testItemTypeChangesColorAndOkButtonEnables() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+    public void testPipelineTypeHighlightAndOkButtonEnables() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("Test Project")
+                .selectPipeline();
 
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Test Project");
-        WebElement pipelineType = getDriver().findElement(By.cssSelector("[class$='WorkflowJob']"));
-        pipelineType.click();
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
-        Assert.assertTrue(Objects.requireNonNull(pipelineType.getAttribute("class")).contains("active"));
-        Assert.assertTrue(okButton.isEnabled());
+        Assert.assertTrue(newItemPage.isPipelineHighlighted());
+        Assert.assertTrue(newItemPage.isOkButtonEnabled());
     }
 }

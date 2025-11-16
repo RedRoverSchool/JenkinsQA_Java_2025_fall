@@ -141,4 +141,15 @@ public class NewItemPage extends BasePage {
 
         return "true".equals(pipelineType.getAttribute("aria-checked"));
     }
+
+    public boolean isPipelineHighlighted() {
+        WebElement pipelineType = getDriver().findElement(By.xpath("//*[contains(@class, 'WorkflowJob')]"));
+
+        return pipelineType.getAttribute("class").contains("active");
+    }
+
+    public boolean isOkButtonEnabled() {
+
+        return getDriver().findElement(By.id("ok-button")).isEnabled();
+    }
 }
