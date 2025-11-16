@@ -129,4 +129,16 @@ public class NewItemPage extends BasePage {
         }
         return new HomePage(getDriver());
     }
+
+    public NewItemPage selectPipeline() {
+        getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
+
+        return this;
+    }
+
+    public boolean isPipelineSelected() {
+        WebElement pipelineType = getDriver().findElement(By.xpath("//*[contains(@class, 'WorkflowJob')]"));
+
+        return "true".equals(pipelineType.getAttribute("aria-checked"));
+    }
 }
