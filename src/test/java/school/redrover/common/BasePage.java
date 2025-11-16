@@ -2,6 +2,7 @@ package school.redrover.common;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.*;
@@ -43,5 +44,17 @@ public abstract class BasePage extends BaseModel {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown")));
 
         return new FooterDropdownPage(getDriver());
+    }
+
+    public String getRestApiLinkText() {
+
+        WebElement footer = getDriver().findElement(By.tagName("footer"));
+        return footer.findElement(By.linkText("REST API")).getText();
+    }
+
+    public RestApiPage clickRestApiLink() {
+        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+
+        return new RestApiPage(getDriver());
     }
 }
