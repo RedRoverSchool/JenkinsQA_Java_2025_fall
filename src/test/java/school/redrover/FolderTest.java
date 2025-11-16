@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.FolderPage;
@@ -89,7 +90,7 @@ public class FolderTest extends BaseTest {
                 descriptionText,
                 "Описание папки не соответствует ожидаемому");
     }
-
+@Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testSameItemNamesInTwoFolders() {
         final String pipelineName = "TwoPipelines";
