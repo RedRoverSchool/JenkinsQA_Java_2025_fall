@@ -12,7 +12,7 @@ public class UserAccountPage extends BasePage {
     }
 
     public String getUserName() {
-        return getWait5()
+        return getWait10()
                 .until(ExpectedConditions.visibilityOfElementLocated(By
                         .xpath("//div[@id='main-panel']/descendant::h1")))
                 .getText();
