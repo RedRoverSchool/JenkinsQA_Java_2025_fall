@@ -182,16 +182,4 @@ public class HomePage extends BasePage {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).clear();
         return this;
     }
-
-    public String getRestApiLinkText() {
-
-        WebElement footer = getDriver().findElement(By.tagName("footer"));
-        return footer.findElement(By.linkText("REST API")).getText();
-    }
-
-    public RestApiPage clickRestApiLink() {
-         getDriver().findElement(By.xpath("//a[@href='api/']")).click();
-
-         return new RestApiPage(getDriver());
-    }
 }
