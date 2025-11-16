@@ -31,7 +31,7 @@ public class MultibranchPipelineJobPage extends BasePage {
         return this;
     }
 
-    public HomePage confirmDeleteAtJobPage() {
+    public HomePage clickConfirmDeleteAtJobPage() {
         getDriver().findElement(By.cssSelector("[data-id='ok']"))
                 .click();
 
