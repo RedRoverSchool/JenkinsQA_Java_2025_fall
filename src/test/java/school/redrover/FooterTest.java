@@ -66,23 +66,17 @@ public class FooterTest extends BaseTest {
     }
 
     @Test
-    public void testJenkinsDropdown() {
-        getDriver().findElement(By.cssSelector("button.jenkins_ver")).click();
+    public void testJenkinsDropdownMenu() {
 
-        List<String> expectedDropdownItems = List.of(
+        final List<String> expectedDropdownItems = List.of(
                 "About Jenkins",
                 "Get involved",
                 "Website"
         );
 
-        List<WebElement> dropdownItems = new WebDriverWait(getDriver(), Duration.ofMillis(2000))
-                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                        By.xpath("//a[contains(@class, 'jenkins-dropdown__item')]")));
-
-        List<String> actualDropdownItems = dropdownItems
-                .stream()
-                .map(WebElement::getText)
-                .toList();
+        List<String> actualDropdownItems = new HomePage(getDriver())
+                .clickJenkinsVersion()
+                .getDropdownList();
 
         Assert.assertEquals(actualDropdownItems, expectedDropdownItems);
     }

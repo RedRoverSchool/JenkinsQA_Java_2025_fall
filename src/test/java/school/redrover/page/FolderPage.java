@@ -2,10 +2,10 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
-
-import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +127,7 @@ public class FolderPage extends BasePage {
         return new NewItemPage(getDriver());
     }
 
-    public WebElement getElement(String name){
+    public WebElement getElement(String name) {
         return getDriver().findElement(By.xpath("//span[text()='%s']".formatted(name)));
     }
 
@@ -138,7 +138,7 @@ public class FolderPage extends BasePage {
                 .toList();
     }
 
-    public String getNameFolder(){
+    public String getNameFolder() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1"))).getText();
 
     }
@@ -159,5 +159,38 @@ public class FolderPage extends BasePage {
             itemNames.add(element.getText());
         }
         return itemNames;
+    }
+
+    public String getFolderTooltip(String folderName) {
+        Actions actions = new Actions(getDriver());
+        WebElement folderStatusIcon = getDriver().findElement(By.xpath(
+                "//tr[td//a[span[text()='%s']]]//*[contains(@class, 'symbol-folder-outline')]".formatted(folderName)));
+        actions
+                .moveToElement(folderStatusIcon)
+                .perform();
+        String folderTooltipIDByAttribute = getDriver().findElement(By.xpath("//*[@aria-describedby]"))
+                .getAttribute("aria-describedby");
+
+        return getDriver().findElement(By.xpath("//*[@id='%s']/div/div".formatted(folderTooltipIDByAttribute))).getText();
+    }
+
+    public List<String> getItemsWithTooltip(String expectedTooltip) {
+        Actions actions = new Actions(getDriver());
+        List<String> itemsWithTooltip = new ArrayList<>();
+        for (WebElement statusIcon : getDriver().findElements(By.xpath("//tr[contains(@class, 'job')]/td[1]//*[@tooltip]"))) {
+            actions
+                    .moveToElement(statusIcon)
+                    .perform();
+            String itemTooltipIDByAttribute = getDriver().findElement(By.xpath("//*[@aria-describedby]"))
+                    .getAttribute("aria-describedby");
+            String actualTooltip = getDriver().findElement(By.xpath("//*[@id='%s']/div/div".formatted(itemTooltipIDByAttribute))).getText();
+
+            if (actualTooltip.equals(expectedTooltip)) {
+                WebElement itemNameElement = statusIcon.findElement(By.xpath("./ancestor::tr[1]//a//span"));
+                itemsWithTooltip.add(itemNameElement.getText());
+            }
+        }
+
+        return itemsWithTooltip;
     }
 }

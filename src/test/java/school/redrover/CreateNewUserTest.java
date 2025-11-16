@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -30,4 +32,12 @@ public class CreateNewUserTest extends BaseTest {
         Assert.assertEquals(newUser, userName);
     }
 
+    @Test(dependsOnMethods = "createNewUser")
+    public void checkCreatedUser() {
+        String newCheck = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserLink()
+                .getCreatedUserName(userName);
+        Assert.assertEquals(newCheck, userName);
+    }
 }
