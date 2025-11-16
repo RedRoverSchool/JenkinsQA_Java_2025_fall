@@ -70,7 +70,7 @@ public class NewItemPage extends BasePage {
 
     public String getDuplicateErrorMessage() {
         WebElement errorMessage = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
+                ExpectedConditions.presenceOfElementLocated(By.id("itemname-invalid")));
         return errorMessage.getText();
     }
 
