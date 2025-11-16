@@ -20,7 +20,7 @@ public class MultibranchPipeline1Test extends BaseTest {
         String name = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(MULTIBRANCH_PIPELINE_NAME)
-                .selectMultibranchPipelineAndSubmit()
+                .selectMultibranchPipelineWithJsAndSubmit()
                 .clickSaveButton()
                 .gotoHomePage()
                 .findItem(MULTIBRANCH_PIPELINE_NAME)
@@ -35,7 +35,7 @@ public class MultibranchPipeline1Test extends BaseTest {
         String name = new HomePage(getDriver())
                 .clickNewItemOnLeftMenu()
                 .sendName(MULTIBRANCH_PIPELINE_NAME)
-                .selectMultibranchPipelineAndSubmit()
+                .selectMultibranchPipelineWithJsAndSubmit()
                 .sendDisplayName(MULTIBRANCH_PIPELINE_DISPLAY_NAME)
                 .clickSaveButton()
                 .gotoHomePage()
@@ -59,6 +59,5 @@ public class MultibranchPipeline1Test extends BaseTest {
                 .getDescription();
 
         Assert.assertEquals(name, SECOND_DESCRIPTION);
-
     }
 }
