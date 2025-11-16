@@ -17,27 +17,29 @@ public class CreateNewItemTest extends BaseTest {
 
     @Test
     public void testNewItemPageByClickingCreateAJobLink() {
-        getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
+        String result = new HomePage(getDriver())
+                .clickCreateJob()
+                .getHeadingText();
 
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "New Item");
+        Assert.assertEquals(result, "New Item");
     }
 
     @Test
     public void testNewItemPageByClickingNewItemLink() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        String result = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .getHeadingText();
 
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "New Item");
+        Assert.assertEquals(result, "New Item");
     }
 
     @Test
     public void testEnterAnItemNameIsDisplayedOkButtonIdDisabled() {
-        getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
+          Boolean result = new HomePage(getDriver())
+                  .clickCreateJob()
+                  .isOkButtonEnabled();
 
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
-        String isDisabled = okButton.getAttribute("disabled");
-
-        Assert.assertEquals(getDriver().findElement(By.className("jenkins-form-label")).getText(), "Enter an item name");
-        Assert.assertNotNull(isDisabled, "true");
+          Assert.assertFalse(result);
     }
 
     @Test
