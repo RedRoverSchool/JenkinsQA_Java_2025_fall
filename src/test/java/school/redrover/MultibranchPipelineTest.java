@@ -3,13 +3,13 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
 
 import java.util.List;
 
@@ -17,16 +17,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchName";
     private static final String RENAMED_MULTIBRANCH_PIPELINE = "RenamedMultibranchName";
-
-    private void createMultibranchPipeline(String name) {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
-        getDriver().findElement(By.id("name")).sendKeys(name);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getDriver().findElement(By.name("Submit")).click();
-    }
 
     @Test
     public void testAddingDescriptionCreatingMultibranch() {
@@ -101,7 +91,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testVerifyAppearSaveMessage() {
-
         String actualSavedMessage = new HomePage(getDriver())
                 .clickNewItemOnLeftMenu()
                 .sendName(MULTIBRANCH_PIPELINE_NAME)
@@ -117,19 +106,18 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testCreateItemWithSpecialCharacters() {
         final String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        WebElement nameField = getDriver().findElement(By.id("name"));
+        HomePage homePage = new HomePage(getDriver());
+        NewItemPage newItemPage = homePage.clickNewItemOnLeftMenu();
 
         for (String specChar : specialCharacters) {
-            String errorMessage = "» ‘" + specChar + "’ is an unsafe character";
+            String expectedErrorMessage = "» ‘" + specChar + "’ is an unsafe character";
 
-            nameField.clear();
-            nameField.sendKeys("multi" + specChar + "branch");
+            String actualErrorMessage = newItemPage
+                    .clearSendName()
+                    .sendName("multi" + specChar + "branch")
+                    .getDuplicateErrorMessage();
 
-            String actualMessage = getWait5().until(ExpectedConditions.
-                    visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
-
-            Assert.assertEquals(actualMessage, errorMessage, "Error message isn't displayed");
+            Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "Error message isn't displayed");
         }
     }
 
