@@ -1,10 +1,12 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.FolderPage;
 import school.redrover.page.HomePage;
+import school.redrover.page.RenameFolderPage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -184,5 +186,19 @@ public class FolderTest extends BaseTest {
                 itemsWithIconAttribute,
                 List.of(SUB_FOLDER_NAME),
                 "Ошибка в отображении иконок");
+    }
+    @Ignore
+    @Test (dependsOnMethods = "testCreate")
+    public void testRenameFolder(){
+
+        HomePage homePage = new HomePage(getDriver());
+                String newNameFolder = homePage.openDropdownMenu(FOLDER_NAME)
+                .clickRenameItemInDropdownMenu()
+                .clearName()
+                .sendNewName(FOLDER_NAME_2)
+                .renameButtonClick()
+                .getNameFolder();
+
+        Assert.assertEquals(newNameFolder, FOLDER_NAME_2);
     }
 }

@@ -8,6 +8,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.PipelineJobPage;
+import school.redrover.page.PipelinePage;
 
 import java.util.List;
 import java.util.Random;
@@ -65,6 +67,23 @@ public class PipelineTest extends BaseTest {
                 .openDropdownMenu(PIPELINE_NAME)
                 .clickDeleteItemInDropdownMenu()
                 .confirmDelete()
+                .getHeadingText();
+
+        Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
+    }
+
+    @Test
+    public void testDeletePipelineViaSideMenu() {
+        final String expectedHomePageHeading = "Welcome to Jenkins!";
+
+        String actualHomePageHeading = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
+                .openJobPage(PIPELINE_NAME, new PipelineJobPage(getDriver()))
+                .clickDeletePipeline()
+                .confirmDeleteAtJobPage()
                 .getHeadingText();
 
         Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
@@ -141,22 +160,15 @@ public class PipelineTest extends BaseTest {
     public void testEditDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'job/%s/']".formatted(PIPELINE_NAME))))
-                .click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
-                .click();
-        WebElement descriptionField = getDriver().findElement(By.name("description"));
-        descriptionField.clear();
-        descriptionField.sendKeys(textDescription);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
-        WebElement descriptionText = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
+        String descriptionText = new HomePage(getDriver())
+                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickEditDescriptionButton()
+                .clearDescription()
+                .addDescriptionAndSave(textDescription)
+                .getDescription();
 
         Assert.assertEquals(
-                descriptionText.getText(),
+                descriptionText,
                 textDescription,
                 "Не совпал текст description после его редактирования");
     }
