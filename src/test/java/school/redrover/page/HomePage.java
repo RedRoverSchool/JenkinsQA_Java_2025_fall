@@ -217,6 +217,7 @@ public class HomePage extends BasePage {
                 .perform();
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-tippy-root]")))
                 .getText();
+    }
       
     public <T extends BasePage> T clickHomePageSectionLink(String linkText) {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='%s']/..".formatted(linkText))))
