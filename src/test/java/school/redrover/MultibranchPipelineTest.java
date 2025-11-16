@@ -60,6 +60,19 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(dublicateProject, errorMessage, "Incorrect error message");
     }
 
+    @Test (dependsOnMethods = "testTryCreateProjectExistName")
+    public void testDeleteMultibranchPipeline() {
+
+        List<String> projectList = new HomePage(getDriver())
+                .openDropdownMenu(MULTIBRANCH_PIPELINE_NAME)
+                .clickDeleteItemInDropdownMenu()
+                .confirmDelete()
+                .gotoHomePage()
+                .getProjectList();
+
+        Assert.assertEquals(projectList.size(), 0);
+    }
+
     @Test
     public void testVerifyDisableMessaageOnStatusPage() {
         final String disableText = "This Multibranch Pipeline is currently disabled";

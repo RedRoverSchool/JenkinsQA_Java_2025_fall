@@ -21,7 +21,7 @@ public class MultibranchPipelineConfigPage extends BasePage {
 
     public MultibranchPipelineJobPage clickSaveButton() {
         getDriver().findElement(By.name("Submit")).click();
-        getWait2().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                 By.cssSelector(".empty-state-section h2")));
 
         return new MultibranchPipelineJobPage(getDriver());
