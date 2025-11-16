@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.time.Duration;
 import java.util.List;
@@ -88,16 +89,15 @@ public class CreateNewItemTest extends BaseTest {
     public void testAcceptsAlphanumericAndUnderscores() {
         final String projectName = "test_name1";
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(projectName);
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Pipeline']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        List<String> projectList = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(projectName)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
+                .getProjectList();
 
-        WebElement configurePageHeading = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-app-bar__content h1")));
-        WebElement breadCrumbs = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#breadcrumbs li:last-child span")));
-
-        Assert.assertEquals(configurePageHeading.getText(), "Configure");
-        Assert.assertEquals(breadCrumbs.getText(), "Configuration");
+        Assert.assertNotEquals(projectList.size(), 0);
+        Assert.assertEquals(projectList.get(0), projectName);
     }
 }
 

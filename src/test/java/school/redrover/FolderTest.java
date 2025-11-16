@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FolderTest extends BaseTest {
     private static final String FOLDER_NAME = "TestFolder";
-    private static final String CHILD_FOLDER_NAME = "ChildFolder";
+    private static final String SUB_FOLDER_NAME = "SubFolder";
     private static final String FOLDER_NAME_2 = "Folder2";
 
     @Test
@@ -32,14 +32,14 @@ public class FolderTest extends BaseTest {
         List<String> childFolderBreadcrumbList = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickSidebarNewItem()
-                .sendName(CHILD_FOLDER_NAME)
+                .sendName(SUB_FOLDER_NAME)
                 .selectFolderAndSubmit()
                 .clickSave()
                 .getBreadcrumbTexts();
 
         Assert.assertEquals(
                 childFolderBreadcrumbList,
-                List.of(FOLDER_NAME, CHILD_FOLDER_NAME),
+                List.of(FOLDER_NAME, SUB_FOLDER_NAME),
                 "Путь хлебных крошек не соответствует ожидаемому");
     }
 
@@ -48,13 +48,13 @@ public class FolderTest extends BaseTest {
         String duplicateErrorMessage = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickSidebarNewItem()
-                .sendName(CHILD_FOLDER_NAME)
+                .sendName(SUB_FOLDER_NAME)
                 .selectFolder()
                 .getDuplicateErrorMessage();
 
         Assert.assertEquals(
                 duplicateErrorMessage,
-                "» A job already exists with the name ‘%s’".formatted(CHILD_FOLDER_NAME),
+                "» A job already exists with the name ‘%s’".formatted(SUB_FOLDER_NAME),
                 "Неверное сообщение о дублировании имени");
     }
 
@@ -62,15 +62,15 @@ public class FolderTest extends BaseTest {
     public void deleteFolderBySidebar() {
         boolean isFolderDeleted = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .openFolderPage(CHILD_FOLDER_NAME)
+                .openFolderPage(SUB_FOLDER_NAME)
                 .clickDeleteFolder()
-                .confirmDeleteChild()
+                .confirmDeleteChildItem()
                 .clickSearchButton()
-                .searchFor(CHILD_FOLDER_NAME)
-                .isNoResultsFound(CHILD_FOLDER_NAME);
+                .searchFor(SUB_FOLDER_NAME)
+                .isNoResultsFound(SUB_FOLDER_NAME);
 
         Assert.assertTrue(isFolderDeleted,
-                "%s не должна отображаться в поиске после удаления".formatted(CHILD_FOLDER_NAME));
+                "%s не должна отображаться в поиске после удаления".formatted(SUB_FOLDER_NAME));
     }
 
     @Test(dependsOnMethods = "testCreate")
@@ -135,10 +135,10 @@ public class FolderTest extends BaseTest {
                 "%s не должна отображаться в поиске после удаления".formatted(FOLDER_NAME_2));
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = {"testCreate","deleteFolderBySidebar"})
     public void testPutItemsToFolder() {
         final Object[][] items = {
-                {"SubFolder", "Folder"},
+                {SUB_FOLDER_NAME, "Folder"},
                 {"SubFreestyleProject", "Freestyle project"},
                 {"SubMultibranchPipeline", "Multibranch Pipeline"},
                 {"SubMulticonfigurationProject", "Multi-configuration project"},
@@ -170,5 +170,19 @@ public class FolderTest extends BaseTest {
                 "В папке должно быть как минимум %s элементов".formatted(expectedItems.size()));
         Assert.assertTrue(folderItemList.containsAll(expectedItems),
                 "В папке должны быть все перенесенные элементы: " + expectedItems);
+    }
+
+    @Test(dependsOnMethods = "testPutItemsToFolder")
+    public void testFolderIsIdentifiedByIcon() {
+        FolderPage folderPage = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME);
+        String folderIconAttribute = folderPage.getFolderIconAttribute(SUB_FOLDER_NAME);
+        List<String> itemsWithIconAttribute = folderPage.getItemsWithIconAttribute(folderIconAttribute);
+
+        Assert.assertNotEquals(itemsWithIconAttribute.size(), 0);
+        Assert.assertEquals(
+                itemsWithIconAttribute,
+                List.of(SUB_FOLDER_NAME),
+                "Ошибка в отображении иконок");
     }
 }

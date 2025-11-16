@@ -4,25 +4,30 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.CreateUserPage;
+import school.redrover.page.HomePage;
+import school.redrover.page.ManageUsersPage;
 
 public class CreateNewUserTest extends BaseTest {
+    final String userName = "John";
+    final String userPassword = "yaE@jCz7JkYXS@@";
+    final String userEmail = "johnsmith@gmail.com";
+    final String fullName = "John Smith";
 
     @Test
     public void createNewUser() {
+        String newUser = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserLink()
+                .clickCreateUserButton()
+                .sendUserName(userName)
+                .sendPassword(userPassword)
+                .sendConfirmPassword(userPassword)
+                .sendEmail(userEmail)
+                .clickCreateUserButton(new ManageUsersPage(getDriver()))
+                .getCreatedUserName(userName);
 
-        getDriver().findElement(By.cssSelector("header#page-header a[href='/manage']")).click();
-        getDriver().findElement(By.cssSelector("#page-body a[href='securityRealm/']")).click();
-        getDriver().findElement(By.cssSelector("#page-body a[href='addUser']")).click();
-
-        getDriver().findElement(By.cssSelector("[name='username']")).sendKeys("John");
-        getDriver().findElement(By.cssSelector("[name='password1']")).sendKeys("yaE@jCz7JkYXS@@");
-        getDriver().findElement(By.cssSelector("[name='password2']")).sendKeys("yaE@jCz7JkYXS@@");
-        getDriver().findElement(By.cssSelector("[name='fullname']")).sendKeys("John Smit");
-        getDriver().findElement(By.cssSelector("[name='email']")).sendKeys("johnsmit@gmail.com");
-
-        getDriver().findElement(By.cssSelector("[name='Submit']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("tbody a[href='user/john/']")).getText(), "John");
+        Assert.assertEquals(newUser, userName);
     }
 
 }
