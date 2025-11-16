@@ -53,7 +53,9 @@ public class HomePage extends BasePage {
     }
 
     public String getHeadingText() {
-        return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1"))).getText();
+        return getWait2()
+                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".empty-state-block > h1")))
+                .getText();
     }
 
     public WebElement findItem(String itemName) {
@@ -109,7 +111,7 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.cssSelector(".tab.active a")).getText();
     }
 
-    public CreateViewPage clickPlusToCreateView(){
+    public CreateViewPage clickPlusToCreateView() {
         getDriver().findElement(By.cssSelector("[href='/newView']")).click();
 
         return new CreateViewPage(getDriver());
@@ -121,7 +123,7 @@ public class HomePage extends BasePage {
         return new HomePage(getDriver());
     }
 
-    public HomePage clickDeleteViewOnSidebar(){
+    public HomePage clickDeleteViewOnSidebar() {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[@data-title='Delete View']"))).click();
 
@@ -149,6 +151,26 @@ public class HomePage extends BasePage {
         return getWait2()
                 .until(ExpectedConditions.presenceOfElementLocated(By.tagName("p")))
                 .getText();
+    }
+
+    public HomePage clickDescription() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
+        return this;
+    }
+
+    public HomePage sendDescriptionText(String text) {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(text);
+        return this;
+    }
+
+    public HomePage submitDescription() {
+        getDriver().findElement(By.name("Submit")).click();
+
+        return this;
+    }
+
+    public String getDescription() {
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
     }
 
     public ManageJenkinsPage clickManageJenkinsIcon() {

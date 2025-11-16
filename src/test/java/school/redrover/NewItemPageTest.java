@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.time.Duration;
 import java.util.List;
@@ -86,14 +87,15 @@ public class NewItemPageTest extends BaseTest {
     }
 
     @Test
-    public void testSelectItemTypeAfterNameEnter() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+    public void testPipelineTypeCanBeSelected() {
+        boolean isSelected = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("Test Project")
+                .selectPipeline()
+                .isPipelineSelected();
 
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Test Project");
-        WebElement pipelineType = getDriver().findElement(By.cssSelector("[class$='WorkflowJob']"));
-        pipelineType.click();
-        Assert.assertEquals(pipelineType.getAttribute("aria-checked"), "true");
-    }
+        Assert.assertTrue(isSelected);
+     }
 
     @Test
     public void testItemTypeChangesColorAndOkButtonEnables() {
