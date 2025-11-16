@@ -10,19 +10,19 @@ public class NewCredentialsPage extends BasePage {
         super(driver);
     }
 
-    public NewCredentialsPage sendUsernameIntoUsernameInputField(String username) {
+    public NewCredentialsPage enterUsername(String username) {
         getDriver().findElement(By.name("_.username")).sendKeys(username);
 
         return this;
     }
 
-    public NewCredentialsPage sendPasswordIntoPasswordInputField(String password) {
+    public NewCredentialsPage enterPassword(String password) {
         getDriver().findElement(By.name("_.password")).sendKeys(password);
 
         return this;
     }
 
-    public NewCredentialsPage sendDescriptionIntoDescriptionInputField(String description) {
+    public NewCredentialsPage enterDescription(String description) {
         getDriver().findElement(By.name("_.description")).sendKeys(description);
 
         return this;

@@ -30,9 +30,9 @@ public class CredentialsTest extends BaseTest {
                 .clickCredentialsLink()
                 .clickGlobalLink()
                 .clickAddCredentialsButton()
-                .sendUsernameIntoUsernameInputField(username)
-                .sendPasswordIntoPasswordInputField(password)
-                .sendDescriptionIntoDescriptionInputField(description)
+                .enterUsername(username)
+                .enterPassword(password)
+                .enterDescription(description)
                 .clickCreateButton()
                 .getGlobalCredentialsList();
 
@@ -52,4 +52,3 @@ public class CredentialsTest extends BaseTest {
                 String.format("Credential с именем '%s' не найден", expectedName));
     }
 }
-
