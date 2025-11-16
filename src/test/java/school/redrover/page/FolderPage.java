@@ -85,7 +85,7 @@ public class FolderPage extends BasePage {
         return this;
     }
 
-    public FolderPage confirmDeleteChild() {
+    public FolderPage confirmDeleteChildItem() {
         String urlBeforeDelete = getDriver().getCurrentUrl();
 
         WebElement yesButton = getWait2().until(
@@ -141,5 +141,23 @@ public class FolderPage extends BasePage {
     public String getNameFolder(){
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1"))).getText();
 
+    }
+
+    public FolderPage clickBreadcrumbsItem(String folderName) {
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(folderName))).click();
+
+        return this;
+    }
+
+    public String getFolderIconAttribute(String folderName) {
+        return getDriver().findElement(By.xpath("//tr[td[a[span[text()='%s']]]]//*[@d]".formatted(folderName))).getAttribute("d");
+    }
+
+    public List<String> getItemsWithIconAttribute(String iconAttribute) {
+        List<String> itemNames = new ArrayList<>();
+        for (WebElement element : getDriver().findElements(By.xpath("//tr[.//*[contains(@d,'%s')]]//a//span".formatted(iconAttribute)))) {
+            itemNames.add(element.getText());
+        }
+        return itemNames;
     }
 }

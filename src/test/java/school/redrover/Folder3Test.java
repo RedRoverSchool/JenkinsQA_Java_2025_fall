@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -9,7 +10,7 @@ import school.redrover.common.BaseTest;
 public class Folder3Test extends BaseTest {
 
     @Test
-    public void testCreateFolder() throws InterruptedException {
+    public void testCreateFolder() {
         final String folderName = "Test Jenkins";
         final String descriptionText = "My first simple test";
 
@@ -18,15 +19,15 @@ public class Folder3Test extends BaseTest {
         getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
-        Thread.sleep(2000);
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.description")))
+                .sendKeys(descriptionText);
+        getDriver().findElement(By.xpath("//button[@name='Submit']"))
+                .click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class = 'content-block__link']")));
 
-        getDriver().findElement(By.name("_.description")).sendKeys(descriptionText);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        Thread.sleep(2000);
-
-        WebElement logoJenkins = getDriver().findElement(By.cssSelector("span.jenkins-mobile-hide"));
-        logoJenkins.click();
+        getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.className("app-jenkins-logo")))
+                .click();
 
         WebElement jobNameCell = getDriver().findElement(By.xpath("//*[contains(@class, 'jenkins-table__link')]/span[1]"));
         Assert.assertEquals(jobNameCell.getText(), folderName);

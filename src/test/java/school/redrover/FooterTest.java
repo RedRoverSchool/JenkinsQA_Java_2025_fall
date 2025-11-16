@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
 
 import java.time.Duration;
 import java.util.List;
@@ -14,43 +16,53 @@ import java.util.List;
 public class FooterTest extends BaseTest {
 
     @Test
-    public void testRestApiPage() {
-        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+    public void testRestApiLink() {
+        String linkText = new HomePage(getDriver())
+                .getRestApiLinkText();
 
-        String actualTitle = getDriver().getTitle();
-
-        Assert.assertEquals(actualTitle, "Remote API - Jenkins");
+        Assert.assertEquals(linkText, "REST API");
     }
 
     @Test
-    public void testRestApiPageHeadings() {
-        final String expectedHeading = "REST API";
-        final List<String> expectedSubHeadings = List.of(
-                "Controlling the amount of data you fetch",
-                "Create Job",
-                "Copy Job",
-                "Create View",
-                "Copy View",
-                "Build Queue",
-                "Load Statistics",
-                "Restarting Jenkins"
+    public void testApiPageHeading() {
+        String actualHeading = new HomePage(getDriver())
+                .clickRestApiLink()
+                .getHeadingText();
+
+        Assert.assertEquals(actualHeading, "REST API");
+    }
+
+    @Test
+    public void testApiPageContentLinks() {
+
+        final List<String> expectedLinks = List.of(
+                "XML API",
+                "JSON API",
+                "Python API"
         );
 
-        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+        List<String> actualLinks = new HomePage(getDriver())
+                .clickRestApiLink()
+                .getXmlJsonPythonApiLinksText();
 
-        new WebDriverWait(getDriver(), Duration.ofMillis(2000))
-                .until(ExpectedConditions.urlContains("api/"));
+        Assert.assertEquals(actualLinks, expectedLinks);
+    }
 
-        String actualHeading = getDriver().findElement(By.tagName("h1")).getText();
+    @Test
+    public void testRestApiLinkByTabAndEnter(){
 
-        List<String> actualSubHeadings = getDriver()
-                .findElements(By.tagName("h2"))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
+        new HomePage(getDriver())
+                .pressTabAndEnter(new HomePage(getDriver()).getRestApiLink());
 
-        Assert.assertEquals(actualHeading, expectedHeading);
-        Assert.assertEquals(actualSubHeadings, expectedSubHeadings);
+        Assert.assertEquals(getDriver().getTitle(), "Remote API - Jenkins");
+    }
+
+    @Test
+    public void testRestApiLinkByFocusAndEnter(){
+
+        TestUtils.focusAndEnterByKeyboard(getDriver(), new HomePage(getDriver()).getRestApiLink());
+
+        Assert.assertEquals(getDriver().getTitle(), "Remote API - Jenkins");
     }
 
     @Test

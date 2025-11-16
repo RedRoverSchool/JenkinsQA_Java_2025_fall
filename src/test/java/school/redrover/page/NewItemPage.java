@@ -35,6 +35,12 @@ public class NewItemPage extends BasePage {
 
     }
 
+    public NewItemPage selectMultibranchPipeline() {
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+
+        return this;
+    }
+
     public MultibranchPipelineConfigPage selectMultibranchPipelineAndSubmit() {
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
 
@@ -128,5 +134,38 @@ public class NewItemPage extends BasePage {
                 throw new IllegalArgumentException("Unknown item type: " + itemType);
         }
         return new HomePage(getDriver());
+    }
+
+    public NewItemPage selectPipeline() {
+        getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
+
+        return this;
+    }
+
+    public boolean isPipelineSelected() {
+        WebElement pipelineType = getDriver().findElement(By.xpath("//*[contains(@class, 'WorkflowJob')]"));
+
+        return "true".equals(pipelineType.getAttribute("aria-checked"));
+    }
+
+    public boolean isPipelineHighlighted() {
+        WebElement pipelineType = getDriver().findElement(By.xpath("//*[contains(@class, 'WorkflowJob')]"));
+
+        return pipelineType.getAttribute("class").contains("active");
+    }
+
+    public boolean isOkButtonEnabled() {
+
+        return getDriver().findElement(By.id("ok-button")).isEnabled();
+    }
+
+    public String getTextHintFromCopyField() {
+        return getDriver().findElement(By.xpath("//p[@class='jenkins-form-label']")).getText();
+    }
+
+    public NewItemPage findCopyFromField() {
+        getDriver().findElement(By.id("from"));
+
+        return this;
     }
 }
