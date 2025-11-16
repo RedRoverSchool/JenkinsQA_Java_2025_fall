@@ -180,10 +180,7 @@ public class HomePage extends BasePage {
     }
 
     public UserAccountPage clickUserAccountViaIconInHeader() {
-        getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")))
-                .click();
-        getWait5().until(ExpectedConditions.urlContains("/user"));
+        TestUtils.clickJS(getDriver(), By.id("root-action-UserAction"));
 
         return new UserAccountPage(getDriver());
     }
