@@ -178,4 +178,16 @@ public class HomePage extends BasePage {
 
         return new ManageJenkinsPage(getDriver());
     }
+
+    public String getRestApiLinkText() {
+
+        WebElement footer = getDriver().findElement(By.tagName("footer"));
+        return footer.findElement(By.linkText("REST API")).getText();
+    }
+
+    public ApiPage clickRestApiLink() {
+         getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+
+         return new ApiPage(getDriver());
+    }
 }
