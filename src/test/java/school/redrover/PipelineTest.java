@@ -78,7 +78,7 @@ public class PipelineTest extends BaseTest {
         String actualHomePageHeading = new HomePage(getDriver())
                 .openJobPage(PIPELINE_NAME, new MultibranchPipelineJobPage(getDriver()))
                 .clickDeletePipeline()
-                .confirmDelete()
+                .confirmDeleteAtJobPage()
                 .getHeadingText();
 
         Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
