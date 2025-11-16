@@ -12,11 +12,19 @@ public class ManageJenkinsPage extends BasePage {
 
     public ManageUsersPage clickUserLink() {
         getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+
         return new ManageUsersPage(getDriver());
     }
 
     public CredentialsPage clickCredentialsLink() {
         getDriver().findElement(By.xpath("//a[@href = 'credentials']")).click();
+
         return new CredentialsPage(getDriver());
+    }
+
+    public ConfigurationSystemPage clickConfigurationSystem() {
+        getDriver().findElement(By.xpath("//a[@href='configure']")).click();
+
+        return new ConfigurationSystemPage(getDriver());
     }
 }

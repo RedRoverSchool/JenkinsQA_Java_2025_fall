@@ -28,4 +28,22 @@ public class PipelinePage extends BasePage {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath(".//a[text()='%s']".formatted(displayName)))).getText();
     }
+
+    public PipelinePage clickAddDescriptionButton() {
+        getDriver().findElement(By.id("description-link")).click();
+        return this;
+    }
+
+    public PipelinePage addDescriptionAndSave(String description) {
+        getDriver().findElement(By.name("description")).sendKeys(description);
+        getDriver().findElement(By.name("Submit")).click();
+        return this;
+    }
+
+    public String getDescription() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
+        return getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")))
+                .getText();
+    }
 }

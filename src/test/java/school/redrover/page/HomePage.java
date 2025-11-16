@@ -52,12 +52,19 @@ public class HomePage extends BasePage {
         return new NewItemPage(getDriver());
     }
 
-    public String getTitle() {
-        return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1"))).getText();
+    public String getHeadingText() {
+        return getWait2()
+                .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".empty-state-block > h1")))
+                .getText();
     }
 
     public WebElement findItem(String itemName) {
         return getDriver().findElement(By.xpath("//a[@href='job/" + itemName + "/']"));
+    }
+
+    public String getSystemMessage() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("systemmessage"))).getText();
     }
 
     public HomePage openDropdownMenu(String itemName) {
@@ -71,8 +78,20 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public MovePage clickMoveInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@class, 'jenkins-dropdown__item') and contains(., 'Move')]"))).click();
+
+        return new MovePage(getDriver());
+    }
+
     public HomePage clickDeleteItemInDropdownMenu() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[.//text()[contains(., 'Delete')]]"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'jenkins-dropdown__item') and contains(., 'Delete')]"))).click();
+
+        return this;
+    }
+
+    public HomePage clickRenameItemInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/MyFolder/confirm-rename']"))).click();
 
         return this;
     }
@@ -86,5 +105,11 @@ public class HomePage extends BasePage {
         getWait5().until(ExpectedConditions.stalenessOf(yesButton));
 
         return this;
+    }
+
+    public String getParagraghText() {
+        return getWait2()
+                .until(ExpectedConditions.presenceOfElementLocated(By.tagName("p")))
+                .getText();
     }
 }
