@@ -189,7 +189,6 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testSameItemNamesInTwoFolders")
     public void testRenameFolder() {
-
         String newNameFolder = new HomePage(getDriver())
                 .openDropdownMenu(FOLDER_NAME_2)
                 .clickRenameItemInDropdownMenu()
