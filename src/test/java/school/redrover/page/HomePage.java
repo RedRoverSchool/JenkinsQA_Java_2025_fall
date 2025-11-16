@@ -1,6 +1,7 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -188,5 +189,24 @@ public class HomePage extends BasePage {
         TestUtils.clickJS(getDriver(), By.id("root-action-UserAction"));
 
         return new UserAccountPage(getDriver());
+    }
+
+    public WebElement getRestApiLink(){
+        return getDriver().findElement(By.xpath("//a[@href='api/']"));
+    }
+
+    public void pressTabAndEnter(WebElement element) {
+        WebElement body = getDriver().findElement(By.tagName("body"));
+
+        int max_tabs = 50;
+
+        for (int i = 0; i < max_tabs; i++) {
+            body.sendKeys(Keys.TAB);
+            WebElement activeElement = getDriver().switchTo().activeElement();
+            if (activeElement.equals(element)) {
+                activeElement.sendKeys(Keys.ENTER);
+                break;
+            }
+        }
     }
 }
