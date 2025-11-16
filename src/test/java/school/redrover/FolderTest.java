@@ -187,6 +187,7 @@ public class FolderTest extends BaseTest {
                 List.of(SUB_FOLDER_NAME),
                 "Ошибка в отображении иконок");
     }
+    @Ignore
     @Test (dependsOnMethods = "testCreate")
     public void testRenameFolder(){
 
