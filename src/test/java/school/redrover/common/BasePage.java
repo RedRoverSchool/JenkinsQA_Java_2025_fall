@@ -46,7 +46,10 @@ public abstract class BasePage extends BaseModel {
     }
 
     public UserAccountPage clickUserAccountButton() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-UserAction"))).click();
+        new Actions(getDriver())
+                .moveToElement(getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-UserAction"))))
+                .click()
+                .perform();
 
         return new UserAccountPage(getDriver());
     }
