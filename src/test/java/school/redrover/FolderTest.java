@@ -1,12 +1,10 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.FolderPage;
 import school.redrover.page.HomePage;
-import school.redrover.page.RenameFolderPage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +13,7 @@ public class FolderTest extends BaseTest {
     private static final String FOLDER_NAME = "TestFolder";
     private static final String SUB_FOLDER_NAME = "SubFolder";
     private static final String FOLDER_NAME_2 = "Folder2";
+    private static final String NEW_FOLDER_NAME_2 = "NewFolder2";
 
     @Test
     public void testCreate() {
@@ -123,21 +122,21 @@ public class FolderTest extends BaseTest {
                 "Пайплайн '%s' должен присутствовать во второй папке '%s'".formatted(pipelineName, FOLDER_NAME_2));
     }
 
-    @Test(dependsOnMethods = "testSameItemNamesInTwoFolders")
+    @Test(dependsOnMethods = "testRenameFolder")
     public void deleteFolderByDashboardDropdownMenu() {
         boolean isFolderDeleted = new HomePage(getDriver())
-                .openDropdownMenu(FOLDER_NAME_2)
+                .openDropdownMenu(NEW_FOLDER_NAME_2)
                 .clickDeleteItemInDropdownMenu()
                 .confirmDelete()
                 .clickSearchButton()
-                .searchFor(FOLDER_NAME_2)
-                .isNoResultsFound(FOLDER_NAME_2);
+                .searchFor(NEW_FOLDER_NAME_2)
+                .isNoResultsFound(NEW_FOLDER_NAME_2);
 
         Assert.assertTrue(isFolderDeleted,
-                "%s не должна отображаться в поиске после удаления".formatted(FOLDER_NAME_2));
+                "%s не должна отображаться в поиске после удаления".formatted(NEW_FOLDER_NAME_2));
     }
 
-    @Test(dependsOnMethods = {"testCreate","deleteFolderBySidebar"})
+    @Test(dependsOnMethods = {"testCreate", "deleteFolderBySidebar"})
     public void testPutItemsToFolder() {
         final Object[][] items = {
                 {SUB_FOLDER_NAME, "Folder"},
@@ -187,18 +186,17 @@ public class FolderTest extends BaseTest {
                 List.of(SUB_FOLDER_NAME),
                 "Ошибка в отображении иконок");
     }
-    @Ignore
-    @Test (dependsOnMethods = "testCreate")
-    public void testRenameFolder(){
 
-        HomePage homePage = new HomePage(getDriver());
-                String newNameFolder = homePage.openDropdownMenu(FOLDER_NAME)
+    @Test(dependsOnMethods = "testSameItemNamesInTwoFolders")
+    public void testRenameFolder() {
+        String newNameFolder = new HomePage(getDriver())
+                .openDropdownMenu(FOLDER_NAME_2)
                 .clickRenameItemInDropdownMenu()
                 .clearName()
-                .sendNewName(FOLDER_NAME_2)
+                .sendNewName(NEW_FOLDER_NAME_2)
                 .renameButtonClick()
                 .getNameFolder();
 
-        Assert.assertEquals(newNameFolder, FOLDER_NAME_2);
+        Assert.assertEquals(newNameFolder, NEW_FOLDER_NAME_2);
     }
 }
