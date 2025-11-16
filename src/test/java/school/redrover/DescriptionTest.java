@@ -35,5 +35,6 @@ public class DescriptionTest extends BaseTest {
                 .getDescription();
 
         Assert.assertEquals(actualDescription, secondDescription + firstDescription);
+
     }
 }
