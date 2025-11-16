@@ -19,9 +19,8 @@ public class UserAccountPage extends BasePage {
     }
 
     public String getUserID() {
-        return getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By
-                        .xpath("//div[@id='main-panel']/descendant::div[contains(text(),'Jenkins User ID: ')]")))
-                .getText();
+        return getDriver().findElement(By
+                        .xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
+                .getText().substring(17);
     }
 }

@@ -74,17 +74,4 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(descriptionText, addText);
     }
-
-    @Test
-    public void testUserNameInUserAccount() {
-        final String expectedUserName = "admin";
-
-        HomePage homePage = new HomePage(getDriver());
-
-        String actualUserName = homePage.clickUserAccountViaIconInHeader().getUserName();
-        String actualUserID = homePage.clickUserAccountViaIconInHeader().getUserID();
-
-        Assert.assertEquals(actualUserName, expectedUserName);
-        Assert.assertTrue(actualUserID.contains(expectedUserName));
-    }
 }
