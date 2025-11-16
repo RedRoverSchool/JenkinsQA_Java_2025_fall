@@ -143,6 +143,12 @@ public class FolderPage extends BasePage {
 
     }
 
+    public FolderPage clickBreadcrumbsItem(String folderName) {
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(folderName))).click();
+
+        return this;
+    }
+
     public String getFolderIconAttribute(String folderName) {
         return getDriver().findElement(By.xpath("//tr[td[a[span[text()='%s']]]]//*[@d]".formatted(folderName))).getAttribute("d");
     }

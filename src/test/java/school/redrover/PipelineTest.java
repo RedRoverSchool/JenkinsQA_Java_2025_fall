@@ -8,6 +8,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.PipelineJobPage;
 import school.redrover.page.PipelinePage;
 
 import java.util.List;
@@ -66,6 +67,23 @@ public class PipelineTest extends BaseTest {
                 .openDropdownMenu(PIPELINE_NAME)
                 .clickDeleteItemInDropdownMenu()
                 .confirmDelete()
+                .getHeadingText();
+
+        Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
+    }
+
+    @Test
+    public void testDeletePipelineViaSideMenu() {
+        final String expectedHomePageHeading = "Welcome to Jenkins!";
+
+        String actualHomePageHeading = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
+                .openJobPage(PIPELINE_NAME, new PipelineJobPage(getDriver()))
+                .clickDeletePipeline()
+                .confirmDeleteAtJobPage()
                 .getHeadingText();
 
         Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
