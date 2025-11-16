@@ -178,4 +178,12 @@ public class HomePage extends BasePage {
 
         return new ManageJenkinsPage(getDriver());
     }
+
+    public UserAccountPage clickUserAccountViaIconInHeader() {
+        getWait2()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")))
+                .click();
+
+        return new UserAccountPage(getDriver());
+    }
 }
