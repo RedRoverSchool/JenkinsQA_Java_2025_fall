@@ -15,7 +15,7 @@ public class RestApiPage extends BasePage {
        return getDriver().findElement(By.tagName("h1")).getText();
     }
 
-    public List<String> getXmlJsonPythonApiLinks(){
+    public List<String> getXmlJsonPythonApiLinksText(){
         return getDriver()
                 .findElements(By.xpath("//dt/a[@href]"))
                 .stream()
