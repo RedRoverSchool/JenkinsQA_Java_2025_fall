@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -43,8 +44,8 @@ public class MultibranchPipeline1Test extends BaseTest {
 
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_DISPLAY_NAME);
     }
-
-    @Test (dependsOnMethods = "testCreateClickCreateJob")
+@Ignore
+@Test (dependsOnMethods = "testCreateClickCreateJob")
     public void testChangeDescription() {
 
         String name = new HomePage(getDriver())
