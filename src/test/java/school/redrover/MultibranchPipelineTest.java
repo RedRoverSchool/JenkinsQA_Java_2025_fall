@@ -105,6 +105,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test
     public void testCreateItemWithSpecialCharacters() {
         final String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
+
         HomePage homePage = new HomePage(getDriver());
         NewItemPage newItemPage = homePage.clickNewItemOnLeftMenu();
 
