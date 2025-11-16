@@ -1,15 +1,10 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.ConfigurationFolderPage;
 import school.redrover.page.FolderPage;
 import school.redrover.page.HomePage;
-import java.time.Duration;
 
 public class FolderConfigurationTest extends BaseTest {
 
@@ -17,52 +12,48 @@ public class FolderConfigurationTest extends BaseTest {
 
     @Test
     public void testHealthMetricLinkIsDisplayed(){
-        new HomePage(getDriver())
+        final String linkDisplayed = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(FOLDER_NAME)
-                .selectFolderAndSubmit();
+                .selectFolderAndSubmit()
+                .getHealthMetricsSidebarLink();
 
-        Assert.assertTrue(new ConfigurationFolderPage(getDriver())
-                .findHealthMetricsLink()
-                .isDisplayed());
+        Assert.assertEquals(linkDisplayed, "Health metrics");
     }
 
     @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testHealthMetricButtonIsDisplayed(){
-        new HomePage(getDriver())
+        final String buttonDisplayed = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure();
+                .clickConfigure()
+                .getHealthMetricsButton();
 
-        Assert.assertTrue(new ConfigurationFolderPage(getDriver())
-                .findHealthMetricButton()
-                .isDisplayed());
+        Assert.assertEquals(buttonDisplayed,"Health metrics");
     }
 
-    @Test(dependsOnMethods = {"testHealthMetricLinkIsDisplayed"})
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testHealthMetricSectionNavigation(){
-        getDriver().findElement(By.linkText(FOLDER_NAME)).click();
-        getDriver().findElement(By.linkText("Configure")).click();
-        getDriver().findElement(By.cssSelector("button.task-link[data-section-id='health-metrics']")).click();
+        final String sectionName = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsSidebarLink()
+                .getSectionName();
 
-        Assert.assertTrue(getDriver().findElement(By.id("health-metrics")).isDisplayed());
+        Assert.assertEquals(sectionName,"Health metrics");
     }
 
-    @Test(dependsOnMethods = {"testHealthMetricSectionNavigation"})
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testVerifyMetricTypeList(){
-        getDriver().findElement(By.linkText(FOLDER_NAME)).click();
-        getDriver().findElement(By.linkText("Configure")).click();
-        getDriver().findElement(By.xpath("//button[normalize-space(text())='Health metrics']")).click();
-        getDriver().findElement(By.xpath("//button[normalize-space(text())='Add metric']")).click();
+        var configPage = new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
-        wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//input[@class='jenkins-dropdown__filter-input']")));
+        final String metricType1 = configPage.getMetricType1();
+        final String metricType2 = configPage.getMetricType2();
 
-        Assert.assertTrue(getDriver()
-                .findElement(By.xpath("//button[normalize-space(text())='Child item with the given name']"))
-                .isDisplayed());
-        Assert.assertTrue(getDriver()
-                .findElement(By.xpath("//button[normalize-space(text())='Child item with worst health']"))
-                .isDisplayed());
+        Assert.assertEquals(metricType1, "Child item with the given name");
+        Assert.assertEquals(metricType2, "Child item with worst health");
     }
 }
