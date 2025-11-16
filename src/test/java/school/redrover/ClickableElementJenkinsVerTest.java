@@ -2,18 +2,20 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-public class ClickableElementTest extends BaseTest {
+public class ClickableElementJenkinsVerTest extends BaseTest {
 
     @Test
     public void testClickableElement() throws InterruptedException {
 
-        WebElement clickableButton = getDriver().findElement(By.xpath("//*[@id=\"jenkins\"]/footer/div/div[2]/button"));
+        WebElement clickableButton = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@class = 'jenkins-button jenkins-button--tertiary jenkins_ver']")));
         clickableButton.click();
-        Thread.sleep(1000);
+
+        getWait2().until(driver -> "true".equals(clickableButton.getAttribute("aria-expanded")));
         String actualAriaExpanded = clickableButton.getAttribute("aria-expanded");
         Assert.assertEquals("true", actualAriaExpanded);
     }
