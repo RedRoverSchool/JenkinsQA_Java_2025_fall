@@ -172,4 +172,10 @@ public class HomePage extends BasePage {
     public String getDescription() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
     }
+
+    public ManageJenkinsPage clickManageJenkinsIcon() {
+        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+
+        return new ManageJenkinsPage(getDriver());
+    }
 }
