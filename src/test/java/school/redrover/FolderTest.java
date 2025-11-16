@@ -199,4 +199,18 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(newNameFolder, NEW_FOLDER_NAME_2);
     }
+
+    @Test(dependsOnMethods = "testPutItemsToFolder")
+    public void testFolderIsIdentifiedByTooltip() {
+        FolderPage folderPage = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME);
+        String folderTooltip = folderPage.getFolderTooltip(SUB_FOLDER_NAME);
+        List<String> itemsWithTooltip = folderPage.getItemsWithTooltip(folderTooltip);
+
+        Assert.assertNotEquals(itemsWithTooltip.size(), 0);
+        Assert.assertEquals(
+                itemsWithTooltip,
+                List.of(SUB_FOLDER_NAME),
+                "Ошибка в отображении тултипов");
+    }
 }
