@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
 
 import java.time.Duration;
@@ -45,6 +46,23 @@ public class FooterTest extends BaseTest {
                 .getXmlJsonPythonApiLinksText();
 
         Assert.assertEquals(actualLinks, expectedLinks);
+    }
+
+    @Test
+    public void testRestApiLinkByTabAndEnter(){
+
+        new HomePage(getDriver())
+                .pressTabAndEnter(new HomePage(getDriver()).restApiLink());
+
+        Assert.assertEquals(getDriver().getTitle(), "Remote API - Jenkins");
+    }
+
+    @Test
+    public void testRestApiLinkByFocusAndEnter(){
+
+        TestUtils.focusAndEnterByKeyboard(getDriver(), new HomePage(getDriver()).restApiLink());
+
+        Assert.assertEquals(getDriver().getTitle(), "Remote API - Jenkins");
     }
 
     @Test
