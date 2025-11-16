@@ -185,9 +185,9 @@ public class HomePage extends BasePage {
         return footer.findElement(By.linkText("REST API")).getText();
     }
 
-    public ApiPage clickRestApiLink() {
+    public RestApiPage clickRestApiLink() {
          getDriver().findElement(By.xpath("//a[@href='api/']")).click();
 
-         return new ApiPage(getDriver());
+         return new RestApiPage(getDriver());
     }
 }

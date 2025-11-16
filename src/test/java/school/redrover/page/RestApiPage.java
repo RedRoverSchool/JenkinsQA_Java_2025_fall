@@ -7,9 +7,9 @@ import school.redrover.common.BasePage;
 
 import java.util.List;
 
-public class ApiPage extends BasePage {
+public class RestApiPage extends BasePage {
 
-    public ApiPage(WebDriver driver) { super(driver); }
+    public RestApiPage(WebDriver driver) { super(driver); }
 
     public String getHeadingText(){
        return getDriver().findElement(By.tagName("h1")).getText();
