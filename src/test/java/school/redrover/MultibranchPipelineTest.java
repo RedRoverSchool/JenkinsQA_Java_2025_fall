@@ -74,47 +74,43 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testVerifyDisableMessaageOnStatusPage() {
         final String disableText = "This Multibranch Pipeline is currently disabled";
 
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(MULTIBRANCH_PIPELINE_NAME))).click();
-        getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        String actualDisableText = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .clickToggle()
+                .clickSaveButton()
+                .getDisabledText();
 
-        String actualDisableText = getWait2().until(ExpectedConditions
-                .visibilityOfElementLocated(By.id("disabled-message"))).getText();
         Assert.assertTrue(actualDisableText.contains(disableText));
     }
 
-    @Ignore
     @Test
     public void testVerifyEnableToogleTooltip() {
         final String tooltipText =
                 "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(MULTIBRANCH_PIPELINE_NAME))).click();
-        WebElement toggleTooltip = getDriver().findElement(By.id("toggle-switch-enable-disable-project"));
-
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(toggleTooltip).perform();
-
-        String actualTooltip = getWait2().until(ExpectedConditions
-                .visibilityOfElementLocated(By.className("tippy-content"))).getText();
+        String actualTooltip = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .getToggleTooltipTextOnHover();
 
         Assert.assertEquals(actualTooltip, tooltipText);
     }
 
-    @Ignore
     @Test
     public void testVerifyAppearSaveMessage() {
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(MULTIBRANCH_PIPELINE_NAME))).click();
-        getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
-        getDriver().findElement(By.name("Apply")).click();
 
-        String actualSavedMessage = getWait2().until(ExpectedConditions.
-                visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']"))).getText();
+        String actualSavedMessage = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .clickToggle()
+                .clickApply()
+                .getSavedMessage();
 
-        Assert.assertEquals(actualSavedMessage, "Saved");
+        Assert.assertEquals(actualSavedMessage, "Saved", "Message isn't correct");
     }
 
     @Test
