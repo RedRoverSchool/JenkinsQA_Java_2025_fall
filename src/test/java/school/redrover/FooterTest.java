@@ -66,7 +66,7 @@ public class FooterTest extends BaseTest {
     }
 
     @Test
-    public void testJenkinsDropdown() {
+    public void testJenkinsDropdownMenu() {
 
         final List<String> expectedDropdownItems = List.of(
                 "About Jenkins",
