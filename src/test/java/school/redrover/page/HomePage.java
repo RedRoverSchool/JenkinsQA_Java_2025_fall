@@ -154,7 +154,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickDescription() {
-        getDriver().findElement(By.id("description-link")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
         return this;
     }
 
