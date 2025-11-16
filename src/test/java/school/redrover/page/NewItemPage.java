@@ -19,6 +19,12 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
+    public NewItemPage clearSendName() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).clear();
+
+        return this;
+    }
+
     public NewItemPage selectFolder() {
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
 
