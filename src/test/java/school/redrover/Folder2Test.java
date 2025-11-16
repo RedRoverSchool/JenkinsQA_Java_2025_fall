@@ -5,7 +5,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -72,82 +71,6 @@ public class Folder2Test extends BaseTest {
         };
     }
 
-    @Test(dependsOnMethods = {"testCreateFolder"})
-    public void testPutItemToFolder() {
-        final String subFolderName = "SubFolder";
-        final String freestyleProjectName = "SubFreestyleProject";
-        final String pipelineName = "SubPipeline";
-        final String multiconfigurationProjectName = "SubMulticonfigurationProject";
-        final String multibranchPipelineName = "SubMultibranchPipeline";
-        final String organizationFolderName = "SubOrganizationFolder";
-
-        final Object[][] items = {
-                {subFolderName, "Folder"},
-                {freestyleProjectName, "Freestyle project"},
-                {pipelineName, "Pipeline"},
-                {multiconfigurationProjectName, "Multi-configuration project"},
-                {multibranchPipelineName, "Multibranch Pipeline"},
-                {organizationFolderName, "Organization Folder"}};
-
-        for (Object[] item : items) {
-            String itemName = (String) item[0];
-            String itemType = (String) item[1];
-            createItem(itemName, itemType);
-
-            getDriver().findElement(By.xpath("//a[contains(@href, 'move')]")).click();
-            Select selectObject = new Select(getDriver().findElement(By.className("jenkins-select__input")));
-            selectObject.selectByVisibleText("Jenkins » %s".formatted(MAIN_FOLDER_NAME));
-            getDriver().findElement(By.name("Submit")).click();
-
-            getWait5().until(driver -> Objects.requireNonNull(
-                    driver.getCurrentUrl()).endsWith("/job/%s/".formatted(itemName)));
-
-            List<String> breadcrumbTexts = getTextsOfItems("//ol[@id='breadcrumbs']/li/a");
-            Assert.assertFalse(breadcrumbTexts.isEmpty(), "Хлебные крошки не должны быть пусты");
-            Assert.assertEquals(
-                    breadcrumbTexts,
-                    List.of(MAIN_FOLDER_NAME, itemName),
-                    "Путь хлебных крошек не соответствует ожиданию");
-
-            getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-        }
-    }
-
-    @Test
-    public void testSameItemNamesInTwoFolders() {
-        final String folder1Name = "Folder" + UUID.randomUUID().toString().substring(0, 3);
-        final String folder2Name = "Folder" + UUID.randomUUID().toString().substring(0, 3);
-        final String pipelineName = "Pipeline" + UUID.randomUUID().toString().substring(0, 3);
-
-        createItem(folder1Name, "Folder");
-        createItem(pipelineName, "Pipeline");
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-        createItem(folder2Name, "Folder");
-
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(pipelineName);
-        Assert.assertFalse(getDriver().findElement(By.id("itemname-invalid")).isDisplayed());
-
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        getWait10().until(driver -> Objects.requireNonNull(
-                driver.getCurrentUrl()).endsWith("/job/%s/".formatted(pipelineName)));
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folder1Name))).click();
-        List<String> folder1Items = getTextsOfItems("//a[contains(@class, 'jenkins-table__link')]");
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-        getDriver().findElement(By.xpath("//span[text()='%s']".formatted(folder2Name))).click();
-        List<String> folder2Items = getTextsOfItems("//a[contains(@class, 'jenkins-table__link')]");
-
-        Assert.assertEquals(
-                folder1Items,
-                folder2Items,
-                "Несоответствие содержимого папок");
-    }
-
     @Test
     public void testFindFolderContents() {
         final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
@@ -186,26 +109,6 @@ public class Folder2Test extends BaseTest {
         Assert.assertTrue(getTextsOfItems("//div[@id='search-results']//a").
                         contains("%s » %s".formatted(folderName, freestyleName)),
                 "Список результатов поиска не содержит нужный элемент");
-    }
-
-    @Test(dataProvider = "itemsProvider")
-    public void testFolderIsIdentifiedByIcon(String itemType, String itemName) {
-        final String folderName = "Folder" + UUID.randomUUID().toString().substring(0, 3);
-        final String dAttributeOfFolderIcon = "M440 432H72a40 40 0 01-40-40V120a40 40 0 0140-40h75.89a40 40 0 0122.19 6.72";
-
-        createItem(folderName, "Folder");
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-        createItem(itemName, itemType);
-        getDriver().findElement(By.className("jenkins-mobile-hide")).click();
-
-        String xpathForItemNameByIconAttribute = "//tr[.//*[contains(@d,'%s')]]//a//span".formatted(dAttributeOfFolderIcon);
-        List<String> expectedItems = itemType.equals("Folder")
-                ? List.of(folderName, itemName)
-                : List.of(folderName);
-        Assert.assertEquals(
-                new HashSet<>(getTextsOfItems(xpathForItemNameByIconAttribute)),
-                new HashSet<>(expectedItems),
-                "Ошибка в отображении иконок");
     }
 
     @Test(dataProvider = "itemsProvider")

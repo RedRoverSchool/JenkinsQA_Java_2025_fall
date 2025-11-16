@@ -1,69 +1,33 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-
-import java.time.Duration;
+import school.redrover.page.ConfigurationSystemPage;
+import school.redrover.page.HomePage;
 
 public class SystemMessageTest extends BaseTest {
 
-    private void clearSystemMessage() {
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getDriver().findElement(By.xpath("//a[@href='configure']")).click();
+    private static final String EXPECTED_MESSAGE = "This is the best project!";
 
-        getDriver().findElement(By.name("system_message")).clear();
-        getDriver().findElement(By.name("Submit")).click();
-    }
-
-    @Test
-    public void testCreateMessage() {
-        final String expectedMessage = "This is the best project!";
-
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getDriver().findElement(By.xpath("//a[@href='configure']")).click();
-
-        WebElement input = getDriver().findElement(By.name("system_message"));
-        input.sendKeys(expectedMessage);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String actualMessage = new WebDriverWait(getDriver(), Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(
-                        By.id("systemmessage"))).getText();
-
-        Assert.assertEquals(actualMessage, expectedMessage);
-
-        clearSystemMessage();
-    }
-    
     @Test
     public void testPreview() {
-        final String expectedMessage = "I want to see this message on preview!";
+        String message = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickConfigurationSystem()
+                .setSystemMessage(EXPECTED_MESSAGE)
+                .getPreviewSystemMessage();
 
-        // усложнено специально для практики изученного материала
-        getDriver().findElement(By.xpath("//div[@class='jenkins-header__actions']/a[1]")).click();
-        getDriver().findElements(By.className("jenkins-section__item"))
-                .stream()
-                .filter(x -> x.getText().contains("System"))
-                .findFirst()
-                .ifPresent(WebElement::click);
+        new ConfigurationSystemPage(getDriver()).clickSave();
 
-        getDriver().findElement(By.name("system_message")).sendKeys(expectedMessage);
-        getDriver().findElement(By.className("textarea-show-preview")).click();
+        Assert.assertEquals(message, EXPECTED_MESSAGE);
+    }
 
-        WebElement preview = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
-                .until(ExpectedConditions.visibilityOfElementLocated(
-                        By.className("textarea-preview")
-                ));
+    @Test(dependsOnMethods = "testPreview")
+    public void testCreateMessage() {
+        String message = new HomePage(getDriver())
+                .getSystemMessage();
 
-        Assert.assertEquals(preview.getText(), expectedMessage);
+        Assert.assertEquals(message, EXPECTED_MESSAGE);
     }
 }

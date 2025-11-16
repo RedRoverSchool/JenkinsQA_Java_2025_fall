@@ -15,4 +15,10 @@ public class ManageJenkinsPage extends BasePage {
 
         return new ManageUsersPage(getDriver());
     }
+
+    public ConfigurationSystemPage clickConfigurationSystem() {
+        getDriver().findElement(By.xpath("//a[@href='configure']")).click();
+
+        return new ConfigurationSystemPage(getDriver());
+    }
 }
