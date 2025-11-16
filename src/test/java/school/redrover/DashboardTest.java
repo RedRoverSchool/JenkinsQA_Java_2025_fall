@@ -24,9 +24,10 @@ public class DashboardTest extends BaseTest {
 
     @Test
     public void testHomePageHeading() {
-        Assert.assertEquals(
-                new HomePage(getDriver()).getHeadingText(),
-                "Welcome to Jenkins!");
+        WebElement actualHeading = getWait5()
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".empty-state-block > h1")));
+
+        Assert.assertEquals(actualHeading.getText(), "Welcome to Jenkins!");
     }
 
     @Test
@@ -112,5 +113,16 @@ public class DashboardTest extends BaseTest {
                 .getSizeOfViewNameList();
 
         Assert.assertEquals(viewListSize, 2, "Есть созданный пользователем View на Dashboard");
+    }
+
+    @Test
+    public void testGoToManageJenkinsPage(){
+        final String expectedTitle = "Manage Jenkins";
+
+        String actualTitle = new HomePage(getDriver())
+                .clickManageJenkinsIcon()
+                .getHeadingText();
+
+        Assert.assertEquals(actualTitle, expectedTitle);
     }
 }
