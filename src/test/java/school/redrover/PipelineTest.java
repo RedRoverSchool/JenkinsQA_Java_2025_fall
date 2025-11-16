@@ -8,6 +8,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.MultibranchPipelineJobPage;
+
 import java.util.List;
 import java.util.Random;
 
@@ -69,18 +71,22 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
     }
 
-//    @Test(dependsOnMethods = "testCreateNewPipeline")
-//    public void testDeletePipelineViaSideMenu() {
-//        final String expectedHomePageHeading = "Welcome to Jenkins!";
-//
-//        String actualHomePageHeading = new HomePage(getDriver())
-//                .openJobPage(PIPELINE_NAME, new MultibranchPipelineJobPage(getDriver()))
-//                .clickDeletePipeline()
-//                .confirmDeleteAtJobPage()
-//                .getHeadingText();
-//
-//        Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
-//    }
+    @Test
+    public void testDeletePipelineViaSideMenu() {
+        final String expectedHomePageHeading = "Welcome to Jenkins!";
+
+        String actualHomePageHeading = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
+                .openJobPage(PIPELINE_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .clickDeletePipeline()
+                .confirmDeleteAtJobPage()
+                .getHeadingText();
+
+        Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
+    }
 
     @Test
     public void testCreatePipeline() throws InterruptedException {
