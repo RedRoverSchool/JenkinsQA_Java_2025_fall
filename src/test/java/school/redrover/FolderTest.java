@@ -90,7 +90,7 @@ public class FolderTest extends BaseTest {
                 descriptionText,
                 "Описание папки не соответствует ожидаемому");
     }
-@Ignore
+
     @Test(dependsOnMethods = "testCreate")
     public void testSameItemNamesInTwoFolders() {
         final String pipelineName = "TwoPipelines";
