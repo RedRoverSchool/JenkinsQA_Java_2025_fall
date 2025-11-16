@@ -44,7 +44,6 @@ public class MultibranchPipeline1Test extends BaseTest {
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_DISPLAY_NAME);
     }
 
-
     @Test (dependsOnMethods = "testCreateClickCreateJob")
     public void testChangeDescription() {
 
