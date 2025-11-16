@@ -2,6 +2,7 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class ManageJenkinsPage extends BasePage {
@@ -20,5 +21,10 @@ public class ManageJenkinsPage extends BasePage {
         getDriver().findElement(By.xpath("//a[@href='configure']")).click();
 
         return new ConfigurationSystemPage(getDriver());
+    }
+
+    public String getHeadingText() {
+        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.
+                tagName("h1"))).getText().trim();
     }
 }
