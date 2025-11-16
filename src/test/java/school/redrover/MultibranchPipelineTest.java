@@ -57,6 +57,21 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(projectList.contains(MULTIBRANCH_PIPELINE_NAME));
     }
 
+    @Test (dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testDeleteMultibranchPipeline() {
+
+        final int projectList = 1;
+
+        new HomePage(getDriver())
+                .openDropdownMenu(MULTIBRANCH_PIPELINE_NAME)
+                .clickDeleteItemInDropdownMenu()
+                .confirmDelete()
+                .gotoHomePage()
+                .getProjectList();
+
+        Assert.assertNotEquals(projectList, 0);
+    }
+
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
     public void testTryCreateProjectExistName() {
         final String errorMessage = "» A job already exists with the name ‘%s’".formatted(MULTIBRANCH_PIPELINE_NAME);
