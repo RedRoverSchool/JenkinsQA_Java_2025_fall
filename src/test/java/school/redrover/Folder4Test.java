@@ -3,11 +3,11 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import static java.lang.Thread.sleep;
 
 public class Folder4Test extends BaseTest {
 
@@ -26,13 +26,13 @@ public class Folder4Test extends BaseTest {
                 .executeScript("arguments[0].scrollIntoView(true);", organizationButton);
         organizationButton.click();
 
-        sleep(3000);
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
         getDriver().findElement(By.xpath("//input[@type='text']"))
                 .sendKeys(folder);
         getDriver().findElement(By.name("Submit"))
                 .click();
 
-        sleep(10000);
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[@class = 'job-index-headline page-headline']")));
         WebElement message = getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li/a"));
 
         Assert.assertEquals(message.getText(), folder);
