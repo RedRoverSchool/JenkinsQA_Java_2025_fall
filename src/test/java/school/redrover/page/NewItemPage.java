@@ -129,4 +129,14 @@ public class NewItemPage extends BasePage {
         }
         return new HomePage(getDriver());
     }
+
+    public String getTextHintFromCopyField() {
+        return getDriver().findElement(By.xpath("//p[@class='jenkins-form-label']")).getText();
+    }
+
+    public NewItemPage findCopyFromField() {
+        getDriver().findElement(By.id("from"));
+
+        return this;
+    }
 }
