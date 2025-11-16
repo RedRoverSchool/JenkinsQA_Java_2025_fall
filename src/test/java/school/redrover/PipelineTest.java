@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.PipelineJobPage;
+import school.redrover.page.PipelinePage;
 
 import java.util.List;
 import java.util.Random;
@@ -89,30 +90,29 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testCreatePipeline() throws InterruptedException {
+    public void testCreatePipeline() {
         getDriver().findElement(By.cssSelector(".task:nth-child(1) a")).click();
         getDriver().findElement(By.cssSelector("#name")).sendKeys(PIPELINE_NAME);
         getDriver().findElement(By.cssSelector("div:first-child > ul > li:nth-child(2)")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        Thread.sleep(2000);
-        getDriver().findElement(By.xpath("//a[@href='/']/img")).click();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']/img"))).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='job/" + PIPELINE_NAME + "/']")).getText(),
                 PIPELINE_NAME);
     }
 
     @Test
-    public void testDeletePipeline() throws InterruptedException {
+    public void testDeletePipeline() {
         getDriver().findElement(By.cssSelector(".task:nth-child(1) a")).click();
         getDriver().findElement(By.cssSelector("#name")).sendKeys(PIPELINE_NAME);
         getDriver().findElement(By.cssSelector("div:first-child > ul > li:nth-child(2)")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        Thread.sleep(2000);
-        getDriver().findElement(By.xpath("//a[@href='/']/img")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']/img"))).click();
 
         List<WebElement> countPosition = getDriver().findElements(By.cssSelector("#projectstatus > tbody > tr"));
 
@@ -159,22 +159,15 @@ public class PipelineTest extends BaseTest {
     public void testEditDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'job/%s/']".formatted(PIPELINE_NAME))))
-                .click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
-                .click();
-        WebElement descriptionField = getDriver().findElement(By.name("description"));
-        descriptionField.clear();
-        descriptionField.sendKeys(textDescription);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
-        WebElement descriptionText = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
+        String descriptionText = new HomePage(getDriver())
+                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickEditDescriptionButton()
+                .clearDescription()
+                .addDescriptionAndSave(textDescription)
+                .getDescription();
 
         Assert.assertEquals(
-                descriptionText.getText(),
+                descriptionText,
                 textDescription,
                 "Не совпал текст description после его редактирования");
     }

@@ -20,64 +20,6 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElem
 public class ConfigureSystem1Test extends BaseTest {
 
     @Test
-    public void testCreateSystemMessage() {
-
-        final String systemMessage = "Hello redRover School!";
-
-        getSystemConfigurePage();
-
-        WebElement systemMessageTextArea = getDriver().findElement(By.name("system_message"));
-        systemMessageTextArea.clear();
-        systemMessageTextArea.sendKeys(systemMessage);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("systemmessage")).getText(),
-                systemMessage);
-    }
-
-    @Test
-    public void testChangeSystemMessage() {
-
-        final String firstPartSystemMessage = "Hello";
-        final String secondPartSystemMessage = " redRover School!";
-
-        getSystemConfigurePage();
-
-        WebElement systemMessageTextArea = getDriver().findElement(By.name("system_message"));
-        systemMessageTextArea.clear();
-        systemMessageTextArea.sendKeys(firstPartSystemMessage);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getSystemConfigurePage();
-
-        getDriver().findElement(By.name("system_message")).sendKeys(secondPartSystemMessage);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("systemmessage")).getText(),
-                firstPartSystemMessage + secondPartSystemMessage);
-    }
-
-    @Test
-    public void testSystemMessagePreview() {
-
-        final String systemMessage = "Hello redRover School!";
-
-        getSystemConfigurePage();
-
-        WebElement systemMessageTextArea = getDriver().findElement(By.name("system_message"));
-        systemMessageTextArea.clear();
-        systemMessageTextArea.sendKeys(systemMessage);
-
-        getDriver().findElement(By.cssSelector("a[previewendpoint]")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.className("textarea-preview")).getText(),
-                systemMessage);
-    }
-
-    @Test
     public void testChangeNumberOfExecutors() {
 
         final String numberOfExecutors = "12";

@@ -1,16 +1,13 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.testdata.TestDataProvider;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DashboardTest extends BaseTest {
 
@@ -25,7 +22,8 @@ public class DashboardTest extends BaseTest {
     @Test
     public void testHomePageHeading() {
         Assert.assertEquals(
-                new HomePage(getDriver()).getHeadingText(), "Welcome to Jenkins!");
+                new HomePage(getDriver()).getHeadingText(),
+                "Welcome to Jenkins!");
     }
 
     @Test
@@ -38,42 +36,11 @@ public class DashboardTest extends BaseTest {
                 expectedParagraphText);
     }
 
-    @Test
-    public void testContentBlockLinks() {
-        final List<String> expectedUrlEndpoints = List.of(
-                "/newJob",
-                "/computer/new",
-                "/cloud/",
-                "/#distributed-builds-architecture"
-        );
+    @Test (dataProvider = "Links", dataProviderClass = TestDataProvider.class)
+    public void testContentBlockLinks(String linkText, String expectedUrlEndpoint) {
+        new HomePage(getDriver()).clickHomePageSectionLink(linkText);
 
-        List<WebElement> contentBlockLinks = getWait5()
-                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".content-block > a")));
-
-        Assert.assertFalse(contentBlockLinks.isEmpty());
-
-        for (int i = 0; i < contentBlockLinks.size(); i++) {
-            WebElement currentLink = contentBlockLinks.get(i);
-
-            new Actions(getDriver())
-                    .keyDown(Keys.CONTROL)
-                    .click(currentLink)
-                    .keyUp(Keys.CONTROL)
-                    .perform();
-
-            getWait5().until(ExpectedConditions.numberOfWindowsToBe(2));
-
-            Object[] windowHandles = getDriver().getWindowHandles().toArray();
-            getDriver().switchTo().window((String) windowHandles[1]);
-
-            String currentUrl = getDriver().getCurrentUrl();
-            String expectedUrlEndpoint = expectedUrlEndpoints.get(i);
-
-            Assert.assertTrue(currentUrl.contains(expectedUrlEndpoint));
-
-            getDriver().close();
-            getDriver().switchTo().window((String) windowHandles[0]);
-        }
+        Assert.assertTrue(Objects.requireNonNull(getDriver().getCurrentUrl()).contains(expectedUrlEndpoint));
     }
 
     @Test

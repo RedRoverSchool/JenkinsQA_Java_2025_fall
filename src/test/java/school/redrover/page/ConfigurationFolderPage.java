@@ -35,6 +35,12 @@ public class ConfigurationFolderPage extends BasePage {
     public WebElement findHealthMetricsLink() {
 
         return getDriver()
-                .findElement(By.xpath("//button[normalize-space(text())='Health metrics']"));
+                .findElement(By.cssSelector("button[data-section-id='health-metrics']"));
+    }
+
+    public WebElement findHealthMetricButton() {
+
+        return getDriver()
+                .findElement(By.cssSelector("button.jenkins-button.advanced-button"));
     }
 }

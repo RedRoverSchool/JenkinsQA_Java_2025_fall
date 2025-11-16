@@ -34,9 +34,17 @@ public class PipelinePage extends BasePage {
         return this;
     }
 
+    public PipelinePage clickEditDescriptionButton() {
+        getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
+                .click();
+        return this;
+    }
+
     public PipelinePage addDescriptionAndSave(String description) {
         getDriver().findElement(By.name("description")).sendKeys(description);
         getDriver().findElement(By.name("Submit")).click();
+
         return this;
     }
 
@@ -44,6 +52,16 @@ public class PipelinePage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
         return getWait5()
                 .until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")))
+                .getText();
+    }
+
+    public PipelinePage clearDescription() {
+        getDriver().findElement(By.name("description")).clear();
+        return this;
+    }
+
+    public String getWarningMessage() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("enable-project")))
                 .getText();
     }
 }
