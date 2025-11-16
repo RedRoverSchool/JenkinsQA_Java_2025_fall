@@ -178,4 +178,10 @@ public class HomePage extends BasePage {
 
         return new ManageJenkinsPage(getDriver());
     }
+    public HomePage clearTextDescription() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).clear();
+        return this;
+    }
+
+
 }

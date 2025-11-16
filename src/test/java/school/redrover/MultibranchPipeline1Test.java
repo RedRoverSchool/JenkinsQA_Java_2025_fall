@@ -10,6 +10,8 @@ public class MultibranchPipeline1Test extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "Multibranch_Pipeline";
     private static final String MULTIBRANCH_PIPELINE_DISPLAY_NAME = "Multibranch_Pipeline_Display";
+    private static final String FIRST_DESCRIPTION = "First Description";
+    private static final String SECOND_DESCRIPTION = "Second Description";
 
     @Test
     public void testCreateClickCreateJob() {
@@ -43,21 +45,20 @@ public class MultibranchPipeline1Test extends BaseTest {
     }
 
 
-    @Test
+    @Test (dependsOnMethods = "testCreateClickCreateJob")
     public void testChangeDescription() {
 
-        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("New Multibranch Pipeline");
-        getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//textarea")).sendKeys("New test pipeline");
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.cssSelector("a[href='./configure']")).click();
-        getDriver().findElement(By.xpath("//textarea")).clear();
-        getDriver().findElement(By.xpath("//textarea")).sendKeys("Change description - New test pipeline 2");
-        getDriver().findElement(By.name("Submit")).click();
+        String name = new HomePage(getDriver())
+                .clickDescription()
+                .sendDescriptionText(FIRST_DESCRIPTION)
+                .submitDescription()
+                .clickDescription()
+                .clearTextDescription()
+                .sendDescriptionText(SECOND_DESCRIPTION)
+                .submitDescription()
+                .getDescription();
 
-        Assert.assertEquals(getDriver().findElement(By.id("view-message")).getText(), "Change description - New test pipeline 2");
+        Assert.assertEquals(name, SECOND_DESCRIPTION);
 
     }
 }
