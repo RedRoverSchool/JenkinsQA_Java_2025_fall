@@ -83,4 +83,9 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
 
         return settingsList;
     }
+
+    public WebElement verifySCMTitleIsVisible() {
+        WebElement scmTitle = getDriver().findElement(By.id("source-code-management"));
+        return getWait5().until(ExpectedConditions.visibilityOf(scmTitle));
+    }
 }
