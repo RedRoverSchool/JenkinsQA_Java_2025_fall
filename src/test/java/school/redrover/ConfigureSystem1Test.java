@@ -9,42 +9,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.frequency;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 public class ConfigureSystem1Test extends BaseTest {
-
-    @Test
-    public void testChangeNumberOfExecutors() {
-
-        final String numberOfExecutors = "12";
-
-        getSystemConfigurePage();
-
-        WebElement systemMessageTextArea = getDriver().findElement(By.name("_.numExecutors"));
-        systemMessageTextArea.clear();
-        systemMessageTextArea.sendKeys(numberOfExecutors);
-        getDriver().findElement(By.name("Submit")).click();
-
-        WebElement executors = getDriver().findElement(By.cssSelector("div#executors"));
-
-        String executorsLine;
-        if (executors.getAttribute("class").contains("expanded")) {
-            executorsLine = getDriver().findElement(By.cssSelector("span[tooltip*='executors busy']")).getAttribute("tooltip");
-        } else {
-            executorsLine = getDriver().findElement(By.className("executors-collapsed")).getText();
-        }
-
-        List<String> lineElements = Arrays.stream(executorsLine.split(" ")).skip(1).toList();
-        int frequency = frequency(lineElements, numberOfExecutors);
-
-        Assert.assertEquals(frequency, 1);
-    }
 
     @Test
     public void testTooltipOfUsageOption() {

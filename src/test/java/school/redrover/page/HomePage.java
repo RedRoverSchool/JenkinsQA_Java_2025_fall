@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class HomePage extends BasePage {
@@ -225,4 +226,21 @@ public class HomePage extends BasePage {
 
         return (T) this;
     }
+
+    public String getNumberOfExecutors() {
+        WebElement executors = getDriver().findElement(By.cssSelector("div#executors"));
+
+        String executorsLine;
+        if (executors.getAttribute("class").contains("expanded")) {
+            executorsLine = getDriver().findElement(By.cssSelector("span[tooltip*='executors busy']")).getAttribute("tooltip");
+        } else {
+            executorsLine = getDriver().findElement(By.className("executors-collapsed")).getText();
+        }
+
+        return Arrays.stream(executorsLine.split(" "))
+                .skip(2)
+                .findFirst()
+                .orElse(null);
+    }
+
 }
