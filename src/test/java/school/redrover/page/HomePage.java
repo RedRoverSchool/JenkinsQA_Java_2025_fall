@@ -243,4 +243,9 @@ public class HomePage extends BasePage {
                 .orElse(null);
     }
 
+    public int getCountOfDisplayedColumnsOnDashboard() {
+        List<WebElement> columnsList = getDriver().findElements(By.cssSelector("#projectstatus > thead > tr > th"));
+
+        return columnsList.size();
+    }
 }
