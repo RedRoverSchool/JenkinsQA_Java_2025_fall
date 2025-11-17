@@ -8,7 +8,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-import school.redrover.page.PipelineJobPage;
 import school.redrover.page.PipelinePage;
 
 import java.util.List;
@@ -72,6 +71,18 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
     }
 
+    @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testCancelDeletePipelineViaSideMenu() {
+        List<String> actualProjectList = new HomePage(getDriver())
+                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickDeletePipeline()
+                .cancelDelete()
+                .gotoHomePage()
+                .getProjectList();
+
+        Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME));
+    }
+
     @Test
     public void testDeletePipelineViaSideMenu() {
         final String expectedHomePageHeading = "Welcome to Jenkins!";
@@ -81,7 +92,7 @@ public class PipelineTest extends BaseTest {
                 .sendName(PIPELINE_NAME)
                 .selectPipelineAndSubmit()
                 .gotoHomePage()
-                .openJobPage(PIPELINE_NAME, new PipelineJobPage(getDriver()))
+                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickDeletePipeline()
                 .confirmDeleteAtJobPage()
                 .getHeadingText();
