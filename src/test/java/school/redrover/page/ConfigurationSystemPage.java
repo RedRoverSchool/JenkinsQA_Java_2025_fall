@@ -26,16 +26,24 @@ public class ConfigurationSystemPage extends BasePage {
         return this;
     }
 
-    public void clickSave() {
-        WebElement saveButton = getDriver().findElement(By.name("Submit"));
-        saveButton.click();
-    }
-
     public String getPreviewSystemMessage() {
         getDriver().findElement(By.className("textarea-show-preview")).click();
 
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.className("textarea-preview"))).getText();
+    }
+
+    public ConfigurationSystemPage setNumberOfExecutors(String numberOfExecutors) {
+        WebElement systemMessageTextArea = getDriver().findElement(By.name("_.numExecutors"));
+        systemMessageTextArea.clear();
+        systemMessageTextArea.sendKeys(numberOfExecutors);
+
+        return this;
+    }
+
+    public void clickSave() {
+        WebElement saveButton = getDriver().findElement(By.name("Submit"));
+        saveButton.click();
     }
 
 }

@@ -67,6 +67,24 @@ public class ConfigureSystemTest extends BaseTest {
                 actualSystemMessage, SYSTEM_MESSAGE + addToSystemMessage);
     }
 
+    @Test
+    public void testChangeNumberOfExecutors() {
+
+        final String numberOfExecutors = "5";
+
+        new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickConfigurationSystem()
+                .setNumberOfExecutors(numberOfExecutors)
+                .clickSave();
+
+        String actualNumberOfExecutors = new HomePage(getDriver())
+                .gotoHomePage()
+                .getNumberOfExecutors();
+
+        Assert.assertEquals(actualNumberOfExecutors, numberOfExecutors);
+    }
+
     private void moveToSystem() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
         getDriver().findElement(By.xpath("//a[@href='configure']")).click();
