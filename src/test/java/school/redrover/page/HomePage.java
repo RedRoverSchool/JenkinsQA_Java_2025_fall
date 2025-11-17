@@ -237,7 +237,7 @@ public class HomePage extends BasePage {
             executorsLine = getDriver().findElement(By.className("executors-collapsed")).getText();
         }
 
-        return Arrays.stream(executorsLine.split(" "))
+        return Arrays.stream(executorsLine.trim().split(" "))
                 .skip(2)
                 .findFirst()
                 .orElse(null);

@@ -129,7 +129,6 @@ public class ConfigureSystem1Test extends BaseTest {
                 numberOfHelpDisplayBlockAfterClick - 1);
     }
 
-
     @Test
     public void testHintOfQuietPeriod() {
 
