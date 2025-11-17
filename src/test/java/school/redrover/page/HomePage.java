@@ -109,6 +109,17 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public HomePage cancelDelete() {
+        WebElement yesButton = getWait2().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("//dialog[@open]//button[@data-id='cancel']"))
+        );
+        yesButton.click();
+        getWait5().until(ExpectedConditions.stalenessOf(yesButton));
+
+        return this;
+    }
+
     public String getActiveViewName() {
         return getDriver().findElement(By.cssSelector(".tab.active a")).getText();
     }
