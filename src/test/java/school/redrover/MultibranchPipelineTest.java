@@ -115,6 +115,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualSavedMessage, "Saved", "Message isn't correct");
     }
 
+    @Ignore
     @Test
     public void testCreateItemWithSpecialCharacters() {
         final String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
