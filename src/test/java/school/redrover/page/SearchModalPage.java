@@ -55,7 +55,6 @@ public class SearchModalPage extends BaseModel {
         for (WebElement element : getDriver().findElements(searchResults)) {
             searchResultsTexts.add(element.getText());
         }
-        System.out.println(searchResultsTexts);
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(inputField), 0, -50)
                 .click()
