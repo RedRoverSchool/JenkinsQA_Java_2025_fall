@@ -74,8 +74,11 @@ public class PipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testCancelDeletePipelineViaSideMenu() {
         List<String> actualProjectList = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
                 .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickDeletePipeline()
                 .cancelDelete()
                 .gotoHomePage()
                 .getProjectList();
