@@ -1,10 +1,13 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllElementsLocatedBy;
 
 public class ConfigurationSystemPage extends BasePage {
 
@@ -45,10 +48,13 @@ public class ConfigurationSystemPage extends BasePage {
         return getDriver().findElements(By.cssSelector("div .help[style='display: block;']")).size();
     }
 
-    public void clickTooltip(String tooltipName) {
-        getDriver().findElement(By.cssSelector("a[tooltip= 'Help for feature: %s']".formatted(tooltipName))).click();
-    }
+    public ConfigurationSystemPage clickTooltip(String tooltipName) {
+        WebElement tooltip = getDriver().findElement(By.cssSelector("a[tooltip= 'Help for feature: %s']".formatted(tooltipName)));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", tooltip);
+        tooltip.click();
 
+        return this;
+    }
 
     public void clickSave() {
         WebElement saveButton = getDriver().findElement(By.name("Submit"));

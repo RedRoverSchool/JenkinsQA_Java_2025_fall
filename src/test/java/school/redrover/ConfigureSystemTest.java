@@ -92,17 +92,13 @@ public class ConfigureSystemTest extends BaseTest {
     @Test(dataProvider = "tooltips")
     public void testTooltips(String tooltipName) {
 
-        ConfigurationSystemPage configurationSystemPage = new HomePage(getDriver())
+        Integer actualNumberOfTooltip = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
-                .clickConfigurationSystem();
-        int numberOfOpenTooltipBeforeClick = configurationSystemPage.getNumberOfOpenTooltips();
+                .clickConfigurationSystem()
+                .clickTooltip(tooltipName)
+                .getNumberOfOpenTooltips();
 
-        configurationSystemPage.clickTooltip(tooltipName);
-        int numberOfOpenTooltipAfterClick = configurationSystemPage.getNumberOfOpenTooltips();
-
-        Assert.assertEquals(
-                numberOfOpenTooltipAfterClick - numberOfOpenTooltipBeforeClick,
-                1);
+        Assert.assertEquals(actualNumberOfTooltip, 1);
     }
 
     @DataProvider(name = "tooltips")
