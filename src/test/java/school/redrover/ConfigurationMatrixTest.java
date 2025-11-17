@@ -14,29 +14,33 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllE
 
 public class ConfigurationMatrixTest extends BaseTest {
 
-    @Test
-    public void testSectionDisplayed() {
+    private void createConfigurationMatrix() {
 
         String jobName = "test-" + System.currentTimeMillis();
+
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(jobName);
         getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
+
+    }
+
+    @Test
+    public void testSectionDisplayed() {
+
+        createConfigurationMatrix();
 
         WebElement matrixHeader = getDriver().findElement(By.id("configuration-matrix"));
         new Actions(getDriver()).moveToElement(matrixHeader).perform();
 
         Assert.assertTrue(matrixHeader.isDisplayed(), "Configuration Matrix header is not visible");
+
     }
 
     @Test
     public void testAddAxisMenuOnlyUserDefined() {
 
-        String jobName = "test-" + System.currentTimeMillis();
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(jobName);
-        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        createConfigurationMatrix();
 
         By addAxisLocator = By.cssSelector("[suffix=axis]");
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(addAxisLocator));
