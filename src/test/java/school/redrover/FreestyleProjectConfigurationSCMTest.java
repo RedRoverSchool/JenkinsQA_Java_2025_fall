@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.ConfigurationFreestyleProjectPage;
+import school.redrover.page.FreestyleProjectPage;
 import school.redrover.page.HomePage;
 
 
@@ -59,13 +61,14 @@ public class FreestyleProjectConfigurationSCMTest extends BaseTest {
 
     @Test
     public void testAccessSCMInExistingJob() {
-        createFreestyleProject(FREESTYLE_PROJECT_NAME);
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='jenkins-mobile-hide']"))).click();
-
-        getDriver().findElement(By.xpath("//a[@href='job/%s/']".formatted(FREESTYLE_PROJECT_NAME))).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(FREESTYLE_PROJECT_NAME))).click();
-        WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
+        WebElement scmTitle = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .gotoHomePage()
+                .openJobPage(FREESTYLE_PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure(FREESTYLE_PROJECT_NAME)
+                .verifySCMTitleIsVisible();
 
         Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
     }
