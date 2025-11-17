@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
 
 import java.time.Duration;
 import java.util.List;
@@ -74,36 +76,37 @@ public class NewItemPageTest extends BaseTest {
                 "Organization Folder"
         );
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickCreateJob();
 
-        WebElement sectionTitle = getDriver().findElement(By.xpath("//div[text()='Select an item type']"));
-        List<WebElement> actualItemTypes = getDriver().findElements(By.xpath("//div[@id='items']//label"));
+        List<WebElement> actualItemTypes = newItemPage.getItemTypes();
+
+        Assert.assertTrue(newItemPage.getSectionTitle().isDisplayed());
         Assert.assertNotEquals(actualItemTypes.size(), 0);
         for (int i = 0; i < expectedItemTypes.size(); i++) {
-            Assert.assertTrue(actualItemTypes.get(i).isDisplayed());
+        Assert.assertTrue(actualItemTypes.get(i).isDisplayed());
         }
-        Assert.assertTrue(sectionTitle.isDisplayed());
     }
 
     @Test
-    public void testSelectItemTypeAfterNameEnter() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+    public void testPipelineTypeCanBeSelected() {
+        boolean isSelected = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("Test Project")
+                .selectPipeline()
+                .isPipelineSelected();
 
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Test Project");
-        WebElement pipelineType = getDriver().findElement(By.cssSelector("[class$='WorkflowJob']"));
-        pipelineType.click();
-        Assert.assertEquals(pipelineType.getAttribute("aria-checked"), "true");
+        Assert.assertTrue(isSelected);
     }
 
     @Test
-    public void testItemTypeChangesColorAndOkButtonEnables() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+    public void testPipelineTypeHighlightAndOkButtonEnables() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("Test Project")
+                .selectPipeline();
 
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Test Project");
-        WebElement pipelineType = getDriver().findElement(By.cssSelector("[class$='WorkflowJob']"));
-        pipelineType.click();
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
-        Assert.assertTrue(Objects.requireNonNull(pipelineType.getAttribute("class")).contains("active"));
-        Assert.assertTrue(okButton.isEnabled());
+        Assert.assertTrue(newItemPage.isPipelineHighlighted());
+        Assert.assertTrue(newItemPage.isOkButtonEnabled());
     }
 }

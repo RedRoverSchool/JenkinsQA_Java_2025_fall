@@ -7,12 +7,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 
 public class FreestyleProjectConfigurationSCMTest extends BaseTest {
 
-    final String scmTitleExpected = "Source Code Management";
-    final String freestyleProjectName = "FreestyleProject2025";
+    private static final String SCM_TITLE_EXPECTED = "Source Code Management";
+    private static final String FREESTYLE_PROJECT_NAME = "FreestyleProject2025";
 
     private void createFreestyleProject(String freestyleProjectName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='/view/all/newJob']"))).click();
@@ -24,17 +25,18 @@ public class FreestyleProjectConfigurationSCMTest extends BaseTest {
 
     @Test
     public void testAccessSCMInNewJob() {
-        createFreestyleProject(freestyleProjectName);
+        WebElement scmTitle = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .verifySCMTitleIsVisible();
 
-        WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
-        getWait5().until(ExpectedConditions.visibilityOf(scmTitle));
-
-        Assert.assertEquals(scmTitle.getText(), scmTitleExpected);
+        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
     }
 
     @Test
     public void testSCMSectionElements() {
-        createFreestyleProject(freestyleProjectName);
+        createFreestyleProject(FREESTYLE_PROJECT_NAME);
 
         WebElement scmDescription = getDriver().findElement(By.xpath("//div[normalize-space()='Connect and manage " +
                 "your code repository to automatically pull the latest code for your builds.']"));
@@ -57,34 +59,34 @@ public class FreestyleProjectConfigurationSCMTest extends BaseTest {
 
     @Test
     public void testAccessSCMInExistingJob() {
-        createFreestyleProject(freestyleProjectName);
+        createFreestyleProject(FREESTYLE_PROJECT_NAME);
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='jenkins-mobile-hide']"))).click();
 
-        getDriver().findElement(By.xpath("//a[@href='job/%s/']".formatted(freestyleProjectName))).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(freestyleProjectName))).click();
+        getDriver().findElement(By.xpath("//a[@href='job/%s/']".formatted(FREESTYLE_PROJECT_NAME))).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(FREESTYLE_PROJECT_NAME))).click();
         WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
 
-        Assert.assertEquals(scmTitle.getText(), scmTitleExpected);
+        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
     }
 
     @Test
     public void testNavigationToSCMViaMenu() {
-        createFreestyleProject(freestyleProjectName);
+        createFreestyleProject(FREESTYLE_PROJECT_NAME);
 
         getDriver().findElement(By.xpath("//button[@data-section-id='source-code-management']")).click();
         WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
 
-        Assert.assertEquals(scmTitle.getText(), scmTitleExpected);
+        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
     }
 
     @Test
     public void testNavigationToSCMByScrollingDown() {
-        createFreestyleProject(freestyleProjectName);
+        createFreestyleProject(FREESTYLE_PROJECT_NAME);
 
         WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", scmTitle);
 
-        Assert.assertEquals(scmTitle.getText(), scmTitleExpected);
+        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
     }
 }

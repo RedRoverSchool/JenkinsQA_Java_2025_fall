@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
+import java.util.List;
+
 public class NewItemPage extends BasePage {
 
     public NewItemPage(WebDriver driver) {
@@ -15,6 +17,12 @@ public class NewItemPage extends BasePage {
 
     public NewItemPage sendName(String name) {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
+
+        return this;
+    }
+
+    public NewItemPage clearSendName() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).clear();
 
         return this;
     }
@@ -33,6 +41,12 @@ public class NewItemPage extends BasePage {
 
         return new ConfigurationFolderPage(getDriver());
 
+    }
+
+    public NewItemPage selectMultibranchPipeline() {
+        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+
+        return this;
     }
 
     public MultibranchPipelineConfigPage selectMultibranchPipelineAndSubmit() {
@@ -64,7 +78,7 @@ public class NewItemPage extends BasePage {
 
     public String getDuplicateErrorMessage() {
         WebElement errorMessage = getWait10().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
+                ExpectedConditions.presenceOfElementLocated(By.id("itemname-invalid")));
         return errorMessage.getText();
     }
 
@@ -77,7 +91,7 @@ public class NewItemPage extends BasePage {
         return new ConfigurationFreestyleProjectPage(getDriver());
     }
 
-    public HomePage sendNewNameAndOriginalNameAndSubmit (String newItemName, String originalItemName) {
+    public HomePage sendNewNameAndOriginalNameAndSubmit(String newItemName, String originalItemName) {
         this.sendName(newItemName);
         getDriver().findElement(By.id("from")).sendKeys(originalItemName);
 
@@ -128,5 +142,51 @@ public class NewItemPage extends BasePage {
                 throw new IllegalArgumentException("Unknown item type: " + itemType);
         }
         return new HomePage(getDriver());
+    }
+
+    public NewItemPage selectPipeline() {
+        getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
+
+        return this;
+    }
+
+    public boolean isPipelineSelected() {
+        WebElement pipelineType = getDriver().findElement(By.xpath("//*[contains(@class, 'WorkflowJob')]"));
+
+        return "true".equals(pipelineType.getAttribute("aria-checked"));
+    }
+
+    public boolean isPipelineHighlighted() {
+        WebElement pipelineType = getDriver().findElement(By.xpath("//*[contains(@class, 'WorkflowJob')]"));
+
+        return pipelineType.getAttribute("class").contains("active");
+    }
+
+    public boolean isOkButtonEnabled() {
+        return getDriver().findElement(By.id("ok-button")).isEnabled();
+    }
+
+    public WebElement getSectionTitle() {
+
+        return getDriver().findElement(By.xpath("//div[text()='Select an item type']"));
+    }
+
+    public List<WebElement> getItemTypes() {
+
+        return getDriver().findElements(By.xpath("//div[@id='items']//label"));
+    }
+  
+    public String getTextHintFromCopyField() {
+        return getDriver().findElement(By.xpath("//p[@class='jenkins-form-label']")).getText();
+    }
+
+    public NewItemPage findCopyFromField() {
+        getDriver().findElement(By.id("from"));
+
+        return this;
+    }
+
+    public String getHeadingText() {
+        return getDriver().findElement(By.tagName("h1")).getText();
     }
 }

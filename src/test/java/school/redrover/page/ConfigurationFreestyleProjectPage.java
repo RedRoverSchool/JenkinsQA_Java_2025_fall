@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,14 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
         return this;
     }
 
+    public WebElement getSaveButton() {
+        return getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Submit")));
+    }
+
+    public WebElement getApplyButton() {
+        return getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Apply")));
+    }
+
     public List<String> getSomeSettingsToList(){
         List<String> settingsList = new ArrayList<>();
 
@@ -73,5 +82,10 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
         settingsList.add(getDriver().findElement(By.name("authToken")).getAttribute("value"));
 
         return settingsList;
+    }
+
+    public WebElement verifySCMTitleIsVisible() {
+        WebElement scmTitle = getDriver().findElement(By.id("source-code-management"));
+        return getWait5().until(ExpectedConditions.visibilityOf(scmTitle));
     }
 }

@@ -7,10 +7,83 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.util.List;
 
 public class ConfigureSystemTest extends BaseTest {
+
+    private final String SYSTEM_MESSAGE = "Hello redRover School!";
+
+    @Test
+    public void testCreateSystemMessage() {
+
+        new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickConfigurationSystem()
+                .clearSystemMessage()
+                .setSystemMessage(SYSTEM_MESSAGE)
+                .clickSave();
+
+        String actualSystemMessage = new HomePage(getDriver())
+                .gotoHomePage()
+                .getSystemMessage();
+
+        Assert.assertEquals(
+                actualSystemMessage,
+                SYSTEM_MESSAGE);
+    }
+
+    @Test(dependsOnMethods = "testCreateSystemMessage")
+    public void testSystemMessagePreview() {
+
+        final String addToPreviewMessage = " This is the best project!";
+
+        String actualPreviewMessage = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickConfigurationSystem()
+                .setSystemMessage(addToPreviewMessage)
+                .getPreviewSystemMessage();
+
+        Assert.assertEquals(SYSTEM_MESSAGE + addToPreviewMessage,  actualPreviewMessage);
+    }
+
+    @Test(dependsOnMethods = "testSystemMessagePreview")
+    public void testChangeSystemMessage() {
+
+        final String addToSystemMessage = "!";
+
+        new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickConfigurationSystem()
+                .setSystemMessage(addToSystemMessage)
+                .clickSave();
+
+        String actualSystemMessage = new HomePage(getDriver())
+                .gotoHomePage()
+                .getSystemMessage();
+
+        Assert.assertEquals(
+                actualSystemMessage, SYSTEM_MESSAGE + addToSystemMessage);
+    }
+
+    @Test
+    public void testChangeNumberOfExecutors() {
+
+        final String numberOfExecutors = "5";
+
+        new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickConfigurationSystem()
+                .setNumberOfExecutors(numberOfExecutors)
+                .clickSave();
+
+        String actualNumberOfExecutors = new HomePage(getDriver())
+                .gotoHomePage()
+                .getNumberOfExecutors();
+
+        Assert.assertEquals(actualNumberOfExecutors, numberOfExecutors);
+    }
 
     private void moveToSystem() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();

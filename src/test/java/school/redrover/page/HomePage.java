@@ -1,12 +1,15 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class HomePage extends BasePage {
@@ -90,10 +93,10 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public HomePage clickRenameItemInDropdownMenu() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/MyFolder/confirm-rename']"))).click();
+    public RenameFolderPage clickRenameItemInDropdownMenu() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='tippy-content']//div[@class='jenkins-dropdown']//a[normalize-space()='Rename']"))).click();
 
-        return this;
+        return new RenameFolderPage(getDriver());
     }
 
     public HomePage confirmDelete() {
@@ -111,7 +114,7 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.cssSelector(".tab.active a")).getText();
     }
 
-    public CreateViewPage clickPlusToCreateView(){
+    public CreateViewPage clickPlusToCreateView() {
         getDriver().findElement(By.cssSelector("[href='/newView']")).click();
 
         return new CreateViewPage(getDriver());
@@ -123,7 +126,7 @@ public class HomePage extends BasePage {
         return new HomePage(getDriver());
     }
 
-    public HomePage clickDeleteViewOnSidebar(){
+    public HomePage clickDeleteViewOnSidebar() {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//a[@data-title='Delete View']"))).click();
 
@@ -152,4 +155,92 @@ public class HomePage extends BasePage {
                 .until(ExpectedConditions.presenceOfElementLocated(By.tagName("p")))
                 .getText();
     }
+
+    public HomePage clickDescription() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
+        return this;
+    }
+
+    public HomePage sendDescriptionText(String text) {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).sendKeys(text);
+        return this;
+    }
+
+    public HomePage submitDescription() {
+        getDriver().findElement(By.name("Submit")).click();
+
+        return this;
+    }
+
+    public String getDescription() {
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
+    }
+
+    public ManageJenkinsPage clickManageJenkinsIcon() {
+        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+
+        return new ManageJenkinsPage(getDriver());
+    }
+
+    public HomePage clearTextDescription() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).clear();
+        return this;
+    }
+
+    public UserAccountPage clickUserAccountViaIconInHeader() {
+        TestUtils.clickJS(getDriver(), By.id("root-action-UserAction"));
+
+        return new UserAccountPage(getDriver());
+    }
+
+    public WebElement getRestApiLink(){
+        return getDriver().findElement(By.xpath("//a[@href='api/']"));
+    }
+
+    public void pressTabAndEnter(WebElement element) {
+        WebElement body = getDriver().findElement(By.tagName("body"));
+
+        int max_tabs = 50;
+
+        for (int i = 0; i < max_tabs; i++) {
+            body.sendKeys(Keys.TAB);
+            WebElement activeElement = getDriver().switchTo().activeElement();
+            if (activeElement.equals(element)) {
+                activeElement.sendKeys(Keys.ENTER);
+                break;
+            }
+        }
+    }
+
+    public String getProjectStatus(String projectName) {
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//*[@id='job_%s']/td[1]/div".formatted(projectName))))
+                .perform();
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-tippy-root]")))
+                .getText();
+    }
+      
+    public <T extends BasePage> T clickHomePageSectionLink(String linkText) {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='%s']/..".formatted(linkText))))
+                .click();
+
+        return (T) this;
+    }
+
+    public String getNumberOfExecutors() {
+        WebElement executors = getDriver().findElement(By.cssSelector("div#executors"));
+
+        String executorsLine;
+        if (executors.getAttribute("class").contains("expanded")) {
+            executorsLine = getDriver().findElement(By.cssSelector("span[tooltip*='executors busy']")).getAttribute("tooltip");
+        } else {
+            executorsLine = getDriver().findElement(By.className("executors-collapsed")).getText();
+        }
+
+        return Arrays.stream(executorsLine.trim().split(" "))
+                .skip(2)
+                .findFirst()
+                .orElse(null);
+    }
+
 }
