@@ -71,7 +71,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
     }
 
-    @Test(dependsOnMethods = "testCreateNewPipeline")
+    @Test
     public void testCancelDeletePipelineViaSideMenu() {
         List<String> actualProjectList = new HomePage(getDriver())
                 .clickCreateJob()
@@ -79,6 +79,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndSubmit()
                 .gotoHomePage()
                 .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickDeletePipeline()
                 .cancelDelete()
                 .gotoHomePage()
                 .getProjectList();
