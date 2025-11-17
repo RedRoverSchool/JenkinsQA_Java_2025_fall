@@ -8,6 +8,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
+import java.util.List;
+
 public class ConfigurationPipelinePage extends BasePage {
 
     public ConfigurationPipelinePage(WebDriver driver) {
@@ -88,6 +90,11 @@ public class ConfigurationPipelinePage extends BasePage {
                 .name("_.displayNameOrNull")));
     }
 
+    public boolean displayNameValueIsEmpty() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .name("_.displayNameOrNull"))).getAttribute("value").isEmpty();
+    }
+
     public ConfigurationPipelinePage setDisplayName(String displayName) {
         new Actions(getDriver()).moveToElement(displayNameInput()).perform();
         displayNameInput().sendKeys(displayName);
@@ -102,5 +109,45 @@ public class ConfigurationPipelinePage extends BasePage {
 
     public WebElement getNumberOfSecondsInput() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("quiet_period")));
+    }
+
+    public WebElement getHelpElement() {
+        return getDriver().findElement(By
+                .xpath(".//div[@id='advanced']/parent::section/descendant::div[@class = 'help']"));
+    }
+
+    public List<String> getTooltipList() {
+        return getTooltipListWeb()
+                .stream()
+                .map(webElement -> webElement.getAttribute("title"))
+                .toList();
+    }
+
+    public List<WebElement> getTooltipListWeb() {
+        return getDriver().findElements(By
+                .xpath(".//div[@id='advanced']/parent::section/descendant::a[@tooltip]"));
+    }
+
+    public String getToggleCheckedLabelText() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                .id("toggle-switch-enable-disable-project")));
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .className("jenkins-toggle-switch__label__checked-title")))
+                .getText();
+    }
+
+    public String getToggleUncheckedLabelText() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                .id("toggle-switch-enable-disable-project")));
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .className("jenkins-toggle-switch__label__unchecked-title")))
+                .getText();
+    }
+
+    public ConfigurationPipelinePage clickToggle() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .id("toggle-switch-enable-disable-project")))
+                .click();
+        return this;
     }
 }

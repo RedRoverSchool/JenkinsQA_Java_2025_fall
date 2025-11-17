@@ -6,6 +6,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.ConfigurationFolderPage;
+import school.redrover.page.FolderPage;
+import school.redrover.page.HomePage;
 import java.time.Duration;
 
 public class FolderConfigurationTest extends BaseTest {
@@ -14,23 +17,24 @@ public class FolderConfigurationTest extends BaseTest {
 
     @Test
     public void testHealthMetricLinkIsDisplayed(){
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(FOLDER_NAME)
+                .selectFolderAndSubmit();
 
-        Assert.assertTrue(getDriver()
-                .findElement(By.xpath("//span[normalize-space(text())='Health metrics']"))
+        Assert.assertTrue(new ConfigurationFolderPage(getDriver())
+                .findHealthMetricsLink()
                 .isDisplayed());
     }
 
-    @Test(dependsOnMethods = {"testHealthMetricLinkIsDisplayed"})
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testHealthMetricButtonIsDisplayed(){
-        getDriver().findElement(By.linkText(FOLDER_NAME)).click();
-        getDriver().findElement(By.linkText("Configure")).click();
+        new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure();
 
-        Assert.assertTrue(getDriver()
-                .findElement(By.xpath("//button[normalize-space(text())='Health metrics']"))
+        Assert.assertTrue(new ConfigurationFolderPage(getDriver())
+                .findHealthMetricButton()
                 .isDisplayed());
     }
 

@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,14 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
         getDriver().findElement(By.name("Submit")).click();
 
         return this;
+    }
+
+    public WebElement getSaveButton() {
+        return getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Submit")));
+    }
+
+    public WebElement getApplyButton() {
+        return getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Apply")));
     }
 
     public List<String> getSomeSettingsToList(){

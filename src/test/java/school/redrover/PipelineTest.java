@@ -5,9 +5,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+import school.redrover.page.PipelineJobPage;
+import school.redrover.page.PipelinePage;
 
 import java.util.List;
 import java.util.Random;
@@ -45,30 +47,72 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testCreatePipeline() throws InterruptedException {
+    public void testCreateNewPipeline() {
+        List<String> actualProjectList = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
+                .getProjectList();
+
+        Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME),
+                String.format("Pipeline with name '%s' was not created", PIPELINE_NAME));
+    }
+
+    @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testDeletePipelineViaDropDownMenu() {
+        final String expectedHomePageHeading = "Welcome to Jenkins!";
+
+        String actualHomePageHeading = new HomePage(getDriver())
+                .openDropdownMenu(PIPELINE_NAME)
+                .clickDeleteItemInDropdownMenu()
+                .confirmDelete()
+                .getHeadingText();
+
+        Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
+    }
+
+    @Test
+    public void testDeletePipelineViaSideMenu() {
+        final String expectedHomePageHeading = "Welcome to Jenkins!";
+
+        String actualHomePageHeading = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
+                .openJobPage(PIPELINE_NAME, new PipelineJobPage(getDriver()))
+                .clickDeletePipeline()
+                .confirmDeleteAtJobPage()
+                .getHeadingText();
+
+        Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
+    }
+
+    @Test
+    public void testCreatePipeline() {
         getDriver().findElement(By.cssSelector(".task:nth-child(1) a")).click();
         getDriver().findElement(By.cssSelector("#name")).sendKeys(PIPELINE_NAME);
         getDriver().findElement(By.cssSelector("div:first-child > ul > li:nth-child(2)")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        Thread.sleep(2000);
-        getDriver().findElement(By.xpath("//a[@href='/']/img")).click();
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']/img"))).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='job/" + PIPELINE_NAME + "/']")).getText(),
                 PIPELINE_NAME);
     }
 
     @Test
-    public void testDeletePipeline() throws InterruptedException {
+    public void testDeletePipeline() {
         getDriver().findElement(By.cssSelector(".task:nth-child(1) a")).click();
         getDriver().findElement(By.cssSelector("#name")).sendKeys(PIPELINE_NAME);
         getDriver().findElement(By.cssSelector("div:first-child > ul > li:nth-child(2)")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        Thread.sleep(2000);
-        getDriver().findElement(By.xpath("//a[@href='/']/img")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']/img"))).click();
 
         List<WebElement> countPosition = getDriver().findElements(By.cssSelector("#projectstatus > tbody > tr"));
 
@@ -94,23 +138,38 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(consoleOutput.getText().contains("Finished: SUCCESS"),
                 "Build output should contain 'Finished: SUCCESS'");
     }
-    @Ignore
+
     @Test
     public void testAddDescription() {
         final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
 
-        createPipeline(PIPELINE_NAME);
+        String descriptionText = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .clickSaveButton()
+                .clickAddDescriptionButton()
+                .addDescriptionAndSave(textDescription)
+                .getDescription();
 
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(textDescription);
-        getDriver().findElement(By.name("Submit")).click();
+        Assert.assertEquals(descriptionText, textDescription);
+    }
 
-        WebElement descriptionText = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
+    @Test(dependsOnMethods = "testAddDescription")
+    public void testEditDescription() {
+        final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
+
+        String descriptionText = new HomePage(getDriver())
+                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickEditDescriptionButton()
+                .clearDescription()
+                .addDescriptionAndSave(textDescription)
+                .getDescription();
 
         Assert.assertEquals(
-                descriptionText.getText(),
-                textDescription);
+                descriptionText,
+                textDescription,
+                "Не совпал текст description после его редактирования");
     }
 
     @DataProvider
@@ -192,29 +251,5 @@ public class PipelineTest extends BaseTest {
                 String.format("Сообщение: '%s', не содержит ожидаемую ключевую информацию об ошибке: '%s'",
                         actualTextErrorMessage.getText(), expectedErrorMessage));
         Assert.assertEquals(errorDescriptionModalWindow.getText(), "A problem occurred while processing the request");
-    }
-    @Ignore
-    @Test(dependsOnMethods = "testAddDescription")
-    public void testEditDescription() {
-        final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
-
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'job/%s/']".formatted(PIPELINE_NAME))))
-                .click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
-                .click();
-        WebElement descriptionField = getDriver().findElement(By.name("description"));
-        descriptionField.clear();
-        descriptionField.sendKeys(textDescription);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
-        WebElement descriptionText = getWait5().until(
-                ExpectedConditions.visibilityOfElementLocated(By.id("description-content")));
-
-        Assert.assertEquals(
-                descriptionText.getText(),
-                textDescription,
-                "Не совпал текст description после его редактирования");
     }
 }
