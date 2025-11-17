@@ -18,24 +18,6 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElem
 public class ConfigureSystem1Test extends BaseTest {
 
     @Test
-    public void testTooltipOfUsageOption() {
-
-        getSystemConfigurePage();
-
-        int numberOfHelpDisplayBlockBeforeClick = getDriver()
-                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
-
-        getDriver().findElement(By.cssSelector("a[tooltip= 'Help for feature: Usage']")).click();
-
-        int numberOfHelpDisplayBlockAfterClick = getDriver()
-                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
-
-        Assert.assertEquals(
-                numberOfHelpDisplayBlockBeforeClick,
-                numberOfHelpDisplayBlockAfterClick - 1);
-    }
-
-    @Test
     public void testUserOptionSelectCheck() {
 
         final List<String> expectedUsageOptions = List.of("Use this node as much as possible",
@@ -110,26 +92,6 @@ public class ConfigureSystem1Test extends BaseTest {
     }
 
     @Test
-    public void testTooltipOfQuietPeriod() {
-
-        getSystemConfigurePage();
-
-        int numberOfHelpDisplayBlockBeforeClick = getDriver()
-                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
-
-        WebElement tooltipOfQuietPeriod = getDriver().findElement(By.cssSelector("a[tooltip= 'Help for feature: Quiet period']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", tooltipOfQuietPeriod);
-        tooltipOfQuietPeriod.click();
-
-        int numberOfHelpDisplayBlockAfterClick = getDriver()
-                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
-
-        Assert.assertEquals(
-                numberOfHelpDisplayBlockBeforeClick,
-                numberOfHelpDisplayBlockAfterClick - 1);
-    }
-
-    @Test
     public void testHintOfQuietPeriod() {
 
         final String incorrectQuietPeriod = "-2";
@@ -182,27 +144,6 @@ public class ConfigureSystem1Test extends BaseTest {
                 .collect(Collectors.toList());
 
         Assert.assertEquals(actualGlobalProperties, expectedGlobalProperties);
-    }
-
-    @Test
-    public void testTooltipOfDisableDeferredWipeoutOnThisNode() {
-
-        getSystemConfigurePage();
-
-        int numberOfHelpDisplayBlockBeforeClick = getDriver()
-                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
-
-        WebElement disableDeferredWipeoutOnThisNode = getDriver()
-                .findElement(By.cssSelector("a[tooltip= 'Help for feature: Disable deferred wipeout on this node']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", disableDeferredWipeoutOnThisNode);
-        disableDeferredWipeoutOnThisNode.click();
-
-        int numberOfHelpDisplayBlockAfterClick = getDriver()
-                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
-
-        Assert.assertEquals(
-                numberOfHelpDisplayBlockBeforeClick,
-                numberOfHelpDisplayBlockAfterClick - 1);
     }
 
     @Test

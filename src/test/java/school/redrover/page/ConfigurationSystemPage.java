@@ -41,6 +41,15 @@ public class ConfigurationSystemPage extends BasePage {
         return this;
     }
 
+    public Integer getNumberOfOpenTooltips() {
+        return getDriver().findElements(By.cssSelector("div .help[style='display: block;']")).size();
+    }
+
+    public void clickTooltip(String tooltipName) {
+        getDriver().findElement(By.cssSelector("a[tooltip= 'Help for feature: %s']".formatted(tooltipName))).click();
+    }
+
+
     public void clickSave() {
         WebElement saveButton = getDriver().findElement(By.name("Submit"));
         saveButton.click();

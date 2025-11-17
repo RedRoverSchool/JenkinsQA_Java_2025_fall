@@ -4,11 +4,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.ConfigurationSystemPage;
 import school.redrover.page.HomePage;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ConfigureSystemTest extends BaseTest {
@@ -83,6 +87,36 @@ public class ConfigureSystemTest extends BaseTest {
                 .getNumberOfExecutors();
 
         Assert.assertEquals(actualNumberOfExecutors, numberOfExecutors);
+    }
+
+    @Test(dataProvider = "tooltips")
+    public void testTooltips(String tooltipName) {
+
+        ConfigurationSystemPage configurationSystemPage = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickConfigurationSystem();
+        int numberOfOpenTooltipBeforeClick = configurationSystemPage.getNumberOfOpenTooltips();
+
+        configurationSystemPage.clickTooltip(tooltipName);
+        int numberOfOpenTooltipAfterClick = configurationSystemPage.getNumberOfOpenTooltips();
+
+        Assert.assertEquals(
+                numberOfOpenTooltipAfterClick - numberOfOpenTooltipBeforeClick,
+                1);
+    }
+
+    @DataProvider(name = "tooltips")
+    private Iterator<Object[]> getTooltipNameList() {
+        List<Object[]> data = new ArrayList<>();
+        data.add(new Object[]{"Home directory"});
+        data.add(new Object[]{"Usage"});
+        data.add(new Object[]{"Computer Retention Check Interval"});
+        data.add(new Object[]{"Quiet period"});
+        data.add(new Object[]{"Jenkins URL"});
+        data.add(new Object[]{"System Admin e-mail address"});
+        data.add(new Object[]{"Resource Root URL"});
+        data.add(new Object[]{"Disable deferred wipeout on this node"});
+        return data.iterator();
     }
 
     private void moveToSystem() {
