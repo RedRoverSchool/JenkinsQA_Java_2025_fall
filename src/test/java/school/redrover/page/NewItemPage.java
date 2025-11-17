@@ -84,8 +84,8 @@ public class NewItemPage extends BasePage {
 
     public ConfigurationFreestyleProjectPage selectFreestyleProjectAndSubmit() {
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
 
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[@id = 'general']")));
 
         return new ConfigurationFreestyleProjectPage(getDriver());
