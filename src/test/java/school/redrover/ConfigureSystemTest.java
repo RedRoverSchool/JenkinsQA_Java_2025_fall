@@ -8,7 +8,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.ConfigurationSystemPage;
 import school.redrover.page.HomePage;
 
 import java.util.ArrayList;
