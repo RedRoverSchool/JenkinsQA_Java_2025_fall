@@ -61,7 +61,7 @@ public class FolderTest extends BaseTest {
                 .clickSidebarNewItem()
                 .sendName(SUB_FOLDER_NAME)
                 .selectFolder()
-                .getDuplicateErrorMessage();
+                .getDuplicateOrUnsafeCharacterErrorMessage();
 
         Assert.assertEquals(
                 duplicateErrorMessage,
