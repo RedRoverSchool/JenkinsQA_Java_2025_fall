@@ -57,4 +57,8 @@ public abstract class BasePage extends BaseModel {
 
         return new RestApiPage(getDriver());
     }
+
+    public String getCurrentUrl() {
+        return getDriver().getCurrentUrl();
+    }
 }
