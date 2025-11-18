@@ -7,12 +7,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.ConfigurationPipelinePage;
 import school.redrover.page.HomePage;
 import school.redrover.page.NewItemPage;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Objects;
 
 public class NewItemPageTest extends BaseTest {
     private final By newItemButtonFromHomePage = By.xpath(".//div[@id='tasks']/div[1]/span/a");
@@ -108,5 +108,18 @@ public class NewItemPageTest extends BaseTest {
 
         Assert.assertTrue(newItemPage.isPipelineHighlighted());
         Assert.assertTrue(newItemPage.isOkButtonEnabled());
+    }
+
+    @Test
+    public void testRedirectToConfigurationPage() {
+        new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("Test Project")
+                .selectPipeline()
+                .clickOkButton();
+
+        ConfigurationPipelinePage configurationPage = new ConfigurationPipelinePage(getDriver());
+
+        Assert.assertTrue(configurationPage.getConfigurationPipelinePage().isDisplayed());
     }
 }
