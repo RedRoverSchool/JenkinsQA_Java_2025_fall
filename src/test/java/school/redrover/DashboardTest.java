@@ -97,7 +97,7 @@ public class DashboardTest extends BaseTest {
                 .gotoHomePage()
                 .getStatusProjectIconTooltipTextOnHover();
 
-        Assert.assertEquals(actualStatusTooltip, tooltipEnableText, "Проект отключен или не создан");
+        Assert.assertEquals(actualStatusTooltip, tooltipEnableText, "Проект отключен или не создан!");
     }
 
     @Test
