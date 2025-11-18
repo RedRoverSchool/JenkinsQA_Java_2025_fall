@@ -39,4 +39,8 @@ public class MultibranchPipelineJobPage extends BasePage {
 
         return new MultibranchPipelineConfirmRenamePage(getDriver());
     }
+
+    public String getHeading() {
+        return getDriver().findElement(By.tagName("h1")).getText();
+    }
 }
