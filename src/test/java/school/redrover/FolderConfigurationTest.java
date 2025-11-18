@@ -5,6 +5,8 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.FolderPage;
 import school.redrover.page.HomePage;
+import java.util.Arrays;
+import java.util.List;
 
 public class FolderConfigurationTest extends BaseTest {
 
@@ -44,16 +46,17 @@ public class FolderConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testVerifyMetricTypeList(){
-        var configPage = new HomePage(getDriver())
+        final List<String> actualMetricTypes = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickConfigure()
+                .clickHealthMetricsSidebarLink()
                 .clickHealthMetricsButton()
-                .clickAddMetricButton();
+                .clickAddMetricButton()
+                .getAllMetricTypeNames();
 
-        final String metricType1 = configPage.getMetricType1();
-        final String metricType2 = configPage.getMetricType2();
+        List<String> expectedMetricTypes= Arrays.asList("Child item with the given name","Child item with worst health");
 
-        Assert.assertEquals(metricType1, "Child item with the given name");
-        Assert.assertEquals(metricType2, "Child item with worst health");
+        Assert.assertEquals(actualMetricTypes, expectedMetricTypes,
+                "The list of displayed metric types in the dropdown did not match the expected list.");
     }
 }

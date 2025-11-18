@@ -4,9 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.common.BasePage;
-import java.time.Duration;
+import java.util.List;
 
 public class ConfigurationFolderPage extends BasePage {
 
@@ -35,15 +34,17 @@ public class ConfigurationFolderPage extends BasePage {
     }
 
     public String getHealthMetricsSidebarLink() {
-        return getDriver()
-                .findElement(By.cssSelector("button[data-section-id='health-metrics']"))
-                .getText();
+        String linkText = getDriver().findElement(By.cssSelector("button[data-section-id='health-metrics']"))
+                .getText()
+                .trim();
+
+        return linkText;
     }
 
     public String getHealthMetricsButton() {
-        return getDriver()
-                .findElement(By.cssSelector("button.jenkins-button.advanced-button"))
-                .getText();
+        String buttonText = getDriver().findElement(By.cssSelector("button.jenkins-button.advanced-button")).getText().trim();
+
+        return buttonText;
     }
 
     public ConfigurationFolderPage clickHealthMetricsSidebarLink() {
@@ -53,7 +54,9 @@ public class ConfigurationFolderPage extends BasePage {
     }
 
     public String getSectionName() {
-        return getDriver().findElement(By.id("health-metrics")).getText();
+        String sectionName = getDriver().findElement(By.id("health-metrics")).getText().trim();
+
+        return sectionName;
     }
 
     public ConfigurationFolderPage clickHealthMetricsButton() {
@@ -64,22 +67,23 @@ public class ConfigurationFolderPage extends BasePage {
 
     public ConfigurationFolderPage clickAddMetricButton() {
         getDriver().findElement(By.cssSelector("button.jenkins-button.hetero-list-add")).click();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
-        wait.until(ExpectedConditions
+        getWait2().until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//input[@class='jenkins-dropdown__filter-input']")));
 
         return this;
     }
 
-    public String getMetricType1() {
-        return getDriver()
-                .findElement(By.xpath("//button[normalize-space(text())='Child item with the given name']"))
-                .getText();
-    }
+    public List<String> getAllMetricTypeNames() {
+        By metricTypesList = By.xpath("//div[@class='jenkins-dropdown jenkins-dropdown--compact']//button");
 
-    public String getMetricType2() {
-        return getDriver()
-                .findElement(By.xpath("//button[normalize-space(text())='Child item with worst health']"))
-                .getText();
+        clickAddMetricButton();
+        getWait2().until(ExpectedConditions.presenceOfAllElementsLocatedBy(metricTypesList));
+
+        List<String> metricTypeNames = getDriver().findElements(metricTypesList)
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+
+        return metricTypeNames;
     }
 }
