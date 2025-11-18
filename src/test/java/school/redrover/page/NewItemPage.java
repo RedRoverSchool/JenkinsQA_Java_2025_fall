@@ -76,9 +76,9 @@ public class NewItemPage extends BasePage {
         return new ConfigurationPipelinePage(getDriver());
     }
 
-    public String getDuplicateErrorMessage() {
+    public String getDuplicateOrUnsafeCharacterErrorMessage() {
         WebElement errorMessage = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(By.id("itemname-invalid")));
+                ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
         return errorMessage.getText();
     }
 

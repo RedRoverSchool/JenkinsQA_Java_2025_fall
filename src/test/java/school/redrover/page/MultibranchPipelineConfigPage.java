@@ -55,8 +55,7 @@ public class MultibranchPipelineConfigPage extends BasePage {
     }
 
     public String getToggleTooltipTextOnHover() {
-        WebElement toggleElement = getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("toggle-switch-enable-disable-project")));
+        WebElement toggleElement = getDriver().findElement(By.id("toggle-switch-enable-disable-project"));
 
         new Actions(getDriver()).moveToElement(toggleElement).perform();
 
