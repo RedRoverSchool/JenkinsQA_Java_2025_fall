@@ -72,6 +72,21 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    public void testCancelDeletePipelineViaDropDownMenu() {
+        List<String> actualProjectList = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PIPELINE_NAME)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
+                .openDropdownMenu(PIPELINE_NAME)
+                .clickDeleteItemInDropdownMenu()
+                .cancelDelete()
+                .getProjectList();
+
+        Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME));
+    }
+
+    @Test
     public void testCancelDeletePipelineViaSideMenu() {
         List<String> actualProjectList = new HomePage(getDriver())
                 .clickCreateJob()
