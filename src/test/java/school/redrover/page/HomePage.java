@@ -259,4 +259,13 @@ public class HomePage extends BasePage {
 
         return columnsList.size();
     }
+
+    public String getStatusProjectIconTooltipTextOnHover() {
+        WebElement statusIcon = getDriver().findElement(By.cssSelector("[class*=\"job-status\"] td:first-child svg"));
+
+        new Actions(getDriver()).moveToElement(statusIcon).perform();
+
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
+                .getText();
+    }
 }

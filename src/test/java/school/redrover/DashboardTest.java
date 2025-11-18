@@ -87,6 +87,20 @@ public class DashboardTest extends BaseTest {
     }
 
     @Test
+    public void testStatusProjectIconHasTooltip() {
+        final String tooltipEnableText = "Not built";
+
+        String actualStatusTooltip = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(CREATED_JOBS_NAME.get(0))
+                .selectFreestyleProjectAndSubmit()
+                .gotoHomePage()
+                .getStatusProjectIconTooltipTextOnHover();
+
+        Assert.assertEquals(actualStatusTooltip, tooltipEnableText, "Проект отключен или не создан");
+    }
+
+    @Test
     public void testGoToManageJenkinsPage() {
         final String expectedTitle = "Manage Jenkins";
 
