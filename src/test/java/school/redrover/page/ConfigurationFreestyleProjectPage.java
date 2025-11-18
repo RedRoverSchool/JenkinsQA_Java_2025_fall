@@ -102,4 +102,26 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
 
         return this;
     }
+
+    public WebElement getScmDescription() {
+        return getDriver().findElement(By.xpath(
+                "//div[normalize-space()='Connect and manage your code repository to automatically pull the latest code for your builds.']"));
+    }
+
+    public String getSelectedRadioLabel() {
+        WebElement selectedInput = getDriver().findElement(By.xpath("//input[@name='scm' and @checked='true']"));
+        String inputId = selectedInput.getAttribute("id");
+        WebElement linkedLabel = getDriver().findElement(By.xpath("//label[@for='%s']".formatted(inputId)));
+        String labelText = linkedLabel.getText();
+
+        return labelText;
+    }
+
+    public boolean isGitOptionDisplayed() {
+        return getDriver().findElement(By.xpath("//label[normalize-space(text())='Git']")).isDisplayed();
+    }
+
+    public String getGitTooltipText() {
+        return getDriver().findElement(By.xpath("//a[@title='Help for feature: Git']")).getAttribute("tooltip");
+    }
 }
