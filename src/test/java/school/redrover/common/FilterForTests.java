@@ -70,15 +70,23 @@ public class FilterForTests implements IMethodInterceptor {
     }
 
     private static Set<String> getAffectedFiles(Set<String> directlyChangedFile, Map<String, Set<String>> reverseDeps) {
-        Set<String> filesToRun = new HashSet<>(directlyChangedFile);
+        Set<String> affectedFiles = new HashSet<>(directlyChangedFile);
+        Queue<String> queue = new LinkedList<>(directlyChangedFile);
 
-        for (String changedPath : directlyChangedFile) {
-            Set<String> dependentPaths = reverseDeps.get(changedPath);
-            if (dependentPaths != null) {
-                filesToRun.addAll(dependentPaths);
+        while (!queue.isEmpty()) {
+            String changedFile = queue.poll();
+
+            Set<String> directDependents = reverseDeps.get(changedFile);
+
+            if (directDependents != null) {
+                for (String dependentFile : directDependents) {
+                    if (affectedFiles.add(dependentFile)) {
+                        queue.offer(dependentFile);
+                    }
+                }
             }
         }
 
-        return filesToRun;
+        return affectedFiles;
     }
 }
