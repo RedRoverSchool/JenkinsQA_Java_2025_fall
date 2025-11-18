@@ -55,7 +55,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickNewItemOnLeftMenu()
                 .selectMultibranchPipeline()
                 .sendName(MULTIBRANCH_PIPELINE_NAME)
-                .getDuplicateErrorMessage();
+                .getDuplicateOrUnsafeCharacterErrorMessage();
 
         Assert.assertEquals(dublicateProject, errorMessage, "Incorrect error message");
     }
@@ -115,21 +115,20 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualSavedMessage, "Saved", "Message isn't correct");
     }
 
-    @Ignore
     @Test
     public void testCreateItemWithSpecialCharacters() {
-        final String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
+        final String[] specialCharacters = {"!", "&", "#", "@", "%", "*", "$", "?", "^", "|", "/", "]", "["};
 
-        HomePage homePage = new HomePage(getDriver());
-        NewItemPage newItemPage = homePage.clickNewItemOnLeftMenu();
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu();
 
         for (String specChar : specialCharacters) {
-            String expectedErrorMessage = "» ‘" + specChar + "’ is an unsafe character";
+            String expectedErrorMessage = "» ‘%s’ is an unsafe character".formatted(specChar);
 
             String actualErrorMessage = newItemPage
                     .clearSendName()
-                    .sendName("multi" + specChar + "branch")
-                    .getDuplicateErrorMessage();
+                    .sendName("multib" + specChar + "ranch")
+                    .getDuplicateOrUnsafeCharacterErrorMessage();
 
             Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "Error message isn't displayed");
         }
