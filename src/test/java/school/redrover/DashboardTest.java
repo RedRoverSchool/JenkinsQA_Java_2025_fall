@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
@@ -98,7 +97,6 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(actualTitle, expectedTitle);
     }
 
-    @Ignore
     @Test
     public void testAddColumnsInListViewOnDashboard() {
         final String listViewName = "ListView_01";
