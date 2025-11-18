@@ -3,10 +3,12 @@ package school.redrover;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.EditViewPage;
 import school.redrover.page.HomePage;
+import school.redrover.testdata.Page;
 import school.redrover.testdata.TestDataProvider;
 
 import java.util.*;
@@ -41,10 +43,10 @@ public class DashboardTest extends BaseTest {
     }
 
     @Test(dataProvider = "Links", dataProviderClass = TestDataProvider.class)
-    public void testContentBlockLinks(String linkText, String expectedUrlEndpoint) {
-        new HomePage(getDriver()).clickHomePageSectionLink(linkText);
+    public void testContentBlockLinks(String linkText, String expectedUrlEndpoint, Page page) {
+        BasePage resultPage = new HomePage(getDriver()).clickHomePageSectionLink(linkText, page.createPage(getDriver()));
 
-        Assert.assertTrue(Objects.requireNonNull(getDriver().getCurrentUrl()).contains(expectedUrlEndpoint));
+        Assert.assertTrue(Objects.requireNonNull(resultPage.getCurrentUrl()).contains(expectedUrlEndpoint));
     }
 
     @Test

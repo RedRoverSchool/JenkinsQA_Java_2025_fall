@@ -231,11 +231,11 @@ public class HomePage extends BasePage {
                 .getText();
     }
       
-    public <T extends BasePage> T clickHomePageSectionLink(String linkText) {
+    public <T extends BasePage> T clickHomePageSectionLink(String linkText, T page) {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='%s']/..".formatted(linkText))))
                 .click();
 
-        return (T) this;
+        return page;
     }
 
     public String getNumberOfExecutors() {
