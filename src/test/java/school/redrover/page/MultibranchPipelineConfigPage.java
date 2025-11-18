@@ -21,10 +21,21 @@ public class MultibranchPipelineConfigPage extends BasePage {
 
     public MultibranchPipelineJobPage clickSaveButton() {
         getDriver().findElement(By.name("Submit")).click();
-        getWait2().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                 By.cssSelector(".empty-state-section h2")));
 
         return new MultibranchPipelineJobPage(getDriver());
+    }
+
+    public MultibranchPipelineConfigPage clickApply() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("Apply"))).click();
+
+        return this;
+    }
+
+    public String getSavedMessage() {
+        return getWait5().until(ExpectedConditions.
+                visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']"))).getText();
     }
 
     public MultibranchPipelineConfigPage clickToggle() {
@@ -44,8 +55,7 @@ public class MultibranchPipelineConfigPage extends BasePage {
     }
 
     public String getToggleTooltipTextOnHover() {
-        WebElement toggleElement = getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("toggle-switch-enable-disable-project")));
+        WebElement toggleElement = getDriver().findElement(By.id("toggle-switch-enable-disable-project"));
 
         new Actions(getDriver()).moveToElement(toggleElement).perform();
 

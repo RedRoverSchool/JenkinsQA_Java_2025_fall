@@ -2,6 +2,7 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -60,4 +61,33 @@ public class PipelinePage extends BasePage {
         return this;
     }
 
+    public String getWarningMessage() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("enable-project")))
+                .getText();
+    }
+
+    public PipelinePage clickDeletePipeline() {
+        getDriver().findElement(By.className("confirmation-link"))
+                .click();
+
+        return this;
+    }
+
+    public HomePage confirmDeleteAtJobPage() {
+        getDriver().findElement(By.cssSelector("[data-id='ok']"))
+                .click();
+
+        return new HomePage(getDriver());
+    }
+
+    public PipelinePage cancelDelete() {
+        WebElement yesButton = getWait2().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("//dialog[@open]//button[@data-id='cancel']"))
+        );
+        yesButton.click();
+        getWait5().until(ExpectedConditions.stalenessOf(yesButton));
+
+        return this;
+    }
 }

@@ -3,13 +3,13 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
 
 import java.util.List;
 
@@ -17,16 +17,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchName";
     private static final String RENAMED_MULTIBRANCH_PIPELINE = "RenamedMultibranchName";
-
-    private void createMultibranchPipeline(String name) {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
-        getDriver().findElement(By.id("name")).sendKeys(name);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getDriver().findElement(By.name("Submit")).click();
-    }
 
     @Test
     public void testAddingDescriptionCreatingMultibranch() {
@@ -65,75 +55,82 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickNewItemOnLeftMenu()
                 .selectMultibranchPipeline()
                 .sendName(MULTIBRANCH_PIPELINE_NAME)
-                .getDuplicateErrorMessage();
+                .getDuplicateOrUnsafeCharacterErrorMessage();
 
         Assert.assertEquals(dublicateProject, errorMessage, "Incorrect error message");
+    }
+
+    @Test (dependsOnMethods = "testTryCreateProjectExistName")
+    public void testDeleteMultibranchPipeline() {
+
+        List<String> projectList = new HomePage(getDriver())
+                .openDropdownMenu(MULTIBRANCH_PIPELINE_NAME)
+                .clickDeleteItemInDropdownMenu()
+                .confirmDelete()
+                .gotoHomePage()
+                .getProjectList();
+
+        Assert.assertEquals(projectList.size(), 0);
     }
 
     @Test
     public void testVerifyDisableMessaageOnStatusPage() {
         final String disableText = "This Multibranch Pipeline is currently disabled";
 
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(MULTIBRANCH_PIPELINE_NAME))).click();
-        getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        String actualDisableText = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .clickToggle()
+                .clickSaveButton()
+                .getDisabledText();
 
-        String actualDisableText = getWait2().until(ExpectedConditions
-                .visibilityOfElementLocated(By.id("disabled-message"))).getText();
         Assert.assertTrue(actualDisableText.contains(disableText));
     }
 
-    @Ignore
     @Test
     public void testVerifyEnableToogleTooltip() {
         final String tooltipText =
                 "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(MULTIBRANCH_PIPELINE_NAME))).click();
-        WebElement toggleTooltip = getDriver().findElement(By.id("toggle-switch-enable-disable-project"));
-
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(toggleTooltip).perform();
-
-        String actualTooltip = getWait2().until(ExpectedConditions
-                .visibilityOfElementLocated(By.className("tippy-content"))).getText();
+        String actualTooltip = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .getToggleTooltipTextOnHover();
 
         Assert.assertEquals(actualTooltip, tooltipText);
     }
 
-    @Ignore
     @Test
     public void testVerifyAppearSaveMessage() {
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(MULTIBRANCH_PIPELINE_NAME))).click();
-        getDriver().findElement(By.cssSelector("#toggle-switch-enable-disable-project > label")).click();
-        getDriver().findElement(By.name("Apply")).click();
+        String actualSavedMessage = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .clickToggle()
+                .clickApply()
+                .getSavedMessage();
 
-        String actualSavedMessage = getWait2().until(ExpectedConditions.
-                visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']"))).getText();
-
-        Assert.assertEquals(actualSavedMessage, "Saved");
+        Assert.assertEquals(actualSavedMessage, "Saved", "Message isn't correct");
     }
 
     @Test
     public void testCreateItemWithSpecialCharacters() {
-        final String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
+        final String[] specialCharacters = {"!", "&", "#", "@", "%", "*", "$", "?", "^", "|", "/", "]", "["};
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        WebElement nameField = getDriver().findElement(By.id("name"));
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu();
 
         for (String specChar : specialCharacters) {
-            String errorMessage = "» ‘" + specChar + "’ is an unsafe character";
+            String expectedErrorMessage = "» ‘%s’ is an unsafe character".formatted(specChar);
 
-            nameField.clear();
-            nameField.sendKeys("multi" + specChar + "branch");
+            String actualErrorMessage = newItemPage
+                    .clearSendName()
+                    .sendName("multib" + specChar + "ranch")
+                    .getDuplicateOrUnsafeCharacterErrorMessage();
 
-            String actualMessage = getWait5().until(ExpectedConditions.
-                    visibilityOfElementLocated(By.id("itemname-invalid"))).getText();
-
-            Assert.assertEquals(actualMessage, errorMessage, "Error message isn't displayed");
+            Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "Error message isn't displayed");
         }
     }
 

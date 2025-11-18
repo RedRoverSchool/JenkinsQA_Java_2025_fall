@@ -9,118 +9,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.frequency;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 public class ConfigureSystem1Test extends BaseTest {
-
-    @Test
-    public void testCreateSystemMessage() {
-
-        final String systemMessage = "Hello redRover School!";
-
-        getSystemConfigurePage();
-
-        WebElement systemMessageTextArea = getDriver().findElement(By.name("system_message"));
-        systemMessageTextArea.clear();
-        systemMessageTextArea.sendKeys(systemMessage);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("systemmessage")).getText(),
-                systemMessage);
-    }
-
-    @Test
-    public void testChangeSystemMessage() {
-
-        final String firstPartSystemMessage = "Hello";
-        final String secondPartSystemMessage = " redRover School!";
-
-        getSystemConfigurePage();
-
-        WebElement systemMessageTextArea = getDriver().findElement(By.name("system_message"));
-        systemMessageTextArea.clear();
-        systemMessageTextArea.sendKeys(firstPartSystemMessage);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getSystemConfigurePage();
-
-        getDriver().findElement(By.name("system_message")).sendKeys(secondPartSystemMessage);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.id("systemmessage")).getText(),
-                firstPartSystemMessage + secondPartSystemMessage);
-    }
-
-    @Test
-    public void testSystemMessagePreview() {
-
-        final String systemMessage = "Hello redRover School!";
-
-        getSystemConfigurePage();
-
-        WebElement systemMessageTextArea = getDriver().findElement(By.name("system_message"));
-        systemMessageTextArea.clear();
-        systemMessageTextArea.sendKeys(systemMessage);
-
-        getDriver().findElement(By.cssSelector("a[previewendpoint]")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.className("textarea-preview")).getText(),
-                systemMessage);
-    }
-
-    @Test
-    public void testChangeNumberOfExecutors() {
-
-        final String numberOfExecutors = "12";
-
-        getSystemConfigurePage();
-
-        WebElement systemMessageTextArea = getDriver().findElement(By.name("_.numExecutors"));
-        systemMessageTextArea.clear();
-        systemMessageTextArea.sendKeys(numberOfExecutors);
-        getDriver().findElement(By.name("Submit")).click();
-
-        WebElement executors = getDriver().findElement(By.cssSelector("div#executors"));
-
-        String executorsLine;
-        if (executors.getAttribute("class").contains("expanded")) {
-            executorsLine = getDriver().findElement(By.cssSelector("span[tooltip*='executors busy']")).getAttribute("tooltip");
-        } else {
-            executorsLine = getDriver().findElement(By.className("executors-collapsed")).getText();
-        }
-
-        List<String> lineElements = Arrays.stream(executorsLine.split(" ")).skip(1).toList();
-        int frequency = frequency(lineElements, numberOfExecutors);
-
-        Assert.assertEquals(frequency, 1);
-    }
-
-    @Test
-    public void testTooltipOfUsageOption() {
-
-        getSystemConfigurePage();
-
-        int numberOfHelpDisplayBlockBeforeClick = getDriver()
-                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
-
-        getDriver().findElement(By.cssSelector("a[tooltip= 'Help for feature: Usage']")).click();
-
-        int numberOfHelpDisplayBlockAfterClick = getDriver()
-                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
-
-        Assert.assertEquals(
-                numberOfHelpDisplayBlockBeforeClick,
-                numberOfHelpDisplayBlockAfterClick - 1);
-    }
 
     @Test
     public void testUserOptionSelectCheck() {
@@ -197,27 +92,6 @@ public class ConfigureSystem1Test extends BaseTest {
     }
 
     @Test
-    public void testTooltipOfQuietPeriod() {
-
-        getSystemConfigurePage();
-
-        int numberOfHelpDisplayBlockBeforeClick = getDriver()
-                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
-
-        WebElement tooltipOfQuietPeriod = getDriver().findElement(By.cssSelector("a[tooltip= 'Help for feature: Quiet period']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", tooltipOfQuietPeriod);
-        tooltipOfQuietPeriod.click();
-
-        int numberOfHelpDisplayBlockAfterClick = getDriver()
-                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
-
-        Assert.assertEquals(
-                numberOfHelpDisplayBlockBeforeClick,
-                numberOfHelpDisplayBlockAfterClick - 1);
-    }
-
-
-    @Test
     public void testHintOfQuietPeriod() {
 
         final String incorrectQuietPeriod = "-2";
@@ -270,27 +144,6 @@ public class ConfigureSystem1Test extends BaseTest {
                 .collect(Collectors.toList());
 
         Assert.assertEquals(actualGlobalProperties, expectedGlobalProperties);
-    }
-
-    @Test
-    public void testTooltipOfDisableDeferredWipeoutOnThisNode() {
-
-        getSystemConfigurePage();
-
-        int numberOfHelpDisplayBlockBeforeClick = getDriver()
-                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
-
-        WebElement disableDeferredWipeoutOnThisNode = getDriver()
-                .findElement(By.cssSelector("a[tooltip= 'Help for feature: Disable deferred wipeout on this node']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", disableDeferredWipeoutOnThisNode);
-        disableDeferredWipeoutOnThisNode.click();
-
-        int numberOfHelpDisplayBlockAfterClick = getDriver()
-                .findElements(By.cssSelector("div .help[style='display: block;']")).size();
-
-        Assert.assertEquals(
-                numberOfHelpDisplayBlockBeforeClick,
-                numberOfHelpDisplayBlockAfterClick - 1);
     }
 
     @Test

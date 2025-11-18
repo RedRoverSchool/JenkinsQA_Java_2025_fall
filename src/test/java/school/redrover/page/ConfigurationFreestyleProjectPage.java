@@ -83,4 +83,23 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
 
         return settingsList;
     }
+
+    public WebElement verifySCMTitleIsVisible() {
+        WebElement scmTitle = getDriver().findElement(By.id("source-code-management"));
+
+        return getWait5().until(ExpectedConditions.visibilityOf(scmTitle));
+    }
+
+    public ConfigurationFreestyleProjectPage clickSourceCodeManagementMenuOption() {
+        getDriver().findElement(By.xpath("//button[@data-section-id='source-code-management']")).click();
+
+        return this;
+    }
+
+    public ConfigurationFreestyleProjectPage scrollToSourceCodeManagementWithJS() {
+        WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", scmTitle);
+
+        return this;
+    }
 }

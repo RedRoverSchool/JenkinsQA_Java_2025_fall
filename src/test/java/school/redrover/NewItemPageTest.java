@@ -76,15 +76,16 @@ public class NewItemPageTest extends BaseTest {
                 "Organization Folder"
         );
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickCreateJob();
 
-        WebElement sectionTitle = getDriver().findElement(By.xpath("//div[text()='Select an item type']"));
-        List<WebElement> actualItemTypes = getDriver().findElements(By.xpath("//div[@id='items']//label"));
+        List<WebElement> actualItemTypes = newItemPage.getItemTypes();
+
+        Assert.assertTrue(newItemPage.getSectionTitle().isDisplayed());
         Assert.assertNotEquals(actualItemTypes.size(), 0);
         for (int i = 0; i < expectedItemTypes.size(); i++) {
-            Assert.assertTrue(actualItemTypes.get(i).isDisplayed());
+        Assert.assertTrue(actualItemTypes.get(i).isDisplayed());
         }
-        Assert.assertTrue(sectionTitle.isDisplayed());
     }
 
     @Test
@@ -96,7 +97,7 @@ public class NewItemPageTest extends BaseTest {
                 .isPipelineSelected();
 
         Assert.assertTrue(isSelected);
-     }
+    }
 
     @Test
     public void testPipelineTypeHighlightAndOkButtonEnables() {
