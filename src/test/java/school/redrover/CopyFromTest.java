@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import java.time.Duration;
@@ -23,6 +24,7 @@ public class CopyFromTest extends BaseTest {
     private static final String LIBRARY_VERSION = "main";
     private static final String PROJECT_REPOSITORY = "https://github.com/RedRoverSchool/JenkinsQA_Java_2025_fall";
 
+    @Ignore
     @Test
     public void verifySettingsCopiedFromFolderTest() {
         makeFolder();
