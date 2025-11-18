@@ -189,8 +189,4 @@ public class NewItemPage extends BasePage {
     public String getHeadingText() {
         return getDriver().findElement(By.tagName("h1")).getText();
     }
-
-    public void clickOkButton() {
-        getDriver().findElement(By.id("ok-button")).click();
-    }
 }

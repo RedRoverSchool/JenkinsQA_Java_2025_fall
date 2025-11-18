@@ -112,14 +112,11 @@ public class NewItemPageTest extends BaseTest {
 
     @Test
     public void testRedirectToConfigurationPage() {
-        new HomePage(getDriver())
+        ConfigurationPipelinePage configPage = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName("Test Project")
-                .selectPipeline()
-                .clickOkButton();
+                .selectPipelineAndSubmit();
 
-        ConfigurationPipelinePage configurationPage = new ConfigurationPipelinePage(getDriver());
-
-        Assert.assertTrue(configurationPage.getConfigurationPipelinePage().isDisplayed());
+        Assert.assertTrue(configPage.getPageHeader().isDisplayed());
     }
 }

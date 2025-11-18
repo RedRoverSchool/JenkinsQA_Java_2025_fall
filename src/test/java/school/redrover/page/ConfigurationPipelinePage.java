@@ -151,7 +151,7 @@ public class ConfigurationPipelinePage extends BasePage {
         return this;
     }
 
-    public WebElement getConfigurationPipelinePage() {
+    public WebElement getPageHeader() {
         return getDriver().findElement(By.xpath("//span[text()='Configuration']"));
     }
 }
