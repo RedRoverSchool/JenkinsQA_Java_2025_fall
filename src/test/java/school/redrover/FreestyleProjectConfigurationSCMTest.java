@@ -1,13 +1,11 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.ConfigurationFreestyleProjectPage;
 import school.redrover.page.FreestyleProjectPage;
 import school.redrover.page.HomePage;
 
@@ -75,20 +73,26 @@ public class FreestyleProjectConfigurationSCMTest extends BaseTest {
 
     @Test
     public void testNavigationToSCMViaMenu() {
-        createFreestyleProject(FREESTYLE_PROJECT_NAME);
 
-        getDriver().findElement(By.xpath("//button[@data-section-id='source-code-management']")).click();
-        WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
+        WebElement scmTitle = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .clickSourceCodeManagementMenuOption()
+                .verifySCMTitleIsVisible();
 
         Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
     }
 
     @Test
     public void testNavigationToSCMByScrollingDown() {
-        createFreestyleProject(FREESTYLE_PROJECT_NAME);
 
-        WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", scmTitle);
+        WebElement scmTitle = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(FREESTYLE_PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .scrollToSourceCodeManagementWithJS()
+                .verifySCMTitleIsVisible();
 
         Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
     }
