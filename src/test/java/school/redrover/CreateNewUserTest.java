@@ -40,4 +40,22 @@ public class CreateNewUserTest extends BaseTest {
                 .getCreatedUserName(userName);
         Assert.assertEquals(newCheck, userName);
     }
+
+    @Test(dependsOnMethods = "createNewUser")
+    public void createExistingUser() {
+
+        String newCheck = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserLink()
+                .clickCreateUserButton()
+                .sendUserName(userName)
+                .sendPassword(userPassword)
+                .sendConfirmPassword(userPassword)
+                .sendEmail(userEmail)
+                .clickCreateUserButton(new ManageUsersPage(getDriver()))
+                .checkCreatedUser();
+
+        Assert.assertEquals(newCheck, "User name is already taken");
+    }
+
 }

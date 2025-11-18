@@ -23,4 +23,8 @@ public class ManageUsersPage extends BasePage {
 
         return getDriver().findElement(By.xpath("//td[text()='%s']".formatted(userName))).getText();
     }
+
+    public String checkCreatedUser() {
+        return getDriver().findElement(By.cssSelector("div.error.jenkins-\\!-margin-bottom-2")).getText();
+    }
 }
