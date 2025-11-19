@@ -180,4 +180,8 @@ public class NewItemPage extends BasePage {
     public String getHeadingText() {
         return getDriver().findElement(By.tagName("h1")).getText();
     }
+
+    public String getNameDataValid() {
+        return getDriver().findElement(By.id("name")).getAttribute("data-valid");
+    }
 }
