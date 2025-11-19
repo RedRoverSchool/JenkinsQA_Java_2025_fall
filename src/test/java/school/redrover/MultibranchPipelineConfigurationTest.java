@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.ErrorPage;
 import school.redrover.page.HomePage;
-import school.redrover.page.MultibranchPipelineJobPage;
+import school.redrover.page.MultibranchPipelineProjectPage;
 
 public class MultibranchPipelineConfigurationTest extends BaseTest {
 
@@ -17,7 +17,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         String actualHeadingText = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(JOB_NAME)
-                .selectMultibranchPipelineWithJsAndSubmit()
+                .selectMultibranchPipelineAndSubmit()
                 .clickSaveButton()
                 .getHeadingText();
 
@@ -29,7 +29,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         final String expectedToggleState = "Disabled";
 
         String actualToggleState = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .clickToggle()
                 .getToggleState();
@@ -42,7 +42,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         final String expectedTooltipText = "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
         String actualTooltipText = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .getToggleTooltipTextOnHover();
 
@@ -54,7 +54,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         final String expectedDisabledMessage = "This Multibranch Pipeline is currently disabled";
 
         String actualDisabledMessage = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .clickToggle()
                 .clickSaveButton()
@@ -66,7 +66,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testDisabledMessageOnStatusPage")
     public void testJobDescriptionPreview() {
         String jobDescriptionPreviewText = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .enterDescription(JOB_DESCRIPTION)
                 .getJobDescriptionPreviewText();
@@ -77,7 +77,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testJobDescriptionPreview")
     public void testMultibranchJobDescription() {
         String actualJobDescription = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .enterDescription(JOB_DESCRIPTION)
                 .clickSaveButton()
@@ -91,7 +91,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         final String updatedJobDescription = "This is a new project description";
 
         String actualJobDescription = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .enterDescription(JOB_DESCRIPTION)
                 .clickSaveButton()
@@ -108,7 +108,7 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         final String expectedErrorMessage = "A name cannot end with ‘.’";
 
         String actualErrorMessage = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
                 .clickRenameLinkInSideMenu()
                 .renameJob(JOB_NAME + ".")
                 .submitForm(new ErrorPage(getDriver()))
@@ -122,10 +122,10 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
         final String updatedJobName = "updatedProjectName";
 
         String actualHeadingText = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineJobPage(getDriver()))
+                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
                 .clickRenameLinkInSideMenu()
                 .renameJob(updatedJobName)
-                .submitForm(new MultibranchPipelineJobPage(getDriver()))
+                .submitForm(new MultibranchPipelineProjectPage(getDriver()))
                 .getHeadingText();
 
         Assert.assertEquals(actualHeadingText, updatedJobName);

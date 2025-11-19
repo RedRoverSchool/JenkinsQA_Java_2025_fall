@@ -7,27 +7,27 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
-public class MultibranchPipelineConfigPage extends BasePage {
+public class MultibranchPipelineConfigurationPage extends BasePage {
 
-    public MultibranchPipelineConfigPage(WebDriver driver) {
+    public MultibranchPipelineConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
-    public MultibranchPipelineConfigPage sendDisplayName(String name) {
+    public MultibranchPipelineConfigurationPage sendDisplayName(String name) {
         getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(name);
 
         return this;
     }
 
-    public MultibranchPipelineJobPage clickSaveButton() {
+    public MultibranchPipelineProjectPage clickSaveButton() {
         getDriver().findElement(By.name("Submit")).click();
         getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                 By.cssSelector(".empty-state-section h2")));
 
-        return new MultibranchPipelineJobPage(getDriver());
+        return new MultibranchPipelineProjectPage(getDriver());
     }
 
-    public MultibranchPipelineConfigPage clickApply() {
+    public MultibranchPipelineConfigurationPage clickApply() {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("Apply"))).click();
 
         return this;
@@ -38,7 +38,7 @@ public class MultibranchPipelineConfigPage extends BasePage {
                 visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']"))).getText();
     }
 
-    public MultibranchPipelineConfigPage clickToggle() {
+    public MultibranchPipelineConfigurationPage clickToggle() {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-title='Disabled']"))).click();
 
         return this;
@@ -63,13 +63,13 @@ public class MultibranchPipelineConfigPage extends BasePage {
                 .getText();
     }
 
-    public MultibranchPipelineConfigPage enterDescription(String description) {
+    public MultibranchPipelineConfigurationPage enterDescription(String description) {
         getDriver().findElement(By.name("_.description")).sendKeys(description);
 
         return this;
     }
 
-    public MultibranchPipelineConfigPage updateJobDescription(String description) {
+    public MultibranchPipelineConfigurationPage updateJobDescription(String description) {
         getDriver().findElement(By.name("_.description")).clear();
 
         return enterDescription(description);
