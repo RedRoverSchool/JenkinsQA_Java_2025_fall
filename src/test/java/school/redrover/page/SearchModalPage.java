@@ -59,11 +59,11 @@ public class SearchModalPage extends BaseModel {
         return searchResultsTexts;
     }
 
-    public String clickSub() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#search-results > a")));
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("command-bar"))).sendKeys(Keys.ENTER);
-        getDriver().findElement(By.cssSelector("#main-panel > div:nth-child(4)")).getText();
-
-        return getDriver().findElement(By.cssSelector("#main-panel > div:nth-child(4)")).getText();
+    public UserAccountPage searchForUser(String userName) {
+        getWait2().until(ExpectedConditions.elementToBeClickable(inputField));
+        getDriver().findElement(By.id("command-bar")).sendKeys(userName);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#search-results [href='/user/%s']".formatted(userName).toLowerCase())));
+        getDriver().findElement(By.id("command-bar")).sendKeys(Keys.ENTER);
+        return new UserAccountPage(getDriver());
     }
 }
