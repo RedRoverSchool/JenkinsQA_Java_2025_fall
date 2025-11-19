@@ -37,12 +37,12 @@ public class ManageUsersPage extends BasePage {
 
     private <P extends BasePage> P clickPopUpMenuItem(String userName, By menuItemLocator, P returnedPage) {
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//a[text()='%s']".formatted(userName))))
+                .moveToElement(getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='%s']".formatted(userName)))))
                 .perform();
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[2]")))
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[2]")))
                 .click();
-        getWait2().until(ExpectedConditions.elementToBeClickable(menuItemLocator))
+        getWait10().until(ExpectedConditions.elementToBeClickable(menuItemLocator))
                 .click();
 
         return returnedPage;
