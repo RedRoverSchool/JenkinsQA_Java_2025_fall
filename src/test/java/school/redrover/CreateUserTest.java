@@ -24,7 +24,7 @@ public class CreateUserTest extends BaseTest {
                 .sendPassword(userPassword)
                 .sendConfirmPassword(userPassword)
                 .sendEmail(userEmail)
-                .clickCreateUserButton(new UsersPage(getDriver()))
+                .clickCreateUserButton(new ManageUsersPage(getDriver()))
                 .getUserName(userName);
 
         Assert.assertEquals(actualUserName, userName);

@@ -11,10 +11,10 @@ public class ManageJenkinsPage extends BasePage {
         super(driver);
     }
 
-    public UsersPage clickUserButton() {
+    public ManageUsersPage clickUserButton() {
         getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
 
-        return new UsersPage(getDriver());
+        return new ManageUsersPage(getDriver());
     }
 
     public ConfigurationSystemPage clickConfigurationSystem() {

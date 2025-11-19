@@ -4,7 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-import school.redrover.page.UsersPage;
+import school.redrover.page.ManageUsersPage;
 
 public class CreateNewUserTest extends BaseTest {
     final String userName = "John";
@@ -22,7 +22,7 @@ public class CreateNewUserTest extends BaseTest {
                 .sendPassword(userPassword)
                 .sendConfirmPassword(userPassword)
                 .sendEmail(userEmail)
-                .clickCreateUserButton(new UsersPage(getDriver()))
+                .clickCreateUserButton(new ManageUsersPage(getDriver()))
                 .getUserName(userName);
 
         Assert.assertEquals(newUser, userName);

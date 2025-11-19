@@ -7,11 +7,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 
-public class UsersPage extends BasePage {
+public class ManageUsersPage extends BasePage {
 
     private static final By ACCOUNT_MENU_ITEM = By.xpath("//a[contains(., 'Account')]");
 
-    public UsersPage(WebDriver driver) {
+    public ManageUsersPage(WebDriver driver) {
         super(driver);
     }
 
