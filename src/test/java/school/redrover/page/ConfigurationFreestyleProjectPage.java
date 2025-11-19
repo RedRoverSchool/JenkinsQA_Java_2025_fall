@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,14 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
         return this;
     }
 
+    public WebElement getSaveButton() {
+        return getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Submit")));
+    }
+
+    public WebElement getApplyButton() {
+        return getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Apply")));
+    }
+
     public List<String> getSomeSettingsToList(){
         List<String> settingsList = new ArrayList<>();
 
@@ -73,5 +82,46 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
         settingsList.add(getDriver().findElement(By.name("authToken")).getAttribute("value"));
 
         return settingsList;
+    }
+
+    public WebElement verifySCMTitleIsVisible() {
+        WebElement scmTitle = getDriver().findElement(By.id("source-code-management"));
+
+        return getWait5().until(ExpectedConditions.visibilityOf(scmTitle));
+    }
+
+    public ConfigurationFreestyleProjectPage clickSourceCodeManagementMenuOption() {
+        getDriver().findElement(By.xpath("//button[@data-section-id='source-code-management']")).click();
+
+        return this;
+    }
+
+    public ConfigurationFreestyleProjectPage scrollToSourceCodeManagementWithJS() {
+        WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", scmTitle);
+
+        return this;
+    }
+
+    public WebElement getScmDescription() {
+        return getDriver().findElement(By.xpath(
+                "//div[normalize-space()='Connect and manage your code repository to automatically pull the latest code for your builds.']"));
+    }
+
+    public String getSelectedRadioLabel() {
+        WebElement selectedInput = getDriver().findElement(By.xpath("//input[@name='scm' and @checked='true']"));
+        String inputId = selectedInput.getAttribute("id");
+        WebElement linkedLabel = getDriver().findElement(By.xpath("//label[@for='%s']".formatted(inputId)));
+        String labelText = linkedLabel.getText();
+
+        return labelText;
+    }
+
+    public boolean isGitOptionDisplayed() {
+        return getDriver().findElement(By.xpath("//label[normalize-space(text())='Git']")).isDisplayed();
+    }
+
+    public String getGitTooltipText() {
+        return getDriver().findElement(By.xpath("//a[@title='Help for feature: Git']")).getAttribute("tooltip");
     }
 }

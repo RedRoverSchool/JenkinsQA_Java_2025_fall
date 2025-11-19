@@ -1,8 +1,12 @@
 package school.redrover;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.CreateUserPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.ManageUsersPage;
 
@@ -26,6 +30,32 @@ public class CreateNewUserTest extends BaseTest {
                 .getUserName(userName);
 
         Assert.assertEquals(newUser, userName);
+    }
+
+    @Test(dependsOnMethods = "createNewUser")
+    public void checkCreatedUser() {
+        String newCheck = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserButton()
+                .getUserName(userName);
+        Assert.assertEquals(newCheck, userName);
+    }
+
+    @Test(dependsOnMethods = "createNewUser")
+    public void createExistingUser() {
+
+        String newCheck = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserButton()
+                .clickCreateUserButton()
+                .sendUserName(userName)
+                .sendPassword(userPassword)
+                .sendConfirmPassword(userPassword)
+                .sendEmail(userEmail)
+                .clickCreateUserButton(new ManageUsersPage(getDriver()))
+                .checkCreatedUser();
+
+        Assert.assertEquals(newCheck, "User name is already taken");
     }
 
 }

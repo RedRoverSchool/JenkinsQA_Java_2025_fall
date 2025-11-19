@@ -6,6 +6,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
+import java.util.List;
 
 public class ManageUsersPage extends BasePage {
 
@@ -24,6 +25,10 @@ public class ManageUsersPage extends BasePage {
     public String getUserName(String userName) {
 
         return getDriver().findElement(By.xpath("//td[text()='%s']".formatted(userName))).getText();
+    }
+
+    public String checkCreatedUser() {
+        return getDriver().findElement(By.cssSelector("div.error.jenkins-\\!-margin-bottom-2")).getText();
     }
 
     public UserAccountPage clickAccountMenuItem(String userName) {

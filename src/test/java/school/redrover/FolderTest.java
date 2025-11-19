@@ -9,10 +9,21 @@ import school.redrover.page.HomePage;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class FolderTest extends BaseTest {
+
     private static final String FOLDER_NAME = "TestFolder";
-    private static final String SUB_FOLDER_NAME = "SubFolder";
     private static final String FOLDER_NAME_2 = "Folder2";
+    private static final String NEW_FOLDER_NAME_2 = "NewFolder2";
+    private static final String SUB_FOLDER_NAME = "SubFolder";
+    private static final List<String> itemNames = List.of(
+            SUB_FOLDER_NAME,
+            "SubFreestyleProject",
+            "SubMultibranchPipeline",
+            "SubMulticonfigurationProject",
+            "SubOrganizationFolder",
+            "SubPipeline"
+    );
 
     @Test
     public void testCreate() {
@@ -50,7 +61,7 @@ public class FolderTest extends BaseTest {
                 .clickSidebarNewItem()
                 .sendName(SUB_FOLDER_NAME)
                 .selectFolder()
-                .getDuplicateErrorMessage();
+                .getDuplicateOrUnsafeCharacterErrorMessage();
 
         Assert.assertEquals(
                 duplicateErrorMessage,
@@ -121,29 +132,29 @@ public class FolderTest extends BaseTest {
                 "Пайплайн '%s' должен присутствовать во второй папке '%s'".formatted(pipelineName, FOLDER_NAME_2));
     }
 
-    @Test(dependsOnMethods = "testSameItemNamesInTwoFolders")
+    @Test(dependsOnMethods = "testRenameFolder")
     public void deleteFolderByDashboardDropdownMenu() {
         boolean isFolderDeleted = new HomePage(getDriver())
-                .openDropdownMenu(FOLDER_NAME_2)
+                .openDropdownMenu(NEW_FOLDER_NAME_2)
                 .clickDeleteItemInDropdownMenu()
                 .confirmDelete()
                 .clickSearchButton()
-                .searchFor(FOLDER_NAME_2)
-                .isNoResultsFound(FOLDER_NAME_2);
+                .searchFor(NEW_FOLDER_NAME_2)
+                .isNoResultsFound(NEW_FOLDER_NAME_2);
 
         Assert.assertTrue(isFolderDeleted,
-                "%s не должна отображаться в поиске после удаления".formatted(FOLDER_NAME_2));
+                "%s не должна отображаться в поиске после удаления".formatted(NEW_FOLDER_NAME_2));
     }
 
-    @Test(dependsOnMethods = {"testCreate","deleteFolderBySidebar"})
+    @Test(dependsOnMethods = {"testCreate", "deleteFolderBySidebar"})
     public void testPutItemsToFolder() {
         final Object[][] items = {
-                {SUB_FOLDER_NAME, "Folder"},
-                {"SubFreestyleProject", "Freestyle project"},
-                {"SubMultibranchPipeline", "Multibranch Pipeline"},
-                {"SubMulticonfigurationProject", "Multi-configuration project"},
-                {"SubOrganizationFolder", "Organization Folder"},
-                {"SubPipeline", "Pipeline"}
+                {itemNames.get(0), "Folder"},
+                {itemNames.get(1), "Freestyle project"},
+                {itemNames.get(2), "Multibranch Pipeline"},
+                {itemNames.get(3), "Multi-configuration project"},
+                {itemNames.get(4), "Organization Folder"},
+                {itemNames.get(5), "Pipeline"}
         };
         List<String> expectedItems = Arrays.stream(items)
                 .map(item -> (String) item[0])
@@ -184,5 +195,49 @@ public class FolderTest extends BaseTest {
                 itemsWithIconAttribute,
                 List.of(SUB_FOLDER_NAME),
                 "Ошибка в отображении иконок");
+    }
+
+    @Test(dependsOnMethods = "testSameItemNamesInTwoFolders")
+    public void testRenameFolder() {
+        String newNameFolder = new HomePage(getDriver())
+                .openDropdownMenu(FOLDER_NAME_2)
+                .clickRenameItemInDropdownMenu()
+                .clearName()
+                .sendNewName(NEW_FOLDER_NAME_2)
+                .renameButtonClick()
+                .getNameFolder();
+
+        Assert.assertEquals(newNameFolder, NEW_FOLDER_NAME_2);
+    }
+
+    @Test(dependsOnMethods = "testPutItemsToFolder")
+    public void testFolderIsIdentifiedByTooltip() {
+        FolderPage folderPage = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME);
+        String folderTooltip = folderPage.getFolderTooltip(SUB_FOLDER_NAME);
+        List<String> itemsWithTooltip = folderPage.getItemsWithTooltip(folderTooltip);
+
+        Assert.assertNotEquals(itemsWithTooltip.size(), 0);
+        Assert.assertEquals(
+                itemsWithTooltip,
+                List.of(SUB_FOLDER_NAME),
+                "Ошибка в отображении тултипов");
+    }
+
+    @Test(dependsOnMethods = {"testPutItemsToFolder"})
+    public void testFindFolderContent() {
+        String previousItemName = "";
+
+        for (String itemName : itemNames) {
+            List<String> searchResults = new HomePage(getDriver())
+                    .clickSearchButton()
+                    .searchFor(itemName, previousItemName)
+                    .getSearchResultsAndClose();
+
+            Assert.assertTrue(searchResults.contains("%s » %s".formatted(FOLDER_NAME, itemName)),
+                    "Список результатов поиска не содержит нужный элемент (%s)".formatted(itemName));
+
+            previousItemName = itemName;
+        }
     }
 }

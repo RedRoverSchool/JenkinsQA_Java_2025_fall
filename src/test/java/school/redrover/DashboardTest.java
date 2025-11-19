@@ -1,16 +1,17 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
+import school.redrover.common.TestUtils;
+import school.redrover.page.EditViewPage;
 import school.redrover.page.HomePage;
+import school.redrover.testdata.Page;
+import school.redrover.testdata.TestDataProvider;
 
-import java.util.List;
+import java.util.*;
 
 public class DashboardTest extends BaseTest {
 
@@ -22,10 +23,13 @@ public class DashboardTest extends BaseTest {
             "FreestyleName5"
     );
 
+    private static final String PIPELINE_NAME = "Pipeline_01";
+
     @Test
     public void testHomePageHeading() {
         Assert.assertEquals(
-                new HomePage(getDriver()).getHeadingText(), "Welcome to Jenkins!");
+                new HomePage(getDriver()).getHeadingText(),
+                "Welcome to Jenkins!");
     }
 
     @Test
@@ -38,49 +42,18 @@ public class DashboardTest extends BaseTest {
                 expectedParagraphText);
     }
 
-    @Test
-    public void testContentBlockLinks() {
-        final List<String> expectedUrlEndpoints = List.of(
-                "/newJob",
-                "/computer/new",
-                "/cloud/",
-                "/#distributed-builds-architecture"
-        );
+    @Test(dataProvider = "Links", dataProviderClass = TestDataProvider.class)
+    public void testContentBlockLinks(String linkText, String expectedUrlEndpoint, Page page) {
+        BasePage resultPage = new HomePage(getDriver()).clickHomePageSectionLink(linkText, page.createPage(getDriver()));
 
-        List<WebElement> contentBlockLinks = getWait5()
-                .until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".content-block > a")));
-
-        Assert.assertFalse(contentBlockLinks.isEmpty());
-
-        for (int i = 0; i < contentBlockLinks.size(); i++) {
-            WebElement currentLink = contentBlockLinks.get(i);
-
-            new Actions(getDriver())
-                    .keyDown(Keys.CONTROL)
-                    .click(currentLink)
-                    .keyUp(Keys.CONTROL)
-                    .perform();
-
-            getWait5().until(ExpectedConditions.numberOfWindowsToBe(2));
-
-            Object[] windowHandles = getDriver().getWindowHandles().toArray();
-            getDriver().switchTo().window((String) windowHandles[1]);
-
-            String currentUrl = getDriver().getCurrentUrl();
-            String expectedUrlEndpoint = expectedUrlEndpoints.get(i);
-
-            Assert.assertTrue(currentUrl.contains(expectedUrlEndpoint));
-
-            getDriver().close();
-            getDriver().switchTo().window((String) windowHandles[0]);
-        }
+        Assert.assertTrue(Objects.requireNonNull(resultPage.getCurrentUrl()).contains(expectedUrlEndpoint));
     }
 
     @Test
-    public void testCheckCreatedJobsOnDashboard(){
+    public void testCheckCreatedJobsOnDashboard() {
         HomePage homePage = new HomePage(getDriver());
 
-        for (int i = 0; i < CREATED_JOBS_NAME.size(); i++){
+        for (int i = 0; i < CREATED_JOBS_NAME.size(); i++) {
             homePage
                     .clickNewItemOnLeftMenu()
                     .sendName(CREATED_JOBS_NAME.get(i))
@@ -114,7 +87,7 @@ public class DashboardTest extends BaseTest {
     }
 
     @Test
-    public void testGoToManageJenkinsPage(){
+    public void testGoToManageJenkinsPage() {
         final String expectedTitle = "Manage Jenkins";
 
         String actualTitle = new HomePage(getDriver())
@@ -122,5 +95,44 @@ public class DashboardTest extends BaseTest {
                 .getHeadingText();
 
         Assert.assertEquals(actualTitle, expectedTitle);
+    }
+
+    @Test
+    public void testAddColumnsInListViewOnDashboard() {
+        final String listViewName = "ListView_01";
+
+        HomePage homePage = new HomePage(getDriver());
+        homePage.clickCreateJob()
+                .sendName(PIPELINE_NAME)
+                .selectItemTypeAndSubmitAndGoHome("Pipeline")
+                .clickPlusToCreateView()
+                .sendViewName(listViewName)
+                .selectListViewRadioAndCreate()
+                .selectJobCheckbox(PIPELINE_NAME)
+                .clickAddColumnDropDownButton();
+
+        EditViewPage editViewPage = new EditViewPage(getDriver());
+        List<String> currentColumnListText = editViewPage.getCurrentColumnList();
+        Assert.assertNotEquals(currentColumnListText.size(), 0);
+
+        Set<String> addColumnSet = new HashSet<>();
+
+        List<WebElement> columnListForAdd = editViewPage.getAddColumnList();
+        Assert.assertNotEquals(columnListForAdd.size(), 0);
+        for (WebElement element : columnListForAdd) {
+            String columnName = element.getText().trim();
+            addColumnSet.add(columnName);
+            if (!currentColumnListText.contains(columnName)) {
+                TestUtils.mouseEnterJS(getDriver(), element);
+                TestUtils.clickJS(getDriver(), element);
+            }
+        }
+
+        List<String> addedColumnList = editViewPage.getCurrentColumnList();
+        Assert.assertTrue(addedColumnList.containsAll(addColumnSet));
+
+        editViewPage.clickSubmitButton();
+        int actualCountDisplayedColumns = homePage.getCountOfDisplayedColumnsOnDashboard();
+        Assert.assertEquals(actualCountDisplayedColumns,addedColumnList.size());
     }
 }

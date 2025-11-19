@@ -1,12 +1,15 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class HomePage extends BasePage {
@@ -90,16 +93,27 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public HomePage clickRenameItemInDropdownMenu() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/job/MyFolder/confirm-rename']"))).click();
+    public RenameFolderPage clickRenameItemInDropdownMenu() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='tippy-content']//div[@class='jenkins-dropdown']//a[normalize-space()='Rename']"))).click();
 
-        return this;
+        return new RenameFolderPage(getDriver());
     }
 
     public HomePage confirmDelete() {
         WebElement yesButton = getWait2().until(
                 ExpectedConditions.elementToBeClickable(
                         By.xpath("//dialog[@open]//button[@data-id='ok']"))
+        );
+        yesButton.click();
+        getWait5().until(ExpectedConditions.stalenessOf(yesButton));
+
+        return this;
+    }
+
+    public HomePage cancelDelete() {
+        WebElement yesButton = getWait2().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("//dialog[@open]//button[@data-id='cancel']"))
         );
         yesButton.click();
         getWait5().until(ExpectedConditions.stalenessOf(yesButton));
@@ -177,5 +191,72 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
 
         return new ManageJenkinsPage(getDriver());
+    }
+
+    public HomePage clearTextDescription() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).clear();
+        return this;
+    }
+
+    public UserAccountPage clickUserAccountViaIconInHeader() {
+        TestUtils.clickJS(getDriver(), By.id("root-action-UserAction"));
+
+        return new UserAccountPage(getDriver());
+    }
+
+    public WebElement getRestApiLink(){
+        return getDriver().findElement(By.xpath("//a[@href='api/']"));
+    }
+
+    public void pressTabAndEnter(WebElement element) {
+        WebElement body = getDriver().findElement(By.tagName("body"));
+
+        int max_tabs = 50;
+
+        for (int i = 0; i < max_tabs; i++) {
+            body.sendKeys(Keys.TAB);
+            WebElement activeElement = getDriver().switchTo().activeElement();
+            if (activeElement.equals(element)) {
+                activeElement.sendKeys(Keys.ENTER);
+                break;
+            }
+        }
+    }
+
+    public String getProjectStatus(String projectName) {
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//*[@id='job_%s']/td[1]/div".formatted(projectName))))
+                .perform();
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-tippy-root]")))
+                .getText();
+    }
+      
+    public <T extends BasePage> T clickHomePageSectionLink(String linkText, T page) {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='%s']/..".formatted(linkText))))
+                .click();
+
+        return page;
+    }
+
+    public String getNumberOfExecutors() {
+        WebElement executors = getDriver().findElement(By.cssSelector("div#executors"));
+
+        String executorsLine;
+        if (executors.getAttribute("class").contains("expanded")) {
+            executorsLine = getDriver().findElement(By.cssSelector("span[tooltip*='executors busy']")).getAttribute("tooltip");
+        } else {
+            executorsLine = getDriver().findElement(By.className("executors-collapsed")).getText();
+        }
+
+        return Arrays.stream(executorsLine.trim().split(" "))
+                .skip(2)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public int getCountOfDisplayedColumnsOnDashboard() {
+        List<WebElement> columnsList = getDriver().findElements(By.cssSelector("#projectstatus > thead > tr > th"));
+
+        return columnsList.size();
     }
 }

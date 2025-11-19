@@ -15,29 +15,33 @@ import java.util.List;
 
 public class CreateNewItemTest extends BaseTest {
 
+    private static final String PROJECT_NAME = "New Project";
+
     @Test
     public void testNewItemPageByClickingCreateAJobLink() {
-        getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
+        String result = new HomePage(getDriver())
+                .clickCreateJob()
+                .getHeadingText();
 
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "New Item");
+        Assert.assertEquals(result, "New Item");
     }
 
     @Test
     public void testNewItemPageByClickingNewItemLink() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        String result = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .getHeadingText();
 
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), "New Item");
+        Assert.assertEquals(result, "New Item");
     }
 
     @Test
     public void testEnterAnItemNameIsDisplayedOkButtonIdDisabled() {
-        getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
+          Boolean result = new HomePage(getDriver())
+                  .clickCreateJob()
+                  .isOkButtonEnabled();
 
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
-        String isDisabled = okButton.getAttribute("disabled");
-
-        Assert.assertEquals(getDriver().findElement(By.className("jenkins-form-label")).getText(), "Enter an item name");
-        Assert.assertNotNull(isDisabled, "true");
+          Assert.assertFalse(result);
     }
 
     @Test
@@ -65,24 +69,18 @@ public class CreateNewItemTest extends BaseTest {
     }
 
     @Test
-    public void testErrorMessageForDuplicateItemNames() throws InterruptedException {
-        final String jobName = "AS new job";
-        final String errorMessage = "itemname-invalid";
+    public void testErrorMessageForDuplicateItemNames() {
+        String errorMessage = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .gotoHomePage()
+                .clickNewItemOnLeftMenu()
+                .sendName(PROJECT_NAME)
+                .selectFolder()
+                .getDuplicateOrUnsafeCharacterErrorMessage();
 
-        getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("name")))).sendKeys(jobName);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='jenkins-mobile-hide']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/view/all/newJob']"))).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("name"))).sendKeys(jobName);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id(errorMessage)));
-        Assert.assertEquals(getDriver().findElement(By.id(errorMessage)).getText(), "» A job already exists with the name ‘AS new job’");
+        Assert.assertEquals(errorMessage, "» A job already exists with the name ‘New Project’");
     }
 
     @Test

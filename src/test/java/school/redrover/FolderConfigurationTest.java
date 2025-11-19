@@ -7,8 +7,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.ConfigurationFolderPage;
+import school.redrover.page.FolderPage;
 import school.redrover.page.HomePage;
-
 import java.time.Duration;
 
 public class FolderConfigurationTest extends BaseTest {
@@ -27,13 +27,14 @@ public class FolderConfigurationTest extends BaseTest {
                 .isDisplayed());
     }
 
-    @Test(dependsOnMethods = {"testHealthMetricLinkIsDisplayed"})
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testHealthMetricButtonIsDisplayed(){
-        getDriver().findElement(By.linkText(FOLDER_NAME)).click();
-        getDriver().findElement(By.linkText("Configure")).click();
+        new HomePage(getDriver())
+                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure();
 
-        Assert.assertTrue(getDriver()
-                .findElement(By.xpath("//button[normalize-space(text())='Health metrics']"))
+        Assert.assertTrue(new ConfigurationFolderPage(getDriver())
+                .findHealthMetricButton()
                 .isDisplayed());
     }
 

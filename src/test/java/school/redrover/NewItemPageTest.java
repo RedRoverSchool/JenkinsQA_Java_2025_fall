@@ -7,12 +7,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.ConfigurationPipelinePage;
 import school.redrover.page.HomePage;
 import school.redrover.page.NewItemPage;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Objects;
 
 public class NewItemPageTest extends BaseTest {
     private final By newItemButtonFromHomePage = By.xpath(".//div[@id='tasks']/div[1]/span/a");
@@ -76,15 +76,16 @@ public class NewItemPageTest extends BaseTest {
                 "Organization Folder"
         );
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickCreateJob();
 
-        WebElement sectionTitle = getDriver().findElement(By.xpath("//div[text()='Select an item type']"));
-        List<WebElement> actualItemTypes = getDriver().findElements(By.xpath("//div[@id='items']//label"));
+        List<WebElement> actualItemTypes = newItemPage.getItemTypes();
+
+        Assert.assertTrue(newItemPage.getSectionTitle().isDisplayed());
         Assert.assertNotEquals(actualItemTypes.size(), 0);
         for (int i = 0; i < expectedItemTypes.size(); i++) {
-            Assert.assertTrue(actualItemTypes.get(i).isDisplayed());
+        Assert.assertTrue(actualItemTypes.get(i).isDisplayed());
         }
-        Assert.assertTrue(sectionTitle.isDisplayed());
     }
 
     @Test
@@ -96,7 +97,7 @@ public class NewItemPageTest extends BaseTest {
                 .isPipelineSelected();
 
         Assert.assertTrue(isSelected);
-     }
+    }
 
     @Test
     public void testPipelineTypeHighlightAndOkButtonEnables() {
@@ -107,5 +108,15 @@ public class NewItemPageTest extends BaseTest {
 
         Assert.assertTrue(newItemPage.isPipelineHighlighted());
         Assert.assertTrue(newItemPage.isOkButtonEnabled());
+    }
+
+    @Test
+    public void testRedirectToConfigurationPage() {
+        ConfigurationPipelinePage configPage = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("Test Project")
+                .selectPipelineAndSubmit();
+
+        Assert.assertTrue(configPage.getPageHeader().isDisplayed());
     }
 }

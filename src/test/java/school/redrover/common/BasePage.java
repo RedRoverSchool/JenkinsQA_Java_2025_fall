@@ -41,8 +41,24 @@ public abstract class BasePage extends BaseModel {
 
     public FooterDropdownPage clickJenkinsVersion() {
         getDriver().findElement(By.cssSelector(".page-footer__links > button")).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown")));
 
         return new FooterDropdownPage(getDriver());
+    }
+
+    public String getRestApiLinkText() {
+
+        WebElement footer = getDriver().findElement(By.tagName("footer"));
+        return footer.findElement(By.linkText("REST API")).getText();
+    }
+
+    public RestApiPage clickRestApiLink() {
+        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+
+        return new RestApiPage(getDriver());
+    }
+
+    public String getCurrentUrl() {
+        return getDriver().getCurrentUrl();
     }
 }
