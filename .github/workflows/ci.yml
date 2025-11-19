@@ -29,10 +29,10 @@ jobs:
         run: mvn test-compile
 
       - name: Get collections of class dependencies
-        run: echo "LIST_OF_DEPENDENCIES_FILES=$(jdeps -verbose:class -filter:none -recursive ./target/test-classes | grep "school.redrover.*-> school.redrover" | awk '{print $3 "=" $1}' | tr '\n' ';')" >> $GITHUB_ENV
+        run: echo "LIST_OF_DEPENDENCIES_CLASSES=$(jdeps -verbose:class -filter:none -recursive ./target/test-classes | grep "school.redrover.*-> school.redrover" | awk '{print $3 "=" $1}' | tr '\n' ';')" >> $GITHUB_ENV
 
-      # tar -cvf jenkins_backup.tar ./jenkins_backup
-      # split -b 90m -d jenkins_backup.tar jenkins_backup
+# tar -cvf jenkins_backup.tar ./jenkins_backup
+# split -b 90m -d jenkins_backup.tar jenkins_backup
 
       - name: Prepare Jenkins data
         run: |
