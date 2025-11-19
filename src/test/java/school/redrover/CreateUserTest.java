@@ -3,9 +3,7 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.CreateUserPage;
-import school.redrover.page.HomePage;
-import school.redrover.page.ManageUsersPage;
+import school.redrover.page.*;
 
 import java.util.List;
 
@@ -20,16 +18,32 @@ public class CreateUserTest extends BaseTest {
 
         String actualUserName = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
-                .clickUserLink()
+                .clickUserButton()
                 .clickCreateUserButton()
                 .sendUserName(userName)
                 .sendPassword(userPassword)
                 .sendConfirmPassword(userPassword)
                 .sendEmail(userEmail)
-                .clickCreateUserButton(new ManageUsersPage(getDriver()))
-                .getCreatedUserName(userName);
+                .clickCreateUserButton(new UsersPage(getDriver()))
+                .getUserName(userName);
 
         Assert.assertEquals(actualUserName, userName);
+    }
+
+    @Test(dependsOnMethods = "testCreateUser")
+    public void testChangeUserName() {
+        final String userName = "testUserLogin";
+        final String expFullUserName = "User Full Name";
+
+        String actFullUserName = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserButton()
+                .clickAccountMenuItem(userName)
+                .sendFullName(expFullUserName)
+                .clickSave(new UserStatusPage(getDriver()))
+                .getUserName();
+
+        Assert.assertEquals(actFullUserName, expFullUserName);
     }
 
     @Test
@@ -45,7 +59,7 @@ public class CreateUserTest extends BaseTest {
 
         List <String> actualErrors = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
-                .clickUserLink()
+                .clickUserButton()
                 .clickCreateUserButton()
                 .clickCreateUserButton(new CreateUserPage(getDriver()))
                 .getAllErrors();
@@ -63,7 +77,7 @@ public class CreateUserTest extends BaseTest {
 
         List <String> actualErrors = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
-                .clickUserLink()
+                .clickUserButton()
                 .clickCreateUserButton()
                 .sendUserName(userName)
                 .sendPassword(userPassword)
@@ -87,7 +101,7 @@ public class CreateUserTest extends BaseTest {
 
         List <String> actualErrors = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
-                .clickUserLink()
+                .clickUserButton()
                 .clickCreateUserButton()
                 .sendUserName(userName)
                 .sendPassword(userPassword)

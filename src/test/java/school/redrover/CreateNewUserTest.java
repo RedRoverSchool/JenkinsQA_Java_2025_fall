@@ -1,12 +1,10 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.CreateUserPage;
 import school.redrover.page.HomePage;
-import school.redrover.page.ManageUsersPage;
+import school.redrover.page.UsersPage;
 
 public class CreateNewUserTest extends BaseTest {
     final String userName = "John";
@@ -18,14 +16,14 @@ public class CreateNewUserTest extends BaseTest {
     public void createNewUser() {
         String newUser = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
-                .clickUserLink()
+                .clickUserButton()
                 .clickCreateUserButton()
                 .sendUserName(userName)
                 .sendPassword(userPassword)
                 .sendConfirmPassword(userPassword)
                 .sendEmail(userEmail)
-                .clickCreateUserButton(new ManageUsersPage(getDriver()))
-                .getCreatedUserName(userName);
+                .clickCreateUserButton(new UsersPage(getDriver()))
+                .getUserName(userName);
 
         Assert.assertEquals(newUser, userName);
     }
