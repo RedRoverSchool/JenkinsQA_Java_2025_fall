@@ -54,4 +54,13 @@ public class CreateNewUserTest extends BaseTest {
         Assert.assertEquals(newCheck, "User name is already taken");
     }
 
+    @Test(dependsOnMethods = "createNewUser")
+    public void searchUser() {
+        String findUser = new HomePage(getDriver())
+                .clickSearchButton()
+                .searchForUser(userName)
+                .getUserID();
+
+        Assert.assertTrue(findUser.contains(userName));
+    }
 }

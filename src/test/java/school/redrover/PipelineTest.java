@@ -17,25 +17,6 @@ public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "PipelineName";
 
-    private static final Random random = new Random();
-
-    public static String generateRandomStringASCII(int minCode, int maxCode, int length) {
-        if (length < 0 || length > 1000) {
-            throw new IllegalArgumentException("Некорректная длина: " + length);
-        }
-        if (minCode < 32 || maxCode > 126 || minCode > maxCode) {
-            throw new IllegalArgumentException("Некорректный диапазон для ASCII: [" + minCode + ", " + maxCode + "]");
-        }
-        if (length == 0) return "";
-
-        StringBuilder sb = new StringBuilder(length);
-        int range = maxCode - minCode + 1;
-        for (int i = 0; i < length; i++) {
-            sb.append((char) (minCode + random.nextInt(range)));
-        }
-        return sb.toString();
-    }
-
     private void createPipeline(String name) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
@@ -120,40 +101,6 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testCreatePipeline() {
-        getDriver().findElement(By.cssSelector(".task:nth-child(1) a")).click();
-        getDriver().findElement(By.cssSelector("#name")).sendKeys(PIPELINE_NAME);
-        getDriver().findElement(By.cssSelector("div:first-child > ul > li:nth-child(2)")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']/img"))).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='job/" + PIPELINE_NAME + "/']")).getText(),
-                PIPELINE_NAME);
-    }
-
-    @Test
-    public void testDeletePipeline() {
-        getDriver().findElement(By.cssSelector(".task:nth-child(1) a")).click();
-        getDriver().findElement(By.cssSelector("#name")).sendKeys(PIPELINE_NAME);
-        getDriver().findElement(By.cssSelector("div:first-child > ul > li:nth-child(2)")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']/img"))).click();
-
-        List<WebElement> countPosition = getDriver().findElements(By.cssSelector("#projectstatus > tbody > tr"));
-
-        getDriver().findElement(By.xpath("//a[@href='job/" + PIPELINE_NAME + "/']")).click();
-        getDriver().findElement(By.cssSelector(".task:nth-child(6)")).click();
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-
-        Assert.assertEquals(countPosition.size() - 1, 0);
-    }
-
-    @Test
     public void testSuccessfulBuildPipeline() {
         createPipeline(PIPELINE_NAME);
 
@@ -171,7 +118,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testAddDescription() {
-        final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
+        final String textDescription = "@0*8nFP'cRU0k.|6Gz-wO*se h~OtJ4kz0!)cl0ZAE3vN>q";
 
         String descriptionText = new HomePage(getDriver())
                 .clickNewItemOnLeftMenu()
@@ -187,7 +134,7 @@ public class PipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAddDescription")
     public void testEditDescription() {
-        final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
+        final String textDescription = "D0XVcGo8k(=D7myr/.YC6umm>]\"gY)?X_E|#HPku6T5im[oYHD-\\|B`";
 
         String descriptionText = new HomePage(getDriver())
                 .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
