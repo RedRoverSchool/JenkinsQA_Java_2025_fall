@@ -14,7 +14,7 @@ public class CreateNewItem8Test extends BaseTest {
         String newProject = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(jobName)
-                .selectMultibranchPipelineWithJsAndSubmit()
+                .selectMultibranchPipelineAndSubmit()
                 .gotoHomePage()
                 .getProjectList()
                 .get(0);

@@ -5,9 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
-public class MultibranchPipelineJobPage extends BasePage {
+public class MultibranchPipelineProjectPage extends BasePage {
 
-    public MultibranchPipelineJobPage(WebDriver driver) {
+    public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
     }
 
@@ -17,11 +17,11 @@ public class MultibranchPipelineJobPage extends BasePage {
                 .getText();
     }
 
-    public MultibranchPipelineConfigPage clickConfigureLinkInSideMenu() {
+    public MultibranchPipelineConfigurationPage clickConfigureLinkInSideMenu() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']")))
                 .click();
 
-        return new MultibranchPipelineConfigPage(getDriver());
+        return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
 
