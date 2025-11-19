@@ -1,9 +1,6 @@
 package school.redrover.page;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BaseModel;
@@ -60,5 +57,13 @@ public class SearchModalPage extends BaseModel {
                 .click()
                 .perform();
         return searchResultsTexts;
+    }
+
+    public UserAccountPage searchForUser(String userName) {
+        getWait2().until(ExpectedConditions.elementToBeClickable(inputField));
+        getDriver().findElement(By.id("command-bar")).sendKeys(userName);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#search-results [href='/user/%s']".formatted(userName).toLowerCase())));
+        getDriver().findElement(By.id("command-bar")).sendKeys(Keys.ENTER);
+        return new UserAccountPage(getDriver());
     }
 }
