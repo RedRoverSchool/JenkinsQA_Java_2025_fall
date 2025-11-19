@@ -1,9 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -211,25 +209,16 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testRenameViaSidebar() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        String actualRenamedMultibranchPipeline = new HomePage(getDriver())
+                .clickSidebarNewItem()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .clickSaveButton()
+                .clickRenameLinkInSideMenu()
+                .renameMultibranchPipeline(RENAMED_MULTIBRANCH_PIPELINE)
+                .getHeading();
 
-        getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.cssSelector("[href$='confirm-rename']")).click();
-
-        WebElement renameField = getDriver().findElement(By.name("newName"));
-        renameField.clear();
-        renameField.sendKeys(RENAMED_MULTIBRANCH_PIPELINE + Keys.ENTER);
-
-        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
-
-        WebElement multibranchPipelineName = getDriver().findElement(By.tagName("h1"));
-
-        Assert.assertEquals(multibranchPipelineName.getText(), RENAMED_MULTIBRANCH_PIPELINE);
+        Assert.assertEquals(actualRenamedMultibranchPipeline, RENAMED_MULTIBRANCH_PIPELINE);
     }
 
     @Test
