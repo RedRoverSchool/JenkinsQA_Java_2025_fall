@@ -10,12 +10,12 @@ public class FilterForTests implements IMethodInterceptor {
 
     @Override
     public List<IMethodInstance> intercept(List<IMethodInstance> methods, ITestContext context) {
-        final String srcTestJava = "src/test/java/%s.java";
+        final String pathTemplate = "src/test/java/%s.java";
 
         String files = System.getenv("LIST_OF_CHANGED_FILES");
-        String jdeps = System.getenv("JDEPS");
+        String dependenciesFiles = System.getenv("LIST_OF_DEPENDENCIES_FILES");
 
-        if (files != null && jdeps != null) {
+        if (files != null && dependenciesFiles != null) {
             List<String> entryList = Arrays.stream(files.split(";"))
                     .toList();
 
@@ -24,69 +24,48 @@ public class FilterForTests implements IMethodInterceptor {
                     .map(e -> e.substring(e.lastIndexOf('=') + 1))
                     .collect(Collectors.toSet());
 
-            if (changedFiles.stream().anyMatch(path -> !path.endsWith(".java"))) {
-                return methods;
-            }
-
             Map<Class<?>, String> classMap = methods.stream()
                     .map(IMethodInstance::getMethod).map(ITestNGMethod::getTestClass).map(IClass::getRealClass)
                     .collect(Collectors.toMap(
                             Function.identity(),
-                            clazz -> String.format("src/test/java/%s.java", clazz.getName().replace('.', '/')),
+                            clazz -> String.format(pathTemplate, clazz.getName().replace('.', '/')),
                             (pathA, pathB) -> pathA
                     ));
 
-            Map<String, Set<String>> jdepsMap = Arrays.stream(jdeps.split(";"))
-                    .map(part -> part.split("->"))
-                    .collect(Collectors.groupingBy(parts -> String.format(srcTestJava, parts[0].replace('.', '/')),
-                            Collectors.mapping(
-                                    parts -> String.format(srcTestJava, parts[1].replace('.', '/')),
-                                    Collectors.toSet()
-                            )));
+            Map<String, Set<String>> dependenciesFilesMap = Arrays.stream(dependenciesFiles.split(";"))
+                    .map(s -> s.split("="))
+                    .collect(Collectors.groupingBy(
+                            parts -> String.format(pathTemplate, parts[0].replace('.', '/')),
+                            Collectors.mapping(parts -> String.format(pathTemplate, parts[1].replace('.', '/')), Collectors.toSet())
+                    ));
 
-            Map<String, Set<String>> reverseDeps = createReverseDeps(jdepsMap);
+            Set<String> affectedFiles = new HashSet<>();
+            Set<String> visitedFiles = new HashSet<>();
 
-            Set<String> filesToRun = getAffectedFiles(changedFiles, reverseDeps);
-
-            if (filesToRun.stream().noneMatch(path -> classMap.values().contains(path))) {
-                return methods;
+            for (String file : changedFiles) {
+                collectLeaves(file, dependenciesFilesMap, affectedFiles, visitedFiles);
             }
 
-            return methods.stream().filter(method -> changedFiles.contains(classMap.get(method.getMethod().getTestClass().getRealClass()))).collect(Collectors.toList());
+            if (classMap.values().containsAll(affectedFiles)) {
+                return methods.stream().filter(method -> changedFiles.contains(classMap.get(method.getMethod().getTestClass().getRealClass()))).collect(Collectors.toList());
+            }
         }
 
         return methods;
     }
 
-    private static Map<String, Set<String>> createReverseDeps(Map<String, Set<String>> directDepsPaths) {
-        Map<String, Set<String>> reverseDepsPaths = new HashMap<>();
+    private void collectLeaves(String currentFile, Map<String, Set<String>> dependencyGraph, Set<String> affectedFiles, Set<String> visitedFiles) {
+        if (!visitedFiles.add(currentFile)) return;
 
-        directDepsPaths.forEach((sourcePath, targetPaths) -> {
-            for (String targetPath : targetPaths) {
-                reverseDepsPaths.computeIfAbsent(targetPath, k -> new HashSet<>()).add(sourcePath);
-            }
-        });
-        return reverseDepsPaths;
-    }
-
-    private static Set<String> getAffectedFiles(Set<String> directlyChangedFile, Map<String, Set<String>> reverseDeps) {
-        Set<String> affectedFiles = new HashSet<>(directlyChangedFile);
-        Queue<String> queue = new LinkedList<>(directlyChangedFile);
-
-        while (!queue.isEmpty()) {
-            String changedFile = queue.poll();
-
-            Set<String> directDependents = reverseDeps.get(changedFile);
-
-            if (directDependents != null) {
-                for (String dependentFile : directDependents) {
-                    if (affectedFiles.add(dependentFile)) {
-                        queue.offer(dependentFile);
-                    }
-                }
-            }
+        Set<String> children = dependencyGraph.get(currentFile);
+        if (children == null || children.isEmpty()) {
+            affectedFiles.add(currentFile);
+            return;
         }
 
-        return affectedFiles;
+        for (String child : children) {
+            collectLeaves(child, dependencyGraph, affectedFiles, visitedFiles);
+        }
     }
+
 }
