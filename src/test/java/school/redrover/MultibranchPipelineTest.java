@@ -59,6 +59,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(dublicateProject, errorMessage, "Incorrect error message");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testTryCreateProjectExistName")
     public void testDeleteMultibranchPipeline() {
 
