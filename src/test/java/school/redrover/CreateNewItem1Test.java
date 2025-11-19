@@ -8,32 +8,32 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.openqa.selenium.JavascriptExecutor;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.time.Duration;
+import java.util.List;
 
 public class CreateNewItem1Test extends BaseTest {
 
+    private static final List<String> ITEM_NAMES = List.of(
+            "Freestyle project",
+            "Pipeline",
+            "Multi-configuration project",
+            "Folder",
+            "Multibranch Pipeline",
+            "Organization Folder"
+    );
     @Test
     public void testItemsAreDisplayed() {
 
-        String[] expectedItemsList = {
-                "Freestyle project",
-                "Pipeline",
-                "Multi-configuration project",
-                "Folder",
-                "Multibranch Pipeline",
-                "Organization Folder"
-        };
+        List<String> actualItemNames = new HomePage(getDriver())
+                .clickCreateJob()
+                .getItemTypes()
+                .stream()
+                .map(WebElement::getText)
+                .toList();
 
-        String[] actualItemsList = new String[expectedItemsList.length];
-
-        getDriver().findElement(By.xpath("//span[text()='Create a job']")).click();
-
-        for (int i = 0; i < expectedItemsList.length; i++) {
-            actualItemsList[i] = getDriver().findElement(By.xpath("//span[text()='%s']".formatted(expectedItemsList[i]))).getText();
-        }
-
-        Assert.assertEquals(actualItemsList,expectedItemsList);
+        Assert.assertEquals(actualItemNames,ITEM_NAMES);
     }
 
     @Test
