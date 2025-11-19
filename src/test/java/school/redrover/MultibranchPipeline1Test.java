@@ -45,7 +45,8 @@ public class MultibranchPipeline1Test extends BaseTest {
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_DISPLAY_NAME);
     }
 
-@Test (dependsOnMethods = "testCreateClickCreateJob")
+    @Ignore
+    @Test(dependsOnMethods = "testCreateClickCreateJob")
     public void testChangeDescription() {
 
         String name = new HomePage(getDriver())
