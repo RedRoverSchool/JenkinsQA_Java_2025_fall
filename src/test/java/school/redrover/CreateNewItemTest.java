@@ -69,7 +69,7 @@ public class CreateNewItemTest extends BaseTest {
     }
 
     @Test
-    public void testErrorMessageForDuplicateItemNames() throws InterruptedException {
+    public void testErrorMessageForDuplicateItemNames() {
         String errorMessage = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
