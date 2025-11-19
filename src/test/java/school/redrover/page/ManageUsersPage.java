@@ -38,6 +38,7 @@ public class ManageUsersPage extends BasePage {
     private <P extends BasePage> P clickPopUpMenuItem(String userName, By menuItemLocator, P returnedPage) {
         new Actions(getDriver())
                 .moveToElement(getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='%s']".formatted(userName)))))
+                .pause(2000)
                 .perform();
 
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[2]")))
