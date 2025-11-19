@@ -1,9 +1,6 @@
 package school.redrover.page;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BaseModel;
@@ -60,5 +57,13 @@ public class SearchModalPage extends BaseModel {
                 .click()
                 .perform();
         return searchResultsTexts;
+    }
+
+    public String clickSub() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("#search-results > a")));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("command-bar"))).sendKeys(Keys.ENTER);
+        getDriver().findElement(By.cssSelector("#main-panel > div:nth-child(4)")).getText();
+
+        return getDriver().findElement(By.cssSelector("#main-panel > div:nth-child(4)")).getText();
     }
 }
