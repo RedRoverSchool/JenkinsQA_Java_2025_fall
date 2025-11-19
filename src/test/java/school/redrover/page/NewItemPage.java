@@ -49,22 +49,13 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public MultibranchPipelineConfigPage selectMultibranchPipelineAndSubmit() {
+    public MultibranchPipelineConfigurationPage selectMultibranchPipelineAndSubmit() {
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
 
-        return new MultibranchPipelineConfigPage(getDriver());
-    }
-
-    public MultibranchPipelineConfigPage selectMultibranchPipelineWithJsAndSubmit() {
-        TestUtils.clickJS(getDriver(), By.cssSelector("[class$='MultiBranchProject']"));
-
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
-
-        return new MultibranchPipelineConfigPage(getDriver());
+        return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
     public ConfigurationPipelinePage selectPipelineAndSubmit() {
@@ -100,13 +91,13 @@ public class NewItemPage extends BasePage {
         return new HomePage(getDriver());
     }
 
-    public MultibranchPipelineConfigPage selectMultiConfigurationAndSubmit() {
+    public MultibranchPipelineConfigurationPage selectMultiConfigurationAndSubmit() {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Multi-configuration project']"));
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(), 'General')]")));
 
-        return new MultibranchPipelineConfigPage(getDriver());
+        return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
     public ConfigurationOrganizationFolderPage selectOrganizationFolderAndSubmit() {
@@ -133,7 +124,7 @@ public class NewItemPage extends BasePage {
                 selectMultiConfigurationAndSubmit().gotoHomePage();
                 break;
             case "Multibranch Pipeline":
-                selectMultibranchPipelineWithJsAndSubmit().gotoHomePage();
+                selectMultibranchPipelineAndSubmit().gotoHomePage();
                 break;
             case "Organization Folder":
                 selectOrganizationFolderAndSubmit().gotoHomePage();

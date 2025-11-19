@@ -28,7 +28,7 @@ public class MultibranchPipelineConfirmRenamePage extends BasePage {
         return page;
     }
 
-    public MultibranchPipelineJobPage renameMultibranchPipeline(String jobName) {
+    public MultibranchPipelineProjectPage renameMultibranchPipeline(String jobName) {
         getDriver().findElement(By.cssSelector("[href$='confirm-rename']")).click();
 
         WebElement renameField = getDriver().findElement(By.name("newName"));
@@ -37,6 +37,6 @@ public class MultibranchPipelineConfirmRenamePage extends BasePage {
 
         getWait5().until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
 
-        return new MultibranchPipelineJobPage(getDriver());
+        return new MultibranchPipelineProjectPage(getDriver());
     }
 }
