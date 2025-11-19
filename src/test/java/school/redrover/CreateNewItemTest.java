@@ -6,12 +6,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.openqa.selenium.JavascriptExecutor;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
 import java.time.Duration;
 import java.util.List;
-
 
 public class CreateNewItemTest extends BaseTest {
 
@@ -68,6 +68,38 @@ public class CreateNewItemTest extends BaseTest {
         Assert.assertEquals(actualTypeList, expectedItemTypes);
     }
 
+
+    // === Добавлено из удаленного CreateNewItem1Test ===
+    @Test
+    public void testInvalidItemNameField() {
+        String invalidChars = " !@#$%^&*[]|\\;:<>?/";
+
+        new HomePage(getDriver()).clickCreateJob();
+        WebElement nameInput = getDriver().findElement(By.id("name"));
+
+        for (char ch : invalidChars.toCharArray()) {
+            nameInput.clear();
+            nameInput.sendKeys(String.valueOf(ch));
+            String dataValid = nameInput.getAttribute("data-valid");
+            Assert.assertEquals(dataValid, "false", "Character '" + ch + "' should not be allowed");
+        }
+    }
+
+    // === Добавлено из CreateNewItem4Test ===
+    @Test
+    public void testItemNameInput() {
+        new HomePage(getDriver()).clickCreateJob();
+        getDriver().findElement(By.id("name")).sendKeys("Uliana_123");
+
+        List<WebElement> validationMessages = getDriver().findElements(By.className("input-validation-message"));
+
+        boolean allValidationMessagesDisabled = validationMessages.stream()
+                .allMatch(msg -> msg.getAttribute("class").contains("input-message-disabled"));
+
+        Assert.assertTrue(allValidationMessagesDisabled,
+                "All validation messages should be disabled for valid input");
+    }
+
     @Test
     public void testErrorMessageForDuplicateItemNames() {
         String errorMessage = new HomePage(getDriver())
@@ -96,6 +128,121 @@ public class CreateNewItemTest extends BaseTest {
 
         Assert.assertNotEquals(projectList.size(), 0);
         Assert.assertEquals(projectList.get(0), projectName);
+    }
+
+    // === Добавлено из удаленного CreateNewItem1Test ===
+    @Test
+    public void testConfigurationPageIsVisible() {
+        new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("TestProject")
+                .selectFreestyleProjectAndSubmit();
+
+        getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//span[text()='Configuration']"), "Configuration"));
+
+        String heading = getDriver().findElement(By.xpath("//span[text()='Configuration']")).getText();
+        Assert.assertEquals(heading, "Configuration");
+    }
+
+    // === Добавлено из удаленного CreateNewItem1Test ===
+    @Test
+    public void testFreestyleProjectConfigBuildSteps() {
+        String[] expectedBuildSteps = {
+                "Execute Windows batch command",
+                "Execute shell",
+                "Invoke Ant",
+                "Invoke Gradle script",
+                "Invoke top-level Maven targets",
+                "Run with timeout",
+                "Set build status to \"pending\" on GitHub commit"
+        };
+
+        new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("TestProject")
+                .selectFreestyleProjectAndSubmit();
+
+        WebElement addBuildStep = getWait2().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Add build')]"))
+        );
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addBuildStep);
+        addBuildStep.click();
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//button[normalize-space()='Execute Windows batch command']")
+        ));
+
+        for (String step : expectedBuildSteps) {
+            WebElement buildStep = getDriver().findElement(By.xpath("//button[contains(text(),'%s')]".formatted(step)));
+            Assert.assertEquals(buildStep.getText(), step);
+        }
+    }
+
+    // === Добавлено из удаленного CreateNewItem1Test ===
+    @Test
+    public void testBuildStepsFilter() {
+        new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("TestProject")
+                .selectFreestyleProjectAndSubmit();
+
+        WebElement addBuildStep = getWait2().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Add build')]"))
+        );
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addBuildStep);
+        addBuildStep.click();
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//button[normalize-space()='Execute Windows batch command']")
+        ));
+
+        String[] testSteps = {"Execute Windows batch command", "Execute shell", "Invoke Ant"};
+
+        for (String step : testSteps) {
+            WebElement filter = getDriver().findElement(By.xpath("//input[@type='search' and @placeholder='Filter']"));
+            filter.clear();
+            filter.sendKeys(step.substring(0, Math.min(5, step.length())));
+
+            WebElement actualStep = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
+                    .until(ExpectedConditions.visibilityOfElementLocated(
+                            By.xpath("//button[contains(@style,'inline-flex') and normalize-space()='%s']".formatted(step))
+                    ));
+
+            Assert.assertEquals(actualStep.getText(), step, "Filter didn't match expected build step");
+        }
+    }
+
+    // === Добавлено из CreateNewItem7Test ===
+    @Test
+    public void createNewFreeStyleProjectTest() {
+        new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("Freestyle Project Name")
+                .selectFreestyleProjectAndSubmit()
+                .clickSave();
+
+        getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Freestyle Project Name"));
+
+        WebElement projectTitle = getDriver().findElement(By.xpath("//h1"));
+        Assert.assertEquals(projectTitle.getText(), "Freestyle Project Name");
+    }
+
+    // === Добавлено из CreateNewItem8Test ===
+    @Test
+    public void createMultibranchPipelineProjectItemTest() {
+        final String jobName = "NEW_TEST_JOB";
+
+        String newProject = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(jobName)
+                .selectMultibranchPipelineAndSubmit()
+                .gotoHomePage()
+                .getProjectList()
+                .get(0);
+
+        Assert.assertEquals(jobName, newProject);
     }
 }
 
