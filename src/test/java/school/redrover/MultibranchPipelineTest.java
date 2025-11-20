@@ -105,6 +105,19 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualTooltip, tooltipText);
     }
 
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testDisableToggle() {
+        final String expectedToggleState = "Disabled";
+
+        String actualToggleState = new HomePage(getDriver())
+                .openJobPage(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .clickToggle()
+                .getToggleState();
+
+        Assert.assertEquals(actualToggleState, expectedToggleState);
+    }
+
     @Test
     public void testVerifyAppearSaveMessage() {
         String actualSavedMessage = new HomePage(getDriver())
