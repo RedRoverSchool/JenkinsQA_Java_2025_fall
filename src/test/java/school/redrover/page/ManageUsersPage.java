@@ -6,6 +6,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
+import java.time.Duration;
+
 
 public class ManageUsersPage extends BasePage {
 
@@ -38,7 +40,7 @@ public class ManageUsersPage extends BasePage {
     private <P extends BasePage> P clickPopUpMenuItem(String userName, By menuItemLocator, P returnedPage) {
         new Actions(getDriver())
                 .moveToElement(getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='%s']".formatted(userName)))))
-                .pause(10000)
+                .pause(Duration.ofSeconds(5))
                 .perform();
 
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[2]")))
