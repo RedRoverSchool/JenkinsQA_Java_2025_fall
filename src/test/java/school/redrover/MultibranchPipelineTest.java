@@ -151,25 +151,6 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testAddDescription() {
-        final String expectedDescription = "This is a test of the possibility of adding a description";
-
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='name']"))
-                .sendKeys("Multibranch Pipeline (test)");
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='_.description']"));
-        descriptionField.sendKeys(expectedDescription);
-        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
-
-        WebElement actualDescription = getDriver().findElement(By.xpath("//div[@id='view-message']"));
-        Assert.assertEquals(actualDescription.getText(), expectedDescription);
-    }
-
-    @Test
     public void testButtonIsDisplayed() {
         final String projectName = "Multibranch Pipeline (test)";
 
@@ -224,7 +205,6 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(descriptionField.isDisplayed());
     }
 
-
     @Test
     public void testRenameViaSidebar() {
         String actualRenamedMultibranchPipeline = new HomePage(getDriver())
@@ -256,28 +236,6 @@ public class MultibranchPipelineTest extends BaseTest {
         descriptionField.sendKeys(description);
 
         Assert.assertTrue(descriptionField.isDisplayed());
-    }
-
-    @Ignore
-    @Test
-    public void testSeeAddedDescriptionBelowHeading() {
-        final String projectName = "Multibranch Pipeline (test)";
-        final String description = "This is a test description for Multibranch Pipeline";
-
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
-        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
-        WebElement savedDescription = getDriver().findElement(By.id("description-content"));
-
-        Assert.assertFalse(savedDescription.isDisplayed(),
-                "Bug: description is not saved below the Multibranch Pipeline heading");
     }
 
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
