@@ -1,6 +1,7 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -40,11 +41,11 @@ public class ManageUsersPage extends BasePage {
     private <P extends BasePage> P clickPopUpMenuItem(String userName, By menuItemLocator, P returnedPage) {
         new Actions(getDriver())
                 .moveToElement(getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='%s']".formatted(userName)))))
-                .pause(Duration.ofSeconds(5))
+                .pause(Duration.ofSeconds(2))
                 .perform();
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[2]")))
-                .click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[2]")))
+                .sendKeys(Keys.ENTER);
         getWait10().until(ExpectedConditions.elementToBeClickable(menuItemLocator))
                 .click();
 
