@@ -93,6 +93,10 @@ public abstract class BaseTest {
 
     @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) {
+        if (ProjectUtils.isRunCI() && !testResult.isSuccess()) {
+            ProjectUtils.takeScreenshot(getDriver(), this.getClass().getName(), method.getName());
+        }
+
         if (methodsOrder.isGroupFinished(method) && (ProjectUtils.isRunCI() || testResult.isSuccess() || ProjectUtils.closeIfError())) {
             stopDriver();
         }
