@@ -69,7 +69,7 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
         return getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Apply")));
     }
 
-    public List<String> getSomeSettingsToList(){
+    public List<String> getSettingsToList(){
         List<String> settingsList = new ArrayList<>();
 
         settingsList.add(getDriver().findElement(By.name("description")).getText());
@@ -92,6 +92,21 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
 
     public ConfigurationFreestyleProjectPage clickSourceCodeManagementMenuOption() {
         getDriver().findElement(By.xpath("//button[@data-section-id='source-code-management']")).click();
+
+        return this;
+    }
+
+    public ConfigurationFreestyleProjectPage clickBuildStepMenuOption() {
+
+        WebElement addBuildStep = getWait2().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Add build')]"))
+        );
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addBuildStep);
+        addBuildStep.click();
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//button[normalize-space()='Execute Windows batch command']")));
 
         return this;
     }

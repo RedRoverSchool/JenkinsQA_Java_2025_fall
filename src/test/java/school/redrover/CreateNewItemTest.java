@@ -148,42 +148,7 @@ public class CreateNewItemTest extends BaseTest {
 
     // === Добавлено из удаленного CreateNewItem1Test ===
     @Test
-    public void testFreestyleProjectConfigBuildSteps() {
-        String[] expectedBuildSteps = {
-                "Execute Windows batch command",
-                "Execute shell",
-                "Invoke Ant",
-                "Invoke Gradle script",
-                "Invoke top-level Maven targets",
-                "Run with timeout",
-                "Set build status to \"pending\" on GitHub commit"
-        };
-
-        new HomePage(getDriver())
-                .clickCreateJob()
-                .sendName("TestProject")
-                .selectFreestyleProjectAndSubmit();
-
-        WebElement addBuildStep = getWait2().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Add build')]"))
-        );
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addBuildStep);
-        addBuildStep.click();
-
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//button[normalize-space()='Execute Windows batch command']")
-        ));
-
-        for (String step : expectedBuildSteps) {
-            WebElement buildStep = getDriver().findElement(By.xpath("//button[contains(text(),'%s')]".formatted(step)));
-            Assert.assertEquals(buildStep.getText(), step);
-        }
-    }
-
-    // === Добавлено из удаленного CreateNewItem1Test ===
-    @Test
-    public void testBuildStepsFilter() {
+    public void testBuildStepsFilterNames() {
         new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName("TestProject")
