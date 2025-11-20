@@ -27,7 +27,7 @@ public abstract class BasePage extends BaseModel {
     }
 
     public UserStatusPage clickUserPicButton() {
-        TestUtils.focusAndEnterByKeyboard(getDriver(), getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-UserAction"))));
+        TestUtils.clickJS(getDriver(), getWait10().until(ExpectedConditions.elementToBeClickable(By.id("root-action-UserAction"))));
 
         return new UserStatusPage(getDriver());
     }
