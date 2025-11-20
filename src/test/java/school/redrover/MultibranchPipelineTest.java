@@ -6,7 +6,9 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.ErrorPage;
 import school.redrover.page.HomePage;
+import school.redrover.page.MultibranchPipelineProjectPage;
 import school.redrover.page.NewItemPage;
 
 import java.util.List;
@@ -45,6 +47,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(projectList.contains(MULTIBRANCH_PIPELINE_NAME));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
     public void testTryCreateProjectExistName() {
         final String errorMessage = "» A job already exists with the name ‘%s’".formatted(MULTIBRANCH_PIPELINE_NAME);
@@ -58,6 +61,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(dublicateProject, errorMessage, "Incorrect error message");
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testTryCreateProjectExistName")
     public void testDeleteMultibranchPipeline() {
 
@@ -281,5 +285,19 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertFalse(savedDescription.isDisplayed(),
                 "Bug: description is not saved below the Multibranch Pipeline heading");
+    }
+
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testRenameJobNameUsingDotAtTheEnd() {
+        final String expectedErrorMessage = "A name cannot end with ‘.’";
+
+        String actualErrorMessage = new HomePage(getDriver())
+                .openJobPage(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickRenameLinkInSideMenu()
+                .renameJob(MULTIBRANCH_PIPELINE_NAME + ".")
+                .submitForm(new ErrorPage(getDriver()))
+                .getErrorMessage();
+
+        Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 }

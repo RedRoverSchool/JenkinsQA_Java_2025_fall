@@ -10,9 +10,9 @@ public class FreestyleProjectPage extends BasePage {
         super(driver);
     }
 
-    public ConfigurationFreestyleProjectPage clickConfigure(String projectName) {
+    public FreestyleProjectConfigurationPage clickConfigure(String projectName) {
         getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(projectName))).click();
 
-        return new ConfigurationFreestyleProjectPage(getDriver());
+        return new FreestyleProjectConfigurationPage(getDriver());
     }
 }
