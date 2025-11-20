@@ -69,7 +69,7 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
         return getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Apply")));
     }
 
-    public List<String> getSomeSettingsToList(){
+    public List<String> getSettingsToList(){
         List<String> settingsList = new ArrayList<>();
 
         settingsList.add(getDriver().findElement(By.name("description")).getText());
