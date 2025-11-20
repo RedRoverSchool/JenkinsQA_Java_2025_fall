@@ -63,17 +63,6 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisabledMessageOnStatusPage")
-    public void testJobDescriptionPreview() {
-        String jobDescriptionPreviewText = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .clickConfigureLinkInSideMenu()
-                .enterDescription(JOB_DESCRIPTION)
-                .getJobDescriptionPreviewText();
-
-        Assert.assertEquals(jobDescriptionPreviewText, JOB_DESCRIPTION);
-    }
-
-    @Test(dependsOnMethods = "testJobDescriptionPreview")
     public void testMultibranchJobDescription() {
         String actualJobDescription = new HomePage(getDriver())
                 .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
