@@ -57,7 +57,7 @@ public class CreateNewItemTest extends BaseTest {
         );
 
         WebElement newItemButton = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#tasks a[href='newJob']")));
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//div[@id='tasks']/div[1]/span/a")));
         newItemButton.click();
 
         List<String> actualTypeList = getDriver()
