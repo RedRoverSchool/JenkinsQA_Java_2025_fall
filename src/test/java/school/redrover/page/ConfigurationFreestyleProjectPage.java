@@ -96,6 +96,21 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
         return this;
     }
 
+    public ConfigurationFreestyleProjectPage clickBuildStepMenuOption() {
+
+        WebElement addBuildStep = getWait2().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Add build')]"))
+        );
+
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addBuildStep);
+        addBuildStep.click();
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//button[normalize-space()='Execute Windows batch command']")));
+
+        return this;
+    }
+
     public ConfigurationFreestyleProjectPage scrollToSourceCodeManagementWithJS() {
         WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", scmTitle);
