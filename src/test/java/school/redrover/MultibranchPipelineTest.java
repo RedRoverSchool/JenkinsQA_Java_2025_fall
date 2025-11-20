@@ -300,4 +300,22 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
     }
+
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testUpdateJobDescription() {
+        final String jobDescription = "This is a project description";
+        final String updatedJobDescription = "This is a new project description";
+
+        String actualJobDescription = new HomePage(getDriver())
+                .openJobPage(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .enterDescription(jobDescription)
+                .clickSaveButton()
+                .clickConfigureLinkInSideMenu()
+                .updateJobDescription(updatedJobDescription)
+                .clickSaveButton()
+                .getDescription();
+
+        Assert.assertEquals(actualJobDescription, updatedJobDescription);
+    }
 }
