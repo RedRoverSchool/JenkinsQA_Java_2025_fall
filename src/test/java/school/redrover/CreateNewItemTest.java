@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import org.openqa.selenium.JavascriptExecutor;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
 
 import java.time.Duration;
 import java.util.List;
@@ -68,19 +69,20 @@ public class CreateNewItemTest extends BaseTest {
         Assert.assertEquals(actualTypeList, expectedItemTypes);
     }
 
-
-    // === Добавлено из удаленного CreateNewItem1Test ===
     @Test
     public void testInvalidItemNameField() {
-        String invalidChars = " !@#$%^&*[]|\\;:<>?/";
 
-        new HomePage(getDriver()).clickCreateJob();
-        WebElement nameInput = getDriver().findElement(By.id("name"));
+        final String invalidChars = " !@#$%^&*[]|\\;:<>?/";
+
+        NewItemPage newItemPage = new HomePage(getDriver()).clickCreateJob();
 
         for (char ch : invalidChars.toCharArray()) {
-            nameInput.clear();
-            nameInput.sendKeys(String.valueOf(ch));
-            String dataValid = nameInput.getAttribute("data-valid");
+            newItemPage
+                    .clearSendName()
+                    .sendName(String.valueOf(ch));
+
+            String dataValid = newItemPage.getNameDataValid();
+
             Assert.assertEquals(dataValid, "false", "Character '" + ch + "' should not be allowed");
         }
     }
