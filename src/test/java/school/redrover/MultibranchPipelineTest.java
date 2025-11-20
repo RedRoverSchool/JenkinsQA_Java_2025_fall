@@ -63,7 +63,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Ignore
-    @Test (dependsOnMethods = "testTryCreateProjectExistName")
+    @Test(dependsOnMethods = "testTryCreateProjectExistName")
     public void testDeleteMultibranchPipeline() {
 
         List<String> projectList = new HomePage(getDriver())

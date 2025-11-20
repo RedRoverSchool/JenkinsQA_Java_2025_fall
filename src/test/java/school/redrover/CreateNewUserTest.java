@@ -10,7 +10,6 @@ public class CreateNewUserTest extends BaseTest {
     final String userName = "John";
     final String userPassword = "yaE@jCz7JkYXS@@";
     final String userEmail = "johnsmith@gmail.com";
-    final String fullName = "John Smith";
 
     @Test
     public void createNewUser() {

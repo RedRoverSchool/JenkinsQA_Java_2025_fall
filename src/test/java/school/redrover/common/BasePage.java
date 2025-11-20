@@ -39,6 +39,10 @@ public abstract class BasePage extends BaseModel {
         return new LoginPage(getDriver());
     }
 
+    public String getJenkinsVersion() {
+        return getDriver().findElement(By.cssSelector(".page-footer__links > button")).getText();
+    }
+
     public FooterDropdownPage clickJenkinsVersion() {
         getDriver().findElement(By.cssSelector(".page-footer__links > button")).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-dropdown")));
