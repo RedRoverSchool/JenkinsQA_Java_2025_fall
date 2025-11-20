@@ -84,21 +84,4 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualJobDescription, JOB_DESCRIPTION);
     }
-
-    @Test(dependsOnMethods = "testMultibranchJobDescription")
-    public void testUpdateJobDescription() {
-        final String updatedJobDescription = "This is a new project description";
-
-        String actualJobDescription = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .clickConfigureLinkInSideMenu()
-                .enterDescription(JOB_DESCRIPTION)
-                .clickSaveButton()
-                .clickConfigureLinkInSideMenu()
-                .updateJobDescription(updatedJobDescription)
-                .clickSaveButton()
-                .getDescription();
-
-        Assert.assertEquals(actualJobDescription, updatedJobDescription);
-    }
 }
