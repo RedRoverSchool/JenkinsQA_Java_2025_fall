@@ -63,7 +63,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Ignore
-    @Test (dependsOnMethods = "testTryCreateProjectExistName")
+    @Test(dependsOnMethods = "testTryCreateProjectExistName")
     public void testDeleteMultibranchPipeline() {
 
         List<String> projectList = new HomePage(getDriver())
@@ -103,6 +103,19 @@ public class MultibranchPipelineTest extends BaseTest {
                 .getToggleTooltipTextOnHover();
 
         Assert.assertEquals(actualTooltip, tooltipText);
+    }
+
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testDisableToggle() {
+        final String expectedToggleState = "Disabled";
+
+        String actualToggleState = new HomePage(getDriver())
+                .openJobPage(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .clickToggle()
+                .getToggleState();
+
+        Assert.assertEquals(actualToggleState, expectedToggleState);
     }
 
     @Test
