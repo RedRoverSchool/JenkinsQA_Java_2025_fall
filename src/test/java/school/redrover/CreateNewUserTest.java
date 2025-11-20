@@ -10,7 +10,6 @@ public class CreateNewUserTest extends BaseTest {
     final String userName = "John";
     final String userPassword = "yaE@jCz7JkYXS@@";
     final String userEmail = "johnsmith@gmail.com";
-    final String fullName = "John Smith";
 
     @Test
     public void createNewUser() {
@@ -61,6 +60,6 @@ public class CreateNewUserTest extends BaseTest {
                 .searchForUser(userName)
                 .getUserID();
 
-        Assert.assertTrue(findUser.contains(userName));
+        Assert.assertEquals(findUser, userName);
     }
 }
