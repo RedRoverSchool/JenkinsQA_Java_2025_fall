@@ -10,20 +10,19 @@ public class CreateNewUserTest extends BaseTest {
     final String userName = "John";
     final String userPassword = "yaE@jCz7JkYXS@@";
     final String userEmail = "johnsmith@gmail.com";
-    final String fullName = "John Smith";
 
     @Test
     public void createNewUser() {
         String newUser = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
-                .clickUserLink()
+                .clickUserButton()
                 .clickCreateUserButton()
                 .sendUserName(userName)
                 .sendPassword(userPassword)
                 .sendConfirmPassword(userPassword)
                 .sendEmail(userEmail)
                 .clickCreateUserButton(new ManageUsersPage(getDriver()))
-                .getCreatedUserName(userName);
+                .getUserName(userName);
 
         Assert.assertEquals(newUser, userName);
     }
@@ -32,8 +31,8 @@ public class CreateNewUserTest extends BaseTest {
     public void checkCreatedUser() {
         String newCheck = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
-                .clickUserLink()
-                .getCreatedUserName(userName);
+                .clickUserButton()
+                .getUserName(userName);
         Assert.assertEquals(newCheck, userName);
     }
 
@@ -42,7 +41,7 @@ public class CreateNewUserTest extends BaseTest {
 
         String newCheck = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
-                .clickUserLink()
+                .clickUserButton()
                 .clickCreateUserButton()
                 .sendUserName(userName)
                 .sendPassword(userPassword)
@@ -61,6 +60,6 @@ public class CreateNewUserTest extends BaseTest {
                 .searchForUser(userName)
                 .getUserID();
 
-        Assert.assertTrue(findUser.contains(userName));
+        Assert.assertEquals(findUser, userName);
     }
 }

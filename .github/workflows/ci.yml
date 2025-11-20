@@ -63,3 +63,11 @@ jobs:
           BROWSER_NAME: chrome
           BROWSER_OPTIONS_CHROME: --remote-allow-origins=*;--disable-gpu;--no-sandbox;--disable-dev-shm-usage;--headless=new;--window-size=1920,1080
           RUN_CI: true
+
+      - name: Error Screenshot
+        uses: actions/upload-artifact@v4
+        if: ${{ failure() }}
+        with:
+          name: error-screenshot
+          path: screenshots/*.png
+          retention-days: 2

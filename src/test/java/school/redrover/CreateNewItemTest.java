@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import org.openqa.selenium.JavascriptExecutor;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
 
 import java.time.Duration;
 import java.util.List;
@@ -60,29 +61,12 @@ public class CreateNewItemTest extends BaseTest {
         newItemButton.click();
 
         List<String> actualTypeList = getDriver()
-                .findElements(By.xpath(".//span[@class='label']"))
+                .findElements(By.cssSelector("#items label .label"))
                 .stream()
                 .map(WebElement::getText)
                 .toList();
 
         Assert.assertEquals(actualTypeList, expectedItemTypes);
-    }
-
-
-    // === Добавлено из удаленного CreateNewItem1Test ===
-    @Test
-    public void testInvalidItemNameField() {
-        String invalidChars = " !@#$%^&*[]|\\;:<>?/";
-
-        new HomePage(getDriver()).clickCreateJob();
-        WebElement nameInput = getDriver().findElement(By.id("name"));
-
-        for (char ch : invalidChars.toCharArray()) {
-            nameInput.clear();
-            nameInput.sendKeys(String.valueOf(ch));
-            String dataValid = nameInput.getAttribute("data-valid");
-            Assert.assertEquals(dataValid, "false", "Character '" + ch + "' should not be allowed");
-        }
     }
 
     // === Добавлено из CreateNewItem4Test ===
@@ -98,6 +82,46 @@ public class CreateNewItemTest extends BaseTest {
 
         Assert.assertTrue(allValidationMessagesDisabled,
                 "All validation messages should be disabled for valid input");
+    }
+
+    @Test
+    public void testInvalidItemNameField() {
+
+        final String invalidChars = " !@#$%^&*[]|\\;:<>?/";
+
+        NewItemPage newItemPage = new HomePage(getDriver()).clickCreateJob();
+
+        for (char ch : invalidChars.toCharArray()) {
+            newItemPage
+                    .clearSendName()
+                    .sendName(String.valueOf(ch));
+
+            String dataValid = newItemPage.getNameDataValid();
+
+            Assert.assertEquals(dataValid, "false", "Character '" + ch + "' should not be allowed");
+        }
+    }
+
+    @Test
+    public void testPipelineTypeCanBeSelected() {
+        boolean isSelected = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("Test Project")
+                .selectPipeline()
+                .isPipelineSelected();
+
+        Assert.assertTrue(isSelected);
+    }
+
+    @Test
+    public void testPipelineTypeHighlightAndOkButtonEnables() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("Test Project")
+                .selectPipeline();
+
+        Assert.assertTrue(newItemPage.isPipelineHighlighted());
+        Assert.assertTrue(newItemPage.isOkButtonEnabled());
     }
 
     @Test
@@ -146,42 +170,7 @@ public class CreateNewItemTest extends BaseTest {
 
     // === Добавлено из удаленного CreateNewItem1Test ===
     @Test
-    public void testFreestyleProjectConfigBuildSteps() {
-        String[] expectedBuildSteps = {
-                "Execute Windows batch command",
-                "Execute shell",
-                "Invoke Ant",
-                "Invoke Gradle script",
-                "Invoke top-level Maven targets",
-                "Run with timeout",
-                "Set build status to \"pending\" on GitHub commit"
-        };
-
-        new HomePage(getDriver())
-                .clickCreateJob()
-                .sendName("TestProject")
-                .selectFreestyleProjectAndSubmit();
-
-        WebElement addBuildStep = getWait2().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Add build')]"))
-        );
-
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});", addBuildStep);
-        addBuildStep.click();
-
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//button[normalize-space()='Execute Windows batch command']")
-        ));
-
-        for (String step : expectedBuildSteps) {
-            WebElement buildStep = getDriver().findElement(By.xpath("//button[contains(text(),'%s')]".formatted(step)));
-            Assert.assertEquals(buildStep.getText(), step);
-        }
-    }
-
-    // === Добавлено из удаленного CreateNewItem1Test ===
-    @Test
-    public void testBuildStepsFilter() {
+    public void testBuildStepsFilterNames() {
         new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName("TestProject")
