@@ -17,4 +17,15 @@ public class ConfigureUserTest extends BaseTest {
 
         Assert.assertTrue(actualUserName.contains(expectedUserName));
     }
+
+    @Test
+    public void testAccessUserAccountFromHome() {
+        final String expUserName = "admin";
+
+        String actUserName = new HomePage(getDriver())
+                .clickUserAccountViaIconInHeader()
+                .getUserName();
+
+        Assert.assertEquals(actUserName, expUserName);
+    }
 }
