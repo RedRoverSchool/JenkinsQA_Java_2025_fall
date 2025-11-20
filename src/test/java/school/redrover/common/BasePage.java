@@ -61,4 +61,8 @@ public abstract class BasePage extends BaseModel {
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
     }
+
+    public String getJenkinsVersion() {
+        return getDriver().findElement(By.cssSelector("div.page-footer__links > button")).getText();
+    }
 }
