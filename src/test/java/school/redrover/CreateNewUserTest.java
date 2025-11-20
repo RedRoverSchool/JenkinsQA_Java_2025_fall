@@ -61,6 +61,6 @@ public class CreateNewUserTest extends BaseTest {
                 .searchForUser(userName)
                 .getUserID();
 
-        Assert.assertTrue(findUser.contains(userName));
+        Assert.assertEquals(findUser, userName);
     }
 }
