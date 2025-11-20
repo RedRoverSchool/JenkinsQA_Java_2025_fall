@@ -8,12 +8,17 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.FreestyleProjectConfigurationPage;
+import school.redrover.page.FreestyleProjectPage;
 import school.redrover.page.HomePage;
 
 import java.util.List;
 
 public class FreestyleProjectConfigurationTest extends BaseTest {
+
     private static final String PROJECT_NAME = "FreestyleProject";
+    private static final String SCM_TITLE_EXPECTED = "Source Code Management";
+
     private static final List<String> BUILD_STEPS = List.of(
             "Execute Windows batch command",
             "Execute shell",
@@ -76,7 +81,7 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(projectName);
         getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.cssSelector("#ok-button")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
     }
 
     private void moveAndClickWithJS(WebElement element) {
@@ -99,5 +104,68 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
             WebElement buildStep = getDriver().findElement(By.xpath("//button[contains(text(),'%s')]".formatted(step)));
             Assert.assertEquals(buildStep.getText(), step);
         }
+    }
+
+// Source Code Management Section
+
+    @Test
+    public void testAccessSCMInNewJob() {
+        WebElement scmTitle = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .verifySCMTitleIsVisible();
+
+        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+    }
+
+    @Test
+    public void testSCMSectionElements() {
+        FreestyleProjectConfigurationPage configPage = new HomePage(getDriver()).clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit();
+
+        Assert.assertTrue(configPage.getScmDescription().isDisplayed(),"SCM Description is not displayed or the description text doesn't match");
+        Assert.assertEquals(configPage.getSelectedRadioLabel(), "None","Radio button 'None' should be selected by default");
+        Assert.assertTrue(configPage.isGitOptionDisplayed(),"Radio button 'Git' should be displayed");
+        Assert.assertEquals(configPage.getGitTooltipText(),"Help for feature: Git","Tooltip text should match expected value");
+    }
+
+    @Test
+    public void testAccessSCMInExistingJob() {
+        WebElement scmTitle = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .gotoHomePage()
+                .openJobPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure(PROJECT_NAME)
+                .verifySCMTitleIsVisible();
+
+        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+    }
+
+    @Test
+    public void testNavigationToSCMViaMenu() {
+        WebElement scmTitle = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .clickSourceCodeManagementMenuOption()
+                .verifySCMTitleIsVisible();
+
+        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+    }
+
+    @Test
+    public void testNavigationToSCMByScrollingDown() {
+        WebElement scmTitle = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .scrollToSourceCodeManagementWithJS()
+                .verifySCMTitleIsVisible();
+
+        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
     }
 }
