@@ -61,12 +61,27 @@ public class CreateNewItemTest extends BaseTest {
         newItemButton.click();
 
         List<String> actualTypeList = getDriver()
-                .findElements(By.xpath(".//span[@class='label']"))
+                .findElements(By.cssSelector("#items label .label"))
                 .stream()
                 .map(WebElement::getText)
                 .toList();
 
         Assert.assertEquals(actualTypeList, expectedItemTypes);
+    }
+
+    // === Добавлено из CreateNewItem4Test ===
+    @Test
+    public void testItemNameInput() {
+        new HomePage(getDriver()).clickCreateJob();
+        getDriver().findElement(By.id("name")).sendKeys("Uliana_123");
+
+        List<WebElement> validationMessages = getDriver().findElements(By.className("input-validation-message"));
+
+        boolean allValidationMessagesDisabled = validationMessages.stream()
+                .allMatch(msg -> msg.getAttribute("class").contains("input-message-disabled"));
+
+        Assert.assertTrue(allValidationMessagesDisabled,
+                "All validation messages should be disabled for valid input");
     }
 
     @Test
@@ -87,19 +102,26 @@ public class CreateNewItemTest extends BaseTest {
         }
     }
 
-    // === Добавлено из CreateNewItem4Test ===
     @Test
-    public void testItemNameInput() {
-        new HomePage(getDriver()).clickCreateJob();
-        getDriver().findElement(By.id("name")).sendKeys("Uliana_123");
+    public void testPipelineTypeCanBeSelected() {
+        boolean isSelected = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("Test Project")
+                .selectPipeline()
+                .isPipelineSelected();
 
-        List<WebElement> validationMessages = getDriver().findElements(By.className("input-validation-message"));
+        Assert.assertTrue(isSelected);
+    }
 
-        boolean allValidationMessagesDisabled = validationMessages.stream()
-                .allMatch(msg -> msg.getAttribute("class").contains("input-message-disabled"));
+    @Test
+    public void testPipelineTypeHighlightAndOkButtonEnables() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("Test Project")
+                .selectPipeline();
 
-        Assert.assertTrue(allValidationMessagesDisabled,
-                "All validation messages should be disabled for valid input");
+        Assert.assertTrue(newItemPage.isPipelineHighlighted());
+        Assert.assertTrue(newItemPage.isOkButtonEnabled());
     }
 
     @Test
