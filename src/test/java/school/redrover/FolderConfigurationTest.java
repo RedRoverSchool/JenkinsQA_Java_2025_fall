@@ -14,7 +14,7 @@ public class FolderConfigurationTest extends BaseTest {
 
     @Test
     public void testHealthMetricLinkIsDisplayed(){
-        final String linkDisplayed = new HomePage(getDriver())
+        String linkDisplayed = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(FOLDER_NAME)
                 .selectFolderAndSubmit()
@@ -25,7 +25,7 @@ public class FolderConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testHealthMetricButtonIsDisplayed(){
-        final String buttonDisplayed = new HomePage(getDriver())
+        String buttonDisplayed = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickConfigure()
                 .getHealthMetricsButton();
@@ -35,7 +35,7 @@ public class FolderConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testHealthMetricSectionNavigation(){
-        final String sectionName = new HomePage(getDriver())
+        String sectionName = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickConfigure()
                 .clickHealthMetricsSidebarLink()
@@ -46,15 +46,16 @@ public class FolderConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testVerifyMetricTypeList(){
-        final List<String> actualMetricTypes = new HomePage(getDriver())
+
+        final  List<String> expectedMetricTypes= Arrays.asList("Child item with the given name","Child item with worst health");
+
+        List<String> actualMetricTypes = new HomePage(getDriver())
                 .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickConfigure()
                 .clickHealthMetricsSidebarLink()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .getAllMetricTypeNames();
-
-        List<String> expectedMetricTypes= Arrays.asList("Child item with the given name","Child item with worst health");
 
         Assert.assertEquals(actualMetricTypes, expectedMetricTypes,
                 "The list of displayed metric types in the dropdown did not match the expected list.");
