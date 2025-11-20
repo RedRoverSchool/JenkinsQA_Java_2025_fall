@@ -157,16 +157,6 @@ public class NewItemPage extends BasePage {
         return getDriver().findElement(By.id("ok-button")).isEnabled();
     }
 
-    public WebElement getSectionTitle() {
-
-        return getDriver().findElement(By.xpath("//div[text()='Select an item type']"));
-    }
-
-    public List<WebElement> getItemTypes() {
-
-        return getDriver().findElements(By.xpath("//div[@id='items']//label"));
-    }
-  
     public String getTextHintFromCopyField() {
         return getDriver().findElement(By.xpath("//p[@class='jenkins-form-label']")).getText();
     }
