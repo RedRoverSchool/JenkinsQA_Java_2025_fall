@@ -59,7 +59,7 @@ jobs:
           BROWSER_OPTIONS_CHROME: --remote-allow-origins=*;--disable-gpu;--no-sandbox;--disable-dev-shm-usage;--headless=new;--window-size=1920,1080
           RUN_CI: true
 
-      - name: Error Screenshots
+      - name: Error Screenshot
         uses: actions/upload-artifact@v4
         if: ${{ failure() }}
         with:
