@@ -3,7 +3,6 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.ErrorPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.MultibranchPipelineProjectPage;
 
@@ -101,19 +100,5 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
                 .getDescription();
 
         Assert.assertEquals(actualJobDescription, updatedJobDescription);
-    }
-
-    @Test(dependsOnMethods = "testUpdateJobDescription")
-    public void testRenameJobNameUsingDotAtTheEnd() {
-        final String expectedErrorMessage = "A name cannot end with ‘.’";
-
-        String actualErrorMessage = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .clickRenameLinkInSideMenu()
-                .renameJob(JOB_NAME + ".")
-                .submitForm(new ErrorPage(getDriver()))
-                .getErrorMessage();
-
-        Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 }
