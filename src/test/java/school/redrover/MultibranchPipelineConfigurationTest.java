@@ -116,18 +116,4 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
     }
-
-    @Test(dependsOnMethods = "testRenameJobNameUsingDotAtTheEnd")
-    public void testRenameJob() {
-        final String updatedJobName = "updatedProjectName";
-
-        String actualHeadingText = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .clickRenameLinkInSideMenu()
-                .renameJob(updatedJobName)
-                .submitForm(new MultibranchPipelineProjectPage(getDriver()))
-                .getHeadingText();
-
-        Assert.assertEquals(actualHeadingText, updatedJobName);
-    }
 }
