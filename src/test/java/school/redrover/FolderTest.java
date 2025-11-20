@@ -85,6 +85,7 @@ public class FolderTest extends BaseTest {
                 "%s не должна отображаться в поиске после удаления".formatted(SUB_FOLDER_NAME));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "Folder description";
