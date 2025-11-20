@@ -8,9 +8,21 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+
+import java.util.List;
 
 public class FreestyleProjectConfigurationTest extends BaseTest {
     private static final String PROJECT_NAME = "FreestyleProject";
+    private static final List<String> BUILD_STEPS = List.of(
+            "Execute Windows batch command",
+            "Execute shell",
+            "Invoke Ant",
+            "Invoke Gradle script",
+            "Invoke top-level Maven targets",
+            "Run with timeout",
+            "Set build status to \"pending\" on GitHub commit"
+    );
 
     @Test
     public void testDisableProjectViaConfigureDropdownMenu() {
@@ -74,4 +86,18 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
                 .executeScript("arguments[0].dispatchEvent(new Event('click'));", element);
     }
 
+    @Test
+    public void testBuildSteps() {
+
+        new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName("TestProject")
+                .selectFreestyleProjectAndSubmit()
+                .clickBuildStepMenuOption();
+
+        for (String step : BUILD_STEPS) {
+            WebElement buildStep = getDriver().findElement(By.xpath("//button[contains(text(),'%s')]".formatted(step)));
+            Assert.assertEquals(buildStep.getText(), step);
+        }
+    }
 }

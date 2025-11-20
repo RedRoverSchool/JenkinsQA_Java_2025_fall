@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
+import school.redrover.common.filter.FilterForTests;
 import school.redrover.common.order.OrderForTests;
 import school.redrover.common.order.OrderUtils;
 

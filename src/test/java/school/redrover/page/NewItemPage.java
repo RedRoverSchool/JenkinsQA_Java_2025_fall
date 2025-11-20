@@ -82,14 +82,14 @@ public class NewItemPage extends BasePage {
         return new FreestyleProjectConfigurationPage(getDriver());
     }
 
-    public HomePage sendNewNameAndOriginalNameAndSubmit(String newItemName, String originalItemName) {
-        this.sendName(newItemName);
-        getDriver().findElement(By.id("from")).sendKeys(originalItemName);
+    public NewItemPage sendNameToCopyFromAndSubmit(String name) {
+        getDriver().findElement(By.id("from")).sendKeys(name);
 
         getDriver().findElement(By.id("ok-button")).click();
 
-        return new HomePage(getDriver());
+        return this;
     }
+
 
     public MultibranchPipelineConfigurationPage selectMultiConfigurationAndSubmit() {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Multi-configuration project']"));
