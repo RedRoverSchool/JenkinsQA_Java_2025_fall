@@ -11,7 +11,7 @@ public class ManageJenkinsPage extends BasePage {
         super(driver);
     }
 
-    public ManageUsersPage clickUserLink() {
+    public ManageUsersPage clickUserButton() {
         getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
 
         return new ManageUsersPage(getDriver());

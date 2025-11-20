@@ -63,17 +63,6 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisabledMessageOnStatusPage")
-    public void testJobDescriptionPreview() {
-        String jobDescriptionPreviewText = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .clickConfigureLinkInSideMenu()
-                .enterDescription(JOB_DESCRIPTION)
-                .getJobDescriptionPreviewText();
-
-        Assert.assertEquals(jobDescriptionPreviewText, JOB_DESCRIPTION);
-    }
-
-    @Test(dependsOnMethods = "testJobDescriptionPreview")
     public void testMultibranchJobDescription() {
         String actualJobDescription = new HomePage(getDriver())
                 .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
@@ -83,22 +72,5 @@ public class MultibranchPipelineConfigurationTest extends BaseTest {
                 .getDescription();
 
         Assert.assertEquals(actualJobDescription, JOB_DESCRIPTION);
-    }
-
-    @Test(dependsOnMethods = "testMultibranchJobDescription")
-    public void testUpdateJobDescription() {
-        final String updatedJobDescription = "This is a new project description";
-
-        String actualJobDescription = new HomePage(getDriver())
-                .openJobPage(JOB_NAME, new MultibranchPipelineProjectPage(getDriver()))
-                .clickConfigureLinkInSideMenu()
-                .enterDescription(JOB_DESCRIPTION)
-                .clickSaveButton()
-                .clickConfigureLinkInSideMenu()
-                .updateJobDescription(updatedJobDescription)
-                .clickSaveButton()
-                .getDescription();
-
-        Assert.assertEquals(actualJobDescription, updatedJobDescription);
     }
 }

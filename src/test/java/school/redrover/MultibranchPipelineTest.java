@@ -17,6 +17,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchName";
     private static final String RENAMED_MULTIBRANCH_PIPELINE = "RenamedMultibranchName";
+    private static final String MULTIBRANCH_JOB_DESCRIPTION = "This is a job description";
 
     @Test
     public void testAddingDescriptionCreatingMultibranch() {
@@ -244,27 +245,6 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(descriptionField.isDisplayed());
     }
 
-    @Test
-    public void testSeeTheDescriptionPreview() {
-        final String projectName = "Multibranch Pipeline (test)";
-        final String description = "This is a test description for Multibranch Pipeline";
-
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
-
-        getDriver().findElement(By.xpath("//a[@class='textarea-show-preview']")).click();
-        WebElement textPreview = getDriver().findElement(By.xpath("//div[text()='%s']".formatted(description)));
-
-        Assert.assertTrue(textPreview.isDisplayed());
-    }
-
     @Ignore
     @Test
     public void testSeeAddedDescriptionBelowHeading() {
@@ -299,5 +279,33 @@ public class MultibranchPipelineTest extends BaseTest {
                 .getErrorMessage();
 
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
+    }
+
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testUpdateJobDescription() {
+        final String updatedJobDescription = "This is a new project description";
+
+        String actualJobDescription = new HomePage(getDriver())
+                .openJobPage(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .enterDescription(MULTIBRANCH_JOB_DESCRIPTION)
+                .clickSaveButton()
+                .clickConfigureLinkInSideMenu()
+                .updateJobDescription(updatedJobDescription)
+                .clickSaveButton()
+                .getDescription();
+
+        Assert.assertEquals(actualJobDescription, updatedJobDescription);
+    }
+
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testJobDescriptionPreview() {
+        String jobDescriptionPreviewText = new HomePage(getDriver())
+                .openJobPage(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .enterDescription(MULTIBRANCH_JOB_DESCRIPTION)
+                .getJobDescriptionPreviewText();
+
+        Assert.assertEquals(jobDescriptionPreviewText, MULTIBRANCH_JOB_DESCRIPTION);
     }
 }
