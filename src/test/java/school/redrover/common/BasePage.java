@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.*;
 
+
 public abstract class BasePage extends BaseModel {
 
     public BasePage(WebDriver driver) {
@@ -23,6 +24,14 @@ public abstract class BasePage extends BaseModel {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
 
         return new ManageJenkinsPage(getDriver());
+    }
+
+    public UserStatusPage clickUserPicButton() {
+        new Actions(getDriver()).moveToElement(getWait5().until(ExpectedConditions.elementToBeClickable(By.id("root-action-UserAction"))))
+                .click()
+                .perform();
+
+        return new UserStatusPage(getDriver());
     }
 
     public SearchModalPage clickSearchButton() {

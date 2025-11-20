@@ -28,12 +28,6 @@ public class UserAccountPage extends BasePage {
                 .getText().substring(17);
     }
 
-    public String getUserNameInBreadcrumbBar(String userName) {
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath(".//a[@href=contains(text(),'%s')]".formatted(userName))))
-                .getText();
-    }
-
     public UserAccountPage sendFullName(String fullName) {
         WebElement fullNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(FULL_NAME_FIELD));
         fullNameField.clear();

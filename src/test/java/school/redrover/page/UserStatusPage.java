@@ -14,7 +14,14 @@ public class UserStatusPage extends BasePage {
 
     public String getUserName() {
 
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='jenkins-app-bar']//h1")))
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div//h1")))
+                .getText();
+    }
+
+    public String getUserNameInBreadcrumbsBar(String userName) {
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//a[@href='/user/%s/']".formatted(userName))))
                 .getText();
     }
 }
