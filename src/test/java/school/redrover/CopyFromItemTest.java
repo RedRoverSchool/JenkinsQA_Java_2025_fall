@@ -3,7 +3,7 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.ConfigurationFreestyleProjectPage;
+import school.redrover.page.FreestyleProjectConfigurationPage;
 import school.redrover.page.HomePage;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class CopyFromItemTest extends BaseTest {
                 .clickNewItemOnLeftMenu()
                 .sendNewNameAndOriginalNameAndSubmit(secondJobName, firstJobName);
 
-        ConfigurationFreestyleProjectPage configurationFreestyleProjectPage = new ConfigurationFreestyleProjectPage(getDriver());
+        FreestyleProjectConfigurationPage configurationFreestyleProjectPage = new FreestyleProjectConfigurationPage(getDriver());
         List <String> copiedItemSettingsList = configurationFreestyleProjectPage.getSomeSettingsToList();
 
         List <String> originalItemSettingsList =

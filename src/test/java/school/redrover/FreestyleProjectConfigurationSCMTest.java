@@ -25,7 +25,7 @@ public class FreestyleProjectConfigurationSCMTest extends BaseTest {
 
     @Test
     public void testSCMSectionElements() {
-        ConfigurationFreestyleProjectPage configPage = new HomePage(getDriver()).clickCreateJob()
+        FreestyleProjectConfigurationPage configPage = new HomePage(getDriver()).clickCreateJob()
                 .sendName(FREESTYLE_PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit();
 

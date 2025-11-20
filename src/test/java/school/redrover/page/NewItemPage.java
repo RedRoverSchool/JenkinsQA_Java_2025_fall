@@ -73,13 +73,13 @@ public class NewItemPage extends BasePage {
         return errorMessage.getText();
     }
 
-    public ConfigurationFreestyleProjectPage selectFreestyleProjectAndSubmit() {
+    public FreestyleProjectConfigurationPage selectFreestyleProjectAndSubmit() {
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[@id = 'general']")));
 
-        return new ConfigurationFreestyleProjectPage(getDriver());
+        return new FreestyleProjectConfigurationPage(getDriver());
     }
 
     public HomePage sendNewNameAndOriginalNameAndSubmit(String newItemName, String originalItemName) {

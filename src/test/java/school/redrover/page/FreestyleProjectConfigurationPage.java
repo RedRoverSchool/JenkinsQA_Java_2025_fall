@@ -9,19 +9,19 @@ import school.redrover.common.BasePage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigurationFreestyleProjectPage extends BasePage {
+public class FreestyleProjectConfigurationPage extends BasePage {
 
-    public ConfigurationFreestyleProjectPage(WebDriver driver) {
+    public FreestyleProjectConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
-    public ConfigurationFreestyleProjectPage setDescription(String description) {
+    public FreestyleProjectConfigurationPage setDescription(String description) {
         getDriver().findElement(By.name("description")).sendKeys(description);
 
         return this;
     }
 
-    public ConfigurationFreestyleProjectPage setCheckBoxDiscardAndSetDaysNum(String daysToKeep, String maxOfBuilds) {
+    public FreestyleProjectConfigurationPage setCheckBoxDiscardAndSetDaysNum(String daysToKeep, String maxOfBuilds) {
         getDriver().findElement(By.xpath("//label[text()='Discard old builds']")).click();
 
         getDriver().findElement(By.name("_.daysToKeepStr")).sendKeys(daysToKeep);
@@ -30,7 +30,7 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
         return this;
     }
 
-    public ConfigurationFreestyleProjectPage setCheckBoxGitHubAndSendUrl(String url) {
+    public FreestyleProjectConfigurationPage setCheckBoxGitHubAndSendUrl(String url) {
         WebElement checkBox = getDriver().findElement(By.xpath("//label[text()='Git']"));
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
@@ -42,7 +42,7 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
         return this;
     }
 
-    public ConfigurationFreestyleProjectPage setCheckBoxTriggerBuildsAndSendUrl(String url) {
+    public FreestyleProjectConfigurationPage setCheckBoxTriggerBuildsAndSendUrl(String url) {
         WebElement checkBox = getDriver().findElement(
                 By.xpath("//label[text()='Trigger builds remotely (e.g., from scripts)']"));
 
@@ -55,7 +55,7 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
         return this;
     }
 
-    public ConfigurationFreestyleProjectPage clickSave() {
+    public FreestyleProjectConfigurationPage clickSave() {
         getDriver().findElement(By.name("Submit")).click();
 
         return this;
@@ -90,13 +90,13 @@ public class ConfigurationFreestyleProjectPage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOf(scmTitle));
     }
 
-    public ConfigurationFreestyleProjectPage clickSourceCodeManagementMenuOption() {
+    public FreestyleProjectConfigurationPage clickSourceCodeManagementMenuOption() {
         getDriver().findElement(By.xpath("//button[@data-section-id='source-code-management']")).click();
 
         return this;
     }
 
-    public ConfigurationFreestyleProjectPage scrollToSourceCodeManagementWithJS() {
+    public FreestyleProjectConfigurationPage scrollToSourceCodeManagementWithJS() {
         WebElement scmTitle = getDriver().findElement(By.xpath("//div[@id='source-code-management']"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", scmTitle);
 
