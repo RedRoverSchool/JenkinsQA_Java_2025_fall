@@ -11,19 +11,12 @@ public class MultibranchPipelineProjectPage extends BasePage {
         super(driver);
     }
 
-    public String getHeadingText() {
-        return getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='view-message']/../h1")))
-                .getText();
-    }
-
     public MultibranchPipelineConfigurationPage clickConfigureLinkInSideMenu() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']")))
                 .click();
 
         return new MultibranchPipelineConfigurationPage(getDriver());
     }
-
 
     public String getDescription() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message"))).getText();
