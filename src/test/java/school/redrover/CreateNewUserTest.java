@@ -1,12 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.CreateUserPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.ManageUsersPage;
 
@@ -14,20 +10,19 @@ public class CreateNewUserTest extends BaseTest {
     final String userName = "John";
     final String userPassword = "yaE@jCz7JkYXS@@";
     final String userEmail = "johnsmith@gmail.com";
-    final String fullName = "John Smith";
 
     @Test
     public void createNewUser() {
         String newUser = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
-                .clickUserLink()
+                .clickUserButton()
                 .clickCreateUserButton()
                 .sendUserName(userName)
                 .sendPassword(userPassword)
                 .sendConfirmPassword(userPassword)
                 .sendEmail(userEmail)
                 .clickCreateUserButton(new ManageUsersPage(getDriver()))
-                .getCreatedUserName(userName);
+                .getUserName(userName);
 
         Assert.assertEquals(newUser, userName);
     }
@@ -36,8 +31,8 @@ public class CreateNewUserTest extends BaseTest {
     public void checkCreatedUser() {
         String newCheck = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
-                .clickUserLink()
-                .getCreatedUserName(userName);
+                .clickUserButton()
+                .getUserName(userName);
         Assert.assertEquals(newCheck, userName);
     }
 
@@ -46,7 +41,7 @@ public class CreateNewUserTest extends BaseTest {
 
         String newCheck = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
-                .clickUserLink()
+                .clickUserButton()
                 .clickCreateUserButton()
                 .sendUserName(userName)
                 .sendPassword(userPassword)
@@ -58,4 +53,13 @@ public class CreateNewUserTest extends BaseTest {
         Assert.assertEquals(newCheck, "User name is already taken");
     }
 
+    @Test(dependsOnMethods = "createNewUser")
+    public void searchUser() {
+        String findUser = new HomePage(getDriver())
+                .clickSearchButton()
+                .searchForUser(userName)
+                .getUserID();
+
+        Assert.assertEquals(findUser, userName);
+    }
 }

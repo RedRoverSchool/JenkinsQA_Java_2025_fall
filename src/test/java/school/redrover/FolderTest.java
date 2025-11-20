@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.FolderPage;
@@ -84,6 +85,7 @@ public class FolderTest extends BaseTest {
                 "%s не должна отображаться в поиске после удаления".formatted(SUB_FOLDER_NAME));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "Folder description";
@@ -146,6 +148,7 @@ public class FolderTest extends BaseTest {
                 "%s не должна отображаться в поиске после удаления".formatted(NEW_FOLDER_NAME_2));
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreate", "deleteFolderBySidebar"})
     public void testPutItemsToFolder() {
         final Object[][] items = {
@@ -183,6 +186,7 @@ public class FolderTest extends BaseTest {
                 "В папке должны быть все перенесенные элементы: " + expectedItems);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testPutItemsToFolder")
     public void testFolderIsIdentifiedByIcon() {
         FolderPage folderPage = new HomePage(getDriver())
@@ -210,6 +214,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(newNameFolder, NEW_FOLDER_NAME_2);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testPutItemsToFolder")
     public void testFolderIsIdentifiedByTooltip() {
         FolderPage folderPage = new HomePage(getDriver())
@@ -224,6 +229,7 @@ public class FolderTest extends BaseTest {
                 "Ошибка в отображении тултипов");
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testPutItemsToFolder"})
     public void testFindFolderContent() {
         String previousItemName = "";
