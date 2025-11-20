@@ -61,6 +61,7 @@ jobs:
 
       - name: Error Screenshots
         uses: actions/upload-artifact@v4
+        if: ${{ failure() }}
         with:
           name: error-screenshot
           path: screenshots/*.png
