@@ -226,7 +226,7 @@ public class FolderTest extends BaseTest {
                 "Ошибка в отображении тултипов");
     }
 
-    @Test(dependsOnMethods = {"testPutItemsToFolder"})
+    @Test(dependsOnMethods = "testPutItemsToFolder")
     public void testFindFolderContent() {
         String previousItemName = "";
 
@@ -255,7 +255,7 @@ public class FolderTest extends BaseTest {
 
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = {"testCreate", "testPutItemsToFolder"})
     public void testAddNewItemToFolder() {
         final String newJob = "multibrunch pipeline";
 
