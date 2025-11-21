@@ -15,8 +15,7 @@ public class HeaderTest extends BaseTest{
             final String[] listOfTypes = new String[]{"Folder", "Freestyle project", "Pipeline", "Multi-configuration project", "Multibranch Pipeline", "Organization Folder"};
             HomePage homePage = new HomePage(getDriver());
             for(String title : listOfTypes) {
-                homePage.waitUntilURLChanges()
-                        .clickNewItemOnLeftMenu()
+                homePage.clickNewItemOnLeftMenu()
                         .sendName(title)
                         .selectItemTypeAndSubmitAndGoHome(title);
             }
