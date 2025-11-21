@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -13,6 +12,7 @@ public class HeaderTest extends BaseTest{
         @Test
         public void testSearchResultsAppear() {
             final String[] listOfTypes = new String[]{"Folder", "Freestyle project", "Pipeline", "Multi-configuration project", "Multibranch Pipeline", "Organization Folder"};
+
             HomePage homePage = new HomePage(getDriver());
             for(String title : listOfTypes) {
                 homePage.clickNewItemOnLeftMenu()
