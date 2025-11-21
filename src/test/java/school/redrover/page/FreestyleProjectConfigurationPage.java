@@ -5,7 +5,10 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.common.BasePage;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,5 +141,20 @@ public class FreestyleProjectConfigurationPage extends BasePage {
 
     public String getGitTooltipText() {
         return getDriver().findElement(By.xpath("//a[@title='Help for feature: Git']")).getAttribute("tooltip");
+    }
+    public WebElement clickFilterBuildStep() {
+        clickBuildStepMenuOption();
+        return getDriver().findElement(By.xpath("//input[@type='search' and @placeholder='Filter']"));
+    }
+    public WebElement verifySentNameIsInFilter(String buildStep) {
+        return new WebDriverWait(getDriver(), Duration.ofSeconds(5))
+                .until(ExpectedConditions.visibilityOfElementLocated
+                        (By.xpath("//button[contains(@style,'inline-flex') and normalize-space()='%s']".formatted(buildStep))));
+    }
+    public FreestyleProjectConfigurationPage typeIntoFilterBuildStep(String text) {
+        WebElement filter = getDriver().findElement(By.xpath("//input[@type='search' and @placeholder='Filter']"));
+        filter.clear();
+        filter.sendKeys(text);
+        return this;
     }
 }
