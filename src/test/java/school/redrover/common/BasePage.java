@@ -67,9 +67,11 @@ public abstract class BasePage extends BaseModel {
     }
 
     public UserStatusPage clickUserAccountIcon() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .id("root-action-UserAction"))).click();
-        getWait10().until(ExpectedConditions.urlContains("/user/"));
+        WebElement userIcon = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .id("root-action-UserAction")));
+        new Actions(getDriver()).moveToElement(userIcon).pause(1000).click().perform();
+
+        getWait10().until(ExpectedConditions.urlContains("user"));
 
         return new UserStatusPage(getDriver());
     }
