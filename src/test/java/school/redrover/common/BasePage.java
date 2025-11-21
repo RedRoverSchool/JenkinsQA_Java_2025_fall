@@ -67,9 +67,22 @@ public abstract class BasePage extends BaseModel {
     }
 
     public UserStatusPage clickUserAccountIcon(String userName) {
-        WebElement userIcon = getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//*[@href='/user/%s']".formatted(userName))));
+        WebElement userIcon = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("root-action-UserAction")));
         TestUtils.clickJS(getDriver(), userIcon);
+
+        return new UserStatusPage(getDriver());
+    }
+
+    public UserStatusPage clickUserAccountViaDropDownMenu(String userName) {
+        WebElement userIcon = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("root-action-UserAction")));
+        TestUtils.mouseEnterJS(getDriver(), userIcon);
+
+        WebElement userInDropDown = getWait10().until(ExpectedConditions.presenceOfElementLocated(By
+                .xpath("//a[@href=contains(text(),'%s')]".formatted(userName))));
+        TestUtils.mouseEnterJS(getDriver(), userInDropDown);
+        TestUtils.clickJS(getDriver(), userInDropDown);
 
         return new UserStatusPage(getDriver());
     }
