@@ -12,12 +12,12 @@ public class PipelinePage extends BasePage {
         super(driver);
     }
 
-    public ConfigurationPipelinePage clickConfigureInSideMenu(String newPipelineName) {
+    public PipelineConfigurationPage clickConfigureInSideMenu(String newPipelineName) {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                         .xpath(".//a[@href='/job/%s/configure']".formatted(newPipelineName))))
                 .click();
 
-        return new ConfigurationPipelinePage(getDriver());
+        return new PipelineConfigurationPage(getDriver());
     }
 
     public String getDisplayNameInStatus() {

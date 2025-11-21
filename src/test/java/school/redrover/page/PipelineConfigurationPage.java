@@ -10,9 +10,9 @@ import school.redrover.common.BasePage;
 
 import java.util.List;
 
-public class ConfigurationPipelinePage extends BasePage {
+public class PipelineConfigurationPage extends BasePage {
 
-    public ConfigurationPipelinePage(WebDriver driver) {
+    public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
@@ -22,14 +22,14 @@ public class ConfigurationPipelinePage extends BasePage {
         return new PipelinePage(getDriver());
     }
 
-    public ConfigurationPipelinePage clickAdvancedLinkInSideMenu() {
+    public PipelineConfigurationPage clickAdvancedLinkInSideMenu() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath(".//button[@data-section-id='advanced']"))).click();
 
         return this;
     }
 
-    public ConfigurationPipelinePage scrollDownToAdvancedSection() {
+    public PipelineConfigurationPage scrollDownToAdvancedSection() {
         ((JavascriptExecutor) getDriver()).executeScript(
                 "arguments[0].scrollIntoView(true);",
                 getDriver().findElement(By.id("advanced")));
@@ -43,7 +43,7 @@ public class ConfigurationPipelinePage extends BasePage {
                 .getText();
     }
 
-    public ConfigurationPipelinePage clickAdvancedButton() {
+    public PipelineConfigurationPage clickAdvancedButton() {
         clickAdvancedLinkInSideMenu();
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});",
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("footer"))));
@@ -67,7 +67,7 @@ public class ConfigurationPipelinePage extends BasePage {
         return getDriver().findElement(By.name("hasCustomQuietPeriod")).isSelected();
     }
 
-    public ConfigurationPipelinePage clickQuitePeriod() {
+    public PipelineConfigurationPage clickQuitePeriod() {
         new Actions(getDriver())
                 .moveToElement(getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                         .xpath(".//label[text()='Quiet period']"))))
@@ -95,7 +95,7 @@ public class ConfigurationPipelinePage extends BasePage {
                 .name("_.displayNameOrNull"))).getAttribute("value").isEmpty();
     }
 
-    public ConfigurationPipelinePage setDisplayName(String displayName) {
+    public PipelineConfigurationPage setDisplayName(String displayName) {
         new Actions(getDriver()).moveToElement(displayNameInput()).perform();
         displayNameInput().sendKeys(displayName);
 
@@ -144,7 +144,7 @@ public class ConfigurationPipelinePage extends BasePage {
                 .getText();
     }
 
-    public ConfigurationPipelinePage clickToggle() {
+    public PipelineConfigurationPage clickToggle() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                         .id("toggle-switch-enable-disable-project")))
                 .click();
