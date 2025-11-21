@@ -67,7 +67,7 @@ public class FolderConfigurationTest extends BaseTest {
         final String expectedMetric = "Child item with worst health";
 
         String actualMetricAdded = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickConfigure()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
