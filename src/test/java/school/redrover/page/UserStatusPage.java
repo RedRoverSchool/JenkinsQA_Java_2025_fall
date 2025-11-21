@@ -18,7 +18,7 @@ public class UserStatusPage extends BasePage {
                 .getText();
     }
 
-    public String getUserNameInBreadcrumbsBar(String userName) {
+    public String getUserNameInBreadcrumbs(String userName) {
 
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//a[@href='/user/%s/']".formatted(userName))))

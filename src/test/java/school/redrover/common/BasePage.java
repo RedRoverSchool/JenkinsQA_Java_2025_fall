@@ -27,7 +27,7 @@ public abstract class BasePage extends BaseModel {
     }
 
     public UserStatusPage clickUserPicButton() {
-        TestUtils.clickJS(getDriver(), getWait10().until(ExpectedConditions.elementToBeClickable(By.id("root-action-UserAction"))));
+        TestUtils.clickJS(getDriver(), getDriver().findElement(By.id("root-action-UserAction")));
 
         return new UserStatusPage(getDriver());
     }
