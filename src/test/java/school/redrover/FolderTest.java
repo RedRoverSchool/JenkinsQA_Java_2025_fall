@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -252,5 +253,21 @@ public class FolderTest extends BaseTest {
         String expectedContext = "This folder is empty";
         Assert.assertEquals(actualContext, expectedContext);
 
+    }
+
+    @Test(dependsOnMethods = "testCreate")
+    public void testAddNewItemToFolder() {
+        final String newJob = "multibrunch pipeline";
+
+        WebElement jobCreated = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickNewItem()
+                .sendName(newJob)
+                .selectMultibranchPipelineAndSubmit()
+                .gotoHomePage()
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .getElement(newJob);
+
+        Assert.assertTrue(jobCreated.isDisplayed());
     }
 }
