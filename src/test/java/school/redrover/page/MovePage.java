@@ -19,11 +19,9 @@ public class MovePage extends BasePage {
         return this;
     }
 
-    public HomePage clickMoveButtonAndGoHome() {
+    public void clickMoveButtonAndGoHome() {
         getDriver().findElement(By.name("Submit")).click();
         getWait5().until(driver -> Objects.requireNonNull(driver.getCurrentUrl()).contains("/job/"));
         gotoHomePage();
-
-        return new HomePage(getDriver());
     }
 }

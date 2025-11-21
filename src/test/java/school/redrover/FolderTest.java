@@ -71,7 +71,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testPreventDuplicateItemNamesInFolder")
-    public void deleteFolderBySidebar() {
+    public void testDeleteFolderBySidebar() {
         boolean isFolderDeleted = new HomePage(getDriver())
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .openFolderPage(SUB_FOLDER_NAME)
@@ -85,7 +85,6 @@ public class FolderTest extends BaseTest {
                 "%s не должна отображаться в поиске после удаления".formatted(SUB_FOLDER_NAME));
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "Folder description";
@@ -135,7 +134,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testRenameFolder")
-    public void deleteFolderByDashboardDropdownMenu() {
+    public void testDeleteFolderByDashboardDropdownMenu() {
         boolean isFolderDeleted = new HomePage(getDriver())
                 .openDropdownMenu(NEW_FOLDER_NAME_2)
                 .clickDeleteItemInDropdownMenu()
@@ -148,8 +147,7 @@ public class FolderTest extends BaseTest {
                 "%s не должна отображаться в поиске после удаления".formatted(NEW_FOLDER_NAME_2));
     }
 
-    @Ignore
-    @Test(dependsOnMethods = {"testCreate", "deleteFolderBySidebar"})
+    @Test(dependsOnMethods = {"testCreate", "testDeleteFolderBySidebar"})
     public void testPutItemsToFolder() {
         final Object[][] items = {
                 {itemNames.get(0), "Folder"},
@@ -186,7 +184,6 @@ public class FolderTest extends BaseTest {
                 "В папке должны быть все перенесенные элементы: " + expectedItems);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testPutItemsToFolder")
     public void testFolderIsIdentifiedByIcon() {
         FolderPage folderPage = new HomePage(getDriver())
@@ -214,7 +211,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(newNameFolder, NEW_FOLDER_NAME_2);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testPutItemsToFolder")
     public void testFolderIsIdentifiedByTooltip() {
         FolderPage folderPage = new HomePage(getDriver())
@@ -229,7 +225,6 @@ public class FolderTest extends BaseTest {
                 "Ошибка в отображении тултипов");
     }
 
-    @Ignore
     @Test(dependsOnMethods = {"testPutItemsToFolder"})
     public void testFindFolderContent() {
         String previousItemName = "";
@@ -245,5 +240,17 @@ public class FolderTest extends BaseTest {
 
             previousItemName = itemName;
         }
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = "testCreate")
+    public void testIsEmpty() {
+        String actualContext = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .getFolderContext();
+
+        String expectedContext = "This folder is empty";
+        Assert.assertEquals(actualContext, expectedContext);
+
     }
 }
