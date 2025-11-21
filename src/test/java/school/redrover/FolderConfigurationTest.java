@@ -76,4 +76,20 @@ public class FolderConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualMetricAdded, expectedMetric);
     }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testAddGivenName() {
+
+        final String expectedMetric = "Child item with the given name";
+
+        String actualMetricAdded = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickGivenNameButton()
+                .getMetricRowName2();
+
+        Assert.assertEquals(actualMetricAdded, expectedMetric);
+    }
 }
