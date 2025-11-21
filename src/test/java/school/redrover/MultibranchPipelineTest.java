@@ -18,6 +18,7 @@ public class MultibranchPipelineTest extends BaseTest {
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchName";
     private static final String RENAMED_MULTIBRANCH_PIPELINE = "RenamedMultibranchName";
     private static final String MULTIBRANCH_JOB_DESCRIPTION = "This is a job description";
+    private static final String SECOND_DESCRIPTION = "Second Description";
     private static final String MULTIBRANCH_PIPELINE_DISPLAY_NAME = "Multibranch_Pipeline_Display";
 
     @Test
@@ -294,5 +295,22 @@ public class MultibranchPipelineTest extends BaseTest {
                 .getText();
 
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_DISPLAY_NAME);
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testChangeDescription() {
+
+        String name = new HomePage(getDriver())
+                .clickDescription()
+                .sendDescriptionText(MULTIBRANCH_JOB_DESCRIPTION)
+                .submitDescription()
+                .clickDescription()
+                .clearTextDescription()
+                .sendDescriptionText(SECOND_DESCRIPTION)
+                .submitDescription()
+                .getDescription();
+
+        Assert.assertEquals(name, SECOND_DESCRIPTION);
     }
 }
