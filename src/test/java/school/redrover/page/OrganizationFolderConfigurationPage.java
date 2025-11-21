@@ -6,9 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
-public class ConfigurationOrganizationFolderPage extends BasePage {
+public class OrganizationFolderConfigurationPage extends BasePage {
 
-    public ConfigurationOrganizationFolderPage(WebDriver driver) {
+    public OrganizationFolderConfigurationPage(WebDriver driver) {
         super(driver);
     }
 

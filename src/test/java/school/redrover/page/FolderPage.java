@@ -16,10 +16,10 @@ public class FolderPage extends BasePage {
         super(driver);
     }
 
-    public ConfigurationFolderPage clickConfigure() {
+    public FolderConfigurationPage clickConfigure() {
         getDriver().findElement(By.xpath("//span[text()='Configure']/..")).click();
 
-        return new ConfigurationFolderPage(getDriver());
+        return new FolderConfigurationPage(getDriver());
     }
 
     public FolderInfo getInfo() {

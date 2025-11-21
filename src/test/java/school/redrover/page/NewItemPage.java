@@ -7,8 +7,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
-import java.util.List;
-
 public class NewItemPage extends BasePage {
 
     public NewItemPage(WebDriver driver) {
@@ -33,13 +31,13 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public ConfigurationFolderPage selectFolderAndSubmit() {
+    public FolderConfigurationPage selectFolderAndSubmit() {
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
 
-        return new ConfigurationFolderPage(getDriver());
+        return new FolderConfigurationPage(getDriver());
 
     }
 
@@ -58,13 +56,13 @@ public class NewItemPage extends BasePage {
         return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
-    public ConfigurationPipelinePage selectPipelineAndSubmit() {
+    public PipelineConfigurationPage selectPipelineAndSubmit() {
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
 
-        return new ConfigurationPipelinePage(getDriver());
+        return new PipelineConfigurationPage(getDriver());
     }
 
     public String getDuplicateOrUnsafeCharacterErrorMessage() {
@@ -100,13 +98,13 @@ public class NewItemPage extends BasePage {
         return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
-    public ConfigurationOrganizationFolderPage selectOrganizationFolderAndSubmit() {
+    public OrganizationFolderConfigurationPage selectOrganizationFolderAndSubmit() {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Organization Folder']"));
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(), 'General')]")));
 
-        return new ConfigurationOrganizationFolderPage(getDriver());
+        return new OrganizationFolderConfigurationPage(getDriver());
     }
 
     public HomePage selectItemTypeAndSubmitAndGoHome(String itemType) {
