@@ -72,7 +72,7 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         return getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Apply")));
     }
 
-    public List<String> getSettingsToList(){
+    public List<String> getSettingsToList() {
         List<String> settingsList = new ArrayList<>();
 
         settingsList.add(getDriver().findElement(By.name("description")).getText());
@@ -142,19 +142,33 @@ public class FreestyleProjectConfigurationPage extends BasePage {
     public String getGitTooltipText() {
         return getDriver().findElement(By.xpath("//a[@title='Help for feature: Git']")).getAttribute("tooltip");
     }
+
     public WebElement clickFilterBuildStep() {
         clickBuildStepMenuOption();
         return getDriver().findElement(By.xpath("//input[@type='search' and @placeholder='Filter']"));
     }
+
     public WebElement verifySentNameIsInFilter(String buildStep) {
         return new WebDriverWait(getDriver(), Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOfElementLocated
                         (By.xpath("//button[contains(@style,'inline-flex') and normalize-space()='%s']".formatted(buildStep))));
     }
+
     public FreestyleProjectConfigurationPage typeIntoFilterBuildStep(String text) {
         WebElement filter = getDriver().findElement(By.xpath("//input[@type='search' and @placeholder='Filter']"));
         filter.clear();
         filter.sendKeys(text);
         return this;
+    }
+
+    public FreestyleProjectConfigurationPage clickTriggerLinkInSideMenu() {
+        getDriver().findElement(By.xpath("//button[@data-section-id='triggers']")).click();
+
+        return this;
+    }
+
+    public String getTriggerTitleText () {
+        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("triggers")))
+                .getText();
     }
 }
