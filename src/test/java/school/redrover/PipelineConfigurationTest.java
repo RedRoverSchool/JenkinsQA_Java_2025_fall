@@ -5,7 +5,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.ConfigurationPipelinePage;
+import school.redrover.page.PipelineConfigurationPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.PipelinePage;
 
@@ -102,7 +102,7 @@ public class PipelineConfigurationTest extends BaseTest {
                 .getQuietPeriodLabelText();
 
         Assert.assertEquals(actualQuietPeriodLabel, "Quiet period");
-        Assert.assertFalse(new ConfigurationPipelinePage(getDriver())
+        Assert.assertFalse(new PipelineConfigurationPage(getDriver())
                 .quietPeriodCheckboxIsSelected(), "Default Checkbox should not be selected");
     }
 
@@ -115,7 +115,7 @@ public class PipelineConfigurationTest extends BaseTest {
                 .getDisplayNameLabelText();
 
         Assert.assertEquals(actualDisplayNameLabel, "Display Name");
-        Assert.assertTrue(new ConfigurationPipelinePage(getDriver()).displayNameValueIsEmpty(),
+        Assert.assertTrue(new PipelineConfigurationPage(getDriver()).displayNameValueIsEmpty(),
                 "Default Display Name field should be empty");
     }
 
@@ -129,9 +129,9 @@ public class PipelineConfigurationTest extends BaseTest {
                 .getNumberOfSecondsLabelText();
 
         Assert.assertEquals(actualNumberOfSecondsLabel, "Number of seconds");
-        Assert.assertTrue(new ConfigurationPipelinePage(getDriver())
+        Assert.assertTrue(new PipelineConfigurationPage(getDriver())
                 .quietPeriodCheckboxIsSelected(), "Checkbox should be selected");
-        Assert.assertTrue(new ConfigurationPipelinePage(getDriver())
+        Assert.assertTrue(new PipelineConfigurationPage(getDriver())
                 .getNumberOfSecondsInput().isDisplayed());
     }
 
@@ -186,7 +186,7 @@ public class PipelineConfigurationTest extends BaseTest {
         for (WebElement webElement : tooltipList) {
             new Actions(getDriver()).moveToElement(webElement).click().perform();
 
-            Assert.assertTrue(new ConfigurationPipelinePage(getDriver()).getHelpElement().isDisplayed());
+            Assert.assertTrue(new PipelineConfigurationPage(getDriver()).getHelpElement().isDisplayed());
         }
     }
 }

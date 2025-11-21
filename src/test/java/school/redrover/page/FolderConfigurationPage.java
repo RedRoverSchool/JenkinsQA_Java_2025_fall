@@ -7,19 +7,19 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import java.util.List;
 
-public class ConfigurationFolderPage extends BasePage {
+public class FolderConfigurationPage extends BasePage {
 
-    public ConfigurationFolderPage(WebDriver driver) {
+    public FolderConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
-    public ConfigurationFolderPage setDisplayName(String name) {
+    public FolderConfigurationPage setDisplayName(String name) {
         getDriver().findElement(By.name("_.displayNameOrNull")).sendKeys(name);
 
         return this;
     }
 
-    public ConfigurationFolderPage setDescription(String text) {
+    public FolderConfigurationPage setDescription(String text) {
         getDriver().findElement(By.name("_.description")).sendKeys(text);
 
         return this;
@@ -48,7 +48,7 @@ public class ConfigurationFolderPage extends BasePage {
         return buttonText;
     }
 
-    public ConfigurationFolderPage clickHealthMetricsSidebarLink() {
+    public FolderConfigurationPage clickHealthMetricsSidebarLink() {
         getDriver().findElement(By.cssSelector("button[data-section-id='health-metrics']")).click();
 
         return this;
@@ -60,13 +60,13 @@ public class ConfigurationFolderPage extends BasePage {
         return sectionName;
     }
 
-    public ConfigurationFolderPage clickHealthMetricsButton() {
+    public FolderConfigurationPage clickHealthMetricsButton() {
         getDriver().findElement(By.cssSelector("button.jenkins-button.advanced-button")).click();
 
         return this;
     }
 
-    public ConfigurationFolderPage clickAddMetricButton() {
+    public FolderConfigurationPage clickAddMetricButton() {
         getDriver().findElement(By.cssSelector("button.jenkins-button.hetero-list-add")).click();
         getWait2().until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//input[@class='jenkins-dropdown__filter-input']")));
