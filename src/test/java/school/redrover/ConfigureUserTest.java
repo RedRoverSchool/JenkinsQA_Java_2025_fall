@@ -26,6 +26,6 @@ public class ConfigureUserTest extends BaseTest {
                 .clickUserAccountViaDropDownMenu(expectedUserName)
                 .getUserName();
 
-        Assert.assertTrue(actualUserName.contains(expectedUserName));
+        Assert.assertEquals(actualUserName, expectedUserName);
     }
 }
