@@ -18,6 +18,8 @@ public class MultibranchPipelineTest extends BaseTest {
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchName";
     private static final String RENAMED_MULTIBRANCH_PIPELINE = "RenamedMultibranchName";
     private static final String MULTIBRANCH_JOB_DESCRIPTION = "This is a job description";
+    private static final String SECOND_DESCRIPTION = "Second Description";
+    private static final String MULTIBRANCH_PIPELINE_DISPLAY_NAME = "Multibranch_Pipeline_Display";
 
     @Test
     public void testCreateMultibranchPipeline() {
@@ -120,7 +122,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testVerifyEnableToogleTooltip() {
+    public void testVerifyEnableToggleTooltip() {
         final String tooltipText =
                 "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
@@ -278,5 +280,37 @@ public class MultibranchPipelineTest extends BaseTest {
         descriptionField.sendKeys(description);
 
         Assert.assertTrue(descriptionField.isDisplayed());
+    }
+
+    @Test
+    public void testDisplayNameIsSetOnCreation() {
+        String name = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .sendDisplayName(MULTIBRANCH_PIPELINE_DISPLAY_NAME)
+                .clickSaveButton()
+                .gotoHomePage()
+                .findItem(MULTIBRANCH_PIPELINE_NAME)
+                .getText();
+
+        Assert.assertEquals(name, MULTIBRANCH_PIPELINE_DISPLAY_NAME);
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testChangeDescription() {
+
+        String name = new HomePage(getDriver())
+                .clickDescription()
+                .sendDescriptionText(MULTIBRANCH_JOB_DESCRIPTION)
+                .submitDescription()
+                .clickDescription()
+                .clearTextDescription()
+                .sendDescriptionText(SECOND_DESCRIPTION)
+                .submitDescription()
+                .getDescription();
+
+        Assert.assertEquals(name, SECOND_DESCRIPTION);
     }
 }
