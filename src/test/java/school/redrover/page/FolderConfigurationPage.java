@@ -90,8 +90,8 @@ public class FolderConfigurationPage extends BasePage {
 
        public FolderConfigurationPage clickWorstHealthButton() {
         By worstHealthMetricRow = By.xpath("//div[@descriptorid='com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric']");
-        getDriver().findElement(By.xpath("//button[normalize-space(text())='Child item with worst health']")).click();
 
+        getDriver().findElement(By.xpath("//button[normalize-space(text())='Child item with worst health']")).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(worstHealthMetricRow));
 
         return this;
