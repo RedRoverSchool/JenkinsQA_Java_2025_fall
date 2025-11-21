@@ -261,4 +261,11 @@ public class HomePage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
                 .getText();
     }
+
+    public EditViewPage clickEditViewButton(String listViewName){
+        getWait10().until(ExpectedConditions.elementToBeClickable(By
+                .xpath(".//a[@href='/view/%s/configure']".formatted(listViewName)))).click();
+
+        return new EditViewPage(getDriver());
+    }
 }

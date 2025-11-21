@@ -147,6 +147,30 @@ public class DashboardTest extends BaseTest {
 
         editViewPage.clickSubmitButton();
         int actualCountDisplayedColumns = homePage.getCountOfDisplayedColumnsOnDashboard();
-        Assert.assertEquals(actualCountDisplayedColumns,addedColumnList.size());
+        Assert.assertEquals(actualCountDisplayedColumns, addedColumnList.size());
+    }
+
+    @Test(dependsOnMethods = "testAddColumnsInListViewOnDashboard")
+    public void testRemoveColumnsInListView() {
+        final String listViewName = "ListView_01";
+        final String columnName = "Last Success";
+
+        HomePage homePage = new HomePage(getDriver());
+        int initialCountDisplayedColumns = homePage
+                .clickViewName(listViewName)
+                .getCountOfDisplayedColumnsOnDashboard();
+
+        List<String> actualColumnListAfterDelete = homePage
+                .clickViewName(listViewName)
+                .clickEditViewButton(listViewName)
+                .clickDeleteButton(columnName)
+                .getCurrentColumnList();
+
+        Assert.assertFalse(actualColumnListAfterDelete.contains(columnName));
+
+        new EditViewPage(getDriver()).clickSubmitButton();
+
+        int actualCountDisplayedColumns = homePage.getCountOfDisplayedColumnsOnDashboard();
+        Assert.assertEquals(actualCountDisplayedColumns, initialCountDisplayedColumns - 1);
     }
 }
