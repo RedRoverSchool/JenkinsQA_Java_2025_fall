@@ -65,4 +65,16 @@ public abstract class BasePage extends BaseModel {
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
     }
+
+    public UserStatusPage clickUserAccountViaDropDownMenu(String userName) {
+        WebElement userIcon = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("root-action-UserAction")));
+        TestUtils.mouseEnterJS(getDriver(), userIcon);
+
+        WebElement userInDropDown = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//a[contains(@class, 'jenkins-dropdown__item') and contains(., '%s')]".formatted(userName))));
+        TestUtils.clickJS(getDriver(), userInDropDown);
+
+        return new UserStatusPage(getDriver());
+    }
 }
