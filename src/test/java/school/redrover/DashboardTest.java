@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
@@ -112,7 +111,6 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(actualTitle, expectedTitle);
     }
 
-    @Ignore
     @Test
     public void testAddColumnsInListViewOnDashboard() {
         final String listViewName = "ListView_01";
@@ -129,7 +127,6 @@ public class DashboardTest extends BaseTest {
 
         EditViewPage editViewPage = new EditViewPage(getDriver());
         List<String> currentColumnListText = editViewPage.getCurrentColumnList();
-        Assert.assertNotEquals(currentColumnListText.size(), 0);
 
         Set<String> addColumnSet = new HashSet<>();
 
@@ -145,6 +142,7 @@ public class DashboardTest extends BaseTest {
         }
 
         List<String> addedColumnList = editViewPage.getCurrentColumnList();
+        Assert.assertNotEquals(addedColumnList.size(), 0);
         Assert.assertTrue(addedColumnList.containsAll(addColumnSet));
 
         editViewPage.clickSubmitButton();

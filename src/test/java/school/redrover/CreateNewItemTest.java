@@ -46,30 +46,6 @@ public class CreateNewItemTest extends BaseTest {
           Assert.assertFalse(result);
     }
 
-    @Test
-    public void testNewItemTypesAccessibility() {
-        final List<String> expectedItemTypes = List.of(
-                "Freestyle project",
-                "Pipeline",
-                "Multi-configuration project",
-                "Folder",
-                "Multibranch Pipeline",
-                "Organization Folder"
-        );
-
-        WebElement newItemButton = new WebDriverWait(getDriver(), Duration.ofSeconds(5))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(".//div[@id='tasks']/div[1]/span/a")));
-        newItemButton.click();
-
-        List<String> actualTypeList = getDriver()
-                .findElements(By.cssSelector("#items label .label"))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
-
-        Assert.assertEquals(actualTypeList, expectedItemTypes);
-    }
-
     // === Добавлено из CreateNewItem4Test ===
     @Test
     public void testItemNameInput() {

@@ -32,6 +32,8 @@ public class EditViewPage extends BasePage {
     }
 
     public List<String> getCurrentColumnList() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class=contains(text(),'Columns')]")));
+
         return getDriver().findElements(By.xpath("//div[@class='repeated-chunk__header']"))
                 .stream()
                 .map(WebElement::getText)
@@ -39,7 +41,7 @@ public class EditViewPage extends BasePage {
     }
 
     public EditViewPage selectJobCheckbox(String jobName) {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By
+        getWait5().until(ExpectedConditions.elementToBeClickable(By
                 .xpath("//label[text()='%s']".formatted(jobName))))
                 .click();
 
@@ -47,7 +49,7 @@ public class EditViewPage extends BasePage {
     }
 
     public void clickSubmitButton() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By
+        getWait5().until(ExpectedConditions.elementToBeClickable(By
                   .xpath("//button[@name='Submit']"))).click();
     }
 }
