@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import java.util.List;
@@ -112,9 +113,21 @@ public class FolderConfigurationPage extends BasePage {
         return this;
     }
 
-    public String getMetricRowName2() {
-        String headerText = getDriver().findElement(By.xpath("//div[@class='repeated-chunk__header'][1]")).getText().trim();
+    public FolderConfigurationPage dragWorstHealthRowToTop() {
+        WebElement worstHealthRow = getDriver()
+                .findElement(By.xpath("//div[@descriptorid='com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric']"));
+        WebElement dragHandle = worstHealthRow
+                .findElement(By.xpath(".//div[@class='dd-handle']"));
+        WebElement givenNameRow = getDriver()
+                .findElement(By.xpath("//div[@descriptorid='com.cloudbees.hudson.plugins.folder.health.NamedChildHealthMetric']"));
 
-        return headerText;
+        new Actions(getDriver())
+                .clickAndHold(dragHandle)
+                .moveToElement(givenNameRow)
+                .moveByOffset(0, -10)
+                .release()
+                .perform();
+
+        return this;
     }
 }
