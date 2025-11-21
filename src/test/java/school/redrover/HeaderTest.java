@@ -1,30 +1,28 @@
-package school.redrover.page;
+package school.redrover;
 
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.util.List;
 
-public class GlobalSearchTest extends BaseTest{
+public class HeaderTest extends BaseTest{
 
         @Test
         public void testSearchResultsAppear() {
-            String[] listOfObjects = new String[]{"Folder", "Freestyle project", "Pipeline", "Multi-configuration project", "Multibranch Pipeline", "Organization Folder"};
+            final String[] listOfTypes = new String[]{"Folder", "Freestyle project", "Pipeline", "Multi-configuration project", "Multibranch Pipeline", "Organization Folder"};
             HomePage homePage = new HomePage(getDriver());
-            for(String title : listOfObjects) {
-                getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("configure")));
-                homePage.clickNewItemOnLeftMenu()
+            for(String title : listOfTypes) {
+                homePage.waitUntilURLChanges()
+                        .clickNewItemOnLeftMenu()
                         .sendName(title)
                         .selectItemTypeAndSubmitAndGoHome(title);
             }
             List<String> results = homePage.clickSearchButton()
                     .searchFor("F")
                     .searchResults();
-            System.out.println("res: " + results.toString());
 
             Assert.assertEquals(results.size(), 4);
         }
