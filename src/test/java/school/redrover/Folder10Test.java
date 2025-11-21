@@ -31,7 +31,7 @@ public class Folder10Test extends BaseTest {
     @Test(dependsOnMethods = "testCreate")
     public void testIsEmpty() {
         String actualContext = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .getFolderContext();
 
         String expectedContext = "This folder is empty";
@@ -44,12 +44,12 @@ public class Folder10Test extends BaseTest {
         final String newJob = "multibrunch pipeline";
 
         WebElement jobCreated = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickNewItem()
                 .sendName(newJob)
                 .selectMultibranchPipelineAndSubmit()
                 .gotoHomePage()
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .getElement(newJob);
 
         Assert.assertTrue(jobCreated.isDisplayed());
@@ -66,12 +66,12 @@ public class Folder10Test extends BaseTest {
                 .sendName(folderName1)
                 .selectFolderAndSubmit()
                 .gotoHomePage()
-                .openJobPage(folderName1, new FolderPage(getDriver()))
+                .openPage(folderName1, new FolderPage(getDriver()))
                 .clickNewItem()
                 .sendName(multibrunchPipeline)
                 .selectMultibranchPipelineAndSubmit()
                 .gotoHomePage()
-                .openJobPage(folderName1, new FolderPage(getDriver()))
+                .openPage(folderName1, new FolderPage(getDriver()))
                 .getElement(multibrunchPipeline)
                 .getText();
 
@@ -81,12 +81,12 @@ public class Folder10Test extends BaseTest {
                 .sendName(folderName2)
                 .selectFolderAndSubmit()
                 .gotoHomePage()
-                .openJobPage(folderName2, new FolderPage(getDriver()))
+                .openPage(folderName2, new FolderPage(getDriver()))
                 .clickNewItem()
                 .sendName(multibrunchPipeline)
                 .selectMultibranchPipelineAndSubmit()
                 .gotoHomePage()
-                .openJobPage(folderName2, new FolderPage(getDriver()))
+                .openPage(folderName2, new FolderPage(getDriver()))
                 .getElement(multibrunchPipeline)
                 .getText();
 

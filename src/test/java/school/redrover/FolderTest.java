@@ -42,7 +42,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCreate")
     public void testNewFolderDefaultAddedToExistingFolder() {
         List<String> childFolderBreadcrumbList = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickSidebarNewItem()
                 .sendName(SUB_FOLDER_NAME)
                 .selectFolderAndSubmit()
@@ -58,7 +58,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testNewFolderDefaultAddedToExistingFolder")
     public void testPreventDuplicateItemNamesInFolder() {
         String duplicateErrorMessage = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickSidebarNewItem()
                 .sendName(SUB_FOLDER_NAME)
                 .selectFolder()
@@ -73,7 +73,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testPreventDuplicateItemNamesInFolder")
     public void deleteFolderBySidebar() {
         boolean isFolderDeleted = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .openFolderPage(SUB_FOLDER_NAME)
                 .clickDeleteFolder()
                 .confirmDeleteChildItem()
@@ -91,7 +91,7 @@ public class FolderTest extends BaseTest {
         final String descriptionText = "Folder description";
 
         String actualDescription = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickAddDescriptionButton()
                 .addDescriptionAndSave(descriptionText)
                 .getDescription();
@@ -107,12 +107,12 @@ public class FolderTest extends BaseTest {
         final String pipelineName = "TwoPipelines";
 
         List<String> jobsInFirstFolder = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickSidebarNewItem()
                 .sendName(pipelineName)
                 .selectPipelineAndSubmit()
                 .gotoHomePage()
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .getProjectList();
 
         List<String> jobsInSecondFolder = new HomePage(getDriver())
@@ -125,7 +125,7 @@ public class FolderTest extends BaseTest {
                 .sendName(pipelineName)
                 .selectPipelineAndSubmit()
                 .gotoHomePage()
-                .openJobPage(FOLDER_NAME_2, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME_2, new FolderPage(getDriver()))
                 .getProjectList();
 
         Assert.assertTrue(jobsInFirstFolder.contains(pipelineName),

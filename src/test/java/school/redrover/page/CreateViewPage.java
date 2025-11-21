@@ -40,7 +40,7 @@ public class CreateViewPage extends BasePage {
     }
 
     public EditViewPage selectListViewRadioAndCreate(){
-        getDriver().findElement(By.xpath("//label[text() = 'List View']")).click();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[text() = 'List View']"))).click();
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok"))).click();
         getWait2().until(ExpectedConditions.presenceOfElementLocated(By.

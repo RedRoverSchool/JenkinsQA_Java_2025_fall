@@ -138,7 +138,7 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
                 .gotoHomePage()
-                .openJobPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .openPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure(PROJECT_NAME)
                 .verifySCMTitleIsVisible();
 
