@@ -60,4 +60,20 @@ public class FolderConfigurationTest extends BaseTest {
         Assert.assertEquals(actualMetricTypes, expectedMetricTypes,
                 "The list of displayed metric types in the dropdown did not match the expected list.");
     }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testAddWorstHealth() {
+
+        final String expectedMetric = "Child item with worst health";
+
+        String actualMetricAdded = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickWorstHealthButton()
+                .getMetricRowName();
+
+        Assert.assertEquals(actualMetricAdded, expectedMetric);
+    }
 }

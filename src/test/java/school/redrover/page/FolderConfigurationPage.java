@@ -87,4 +87,19 @@ public class FolderConfigurationPage extends BasePage {
 
         return metricTypeNames;
     }
+
+       public FolderConfigurationPage clickWorstHealthButton() {
+        By worstHealthMetricRow = By.xpath("//div[@descriptorid='com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric']");
+
+        getDriver().findElement(By.xpath("//button[normalize-space(text())='Child item with worst health']")).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(worstHealthMetricRow));
+
+        return this;
+    }
+
+    public String getMetricRowName() {
+        String headerText = getDriver().findElement(By.xpath("//div[@class='repeated-chunk__header'][1]")).getText().trim();
+
+        return headerText;
+    }
 }
