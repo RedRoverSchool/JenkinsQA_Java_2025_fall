@@ -44,7 +44,7 @@ public class DashboardTest extends BaseTest {
 
     @Test(dataProvider = "Links", dataProviderClass = TestDataProvider.class)
     public void testContentBlockLinks(String linkText, String expectedUrlEndpoint, Page page) {
-        BasePage resultPage = new HomePage(getDriver()).clickHomePageSectionLink(linkText, page.createPage(getDriver()));
+        BasePage resultPage = new HomePage(getDriver()).openPage(linkText, page.createPage(getDriver()));
 
         Assert.assertTrue(Objects.requireNonNull(resultPage.getCurrentUrl()).contains(expectedUrlEndpoint));
     }

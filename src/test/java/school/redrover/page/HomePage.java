@@ -43,7 +43,7 @@ public class HomePage extends BasePage {
         return new FolderPage(getDriver());
     }
 
-    public <T extends BasePage> T openJobPage(String jobName, T resultPage) {
+    public <T extends BasePage> T openPage(String jobName, T resultPage) {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
 
         return resultPage;
@@ -229,13 +229,6 @@ public class HomePage extends BasePage {
                 .perform();
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-tippy-root]")))
                 .getText();
-    }
-      
-    public <T extends BasePage> T clickHomePageSectionLink(String linkText, T page) {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='%s']/..".formatted(linkText))))
-                .click();
-
-        return page;
     }
 
     public String getNumberOfExecutors() {

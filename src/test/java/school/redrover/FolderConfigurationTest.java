@@ -26,7 +26,7 @@ public class FolderConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testHealthMetricButtonIsDisplayed(){
         String buttonDisplayed = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickConfigure()
                 .getHealthMetricsButton();
 
@@ -36,7 +36,7 @@ public class FolderConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testHealthMetricSectionNavigation(){
         String sectionName = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickConfigure()
                 .clickHealthMetricsSidebarLink()
                 .getSectionName();
@@ -50,7 +50,7 @@ public class FolderConfigurationTest extends BaseTest {
         final  List<String> expectedMetricTypes= Arrays.asList("Child item with the given name","Child item with worst health");
 
         List<String> actualMetricTypes = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickConfigure()
                 .clickHealthMetricsSidebarLink()
                 .clickHealthMetricsButton()

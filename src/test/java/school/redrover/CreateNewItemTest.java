@@ -238,7 +238,7 @@ public class CreateNewItemTest extends BaseTest {
                 .sendName(newName)
                 .sendNameToCopyFromAndSubmit(originalName)
                 .gotoHomePage()
-                .openJobPage(newName, new FreestyleProjectPage(getDriver()))
+                .openPage(newName, new FreestyleProjectPage(getDriver()))
                 .clickConfigure(newName)
                 .getSettingsToList();
 
