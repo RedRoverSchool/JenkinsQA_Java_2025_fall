@@ -268,9 +268,4 @@ public class HomePage extends BasePage {
 
         return new EditViewPage(getDriver());
     }
-
-    public HomePage waitUntilURLChanges() {
-        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("configure")));
-        return this;
-    }
 }
