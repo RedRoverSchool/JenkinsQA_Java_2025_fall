@@ -11,7 +11,6 @@ import school.redrover.page.HomePage;
 import school.redrover.page.PipelinePage;
 
 import java.util.List;
-import java.util.Random;
 
 public class PipelineTest extends BaseTest {
 
@@ -74,7 +73,7 @@ public class PipelineTest extends BaseTest {
                 .sendName(PIPELINE_NAME)
                 .selectPipelineAndSubmit()
                 .gotoHomePage()
-                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickDeletePipeline()
                 .cancelDelete()
                 .gotoHomePage()
@@ -92,7 +91,7 @@ public class PipelineTest extends BaseTest {
                 .sendName(PIPELINE_NAME)
                 .selectPipelineAndSubmit()
                 .gotoHomePage()
-                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickDeletePipeline()
                 .confirmDeleteAtJobPage()
                 .getHeadingText();
@@ -137,7 +136,7 @@ public class PipelineTest extends BaseTest {
         final String textDescription = "D0XVcGo8k(=D7myr/.YC6umm>]\"gY)?X_E|#HPku6T5im[oYHD-\\|B`";
 
         String descriptionText = new HomePage(getDriver())
-                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickEditDescriptionButton()
                 .clearDescription()
                 .addDescriptionAndSave(textDescription)

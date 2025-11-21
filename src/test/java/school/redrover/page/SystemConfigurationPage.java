@@ -7,20 +7,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
-public class ConfigurationSystemPage extends BasePage {
+public class SystemConfigurationPage extends BasePage {
 
-    public ConfigurationSystemPage(WebDriver driver) {
+    public SystemConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
-    public ConfigurationSystemPage setSystemMessage(String systemMessage) {
+    public SystemConfigurationPage setSystemMessage(String systemMessage) {
         WebElement systemMessageTextArea = getDriver().findElement(By.name("system_message"));
         systemMessageTextArea.sendKeys(systemMessage);
 
         return this;
     }
 
-    public ConfigurationSystemPage clearSystemMessage() {
+    public SystemConfigurationPage clearSystemMessage() {
         WebElement systemMessageTextArea = getDriver().findElement(By.name("system_message"));
         systemMessageTextArea.clear();
 
@@ -34,7 +34,7 @@ public class ConfigurationSystemPage extends BasePage {
                 By.className("textarea-preview"))).getText();
     }
 
-    public ConfigurationSystemPage setNumberOfExecutors(String numberOfExecutors) {
+    public SystemConfigurationPage setNumberOfExecutors(String numberOfExecutors) {
         WebElement systemMessageTextArea = getDriver().findElement(By.name("_.numExecutors"));
         systemMessageTextArea.clear();
         systemMessageTextArea.sendKeys(numberOfExecutors);
@@ -46,7 +46,7 @@ public class ConfigurationSystemPage extends BasePage {
         return getDriver().findElements(By.cssSelector("div .help[style='display: block;']")).size();
     }
 
-    public ConfigurationSystemPage clickTooltip(String tooltipName) {
+    public SystemConfigurationPage clickTooltip(String tooltipName) {
         WebElement tooltip = getDriver().findElement(By.cssSelector("a[tooltip= 'Help for feature: %s']".formatted(tooltipName)));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", tooltip);
         tooltip.click();
