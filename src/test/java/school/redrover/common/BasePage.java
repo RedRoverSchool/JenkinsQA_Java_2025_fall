@@ -65,4 +65,19 @@ public abstract class BasePage extends BaseModel {
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
     }
+
+    public UserStatusPage clickUserAccountIcon() {
+        WebElement welcomeDashboard = getWait5().until(ExpectedConditions.presenceOfElementLocated(By
+                        .cssSelector(".empty-state-block > h1")));
+        WebElement userIcon = getWait5().until(ExpectedConditions.elementToBeClickable(By
+                        .id("root-action-UserAction")));
+
+        TestUtils.clickJS(getDriver(), getWait10().until(ExpectedConditions.elementToBeClickable(By
+                .id("root-action-UserAction"))));
+
+        getWait10().until(ExpectedConditions.stalenessOf(welcomeDashboard));
+        getWait10().until(ExpectedConditions.urlContains("/user/"));
+
+        return new UserStatusPage(getDriver());
+    }
 }

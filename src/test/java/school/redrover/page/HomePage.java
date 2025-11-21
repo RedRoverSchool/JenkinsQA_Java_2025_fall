@@ -198,10 +198,10 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public UserAccountPage clickUserAccountViaIconInHeader() {
+    public UserStatusPage clickUserAccountViaIconInHeader() {
         TestUtils.clickJS(getDriver(), By.id("root-action-UserAction"));
 
-        return new UserAccountPage(getDriver());
+        return new UserStatusPage(getDriver());
     }
 
     public WebElement getRestApiLink(){

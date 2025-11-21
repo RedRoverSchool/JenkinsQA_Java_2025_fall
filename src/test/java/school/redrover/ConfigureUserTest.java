@@ -13,7 +13,18 @@ public class ConfigureUserTest extends BaseTest {
 
         String actualUserName = new HomePage(getDriver())
                 .clickUserAccountViaIconInHeader()
-                .getUserNameInBreadcrumbBar(expectedUserName);
+                .getUserNameInBreadcrumbsBar(expectedUserName);
+
+        Assert.assertTrue(actualUserName.contains(expectedUserName));
+    }
+
+    @Test
+    public void testUserNameInStatus() {
+        final String expectedUserName = "admin";
+
+        String actualUserName = new HomePage(getDriver())
+                .clickUserAccountIcon()
+                .getUserName();
 
         Assert.assertTrue(actualUserName.contains(expectedUserName));
     }
