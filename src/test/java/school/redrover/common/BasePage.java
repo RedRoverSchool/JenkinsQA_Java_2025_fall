@@ -66,12 +66,10 @@ public abstract class BasePage extends BaseModel {
         return getDriver().getCurrentUrl();
     }
 
-    public UserStatusPage clickUserAccountIcon() {
-        WebElement userIcon = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .id("root-action-UserAction")));
-        new Actions(getDriver()).moveToElement(userIcon).pause(1000).click().perform();
-
-        getWait10().until(ExpectedConditions.urlContains("user"));
+    public UserStatusPage clickUserAccountIcon(String userName) {
+        WebElement userIcon = getWait10().until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//*[@href='/user/%s']".formatted(userName))));
+        TestUtils.clickJS(getDriver(), userIcon);
 
         return new UserStatusPage(getDriver());
     }
