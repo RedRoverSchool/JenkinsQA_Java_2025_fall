@@ -63,16 +63,13 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
                 .getText();
     }
 
-    public MultibranchPipelineConfigurationPage enterDescription(String description) {
-        getDriver().findElement(By.name("_.description")).sendKeys(description);
+    public MultibranchPipelineConfigurationPage sendDescription(String description) {
+        WebElement descriptionField = getDriver().findElement(By.name("_.description"));
+
+        descriptionField.clear();
+        descriptionField.sendKeys(description);
 
         return this;
-    }
-
-    public MultibranchPipelineConfigurationPage updateJobDescription(String description) {
-        getDriver().findElement(By.name("_.description")).clear();
-
-        return enterDescription(description);
     }
 
     public String getJobDescriptionPreviewText() {
