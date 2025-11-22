@@ -130,4 +130,17 @@ public class FolderConfigurationPage extends BasePage {
 
         return this;
     }
+
+    public FolderConfigurationPage deleteMetric() {
+        getDriver().findElement(By.xpath(".//button[@title='Remove' and contains(@class, 'repeatable-delete')]")).click();
+
+        return this;
+    }
+
+    public List<String> getMetricList() {
+        return getDriver().findElements(By.xpath(".//div[@class='tbody dropdownList-container']"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
 }
