@@ -171,4 +171,20 @@ public class FolderConfigurationPage extends BasePage {
                 .getText()
                 .trim();
     }
+
+    public FolderConfigurationPage hoverRecursiveTooltip() {
+        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@tooltip='Help']"));
+
+        new Actions(getDriver())
+                .moveToElement(elementToHover)
+                .perform();
+
+        return this;
+    }
+
+    public String getTooltipTitle() {
+        return getDriver().findElement(By
+                .cssSelector("a[helpurl='/descriptor/com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric/help/recursive']"))
+                .getAttribute("tooltip");
+    }
 }
