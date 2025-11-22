@@ -60,4 +60,8 @@ public class MultibranchPipelineProjectPage extends BasePage {
                 .findElement(By.cssSelector("div"))
                 .getText();
     }
+
+    public boolean isAddDescriptionLinkDisplayed() {
+        return getDriver().findElement(By.id("description-link")).isDisplayed();
+    }
 }
