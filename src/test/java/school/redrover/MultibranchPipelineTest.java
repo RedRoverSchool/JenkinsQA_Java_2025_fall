@@ -182,16 +182,12 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testButtonIsDisplayed() {
-        final String projectName = "Multibranch Pipeline (test)";
-
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
-        WebElement buttonAddDescription = getDriver().findElement(By.id("description-link"));
+        WebElement buttonAddDescription = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .clickSaveButton()
+                .getAddDescriptionLink();
 
         Assert.assertTrue(buttonAddDescription.isDisplayed());
     }
