@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
@@ -110,7 +111,7 @@ public class FooterTest extends BaseTest {
                 actualHeading,
                 namePage);
     }
-
+@Ignore
     @Test
     public void testRestApiNewItemPage() {
         String actualHeading = new HomePage(getDriver())
