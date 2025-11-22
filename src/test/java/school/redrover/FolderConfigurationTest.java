@@ -128,4 +128,21 @@ public class FolderConfigurationTest extends BaseTest {
         Assert.assertNotEquals(metricList.size(), 0);
         Assert.assertEquals(metricList.size(), 1);
     }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testChildNameTooltip() {
+
+        final String textOnHover = "Help for feature: Child Name";
+
+        String actualText = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickGivenNameButton()
+                .hoverChildNameTooltip()
+                .getChildNameHelpText();
+
+        Assert.assertEquals(actualText, textOnHover);
+    }
 }
