@@ -145,4 +145,21 @@ public class FolderConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualText, textOnHover);
     }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testChildNameTooltipContent() {
+
+        final String expectedTooltip = "Controls the child item within this folder representing to the health of this folder.";
+
+        String actualText = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickGivenNameButton()
+                .clickChildNameTooltip()
+                .getChildNameTooltipText();
+
+        Assert.assertEquals(actualText, expectedTooltip);
+    }
 }

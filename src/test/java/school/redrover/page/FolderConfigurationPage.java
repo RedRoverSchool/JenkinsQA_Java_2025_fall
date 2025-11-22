@@ -159,4 +159,16 @@ public class FolderConfigurationPage extends BasePage {
                 .cssSelector("a[helpurl='/descriptor/com.cloudbees.hudson.plugins.folder.health.NamedChildHealthMetric/help/childName']"))
                 .getAttribute("tooltip");
     }
+
+    public FolderConfigurationPage clickChildNameTooltip() {
+        getDriver().findElement(By.xpath("//a[@tooltip='Help for feature: Child Name']")).click();
+
+        return this;
+    }
+
+    public String getChildNameTooltipText() {
+       return getDriver().findElement(By.xpath(".//div[contains(text(), 'Controls the child')]"))
+                .getText()
+                .trim();
+    }
 }
