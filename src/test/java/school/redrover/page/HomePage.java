@@ -12,6 +12,7 @@ import school.redrover.common.TestUtils;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class HomePage extends BasePage {
 
     public HomePage(WebDriver driver) {
@@ -196,12 +197,6 @@ public class HomePage extends BasePage {
     public HomePage clearTextDescription() {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).clear();
         return this;
-    }
-
-    public UserStatusPage clickUserAccountViaIconInHeader() {
-        TestUtils.clickJS(getDriver(), By.id("root-action-UserAction"));
-
-        return new UserStatusPage(getDriver());
     }
 
     public WebElement getRestApiLink(){
