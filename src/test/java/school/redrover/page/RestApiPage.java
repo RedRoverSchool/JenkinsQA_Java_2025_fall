@@ -22,4 +22,8 @@ public class RestApiPage extends BasePage {
                 .map(WebElement::getText)
                 .toList();
     }
+
+    public String getNamePage(){
+        return getDriver().findElement(By.cssSelector("h1")).getText();
+    }
 }

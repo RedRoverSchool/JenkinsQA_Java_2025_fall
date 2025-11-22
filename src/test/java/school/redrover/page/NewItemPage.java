@@ -68,6 +68,7 @@ public class NewItemPage extends BasePage {
     public String getDuplicateOrUnsafeCharacterErrorMessage() {
         WebElement errorMessage = getWait10().until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
+
         return errorMessage.getText();
     }
 
@@ -152,10 +153,12 @@ public class NewItemPage extends BasePage {
     }
 
     public boolean isOkButtonEnabled() {
+
         return getDriver().findElement(By.id("ok-button")).isEnabled();
     }
 
     public String getTextHintFromCopyField() {
+
         return getDriver().findElement(By.xpath("//p[@class='jenkins-form-label']")).getText();
     }
 
@@ -166,10 +169,18 @@ public class NewItemPage extends BasePage {
     }
 
     public String getHeadingText() {
+
         return getDriver().findElement(By.tagName("h1")).getText();
     }
 
     public String getNameDataValid() {
+
         return getDriver().findElement(By.id("name")).getAttribute("data-valid");
+    }
+
+    public RestApiPage clickRestApiLink() {
+        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+
+        return new RestApiPage(getDriver());
     }
 }
