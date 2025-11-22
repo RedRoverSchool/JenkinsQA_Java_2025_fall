@@ -111,4 +111,21 @@ public class FolderConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualTopMetric, expectedTopMetric);
     }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testDeleteMetric() {
+        List <String> metricList = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickGivenNameButton()
+                .clickAddMetricButton()
+                .clickWorstHealthButton()
+                .deleteMetric()
+                .getMetricList();
+
+        Assert.assertNotEquals(metricList.size(), 0);
+        Assert.assertEquals(metricList.size(), 1);
+    }
 }
