@@ -144,8 +144,6 @@ public class CreateNewItemTest extends BaseTest {
         String heading = getDriver().findElement(By.xpath("//span[text()='Configuration']")).getText();
         Assert.assertEquals(heading, "Configuration");
     }
-
-    // === Добавлено из удаленного CreateNewItem1Test ===
     @Test
     public void testBuildStepsFilterNames() {
         new HomePage(getDriver())
@@ -238,7 +236,7 @@ public class CreateNewItemTest extends BaseTest {
                 .sendName(newName)
                 .sendNameToCopyFromAndSubmit(originalName)
                 .gotoHomePage()
-                .openJobPage(newName, new FreestyleProjectPage(getDriver()))
+                .openPage(newName, new FreestyleProjectPage(getDriver()))
                 .clickConfigure(newName)
                 .getSettingsToList();
 

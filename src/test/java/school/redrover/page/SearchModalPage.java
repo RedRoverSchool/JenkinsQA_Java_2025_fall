@@ -66,4 +66,13 @@ public class SearchModalPage extends BaseModel {
         getDriver().findElement(By.id("command-bar")).sendKeys(Keys.ENTER);
         return new UserAccountPage(getDriver());
     }
+
+    public List<String> searchResults() {
+        List<String> textOfResults = new ArrayList<>();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.className("jenkins-command-palette__results__heading")));
+        List<WebElement> searchResultsItems = getDriver().findElements(searchResults);
+        searchResultsItems.forEach(el -> textOfResults.add(el.getText()));
+        return textOfResults;
+    }
+
 }

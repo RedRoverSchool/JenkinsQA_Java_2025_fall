@@ -26,7 +26,7 @@ public class FolderConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testHealthMetricButtonIsDisplayed(){
         String buttonDisplayed = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickConfigure()
                 .getHealthMetricsButton();
 
@@ -36,7 +36,7 @@ public class FolderConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testHealthMetricSectionNavigation(){
         String sectionName = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickConfigure()
                 .clickHealthMetricsSidebarLink()
                 .getSectionName();
@@ -47,10 +47,10 @@ public class FolderConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testVerifyMetricTypeList(){
 
-        final  List<String> expectedMetricTypes= Arrays.asList("Child item with the given name","Child item with worst health");
+        final List<String> expectedMetricTypes= Arrays.asList("Child item with the given name","Child item with worst health");
 
         List<String> actualMetricTypes = new HomePage(getDriver())
-                .openJobPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickConfigure()
                 .clickHealthMetricsSidebarLink()
                 .clickHealthMetricsButton()
@@ -59,5 +59,56 @@ public class FolderConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualMetricTypes, expectedMetricTypes,
                 "The list of displayed metric types in the dropdown did not match the expected list.");
+    }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testAddWorstHealth() {
+
+        final String expectedMetric = "Child item with worst health";
+
+        String actualMetricAdded = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickWorstHealthButton()
+                .getMetricRowName();
+
+        Assert.assertEquals(actualMetricAdded, expectedMetric);
+    }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testAddGivenName() {
+
+        final String expectedMetric = "Child item with the given name";
+
+        String actualMetricAdded = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickGivenNameButton()
+                .getMetricRowName();
+
+        Assert.assertEquals(actualMetricAdded, expectedMetric);
+    }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testDragWorstHealthToTop() {
+
+        final String expectedTopMetric = "Child item with worst health";
+
+        String actualTopMetric = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickGivenNameButton()
+                .clickAddMetricButton()
+                .clickWorstHealthButton()
+                .dragWorstHealthRowToTop()
+                .getMetricRowName();
+
+        Assert.assertEquals(actualTopMetric, expectedTopMetric);
     }
 }
