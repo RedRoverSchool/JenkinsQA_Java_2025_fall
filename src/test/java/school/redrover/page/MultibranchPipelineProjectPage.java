@@ -61,7 +61,7 @@ public class MultibranchPipelineProjectPage extends BasePage {
                 .getText();
     }
 
-    public boolean isAddDescriptionLinkDisplayed() {
-        return getDriver().findElement(By.id("description-link")).isDisplayed();
+    public WebElement getAddDescriptionLink() {
+        return getDriver().findElement(By.id("description-link"));
     }
 }

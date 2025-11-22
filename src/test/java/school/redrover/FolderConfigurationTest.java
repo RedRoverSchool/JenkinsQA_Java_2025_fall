@@ -162,4 +162,21 @@ public class FolderConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualText, expectedTooltip);
     }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testWorstHealthTooltip() {
+
+        final String textOnHover = "Help";
+
+        String actualText = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickWorstHealthButton()
+                .hoverRecursiveTooltip()
+                .getTooltipTitle();
+
+        Assert.assertEquals(actualText, textOnHover);
+    }
 }
