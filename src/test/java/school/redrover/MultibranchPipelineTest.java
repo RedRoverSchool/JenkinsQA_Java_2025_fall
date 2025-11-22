@@ -181,15 +181,15 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testButtonIsDisplayed() {
-        WebElement buttonAddDescription = new HomePage(getDriver())
+    public void testAddDescriptionLinkIsDisplayed() {
+       boolean isAddDescriptionLinkDisplayed = new HomePage(getDriver())
                 .clickNewItemOnLeftMenu()
                 .sendName(MULTIBRANCH_PIPELINE_NAME)
                 .selectMultibranchPipelineAndSubmit()
                 .clickSaveButton()
-                .getAddDescriptionLink();
+                .isAddDescriptionLinkDisplayed();
 
-        Assert.assertTrue(buttonAddDescription.isDisplayed());
+        Assert.assertTrue(isAddDescriptionLinkDisplayed);
     }
 
     @Test
