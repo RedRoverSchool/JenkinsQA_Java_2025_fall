@@ -215,13 +215,13 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
     public void testDescriptionFieldText() {
-        String descriptionFieldValue = new HomePage(getDriver())
+        String descriptionFieldText = new HomePage(getDriver())
                 .openPage(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
                 .clickAddDescriptionLink()
                 .sendDescription(MULTIBRANCH_JOB_DESCRIPTION)
                 .getDescriptionFieldText();
 
-        Assert.assertEquals(descriptionFieldValue, MULTIBRANCH_JOB_DESCRIPTION);
+        Assert.assertEquals(descriptionFieldText, MULTIBRANCH_JOB_DESCRIPTION);
     }
 
     @Test
