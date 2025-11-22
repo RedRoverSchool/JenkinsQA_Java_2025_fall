@@ -106,6 +106,7 @@ public class FolderPage extends BasePage {
     public FolderPage addDescriptionAndSave(String description) {
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
         getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.textToBe(By.id("description-content"), description));
         return this;
     }
 
