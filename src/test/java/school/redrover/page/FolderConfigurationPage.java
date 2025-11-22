@@ -130,4 +130,61 @@ public class FolderConfigurationPage extends BasePage {
 
         return this;
     }
+
+    public FolderConfigurationPage deleteMetric() {
+        getDriver().findElement(By.xpath(".//button[@title='Remove' and contains(@class, 'repeatable-delete')]")).click();
+
+        return this;
+    }
+
+    public List<String> getMetricList() {
+        return getDriver().findElements(By.xpath(".//div[@class='tbody dropdownList-container']"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+    }
+
+    public FolderConfigurationPage hoverChildNameTooltip() {
+        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@tooltip='Help for feature: Child Name']"));
+
+        new Actions(getDriver())
+                .moveToElement(elementToHover)
+                .perform();
+
+        return this;
+    }
+
+    public String getChildNameHelpText() {
+        return getDriver().findElement(By
+                .cssSelector("a[helpurl='/descriptor/com.cloudbees.hudson.plugins.folder.health.NamedChildHealthMetric/help/childName']"))
+                .getAttribute("tooltip");
+    }
+
+    public FolderConfigurationPage clickChildNameTooltip() {
+        getDriver().findElement(By.xpath("//a[@tooltip='Help for feature: Child Name']")).click();
+
+        return this;
+    }
+
+    public String getChildNameTooltipText() {
+       return getDriver().findElement(By.xpath(".//div[contains(text(), 'Controls the child')]"))
+                .getText()
+                .trim();
+    }
+
+    public FolderConfigurationPage hoverRecursiveTooltip() {
+        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@tooltip='Help']"));
+
+        new Actions(getDriver())
+                .moveToElement(elementToHover)
+                .perform();
+
+        return this;
+    }
+
+    public String getTooltipTitle() {
+        return getDriver().findElement(By
+                .cssSelector("a[helpurl='/descriptor/com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric/help/recursive']"))
+                .getAttribute("tooltip");
+    }
 }

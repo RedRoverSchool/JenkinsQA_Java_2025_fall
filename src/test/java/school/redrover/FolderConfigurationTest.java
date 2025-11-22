@@ -111,4 +111,72 @@ public class FolderConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualTopMetric, expectedTopMetric);
     }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testDeleteMetric() {
+        List <String> metricList = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickGivenNameButton()
+                .clickAddMetricButton()
+                .clickWorstHealthButton()
+                .deleteMetric()
+                .getMetricList();
+
+        Assert.assertNotEquals(metricList.size(), 0);
+        Assert.assertEquals(metricList.size(), 1);
+    }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testChildNameTooltip() {
+
+        final String textOnHover = "Help for feature: Child Name";
+
+        String actualText = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickGivenNameButton()
+                .hoverChildNameTooltip()
+                .getChildNameHelpText();
+
+        Assert.assertEquals(actualText, textOnHover);
+    }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testChildNameTooltipContent() {
+
+        final String expectedTooltip = "Controls the child item within this folder representing to the health of this folder.";
+
+        String actualText = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickGivenNameButton()
+                .clickChildNameTooltip()
+                .getChildNameTooltipText();
+
+        Assert.assertEquals(actualText, expectedTooltip);
+    }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testWorstHealthTooltip() {
+
+        final String textOnHover = "Help";
+
+        String actualText = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickWorstHealthButton()
+                .hoverRecursiveTooltip()
+                .getTooltipTitle();
+
+        Assert.assertEquals(actualText, textOnHover);
+    }
 }
