@@ -192,4 +192,16 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
 
         Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
     }
+
+    @Test
+    public void testNavigationToTriggersBySideMenu () {
+        String triggerTitle = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .clickTriggerLinkInSideMenu()
+                .getTriggerTitleText();
+
+        Assert.assertEquals(triggerTitle, "Triggers");
+    }
 }
