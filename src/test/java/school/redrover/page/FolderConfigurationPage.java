@@ -143,4 +143,20 @@ public class FolderConfigurationPage extends BasePage {
                 .map(WebElement::getText)
                 .toList();
     }
+
+    public FolderConfigurationPage hoverChildNameTooltip() {
+        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@tooltip='Help for feature: Child Name']"));
+
+        new Actions(getDriver())
+                .moveToElement(elementToHover)
+                .perform();
+
+        return this;
+    }
+
+    public String getChildNameHelpText() {
+        return getDriver().findElement(By
+                .cssSelector("a[helpurl='/descriptor/com.cloudbees.hudson.plugins.folder.health.NamedChildHealthMetric/help/childName']"))
+                .getAttribute("tooltip");
+    }
 }
