@@ -179,7 +179,7 @@ public class NewItemPage extends BasePage {
     }
 
     public RestApiPage clickRestApiLink() {
-        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='api/']"))).click();
 
         return new RestApiPage(getDriver());
     }
