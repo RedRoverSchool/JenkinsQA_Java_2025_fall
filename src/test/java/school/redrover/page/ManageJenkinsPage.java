@@ -1,9 +1,14 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+
+import java.util.List;
 
 public class ManageJenkinsPage extends BasePage {
 
@@ -32,5 +37,21 @@ public class ManageJenkinsPage extends BasePage {
     public String getHeadingText() {
         return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.
                 tagName("h1"))).getText().trim();
+    }
+
+    public ManageJenkinsPage sendTitle(String settingTitle){
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("settings-search-bar"))).sendKeys(settingTitle);
+
+        return this;
+    }
+
+    public List<String> getSearchResults(){
+        List<WebElement> searchResultElements = getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.className("jenkins-dropdown__item")));
+
+        return searchResultElements
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 }
