@@ -26,7 +26,7 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItemOnLeftMenu() {
-        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
+        getDriver().findElement(By.linkText("New Item")).click();
 
         return new NewItemPage(getDriver());
     }
@@ -200,6 +200,7 @@ public class HomePage extends BasePage {
     }
 
     public WebElement getRestApiLink(){
+
         return getDriver().findElement(By.xpath("//a[@href='api/']"));
     }
 
@@ -266,5 +267,23 @@ public class HomePage extends BasePage {
 
     public String getTitle () {
         return getDriver().getTitle();
+    }
+
+    public NewNodePage clickSetUpAnAgent(){
+        getDriver().findElement(By.xpath("//div/section[2]/ul/li[1]/a")).click();
+
+        return new NewNodePage(getDriver());
+    }
+
+    public NodesPage clickBuildExecutorStatus(){
+        getDriver().findElement(By.linkText("Build Executor Status")).click();
+
+        return new NodesPage(getDriver());
+    }
+
+    public BuildHistoryOfJenkinsPage clickBuildHistory(){
+    getDriver().findElement(By.xpath("//div[2]/span/a")).click();
+
+    return new BuildHistoryOfJenkinsPage(getDriver());
     }
 }

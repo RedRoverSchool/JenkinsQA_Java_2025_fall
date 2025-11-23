@@ -40,6 +40,7 @@ public abstract class BasePage extends BaseModel {
 
     public SearchModalPage clickSearchButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("root-action-SearchAction")))).click();
+
         return new SearchModalPage(getDriver());
     }
 
@@ -76,7 +77,14 @@ public abstract class BasePage extends BaseModel {
     }
 
     public String getCurrentUrl() {
+
         return getDriver().getCurrentUrl();
+    }
+
+    public UserAccountPage clickUserAccount() {
+        getDriver().findElement(By.id("root-action-UserAction")).click();
+
+        return new UserAccountPage(getDriver());
     }
 
 
