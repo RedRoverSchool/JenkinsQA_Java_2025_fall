@@ -9,7 +9,6 @@ import school.redrover.page.NewItemPage;
 import java.io.FileInputStream;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.ExecutionException;
 
 public class HeaderTest extends BaseTest{
 
@@ -32,7 +31,7 @@ public class HeaderTest extends BaseTest{
 
         @Test
 
-class Naviagtion {
+class Navigation {
             static private final Properties properties = new Properties();
 
         static {
@@ -52,8 +51,8 @@ class Naviagtion {
             getDriver().get(getBaseURL() + "/view/all/newJob");
             return new NewItemPage(getDriver());
         }
-        public  goToNewItem() {
-          getDriver().get(getBaseURL() + "/view/all/newJob");
-         return new NewItemPage(getDriver());
+//        public NewItemPage goToNewItem() {
+//          getDriver().get(getBaseURL() + "/view/all/newJob");
+//         return new NewItemPage(getDriver());
     }
     }
