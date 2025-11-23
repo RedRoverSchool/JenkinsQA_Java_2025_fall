@@ -4,8 +4,12 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
 
+import java.io.FileInputStream;
 import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 
 public class HeaderTest extends BaseTest{
 
@@ -25,4 +29,31 @@ public class HeaderTest extends BaseTest{
 
             Assert.assertEquals(results.size(), 4);
         }
+
+        @Test
+
+class Naviagtion {
+            static private final Properties properties = new Properties();
+
+        static {
+            try {
+                FileInputStream file = new FileInputStream("resources.properties");
+                properties.load(file);
+            } catch ( Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        private String getBaseURL() {
+            return properties.getProperty("jenkins.host") + ":" + properties.getProperty("jenkins.port");
+        }
+
+        public NewItemPage goToNewItem() {
+            getDriver().get(getBaseURL() + "/view/all/newJob");
+            return new NewItemPage(getDriver());
+        }
+        public  goToNewItem() {
+          getDriver().get(getBaseURL() + "/view/all/newJob");
+         return new NewItemPage(getDriver());
+    }
     }
