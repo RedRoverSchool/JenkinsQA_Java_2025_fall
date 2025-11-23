@@ -1,6 +1,8 @@
 package school.redrover;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BasePage;
@@ -11,7 +13,10 @@ import school.redrover.page.HomePage;
 import school.redrover.testdata.Page;
 import school.redrover.testdata.TestDataProvider;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 public class DashboardTest extends BaseTest {
 
@@ -183,5 +188,20 @@ public class DashboardTest extends BaseTest {
 
         int actualCountDisplayedColumns = homePage.getCountOfDisplayedColumnsOnDashboard();
         Assert.assertEquals(actualCountDisplayedColumns, initialCountDisplayedColumns - 1);
+    }
+
+    @Test
+    public void testLearnMoreAboutDistributedBuildsButton() {
+
+        getDriver().findElement(By.xpath(".//a[span[text()='Learn more about distributed builds']]"))
+                .click();
+        Object[] windowHandles = getDriver().getWindowHandles().toArray();
+        getDriver().switchTo().window((String) windowHandles[1]);
+
+        getWait2().until(ExpectedConditions.urlContains("architecting-for-scale"));
+
+        String actualHeading = getDriver().findElement(By.tagName("h1")).getText();
+
+        Assert.assertEquals(actualHeading, "Architecting for Scale");
     }
 }

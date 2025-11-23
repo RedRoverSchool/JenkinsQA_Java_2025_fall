@@ -179,4 +179,21 @@ public class FolderConfigurationTest extends BaseTest {
 
         Assert.assertEquals(actualText, textOnHover);
     }
+
+    @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
+    public void testRecursiveTooltipContent() {
+
+        final String expectedTooltip = "Controls whether items within sub-folders will be considered as contributing to the health of this folder.";
+
+        String actualText = new HomePage(getDriver())
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .clickConfigure()
+                .clickHealthMetricsButton()
+                .clickAddMetricButton()
+                .clickWorstHealthButton()
+                .clickRecursiveTooltip()
+                .getRecursiveTooltipText();
+
+        Assert.assertEquals(actualText, expectedTooltip);
+    }
 }

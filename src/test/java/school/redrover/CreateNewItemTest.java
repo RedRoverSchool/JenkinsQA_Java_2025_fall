@@ -50,7 +50,7 @@ public class CreateNewItemTest extends BaseTest {
     @Test
     public void testItemNameInput() {
         new HomePage(getDriver()).clickCreateJob();
-        getDriver().findElement(By.id("name")).sendKeys("Uliana_123");
+        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
 
         List<WebElement> validationMessages = getDriver().findElements(By.className("input-validation-message"));
 
@@ -83,7 +83,7 @@ public class CreateNewItemTest extends BaseTest {
     public void testPipelineTypeCanBeSelected() {
         boolean isSelected = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendName("Test Project")
+                .sendName(PROJECT_NAME)
                 .selectPipeline()
                 .isPipelineSelected();
 
@@ -94,7 +94,7 @@ public class CreateNewItemTest extends BaseTest {
     public void testPipelineTypeHighlightAndOkButtonEnables() {
         NewItemPage newItemPage = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendName("Test Project")
+                .sendName(PROJECT_NAME)
                 .selectPipeline();
 
         Assert.assertTrue(newItemPage.isPipelineHighlighted());
@@ -118,17 +118,16 @@ public class CreateNewItemTest extends BaseTest {
 
     @Test
     public void testAcceptsAlphanumericAndUnderscores() {
-        final String projectName = "test_name1";
 
         List<String> projectList = new HomePage(getDriver())
                 .clickCreateJob()
-                .sendName(projectName)
+                .sendName(PROJECT_NAME)
                 .selectPipelineAndSubmit()
                 .gotoHomePage()
                 .getProjectList();
 
         Assert.assertNotEquals(projectList.size(), 0);
-        Assert.assertEquals(projectList.get(0), projectName);
+        Assert.assertEquals(projectList.get(0), PROJECT_NAME);
     }
 
     // === Добавлено из удаленного CreateNewItem1Test ===
@@ -136,7 +135,7 @@ public class CreateNewItemTest extends BaseTest {
     public void testConfigurationPageIsVisible() {
         new HomePage(getDriver())
                 .clickCreateJob()
-                .sendName("TestProject")
+                .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit();
 
         getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//span[text()='Configuration']"), "Configuration"));
@@ -148,7 +147,7 @@ public class CreateNewItemTest extends BaseTest {
     public void testBuildStepsFilterNames() {
         new HomePage(getDriver())
                 .clickCreateJob()
-                .sendName("TestProject")
+                .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit();
 
         WebElement addBuildStep = getWait2().until(
@@ -183,14 +182,14 @@ public class CreateNewItemTest extends BaseTest {
     public void createNewFreeStyleProjectTest() {
         new HomePage(getDriver())
                 .clickCreateJob()
-                .sendName("Freestyle Project Name")
+                .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
                 .clickSave();
 
-        getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), "Freestyle Project Name"));
+        getWait2().until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//h1"), PROJECT_NAME));
 
         WebElement projectTitle = getDriver().findElement(By.xpath("//h1"));
-        Assert.assertEquals(projectTitle.getText(), "Freestyle Project Name");
+        Assert.assertEquals(projectTitle.getText(), PROJECT_NAME);
     }
 
     // === Добавлено из CreateNewItem8Test ===

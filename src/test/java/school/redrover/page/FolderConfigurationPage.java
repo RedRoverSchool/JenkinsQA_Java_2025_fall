@@ -36,17 +36,11 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public String getHealthMetricsSidebarLink() {
-        String linkText = getDriver().findElement(By.cssSelector("button[data-section-id='health-metrics']"))
-                .getText()
-                .trim();
-
-        return linkText;
+        return getDriver().findElement(By.cssSelector("button[data-section-id='health-metrics']")).getText().trim();
     }
 
     public String getHealthMetricsButton() {
-        String buttonText = getDriver().findElement(By.cssSelector("button.jenkins-button.advanced-button")).getText().trim();
-
-        return buttonText;
+        return getDriver().findElement(By.cssSelector("button.jenkins-button.advanced-button")).getText().trim();
     }
 
     public FolderConfigurationPage clickHealthMetricsSidebarLink() {
@@ -56,9 +50,7 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public String getSectionName() {
-        String sectionName = getDriver().findElement(By.id("health-metrics")).getText().trim();
-
-        return sectionName;
+        return getDriver().findElement(By.id("health-metrics")).getText().trim();
     }
 
     public FolderConfigurationPage clickHealthMetricsButton() {
@@ -81,27 +73,24 @@ public class FolderConfigurationPage extends BasePage {
         clickAddMetricButton();
         getWait2().until(ExpectedConditions.presenceOfAllElementsLocatedBy(metricTypesList));
 
-        List<String> metricTypeNames = getDriver().findElements(metricTypesList)
+        return getDriver().findElements(metricTypesList)
                 .stream()
                 .map(WebElement::getText)
                 .toList();
-
-        return metricTypeNames;
     }
 
     public FolderConfigurationPage clickWorstHealthButton() {
         By worstHealthMetricRow = By.xpath("//div[@descriptorid='com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric']");
 
-        getDriver().findElement(By.xpath("//button[normalize-space(text())='Child item with worst health']")).click();
+        getDriver().findElement(By.xpath("//button[normalize-space(text())='Child item with worst health']"))
+                .click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(worstHealthMetricRow));
 
         return this;
     }
 
     public String getMetricRowName() {
-        String headerText = getDriver().findElement(By.xpath("//div[@class='repeated-chunk__header'][1]")).getText().trim();
-
-        return headerText;
+        return getDriver().findElement(By.xpath("//div[@class='repeated-chunk__header'][1]")).getText().trim();
     }
 
     public FolderConfigurationPage clickGivenNameButton() {
@@ -186,5 +175,17 @@ public class FolderConfigurationPage extends BasePage {
         return getDriver().findElement(By
                 .cssSelector("a[helpurl='/descriptor/com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric/help/recursive']"))
                 .getAttribute("tooltip");
+    }
+
+    public FolderConfigurationPage clickRecursiveTooltip() {
+        getDriver().findElement(By.xpath("//a[@tooltip='Help']")).click();
+
+        return this;
+    }
+
+    public String getRecursiveTooltipText() {
+        return getDriver().findElement(By.xpath(".//div[contains(text(), 'Controls whether items')]"))
+                .getText()
+                .trim();
     }
 }
