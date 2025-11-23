@@ -263,4 +263,8 @@ public class HomePage extends BasePage {
 
         return new EditViewPage(getDriver());
     }
+
+    public String getTitle () {
+        return getDriver().getTitle();
+    }
 }
