@@ -40,4 +40,10 @@ public class UserAccountPage extends BasePage {
 
         return returnedPage;
     }
+
+    public RestApiPage clickRestApiLink(){
+        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+
+        return new RestApiPage(getDriver());
+    }
 }

@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 import java.util.List;
@@ -21,5 +22,9 @@ public class RestApiPage extends BasePage {
                 .stream()
                 .map(WebElement::getText)
                 .toList();
+    }
+
+    public String getNamePage(){
+        return getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("h1"))).getText();
     }
 }

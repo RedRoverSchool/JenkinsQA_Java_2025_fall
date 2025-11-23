@@ -4,9 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import school.redrover.common.BasePage;
 
-public class NewNodePage extends BasePage {
+public class NodesPage  extends BasePage {
 
-    public NewNodePage(WebDriver driver) {
+    public NodesPage(WebDriver driver) {
         super(driver);
     }
 
@@ -16,3 +16,4 @@ public class NewNodePage extends BasePage {
         return new RestApiPage(getDriver());
     }
 }
+
