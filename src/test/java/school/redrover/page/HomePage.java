@@ -265,6 +265,10 @@ public class HomePage extends BasePage {
         return new EditViewPage(getDriver());
     }
 
+    public String getTitle () {
+        return getDriver().getTitle();
+    }
+
     public NewNodePage clickSetUpAnAgent(){
         getDriver().findElement(By.xpath("//div/section[2]/ul/li[1]/a")).click();
 
