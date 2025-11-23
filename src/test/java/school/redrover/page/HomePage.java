@@ -12,6 +12,7 @@ import school.redrover.common.TestUtils;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class HomePage extends BasePage {
 
     public HomePage(WebDriver driver) {
@@ -25,7 +26,7 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItemOnLeftMenu() {
-        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
+        getDriver().findElement(By.linkText("New Item")).click();
 
         return new NewItemPage(getDriver());
     }
@@ -43,7 +44,7 @@ public class HomePage extends BasePage {
         return new FolderPage(getDriver());
     }
 
-    public <T extends BasePage> T openJobPage(String jobName, T resultPage) {
+    public <T extends BasePage> T openPage(String jobName, T resultPage) {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
 
         return resultPage;
@@ -198,13 +199,8 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public UserAccountPage clickUserAccountViaIconInHeader() {
-        TestUtils.clickJS(getDriver(), By.id("root-action-UserAction"));
-
-        return new UserAccountPage(getDriver());
-    }
-
     public WebElement getRestApiLink(){
+
         return getDriver().findElement(By.xpath("//a[@href='api/']"));
     }
 
@@ -229,13 +225,6 @@ public class HomePage extends BasePage {
                 .perform();
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-tippy-root]")))
                 .getText();
-    }
-      
-    public <T extends BasePage> T clickHomePageSectionLink(String linkText, T page) {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='%s']/..".formatted(linkText))))
-                .click();
-
-        return page;
     }
 
     public String getNumberOfExecutors() {
@@ -267,5 +256,34 @@ public class HomePage extends BasePage {
 
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
                 .getText();
+    }
+
+    public EditViewPage clickEditViewButton(String listViewName){
+        getWait10().until(ExpectedConditions.elementToBeClickable(By
+                .xpath(".//a[@href='/view/%s/configure']".formatted(listViewName)))).click();
+
+        return new EditViewPage(getDriver());
+    }
+
+    public String getTitle () {
+        return getDriver().getTitle();
+    }
+
+    public NewNodePage clickSetUpAnAgent(){
+        getDriver().findElement(By.xpath("//div/section[2]/ul/li[1]/a")).click();
+
+        return new NewNodePage(getDriver());
+    }
+
+    public NodesPage clickBuildExecutorStatus(){
+        getDriver().findElement(By.linkText("Build Executor Status")).click();
+
+        return new NodesPage(getDriver());
+    }
+
+    public BuildHistoryOfJenkinsPage clickBuildHistory(){
+    getDriver().findElement(By.xpath("//div[2]/span/a")).click();
+
+    return new BuildHistoryOfJenkinsPage(getDriver());
     }
 }

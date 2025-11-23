@@ -17,8 +17,7 @@ public class UserAccountPage extends BasePage {
 
     public String getUserName() {
         return getWait10()
-                .until(ExpectedConditions.visibilityOfElementLocated(By
-                        .xpath("//div[@id='main-panel']/descendant::h1")))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")))
                 .getText();
     }
 
@@ -26,12 +25,6 @@ public class UserAccountPage extends BasePage {
         return getDriver().findElement(By
                         .xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
                 .getText().substring(17);
-    }
-
-    public String getUserNameInBreadcrumbBar(String userName) {
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath(".//a[@href=contains(text(),'%s')]".formatted(userName))))
-                .getText();
     }
 
     public UserAccountPage sendFullName(String fullName) {
@@ -46,5 +39,11 @@ public class UserAccountPage extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
 
         return returnedPage;
+    }
+
+    public RestApiPage clickRestApiLink(){
+        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+
+        return new RestApiPage(getDriver());
     }
 }

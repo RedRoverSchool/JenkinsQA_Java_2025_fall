@@ -12,12 +12,12 @@ public class PipelinePage extends BasePage {
         super(driver);
     }
 
-    public ConfigurationPipelinePage clickConfigureInSideMenu(String newPipelineName) {
+    public PipelineConfigurationPage clickConfigureInSideMenu(String newPipelineName) {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                         .xpath(".//a[@href='/job/%s/configure']".formatted(newPipelineName))))
                 .click();
 
-        return new ConfigurationPipelinePage(getDriver());
+        return new PipelineConfigurationPage(getDriver());
     }
 
     public String getDisplayNameInStatus() {
@@ -28,18 +28,6 @@ public class PipelinePage extends BasePage {
     public String getDisplayNameInBreadcrumbBar(String displayName) {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath(".//a[text()='%s']".formatted(displayName)))).getText();
-    }
-
-    public PipelinePage clickAddDescriptionButton() {
-        getDriver().findElement(By.id("description-link")).click();
-        return this;
-    }
-
-    public PipelinePage clickEditDescriptionButton() {
-        getWait5()
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
-                .click();
-        return this;
     }
 
     public PipelinePage addDescriptionAndSave(String description) {
@@ -66,11 +54,38 @@ public class PipelinePage extends BasePage {
                 .getText();
     }
 
+    public PipelinePage clickAddDescriptionButton() {
+        getDriver().findElement(By.id("description-link")).click();
+        return this;
+    }
+
+    public PipelinePage clickEditDescriptionButton() {
+        getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
+                .click();
+        return this;
+    }
+
+    public PipelinePage clickBuildNow() {
+        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']"))
+                .click();
+
+        return this;
+    }
+
     public PipelinePage clickDeletePipeline() {
         getDriver().findElement(By.className("confirmation-link"))
                 .click();
 
         return this;
+    }
+
+    public PipelineHistoryPage clickBuildHistory() {
+        getWait10()
+                .until(ExpectedConditions.elementToBeClickable(By.id("jenkins-build-history")))
+                .click();
+
+        return new PipelineHistoryPage(getDriver());
     }
 
     public HomePage confirmDeleteAtJobPage() {

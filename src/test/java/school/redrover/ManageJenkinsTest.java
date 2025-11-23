@@ -7,12 +7,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.time.Duration;
 
 public class ManageJenkinsTest extends BaseTest {
-
+    private final String TITLE_TEXT = "Dashboard - Jenkins";
     private void openGlobalProperties() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
         getDriver().findElement(By.xpath("//a[@href='configure']")).click();
@@ -88,4 +90,15 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertEquals(actualHintText, expectedHintText, "Unexpected tooltip");
     }
+    @Test
+    public void testCheckAccessDashboardFromLogo() {
+        String title = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .gotoHomePage()
+                .getTitle();
+
+        Assert.assertEquals(title, TITLE_TEXT);
+    }
+
+
 }

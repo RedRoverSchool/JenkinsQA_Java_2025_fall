@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -12,6 +13,7 @@ import school.redrover.page.FreestyleProjectConfigurationPage;
 import school.redrover.page.FreestyleProjectPage;
 import school.redrover.page.HomePage;
 
+import java.time.Duration;
 import java.util.List;
 
 public class FreestyleProjectConfigurationTest extends BaseTest {
@@ -49,6 +51,28 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
         Assert.assertEquals(disableProjectMessage, "This project is currently disabled");
     }
 
+    @Test
+    public void testBuildStepsFilterNames() {
+
+        FreestyleProjectConfigurationPage configPage = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .clickBuildStepMenuOption();
+
+        for (String buildStep : BUILD_STEPS) {
+
+            configPage
+                    .typeIntoFilterBuildStep(buildStep.substring(0, Math.min(5, buildStep.length())));
+
+            WebElement visibleStep = configPage.verifySentNameIsInFilter(buildStep);
+
+            Assert.assertEquals(
+                    visibleStep.getText(),
+                    buildStep,
+                    "Filter didn't match expected build step");
+        }
+    }
     @Test
     public void testEnableProjectViaMainMenuConfigure() {
         createFreestyleProject(PROJECT_NAME);
@@ -138,7 +162,7 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
                 .gotoHomePage()
-                .openJobPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .openPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure(PROJECT_NAME)
                 .verifySCMTitleIsVisible();
 
@@ -167,5 +191,17 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
                 .verifySCMTitleIsVisible();
 
         Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+    }
+
+    @Test
+    public void testNavigationToTriggersBySideMenu () {
+        String triggerTitle = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .clickTriggerLinkInSideMenu()
+                .getTriggerTitleText();
+
+        Assert.assertEquals(triggerTitle, "Triggers");
     }
 }

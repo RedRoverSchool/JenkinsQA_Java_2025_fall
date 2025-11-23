@@ -2,6 +2,7 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
 
@@ -19,11 +20,9 @@ public class MovePage extends BasePage {
         return this;
     }
 
-    public HomePage clickMoveButtonAndGoHome() {
+    public void clickMoveButtonAndGoHome() {
         getDriver().findElement(By.name("Submit")).click();
         getWait5().until(driver -> Objects.requireNonNull(driver.getCurrentUrl()).contains("/job/"));
-        gotoHomePage();
-
-        return new HomePage(getDriver());
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[contains(@class, 'jenkins-mobile-hide')][1]"))).click();
     }
 }

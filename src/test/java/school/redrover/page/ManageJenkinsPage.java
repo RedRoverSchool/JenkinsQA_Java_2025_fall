@@ -23,10 +23,10 @@ public class ManageJenkinsPage extends BasePage {
         return new CredentialsPage(getDriver());
     }
 
-    public ConfigurationSystemPage clickConfigurationSystem() {
+    public SystemConfigurationPage clickConfigurationSystem() {
         getDriver().findElement(By.xpath("//a[@href='configure']")).click();
 
-        return new ConfigurationSystemPage(getDriver());
+        return new SystemConfigurationPage(getDriver());
     }
 
     public String getHeadingText() {

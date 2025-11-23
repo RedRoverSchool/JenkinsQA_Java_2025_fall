@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
@@ -45,7 +44,7 @@ public class DashboardTest extends BaseTest {
 
     @Test(dataProvider = "Links", dataProviderClass = TestDataProvider.class)
     public void testContentBlockLinks(String linkText, String expectedUrlEndpoint, Page page) {
-        BasePage resultPage = new HomePage(getDriver()).clickHomePageSectionLink(linkText, page.createPage(getDriver()));
+        BasePage resultPage = new HomePage(getDriver()).openPage(linkText, page.createPage(getDriver()));
 
         Assert.assertTrue(Objects.requireNonNull(resultPage.getCurrentUrl()).contains(expectedUrlEndpoint));
     }
@@ -65,6 +64,17 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertFalse(actualJobs.isEmpty(), "Item's list is empty!");
         Assert.assertEquals(actualJobs, CREATED_JOBS_NAME, "Имена созданных jobs не совпадают!");
+    }
+
+    @Test(dependsOnMethods = "testCheckCreatedJobsOnDashboard")
+    public void testSearchCreatedJobs() {
+        String searchResults = new HomePage(getDriver())
+                .clickSearchButton()
+                .searchFor(CREATED_JOBS_NAME.get(1))
+                .moveAndClickResult()
+                .getHeadingText();
+
+        Assert.assertEquals(searchResults, CREATED_JOBS_NAME.get(1));
     }
 
     @Test
@@ -112,7 +122,6 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(actualTitle, expectedTitle);
     }
 
-    @Ignore
     @Test
     public void testAddColumnsInListViewOnDashboard() {
         final String listViewName = "ListView_01";
@@ -129,7 +138,6 @@ public class DashboardTest extends BaseTest {
 
         EditViewPage editViewPage = new EditViewPage(getDriver());
         List<String> currentColumnListText = editViewPage.getCurrentColumnList();
-        Assert.assertNotEquals(currentColumnListText.size(), 0);
 
         Set<String> addColumnSet = new HashSet<>();
 
@@ -145,10 +153,35 @@ public class DashboardTest extends BaseTest {
         }
 
         List<String> addedColumnList = editViewPage.getCurrentColumnList();
+        Assert.assertNotEquals(addedColumnList.size(), 0);
         Assert.assertTrue(addedColumnList.containsAll(addColumnSet));
 
         editViewPage.clickSubmitButton();
         int actualCountDisplayedColumns = homePage.getCountOfDisplayedColumnsOnDashboard();
-        Assert.assertEquals(actualCountDisplayedColumns,addedColumnList.size());
+        Assert.assertEquals(actualCountDisplayedColumns, addedColumnList.size());
+    }
+
+    @Test(dependsOnMethods = "testAddColumnsInListViewOnDashboard")
+    public void testRemoveColumnsInListView() {
+        final String listViewName = "ListView_01";
+        final String columnName = "Last Success";
+
+        HomePage homePage = new HomePage(getDriver());
+        int initialCountDisplayedColumns = homePage
+                .clickViewName(listViewName)
+                .getCountOfDisplayedColumnsOnDashboard();
+
+        List<String> actualColumnListAfterDelete = homePage
+                .clickViewName(listViewName)
+                .clickEditViewButton(listViewName)
+                .clickDeleteButton(columnName)
+                .getCurrentColumnList();
+
+        Assert.assertFalse(actualColumnListAfterDelete.contains(columnName));
+
+        new EditViewPage(getDriver()).clickSubmitButton();
+
+        int actualCountDisplayedColumns = homePage.getCountOfDisplayedColumnsOnDashboard();
+        Assert.assertEquals(actualCountDisplayedColumns, initialCountDisplayedColumns - 1);
     }
 }
