@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -7,8 +8,10 @@ import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.ArchitectingforScalePage;
+import school.redrover.page.CloudsPage;
 import school.redrover.page.EditViewPage;
 import school.redrover.page.HomePage;
+import school.redrover.page.NewNodePage;
 import school.redrover.testdata.Page;
 import school.redrover.testdata.TestDataProvider;
 
@@ -195,5 +198,23 @@ public class DashboardTest extends BaseTest {
 
         int actualCountDisplayedColumns = homePage.getCountOfDisplayedColumnsOnDashboard();
         Assert.assertEquals(actualCountDisplayedColumns, initialCountDisplayedColumns - 1);
+    }
+
+    @Test
+    public void testSetUpAgent() {
+        NewNodePage newNodePage = new HomePage(getDriver())
+                .openPage("Set up an agent", new NewNodePage(getDriver()));
+
+        Assert.assertEquals(newNodePage.getHeadingText(), "New node");
+        Assert.assertTrue(newNodePage.isFormDisplayed(), "New Node form is not visible");
+    }
+
+    @Test
+    public void testConfigureCloudIntegration() {
+        CloudsPage cloudsPage = new HomePage(getDriver())
+                .openPage("Configure a cloud", new CloudsPage(getDriver()));
+
+        Assert.assertEquals(cloudsPage.getHeadingText(), "Clouds");
+        Assert.assertEquals(cloudsPage.getParagraphText(), "There is no plugin installed that supports clouds.");
     }
 }
