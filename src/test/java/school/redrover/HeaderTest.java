@@ -31,7 +31,6 @@ public class HeaderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testSearchResultsAppear")
     public void testSearchResultsActions() {
-
         Actions actions = new Actions(getDriver());
         new HomePage(getDriver()).clickSearchButton().searchFor("Folder").waitForTextOfResults();
 
@@ -39,6 +38,6 @@ public class HeaderTest extends BaseTest {
         actions.sendKeys(Keys.ARROW_UP).perform();
         actions.sendKeys(Keys.ENTER).perform();
 
-        Assert.assertTrue(new FolderPage(getDriver()).checkURLContains());
+        Assert.assertTrue(new FolderPage(getDriver()).checkURLContains("/job/Folder/"));
     }
 }

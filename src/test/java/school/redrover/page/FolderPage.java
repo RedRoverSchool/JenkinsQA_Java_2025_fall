@@ -195,7 +195,7 @@ public class FolderPage extends BasePage {
         return itemsWithTooltip;
     }
 
-    public boolean checkURLContains() {
-        return Objects.requireNonNull(getDriver().getCurrentUrl()).contains("/job/Folder/");
+    public boolean checkURLContains(String expectedPath) {
+        return Objects.requireNonNull(getDriver().getCurrentUrl()).contains(expectedPath);
     }
 }
