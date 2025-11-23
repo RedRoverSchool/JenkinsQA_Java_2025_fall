@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.*;
 
+
 public abstract class BasePage extends BaseModel {
 
     public BasePage(WebDriver driver) {
@@ -25,8 +26,21 @@ public abstract class BasePage extends BaseModel {
         return new ManageJenkinsPage(getDriver());
     }
 
+    public UserStatusPage clickUserAccountViaDropDownMenu(String userName) {
+        WebElement userIcon = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("root-action-UserAction")));
+        TestUtils.mouseEnterJS(getDriver(), userIcon);
+
+        WebElement userInDropDown = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//a[contains(@class, 'jenkins-dropdown__item') and contains(., '%s')]".formatted(userName))));
+        TestUtils.clickJS(getDriver(), userInDropDown);
+
+        return new UserStatusPage(getDriver());
+    }
+
     public SearchModalPage clickSearchButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("root-action-SearchAction")))).click();
+
         return new SearchModalPage(getDriver());
     }
 
@@ -63,18 +77,15 @@ public abstract class BasePage extends BaseModel {
     }
 
     public String getCurrentUrl() {
+
         return getDriver().getCurrentUrl();
     }
 
-    public UserStatusPage clickUserAccountViaDropDownMenu(String userName) {
-        WebElement userIcon = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("root-action-UserAction")));
-        TestUtils.mouseEnterJS(getDriver(), userIcon);
+    public UserAccountPage clickUserAccount() {
+        getDriver().findElement(By.id("root-action-UserAction")).click();
 
-        WebElement userInDropDown = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//a[contains(@class, 'jenkins-dropdown__item') and contains(., '%s')]".formatted(userName))));
-        TestUtils.clickJS(getDriver(), userInDropDown);
-
-        return new UserStatusPage(getDriver());
+        return new UserAccountPage(getDriver());
     }
+
+
 }

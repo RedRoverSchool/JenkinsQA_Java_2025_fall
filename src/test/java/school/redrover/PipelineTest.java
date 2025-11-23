@@ -17,20 +17,17 @@ public class PipelineTest extends BaseTest {
     private static final String PIPELINE_NAME = "PipelineName";
 
     private void createPipeline(String name) {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
-        getDriver().findElement(By.id("name")).sendKeys(name);
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(name)
+                .selectPipelineAndSubmit()
+                .clickSaveButton();
     }
 
     @Test
     public void testCreateNewPipeline() {
-        List<String> actualProjectList = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendName(PIPELINE_NAME)
-                .selectPipelineAndSubmit()
+        createPipeline(PIPELINE_NAME);
+        List<String> actualProjectList = new PipelinePage(getDriver())
                 .gotoHomePage()
                 .getProjectList();
 
@@ -39,40 +36,8 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateNewPipeline")
-    public void testDeletePipelineViaDropDownMenu() {
-        final String expectedHomePageHeading = "Welcome to Jenkins!";
-
-        String actualHomePageHeading = new HomePage(getDriver())
-                .openDropdownMenu(PIPELINE_NAME)
-                .clickDeleteItemInDropdownMenu()
-                .confirmDelete()
-                .getHeadingText();
-
-        Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
-    }
-
-    @Test
-    public void testCancelDeletePipelineViaDropDownMenu() {
-        List<String> actualProjectList = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendName(PIPELINE_NAME)
-                .selectPipelineAndSubmit()
-                .gotoHomePage()
-                .openDropdownMenu(PIPELINE_NAME)
-                .clickDeleteItemInDropdownMenu()
-                .cancelDelete()
-                .getProjectList();
-
-        Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME));
-    }
-
-    @Test
     public void testCancelDeletePipelineViaSideMenu() {
         List<String> actualProjectList = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendName(PIPELINE_NAME)
-                .selectPipelineAndSubmit()
-                .gotoHomePage()
                 .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickDeletePipeline()
                 .cancelDelete()
@@ -82,48 +47,28 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME));
     }
 
-    @Test
-    public void testDeletePipelineViaSideMenu() {
-        final String expectedHomePageHeading = "Welcome to Jenkins!";
+    @Test(dependsOnMethods = "testCancelDeletePipelineViaSideMenu")
+    public void testBuildPipeline() {
 
-        String actualHomePageHeading = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendName(PIPELINE_NAME)
-                .selectPipelineAndSubmit()
-                .gotoHomePage()
+        String consoleOutput = new HomePage(getDriver())
                 .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickDeletePipeline()
-                .confirmDeleteAtJobPage()
-                .getHeadingText();
+                .clickBuildNow()
+                .clickBuildHistory()
+                .clickConsoleOutput()
+                .getConsoleOutput();
 
-        Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
+        Assert.assertTrue(consoleOutput.contains("Finished:"),
+                "Build output should contain 'Finished:'");
+
     }
 
-    @Test
-    public void testSuccessfulBuildPipeline() {
-        createPipeline(PIPELINE_NAME);
-
-        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-build-history"))).click();
-        getDriver().findElement(By.xpath("//a[substring-before(@href, 'console')]")).click();
-
-        WebElement consoleOutput = getDriver().findElement(By.id("out"));
-        getWait10().until(d -> consoleOutput.getText().contains("Finished:"));
-
-        Assert.assertTrue(consoleOutput.getText().contains("Finished: SUCCESS"),
-                "Build output should contain 'Finished: SUCCESS'");
-    }
-
-    @Test
+    @Test(dependsOnMethods = "testBuildPipeline")
     public void testAddDescription() {
         final String textDescription = "@0*8nFP'cRU0k.|6Gz-wO*se h~OtJ4kz0!)cl0ZAE3vN>q";
 
         String descriptionText = new HomePage(getDriver())
-                .clickNewItemOnLeftMenu()
-                .sendName(PIPELINE_NAME)
-                .selectPipelineAndSubmit()
-                .clickSaveButton()
+                .gotoHomePage()
+                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickAddDescriptionButton()
                 .addDescriptionAndSave(textDescription)
                 .getDescription();
@@ -146,6 +91,45 @@ public class PipelineTest extends BaseTest {
                 descriptionText,
                 textDescription,
                 "Не совпал текст description после его редактирования");
+    }
+
+    @Test(dependsOnMethods = "testEditDescription")
+    public void testCancelDeletePipelineViaDropDownMenu() {
+        List<String> actualProjectList = new HomePage(getDriver())
+                .gotoHomePage()
+                .openDropdownMenu(PIPELINE_NAME)
+                .clickDeleteItemInDropdownMenu()
+                .cancelDelete()
+                .getProjectList();
+
+        Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME));
+    }
+
+    @Test(dependsOnMethods = "testCancelDeletePipelineViaDropDownMenu")
+    public void testDeletePipelineViaDropDownMenu() {
+        final String expectedHomePageHeading = "Welcome to Jenkins!";
+
+        String actualHomePageHeading = new HomePage(getDriver())
+                .openDropdownMenu(PIPELINE_NAME)
+                .clickDeleteItemInDropdownMenu()
+                .confirmDelete()
+                .getHeadingText();
+
+        Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
+    }
+
+    @Test
+    public void testDeletePipelineViaSideMenu() {
+        final String expectedHomePageHeading = "Welcome to Jenkins!";
+
+        createPipeline(PIPELINE_NAME);
+
+        String actualHomePageHeading = new PipelinePage(getDriver())
+                .clickDeletePipeline()
+                .confirmDeleteAtJobPage()
+                .getHeadingText();
+
+        Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
     }
 
     @DataProvider

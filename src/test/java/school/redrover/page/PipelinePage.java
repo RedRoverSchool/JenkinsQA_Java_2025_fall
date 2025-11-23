@@ -30,18 +30,6 @@ public class PipelinePage extends BasePage {
                 .xpath(".//a[text()='%s']".formatted(displayName)))).getText();
     }
 
-    public PipelinePage clickAddDescriptionButton() {
-        getDriver().findElement(By.id("description-link")).click();
-        return this;
-    }
-
-    public PipelinePage clickEditDescriptionButton() {
-        getWait5()
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
-                .click();
-        return this;
-    }
-
     public PipelinePage addDescriptionAndSave(String description) {
         getDriver().findElement(By.name("description")).sendKeys(description);
         getDriver().findElement(By.name("Submit")).click();
@@ -66,11 +54,38 @@ public class PipelinePage extends BasePage {
                 .getText();
     }
 
+    public PipelinePage clickAddDescriptionButton() {
+        getDriver().findElement(By.id("description-link")).click();
+        return this;
+    }
+
+    public PipelinePage clickEditDescriptionButton() {
+        getWait5()
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
+                .click();
+        return this;
+    }
+
+    public PipelinePage clickBuildNow() {
+        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']"))
+                .click();
+
+        return this;
+    }
+
     public PipelinePage clickDeletePipeline() {
         getDriver().findElement(By.className("confirmation-link"))
                 .click();
 
         return this;
+    }
+
+    public PipelineHistoryPage clickBuildHistory() {
+        getWait10()
+                .until(ExpectedConditions.elementToBeClickable(By.id("jenkins-build-history")))
+                .click();
+
+        return new PipelineHistoryPage(getDriver());
     }
 
     public HomePage confirmDeleteAtJobPage() {
