@@ -92,7 +92,7 @@ public abstract class BaseTest {
         }
     }
 
-    @AfterMethod
+   /* @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) {
         if (ProjectUtils.isRunCI() && !testResult.isSuccess()) {
             ProjectUtils.takeScreenshot(getDriver(), this.getClass().getName(), method.getName());
@@ -103,7 +103,7 @@ public abstract class BaseTest {
         }
 
         ProjectUtils.logf("Execution time is %.3f sec", (testResult.getEndMillis() - testResult.getStartMillis()) / 1000.0);
-    }
+    }*/
 
     protected WebDriver getDriver() {
         return driver;
