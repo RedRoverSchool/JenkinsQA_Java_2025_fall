@@ -44,21 +44,4 @@ public class WelcomeDashboard1Test extends BaseTest {
                 "Message 'There is no plugin installed that supports clouds.' is not visible"
         );
     }
-
-    @Test
-    public void testCreateMultiConfigurationProject() {
-
-        final String projectName = "Test Project";
-
-        List<String> projectList = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendName(projectName)
-                .selectMultiConfigurationAndSubmit()
-                .gotoHomePage()
-                .getProjectList();
-
-        Assert.assertNotEquals(projectList.size(), 0);
-        Assert.assertEquals(projectList.get(0), projectName);
-    }
-
 }

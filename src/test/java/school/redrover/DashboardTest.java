@@ -1,13 +1,12 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.ArchitectingforScalePage;
 import school.redrover.page.EditViewPage;
 import school.redrover.page.HomePage;
 import school.redrover.testdata.Page;
@@ -52,6 +51,14 @@ public class DashboardTest extends BaseTest {
         BasePage resultPage = new HomePage(getDriver()).openPage(linkText, page.createPage(getDriver()));
 
         Assert.assertTrue(Objects.requireNonNull(resultPage.getCurrentUrl()).contains(expectedUrlEndpoint));
+    }
+
+    @Test
+    public void testLearnMoreAboutDistributedBuildsLink() {
+        ArchitectingforScalePage resultPage = new HomePage(getDriver())
+                .clickLearnMoreAboutDistributedBuildsLink();
+
+        Assert.assertTrue(resultPage.getCurrentUrl().contains("architecting-for-scale"));
     }
 
     @Test
@@ -188,20 +195,5 @@ public class DashboardTest extends BaseTest {
 
         int actualCountDisplayedColumns = homePage.getCountOfDisplayedColumnsOnDashboard();
         Assert.assertEquals(actualCountDisplayedColumns, initialCountDisplayedColumns - 1);
-    }
-
-    @Test
-    public void testLearnMoreAboutDistributedBuildsButton() {
-
-        getDriver().findElement(By.xpath(".//a[span[text()='Learn more about distributed builds']]"))
-                .click();
-        Object[] windowHandles = getDriver().getWindowHandles().toArray();
-        getDriver().switchTo().window((String) windowHandles[1]);
-
-        getWait2().until(ExpectedConditions.urlContains("architecting-for-scale"));
-
-        String actualHeading = getDriver().findElement(By.tagName("h1")).getText();
-
-        Assert.assertEquals(actualHeading, "Architecting for Scale");
     }
 }

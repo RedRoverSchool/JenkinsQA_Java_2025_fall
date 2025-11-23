@@ -286,4 +286,15 @@ public class HomePage extends BasePage {
 
     return new BuildHistoryOfJenkinsPage(getDriver());
     }
+
+    public ArchitectingforScalePage clickLearnMoreAboutDistributedBuildsLink(){
+        getDriver().findElement(By.xpath(".//a[span[text()='Learn more about distributed builds']]"))
+                .click();
+        Object[] windowHandles = getDriver().getWindowHandles().toArray();
+        getDriver().switchTo().window((String) windowHandles[1]);
+
+        getWait2().until(ExpectedConditions.urlContains("architecting-for-scale"));
+
+        return new ArchitectingforScalePage (getDriver());
+    }
 }
