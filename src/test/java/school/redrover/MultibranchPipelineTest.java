@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -181,36 +180,20 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testAddDescriptionLinkIsDisplayed() {
-       boolean isAddDescriptionLinkDisplayed = new HomePage(getDriver())
+    public void testAddDescriptionLink() {
+      WebElement addDescriptionLink = new HomePage(getDriver())
                 .clickNewItemOnLeftMenu()
                 .sendName(MULTIBRANCH_PIPELINE_NAME)
                 .selectMultibranchPipelineAndSubmit()
                 .clickSaveButton()
-                .isAddDescriptionLinkDisplayed();
+                .getAddDescriptionLink();
 
-        Assert.assertTrue(isAddDescriptionLinkDisplayed);
-    }
-
-    @Test
-    public void testClickAddDescriptionButton() {
-        final String projectName = "Multibranch Pipeline (test)";
-
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
-        getDriver().findElement(By.id("description-link")).click();
-        WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='description']"));
-
-        Assert.assertTrue(descriptionField.isEnabled());
+      Assert.assertTrue(addDescriptionLink.isDisplayed());
+      Assert.assertTrue(addDescriptionLink.isEnabled());
     }
 
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
-    public void testDescriptionFieldText() {
+    public void testDescriptionField() {
         String descriptionFieldText = new HomePage(getDriver())
                 .openPage(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
                 .clickAddDescriptionLink()
