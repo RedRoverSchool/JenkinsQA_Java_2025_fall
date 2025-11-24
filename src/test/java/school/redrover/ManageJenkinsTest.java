@@ -11,10 +11,13 @@ import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
+import java.util.List;
 import java.time.Duration;
 
 public class ManageJenkinsTest extends BaseTest {
     private final String TITLE_TEXT = "Dashboard - Jenkins";
+    private static final String SETTING_TITLE = "system";
+
     private void openGlobalProperties() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
         getDriver().findElement(By.xpath("//a[@href='configure']")).click();
@@ -100,5 +103,13 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertEquals(title, TITLE_TEXT);
     }
 
+    @Test
+    public void testSearchResultsList() {
+        List<String> searchResults = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .sendTitle(SETTING_TITLE)
+                .getSearchResults();
 
+        Assert.assertEquals(searchResults, List.of("System", "System Information", "System Log"));
+    }
 }

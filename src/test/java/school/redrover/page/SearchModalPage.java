@@ -85,4 +85,9 @@ public class SearchModalPage extends BaseModel {
 
         return new FreestyleProjectPage(getDriver());
     }
+
+    public SearchModalPage waitForTextOfResults() {
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.className("jenkins-command-palette__results__heading")));
+        return this;
+    }
 }
