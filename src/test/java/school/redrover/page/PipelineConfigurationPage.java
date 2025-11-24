@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import school.redrover.common.BasePage;
 
 import java.util.List;
@@ -153,5 +154,27 @@ public class PipelineConfigurationPage extends BasePage {
 
     public WebElement getPageHeader() {
         return getDriver().findElement(By.xpath("//span[text()='Configuration']"));
+    }
+
+    public PipelineConfigurationPage selectAllTriggersWithAssert(){
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
+        String[] checkboxesXpaths = {
+                "//*[@id='main-panel']/form/div[1]/section[1]/section/div[4]/div[1]/div/span",
+                "//*[@id='main-panel']/form/div[1]/section[1]/section/div[5]/div[1]/div/span",
+                "//*[@id='main-panel']/form/div[1]/section[1]/section/div[6]/div[1]/div/span",
+                "//*[@id='main-panel']/form/div[1]/section[1]/section/div[7]/div[1]/div/span",
+                "//*[@id='main-panel']/form/div[1]/div[5]/div[1]/div/span"
+        };
+
+        for (String xpath : checkboxesXpaths) {
+            WebElement checkbox = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
+            js.executeScript("arguments[0].scrollIntoView({block: 'center'});", checkbox);
+            getWait10().until(ExpectedConditions.elementToBeClickable(checkbox));
+            checkbox.click();
+
+            Assert.assertTrue(checkbox.isEnabled());
+        }
+        return this;
     }
 }
