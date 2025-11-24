@@ -67,7 +67,7 @@ public class HeaderTest extends BaseTest {
         }
 
         public BuildHistoryOfJenkinsPage goToBuildHistory() {
-            new HomePage(getDriver()).clickOnBuildHistory();
+            new HomePage(getDriver()).clickBuildHistoryWithGetWait();
             return new BuildHistoryOfJenkinsPage(getDriver());
         }
 

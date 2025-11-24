@@ -282,13 +282,13 @@ public class HomePage extends BasePage {
     }
 
     public BuildHistoryOfJenkinsPage clickBuildHistory() {
-        getDriver().findElement(By.xpath("//div[2]/span/a")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[2]/span/a"))).click();
 
         return new BuildHistoryOfJenkinsPage(getDriver());
     }
 
-    public BuildHistoryOfJenkinsPage clickOnBuildHistory() {
-        getDriver().findElement(By.xpath("//*[@href='/view/all/builds']")).click();
+    public BuildHistoryOfJenkinsPage clickBuildHistoryWithGetWait() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[2]/span/a"))).click();
 
         return new BuildHistoryOfJenkinsPage(getDriver());
     }
