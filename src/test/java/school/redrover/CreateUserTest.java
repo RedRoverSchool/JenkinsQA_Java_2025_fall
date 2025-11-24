@@ -12,6 +12,7 @@ import java.util.List;
 
 
 public class CreateUserTest extends BaseTest {
+
     private final static String USER_NAME = "testUserLogin";
     private final static String USER_PASSWORD = "testUserPassword";
     private final static String USER_EMAIL = "testUser@jenkins.com";
