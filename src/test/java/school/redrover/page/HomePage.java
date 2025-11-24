@@ -282,7 +282,7 @@ public class HomePage extends BasePage {
     }
 
     public BuildHistoryOfJenkinsPage clickBuildHistory() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[2]/span/a"))).click();
+        getDriver().findElement(By.xpath("//div[2]/span/a")).click();
 
         return new BuildHistoryOfJenkinsPage(getDriver());
     }
