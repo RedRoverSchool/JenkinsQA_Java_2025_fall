@@ -11,12 +11,14 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.time.Duration;
 
 
 public class MultiConfigurationProjectTest extends BaseTest {
-    private static final String NAME_OF_PROJECT = "Group-Code-Coffee_java_project";
+    private static final String MULTICONFIGURATION_PROJECT_NAME = "Multiconfiguration project";
+    private static final String RENAMED_MULTICONFIGURATION_PROJECT = "RenamedMulticonfiguration project";
     private static final String DESCRIPTION = "Description for this project...";
 
     SoftAssert softAssert = new SoftAssert();
@@ -83,25 +85,25 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testCreateProject() {
         createNewJob();
-        setNameOfProject(NAME_OF_PROJECT);
+        setNameOfProject(MULTICONFIGURATION_PROJECT_NAME);
         selectProject();
         submitCreateProject();
         submitConfigure();
 
-        softAssert.assertEquals(getTitleOfProject(), NAME_OF_PROJECT);
-        softAssert.assertTrue(waitTime(20).until(ExpectedConditions.urlContains(NAME_OF_PROJECT)));
+        softAssert.assertEquals(getTitleOfProject(), MULTICONFIGURATION_PROJECT_NAME);
+        softAssert.assertTrue(waitTime(20).until(ExpectedConditions.urlContains(MULTICONFIGURATION_PROJECT_NAME)));
         softAssert.assertAll();
     }
 
     @Test
     public void testRenameProject() {
         createNewJob();
-        setNameOfProject(NAME_OF_PROJECT);
+        setNameOfProject(MULTICONFIGURATION_PROJECT_NAME);
         selectProject();
         submitCreateProject();
         submitConfigure();
         goToDashBoard();
-        goToProject(NAME_OF_PROJECT);
+        goToProject(MULTICONFIGURATION_PROJECT_NAME);
         renameWithSidePanel("NewNameProject");
         getTitleOfProject();
 
@@ -112,15 +114,29 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testAddDescriptionToProject() {
         createNewJob();
-        setNameOfProject(NAME_OF_PROJECT);
+        setNameOfProject(MULTICONFIGURATION_PROJECT_NAME);
         selectProject();
         submitCreateProject();
         submitConfigure();
         goToDashBoard();
-        goToProject(NAME_OF_PROJECT);
+        goToProject(MULTICONFIGURATION_PROJECT_NAME);
         editDescription(DESCRIPTION);
         String result = checkDescription();
 
         softAssert.assertEquals(result, DESCRIPTION);
+    }
+
+    @Test
+    public void testRenameViaDropDownMenu() {
+        String actualProjectName = new HomePage(getDriver())
+                .clickSidebarNewItem()
+                .sendName(MULTICONFIGURATION_PROJECT_NAME)
+                .selectMultiConfigurationProjectAndSubmit()
+                .clickSubmit()
+                .clickRenameViaDropDownMenu()
+                .renameProject(RENAMED_MULTICONFIGURATION_PROJECT)
+                .getHeading();
+
+        Assert.assertEquals(actualProjectName, RENAMED_MULTICONFIGURATION_PROJECT);
     }
 }
