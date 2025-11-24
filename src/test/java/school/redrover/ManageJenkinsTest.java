@@ -114,7 +114,7 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
-    public void testSearchAndOpenSetting(){
+    public void testSearchAndOpenSetting() {
         String searchTitle = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .sendTitle(SETTING_TITLE)
