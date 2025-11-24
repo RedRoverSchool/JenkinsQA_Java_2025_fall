@@ -1,26 +1,29 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
+import school.redrover.page.NewItemPage;
+import school.redrover.page.UserAccountPage;
 
-import java.time.Duration;
 import java.util.List;
 
 public class FooterTest extends BaseTest {
+
+ final String namePage = "REST API";
 
     @Test
     public void testRestApiLink() {
         String linkText = new HomePage(getDriver())
                 .getRestApiLinkText();
 
-        Assert.assertEquals(linkText, "REST API");
+        Assert.assertEquals(
+                linkText,
+                namePage);
     }
 
     @Test
@@ -29,12 +32,13 @@ public class FooterTest extends BaseTest {
                 .clickRestApiLink()
                 .getHeadingText();
 
-        Assert.assertEquals(actualHeading, "REST API");
+        Assert.assertEquals(
+                actualHeading,
+                namePage);
     }
 
     @Test
     public void testApiPageContentLinks() {
-
         final List<String> expectedLinks = List.of(
                 "XML API",
                 "JSON API",
@@ -45,29 +49,42 @@ public class FooterTest extends BaseTest {
                 .clickRestApiLink()
                 .getXmlJsonPythonApiLinksText();
 
-        Assert.assertEquals(actualLinks, expectedLinks);
+        Assert.assertEquals(
+                actualLinks,
+                expectedLinks);
     }
 
     @Test
-    public void testRestApiLinkByTabAndEnter(){
-
+    public void testRestApiLinkByTabAndEnter() {
         new HomePage(getDriver())
                 .pressTabAndEnter(new HomePage(getDriver()).getRestApiLink());
 
-        Assert.assertEquals(getDriver().getTitle(), "Remote API - Jenkins");
+        Assert.assertEquals(
+                getDriver().getTitle(),
+                "Remote API - Jenkins");
     }
 
     @Test
-    public void testRestApiLinkByFocusAndEnter(){
-
+    public void testRestApiLinkByFocusAndEnter() {
         TestUtils.focusAndEnterByKeyboard(getDriver(), new HomePage(getDriver()).getRestApiLink());
 
-        Assert.assertEquals(getDriver().getTitle(), "Remote API - Jenkins");
+        Assert.assertEquals(
+                getDriver().getTitle(),
+                "Remote API - Jenkins");
+    }
+
+    @Test
+    public void testJenkinsVersion() {
+        String version = new HomePage(getDriver())
+                .getJenkinsVersion();
+
+        Assert.assertEquals(
+                version,
+                "Jenkins 2.516.3");
     }
 
     @Test
     public void testJenkinsDropdownMenu() {
-
         final List<String> expectedDropdownItems = List.of(
                 "About Jenkins",
                 "Get involved",
@@ -78,33 +95,68 @@ public class FooterTest extends BaseTest {
                 .clickJenkinsVersion()
                 .getDropdownList();
 
-        Assert.assertEquals(actualDropdownItems, expectedDropdownItems);
+        Assert.assertEquals(
+                actualDropdownItems,
+                expectedDropdownItems);
     }
 
     @Test
-    public void testJenkinsVersionOptions() {
-        getDriver().findElement(By.cssSelector("button.jenkins_ver")).click();
-        getDriver().findElement(By.xpath("//a[@href='/manage/about']")).click();
-        String breadсrumbName = getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[2]")).getText();
+    public void testRestApiUserPage() {
+        String actualHeading = new HomePage(getDriver())
+                .clickUserAccount()
+                .clickRestApiLink()
+                .getNamePage();
 
-        Assert.assertEquals(breadсrumbName, "About Jenkins");
+       Assert.assertEquals(
+                actualHeading,
+                namePage);
+    }
+@Ignore
+    @Test
+    public void testRestApiNewItemPage() {
+        String actualHeading = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .clickRestApiLink()
+                .getNamePage();
 
-        WebElement jenkinsLogo = getDriver().findElement(By.className("jenkins-mobile-hide"));
-        jenkinsLogo.click();
+        Assert.assertEquals(
+                actualHeading,
+                namePage);
+    }
 
-        getDriver().findElement(By.cssSelector("button.jenkins_ver")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, '/participate')]")).click();
+    @Test
+    public void testRestApiNewNodesPage() {
+        String actualHeading = new HomePage(getDriver())
+                .clickSetUpAnAgent()
+                .clickRestApiLink()
+                .getNamePage();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Participate and Contribute");
-        getDriver().navigate().back();
+        Assert.assertEquals(
+                actualHeading,
+                namePage);
+    }
 
-        getDriver().findElement(By.cssSelector("button.jenkins_ver")).click();
-        getDriver().findElement(By.xpath("//a[text()='\n" +
-                "          Website\n" +
-                "                    \n" +
-                "          \n" +
-                "      ']")).click();
+    @Test
+    public void testRestApiNodesPage() {
+        String actualHeading = new HomePage(getDriver())
+               .clickBuildExecutorStatus()
+               .clickRestApiLink()
+               .getNamePage();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Jenkins");
+        Assert.assertEquals(
+                actualHeading,
+                namePage);
+    }
+
+    @Test
+    public void testRestApiBuildHistoryOfJenkinsPage() {
+        String actualHeading = new HomePage(getDriver())
+                .clickBuildHistory()
+                .clickRestApiLink()
+                .getNamePage();
+
+        Assert.assertEquals(
+                actualHeading,
+                namePage);
     }
 }

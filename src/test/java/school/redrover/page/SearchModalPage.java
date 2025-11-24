@@ -1,9 +1,6 @@
 package school.redrover.page;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BaseModel;
@@ -55,11 +52,37 @@ public class SearchModalPage extends BaseModel {
         for (WebElement element : getDriver().findElements(searchResults)) {
             searchResultsTexts.add(element.getText());
         }
-        System.out.println(searchResultsTexts);
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(inputField), 0, -50)
                 .click()
                 .perform();
         return searchResultsTexts;
+    }
+
+    public UserAccountPage searchForUser(String userName) {
+        getWait2().until(ExpectedConditions.elementToBeClickable(inputField));
+        getDriver().findElement(By.id("command-bar")).sendKeys(userName);
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#search-results [href='/user/%s']".formatted(userName).toLowerCase())));
+        getDriver().findElement(By.id("command-bar")).sendKeys(Keys.ENTER);
+        return new UserAccountPage(getDriver());
+    }
+
+    public List<String> searchResults() {
+        List<String> textOfResults = new ArrayList<>();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.className("jenkins-command-palette__results__heading")));
+        List<WebElement> searchResultsItems = getDriver().findElements(searchResults);
+        searchResultsItems.forEach(el -> textOfResults.add(el.getText()));
+        return textOfResults;
+    }
+
+    public FreestyleProjectPage moveAndClickResult(){
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.className("jenkins-command-palette__results__heading")));
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(searchResults), 0, 0)
+                .click()
+                .perform();
+
+        return new FreestyleProjectPage(getDriver());
     }
 }

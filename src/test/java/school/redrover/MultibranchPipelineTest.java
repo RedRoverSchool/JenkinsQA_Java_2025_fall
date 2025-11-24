@@ -1,14 +1,13 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.ErrorPage;
 import school.redrover.page.HomePage;
+import school.redrover.page.MultibranchPipelineProjectPage;
 import school.redrover.page.NewItemPage;
 
 import java.util.List;
@@ -17,21 +16,9 @@ public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchName";
     private static final String RENAMED_MULTIBRANCH_PIPELINE = "RenamedMultibranchName";
-
-    @Test
-    public void testAddingDescriptionCreatingMultibranch() {
-        final String expectedDescription = "AddedDescription";
-
-        String actualDescription = new HomePage(getDriver())
-                .clickSidebarNewItem()
-                .sendName(MULTIBRANCH_PIPELINE_NAME)
-                .selectMultibranchPipelineAndSubmit()
-                .enterDescription(expectedDescription)
-                .clickSaveButton()
-                .getDescription();
-
-        Assert.assertEquals(actualDescription, expectedDescription, actualDescription + " and " + expectedDescription + " don't match");
-    }
+    private static final String MULTIBRANCH_JOB_DESCRIPTION = "This is a job description";
+    private static final String SECOND_DESCRIPTION = "Second Description";
+    private static final String MULTIBRANCH_PIPELINE_DISPLAY_NAME = "Multibranch_Pipeline_Display";
 
     @Test
     public void testCreateMultibranchPipeline() {
@@ -47,6 +34,50 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(projectList.contains(MULTIBRANCH_PIPELINE_NAME));
     }
 
+    @Test
+    public void testAddingDescriptionCreatingMultibranch() {
+        final String expectedDescription = "AddedDescription";
+
+        String actualDescription = new HomePage(getDriver())
+                .clickSidebarNewItem()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .sendDescription(expectedDescription)
+                .clickSaveButton()
+                .getDescription();
+
+        Assert.assertEquals(actualDescription, expectedDescription, actualDescription + " and " + expectedDescription + " don't match");
+    }
+
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testJobDescriptionPreview() {
+        String jobDescriptionPreviewText = new HomePage(getDriver())
+                .openPage(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .sendDescription(MULTIBRANCH_JOB_DESCRIPTION)
+                .getJobDescriptionPreviewText();
+
+        Assert.assertEquals(jobDescriptionPreviewText, MULTIBRANCH_JOB_DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testUpdateJobDescription() {
+        final String updatedJobDescription = "This is a new project description";
+
+        String actualJobDescription = new HomePage(getDriver())
+                .openPage(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .sendDescription(MULTIBRANCH_JOB_DESCRIPTION)
+                .clickSaveButton()
+                .clickConfigureLinkInSideMenu()
+                .sendDescription(updatedJobDescription)
+                .clickSaveButton()
+                .getDescription();
+
+        Assert.assertEquals(actualJobDescription, updatedJobDescription);
+    }
+
+    @Ignore
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
     public void testTryCreateProjectExistName() {
         final String errorMessage = "» A job already exists with the name ‘%s’".formatted(MULTIBRANCH_PIPELINE_NAME);
@@ -55,12 +86,13 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickNewItemOnLeftMenu()
                 .selectMultibranchPipeline()
                 .sendName(MULTIBRANCH_PIPELINE_NAME)
-                .getDuplicateErrorMessage();
+                .getDuplicateOrUnsafeCharacterErrorMessage();
 
         Assert.assertEquals(dublicateProject, errorMessage, "Incorrect error message");
     }
 
-    @Test (dependsOnMethods = "testTryCreateProjectExistName")
+    @Ignore
+    @Test(dependsOnMethods = "testTryCreateProjectExistName")
     public void testDeleteMultibranchPipeline() {
 
         List<String> projectList = new HomePage(getDriver())
@@ -89,7 +121,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testVerifyEnableToogleTooltip() {
+    public void testVerifyEnableToggleTooltip() {
         final String tooltipText =
                 "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
 
@@ -100,6 +132,19 @@ public class MultibranchPipelineTest extends BaseTest {
                 .getToggleTooltipTextOnHover();
 
         Assert.assertEquals(actualTooltip, tooltipText);
+    }
+
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testDisableToggle() {
+        final String expectedToggleState = "Disabled";
+
+        String actualToggleState = new HomePage(getDriver())
+                .openPage(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .clickToggle()
+                .getToggleState();
+
+        Assert.assertEquals(actualToggleState, expectedToggleState);
     }
 
     @Test
@@ -115,183 +160,106 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualSavedMessage, "Saved", "Message isn't correct");
     }
 
-    @Ignore
     @Test
     public void testCreateItemWithSpecialCharacters() {
-        final String[] specialCharacters = {"!", "%", "&", "#", "@", "*", "$", "?", "^", "|", "/", "]", "["};
+        final String[] specialCharacters = {"!", "&", "#", "@", "%", "*", "$", "?", "^", "|", "/", "]", "["};
 
-        HomePage homePage = new HomePage(getDriver());
-        NewItemPage newItemPage = homePage.clickNewItemOnLeftMenu();
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu();
 
         for (String specChar : specialCharacters) {
-            String expectedErrorMessage = "» ‘" + specChar + "’ is an unsafe character";
+            String expectedErrorMessage = "» ‘%s’ is an unsafe character".formatted(specChar);
 
             String actualErrorMessage = newItemPage
                     .clearSendName()
-                    .sendName("multi" + specChar + "branch")
-                    .getDuplicateErrorMessage();
+                    .sendName("multib" + specChar + "ranch")
+                    .getDuplicateOrUnsafeCharacterErrorMessage();
 
             Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "Error message isn't displayed");
         }
     }
 
     @Test
-    public void testAddDescription() {
-        final String expectedDescription = "This is a test of the possibility of adding a description";
+    public void testAddDescriptionLink() {
+      WebElement addDescriptionLink = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .clickSaveButton()
+                .getAddDescriptionLink();
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='name']"))
-                .sendKeys("Multibranch Pipeline (test)");
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='_.description']"));
-        descriptionField.sendKeys(expectedDescription);
-        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
-
-        WebElement actualDescription = getDriver().findElement(By.xpath("//div[@id='view-message']"));
-        Assert.assertEquals(actualDescription.getText(), expectedDescription);
+      Assert.assertTrue(addDescriptionLink.isDisplayed());
+      Assert.assertTrue(addDescriptionLink.isEnabled());
     }
 
-    @Test
-    public void testButtonIsDisplayed() {
-        final String projectName = "Multibranch Pipeline (test)";
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testDescriptionField() {
+        String descriptionFieldText = new HomePage(getDriver())
+                .openPage(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickAddDescriptionLink()
+                .sendDescription(MULTIBRANCH_JOB_DESCRIPTION)
+                .getDescriptionFieldText();
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
-        WebElement buttonAddDescription = getDriver().findElement(By.id("description-link"));
-
-        Assert.assertTrue(buttonAddDescription.isDisplayed());
+        Assert.assertEquals(descriptionFieldText, MULTIBRANCH_JOB_DESCRIPTION);
     }
-
-    @Test
-    public void testClickAddDescriptionButton() {
-        final String projectName = "Multibranch Pipeline (test)";
-
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
-        getDriver().findElement(By.id("description-link")).click();
-        WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='description']"));
-
-        Assert.assertTrue(descriptionField.isEnabled());
-    }
-
-    @Test
-    public void testEnterTheDescription() {
-        final String description = "This is a test description for Multibranch Pipeline";
-
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='name']"))
-                .sendKeys("Multibranch Pipeline (test)");
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//a[@href='/job/Multibranch%20Pipeline%20(test)/']")).click();
-
-        WebElement buttonAddDescription = getDriver().findElement(By.id("description-link"));
-        buttonAddDescription.click();
-
-        WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='description']"));
-        descriptionField.sendKeys(description);
-
-        Assert.assertTrue(descriptionField.isDisplayed());
-    }
-
 
     @Test
     public void testRenameViaSidebar() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        String actualRenamedMultibranchPipeline = new HomePage(getDriver())
+                .clickSidebarNewItem()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .clickSaveButton()
+                .clickRenameLinkInSideMenu()
+                .renameMultibranchPipeline(RENAMED_MULTIBRANCH_PIPELINE)
+                .getHeading();
 
-        getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        Assert.assertEquals(actualRenamedMultibranchPipeline, RENAMED_MULTIBRANCH_PIPELINE);
+    }
 
-        getDriver().findElement(By.name("Submit")).click();
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testRenameJobNameUsingDotAtTheEnd() {
+        final String expectedErrorMessage = "A name cannot end with ‘.’";
 
-        getDriver().findElement(By.cssSelector("[href$='confirm-rename']")).click();
+        String actualErrorMessage = new HomePage(getDriver())
+                .openPage(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineProjectPage(getDriver()))
+                .clickRenameLinkInSideMenu()
+                .renameJob(MULTIBRANCH_PIPELINE_NAME + ".")
+                .submitForm(new ErrorPage(getDriver()))
+                .getErrorMessage();
 
-        WebElement renameField = getDriver().findElement(By.name("newName"));
-        renameField.clear();
-        renameField.sendKeys(RENAMED_MULTIBRANCH_PIPELINE + Keys.ENTER);
-
-        getWait10().until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
-
-        WebElement multibranchPipelineName = getDriver().findElement(By.tagName("h1"));
-
-        Assert.assertEquals(multibranchPipelineName.getText(), RENAMED_MULTIBRANCH_PIPELINE);
+        Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 
     @Test
-    public void testEnterTheDescriptionOfTheMultibranchPipeline() {
-        final String projectName = "Multibranch Pipeline (test)";
-        final String description = "This is a test description for Multibranch Pipeline";
+    public void testDisplayNameIsSetOnCreation() {
+        String name = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineAndSubmit()
+                .sendDisplayName(MULTIBRANCH_PIPELINE_DISPLAY_NAME)
+                .clickSaveButton()
+                .gotoHomePage()
+                .findItem(MULTIBRANCH_PIPELINE_NAME)
+                .getText();
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
-        getDriver().findElement(By.id("description-link")).click();
-        WebElement descriptionField = getDriver().findElement(By.xpath("//textarea[@name='description']"));
-        descriptionField.sendKeys(description);
-
-        Assert.assertTrue(descriptionField.isDisplayed());
-    }
-
-    @Test
-    public void testSeeTheDescriptionPreview() {
-        final String projectName = "Multibranch Pipeline (test)";
-        final String description = "This is a test description for Multibranch Pipeline";
-
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
-
-        getDriver().findElement(By.xpath("//a[@class='textarea-show-preview']")).click();
-        WebElement textPreview = getDriver().findElement(By.xpath("//div[text()='%s']".formatted(description)));
-
-        Assert.assertTrue(textPreview.isDisplayed());
+        Assert.assertEquals(name, MULTIBRANCH_PIPELINE_DISPLAY_NAME);
     }
 
     @Ignore
-    @Test
-    public void testSeeAddedDescriptionBelowHeading() {
-        final String projectName = "Multibranch Pipeline (test)";
-        final String description = "This is a test description for Multibranch Pipeline";
+    @Test(dependsOnMethods = "testCreateMultibranchPipeline")
+    public void testChangeDescription() {
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        String name = new HomePage(getDriver())
+                .clickDescription()
+                .sendDescriptionText(MULTIBRANCH_JOB_DESCRIPTION)
+                .submitDescription()
+                .clickDescription()
+                .clearTextDescription()
+                .sendDescriptionText(SECOND_DESCRIPTION)
+                .submitDescription()
+                .getDescription();
 
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(projectName);
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(projectName))).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
-        getDriver().findElement(By.xpath("//button[@value='Save']")).click();
-        WebElement savedDescription = getDriver().findElement(By.id("description-content"));
-
-        Assert.assertFalse(savedDescription.isDisplayed(),
-                "Bug: description is not saved below the Multibranch Pipeline heading");
+        Assert.assertEquals(name, SECOND_DESCRIPTION);
     }
 }

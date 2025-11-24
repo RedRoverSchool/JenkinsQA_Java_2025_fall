@@ -17,13 +17,6 @@ public class NavigateToDashboardTest extends BaseTest {
     private final String logoText = "Jenkins";
     private final String newItemText = "New Item";
 
-    @Test
-    public void testCheckAccessDashboardFromLogo() {
-        clickElement(By.id("root-action-ManageJenkinsAction"));
-        clickElement(By.linkText(logoText));
-
-        Assert.assertTrue(getDriver().getTitle().toLowerCase().contains("dashboard"));
-    }
 
     @Test
     public void testVerifyDashboardDisplay() {

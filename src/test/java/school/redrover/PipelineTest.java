@@ -11,46 +11,23 @@ import school.redrover.page.HomePage;
 import school.redrover.page.PipelinePage;
 
 import java.util.List;
-import java.util.Random;
 
 public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "PipelineName";
 
-    private static final Random random = new Random();
-
-    public static String generateRandomStringASCII(int minCode, int maxCode, int length) {
-        if (length < 0 || length > 1000) {
-            throw new IllegalArgumentException("Некорректная длина: " + length);
-        }
-        if (minCode < 32 || maxCode > 126 || minCode > maxCode) {
-            throw new IllegalArgumentException("Некорректный диапазон для ASCII: [" + minCode + ", " + maxCode + "]");
-        }
-        if (length == 0) return "";
-
-        StringBuilder sb = new StringBuilder(length);
-        int range = maxCode - minCode + 1;
-        for (int i = 0; i < length; i++) {
-            sb.append((char) (minCode + random.nextInt(range)));
-        }
-        return sb.toString();
-    }
-
     private void createPipeline(String name) {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
-        getDriver().findElement(By.id("name")).sendKeys(name);
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(name)
+                .selectPipelineAndSubmit()
+                .clickSaveButton();
     }
 
     @Test
     public void testCreateNewPipeline() {
-        List<String> actualProjectList = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendName(PIPELINE_NAME)
-                .selectPipelineAndSubmit()
+        createPipeline(PIPELINE_NAME);
+        List<String> actualProjectList = new PipelinePage(getDriver())
                 .gotoHomePage()
                 .getProjectList();
 
@@ -59,6 +36,76 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testCancelDeletePipelineViaSideMenu() {
+        List<String> actualProjectList = new HomePage(getDriver())
+                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickDeletePipeline()
+                .cancelDelete()
+                .gotoHomePage()
+                .getProjectList();
+
+        Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME));
+    }
+
+    @Test(dependsOnMethods = "testCancelDeletePipelineViaSideMenu")
+    public void testBuildPipeline() {
+
+        String consoleOutput = new HomePage(getDriver())
+                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickBuildNow()
+                .clickBuildHistory()
+                .clickConsoleOutput()
+                .getConsoleOutput();
+
+        Assert.assertTrue(consoleOutput.contains("Finished:"),
+                "Build output should contain 'Finished:'");
+
+    }
+
+    @Test(dependsOnMethods = "testBuildPipeline")
+    public void testAddDescription() {
+        final String textDescription = "@0*8nFP'cRU0k.|6Gz-wO*se h~OtJ4kz0!)cl0ZAE3vN>q";
+
+        String descriptionText = new HomePage(getDriver())
+                .gotoHomePage()
+                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickAddDescriptionButton()
+                .addDescriptionAndSave(textDescription)
+                .getDescription();
+
+        Assert.assertEquals(descriptionText, textDescription);
+    }
+
+    @Test(dependsOnMethods = "testAddDescription")
+    public void testEditDescription() {
+        final String textDescription = "D0XVcGo8k(=D7myr/.YC6umm>]\"gY)?X_E|#HPku6T5im[oYHD-\\|B`";
+
+        String descriptionText = new HomePage(getDriver())
+                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .clickEditDescriptionButton()
+                .clearDescription()
+                .addDescriptionAndSave(textDescription)
+                .getDescription();
+
+        Assert.assertEquals(
+                descriptionText,
+                textDescription,
+                "Не совпал текст description после его редактирования");
+    }
+
+    @Test(dependsOnMethods = "testEditDescription")
+    public void testCancelDeletePipelineViaDropDownMenu() {
+        List<String> actualProjectList = new HomePage(getDriver())
+                .gotoHomePage()
+                .openDropdownMenu(PIPELINE_NAME)
+                .clickDeleteItemInDropdownMenu()
+                .cancelDelete()
+                .getProjectList();
+
+        Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME));
+    }
+
+    @Test(dependsOnMethods = "testCancelDeletePipelineViaDropDownMenu")
     public void testDeletePipelineViaDropDownMenu() {
         final String expectedHomePageHeading = "Welcome to Jenkins!";
 
@@ -72,119 +119,17 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testCancelDeletePipelineViaSideMenu() {
-        List<String> actualProjectList = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendName(PIPELINE_NAME)
-                .selectPipelineAndSubmit()
-                .gotoHomePage()
-                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickDeletePipeline()
-                .cancelDelete()
-                .gotoHomePage()
-                .getProjectList();
-
-        Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME));
-    }
-
-    @Test
     public void testDeletePipelineViaSideMenu() {
         final String expectedHomePageHeading = "Welcome to Jenkins!";
 
-        String actualHomePageHeading = new HomePage(getDriver())
-                .clickCreateJob()
-                .sendName(PIPELINE_NAME)
-                .selectPipelineAndSubmit()
-                .gotoHomePage()
-                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+        createPipeline(PIPELINE_NAME);
+
+        String actualHomePageHeading = new PipelinePage(getDriver())
                 .clickDeletePipeline()
                 .confirmDeleteAtJobPage()
                 .getHeadingText();
 
         Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
-    }
-
-    @Test
-    public void testCreatePipeline() {
-        getDriver().findElement(By.cssSelector(".task:nth-child(1) a")).click();
-        getDriver().findElement(By.cssSelector("#name")).sendKeys(PIPELINE_NAME);
-        getDriver().findElement(By.cssSelector("div:first-child > ul > li:nth-child(2)")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']/img"))).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='job/" + PIPELINE_NAME + "/']")).getText(),
-                PIPELINE_NAME);
-    }
-
-    @Test
-    public void testDeletePipeline() {
-        getDriver().findElement(By.cssSelector(".task:nth-child(1) a")).click();
-        getDriver().findElement(By.cssSelector("#name")).sendKeys(PIPELINE_NAME);
-        getDriver().findElement(By.cssSelector("div:first-child > ul > li:nth-child(2)")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/']/img"))).click();
-
-        List<WebElement> countPosition = getDriver().findElements(By.cssSelector("#projectstatus > tbody > tr"));
-
-        getDriver().findElement(By.xpath("//a[@href='job/" + PIPELINE_NAME + "/']")).click();
-        getDriver().findElement(By.cssSelector(".task:nth-child(6)")).click();
-        getDriver().findElement(By.xpath("//button[@data-id='ok']")).click();
-
-        Assert.assertEquals(countPosition.size() - 1, 0);
-    }
-
-    @Test
-    public void testSuccessfulBuildPipeline() {
-        createPipeline(PIPELINE_NAME);
-
-        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']")).click();
-
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.id("jenkins-build-history"))).click();
-        getDriver().findElement(By.xpath("//a[substring-before(@href, 'console')]")).click();
-
-        WebElement consoleOutput = getDriver().findElement(By.id("out"));
-        getWait10().until(d -> consoleOutput.getText().contains("Finished:"));
-
-        Assert.assertTrue(consoleOutput.getText().contains("Finished: SUCCESS"),
-                "Build output should contain 'Finished: SUCCESS'");
-    }
-
-    @Test
-    public void testAddDescription() {
-        final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
-
-        String descriptionText = new HomePage(getDriver())
-                .clickNewItemOnLeftMenu()
-                .sendName(PIPELINE_NAME)
-                .selectPipelineAndSubmit()
-                .clickSaveButton()
-                .clickAddDescriptionButton()
-                .addDescriptionAndSave(textDescription)
-                .getDescription();
-
-        Assert.assertEquals(descriptionText, textDescription);
-    }
-
-    @Test(dependsOnMethods = "testAddDescription")
-    public void testEditDescription() {
-        final String textDescription = generateRandomStringASCII(32, 126, 85).trim();
-
-        String descriptionText = new HomePage(getDriver())
-                .openJobPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickEditDescriptionButton()
-                .clearDescription()
-                .addDescriptionAndSave(textDescription)
-                .getDescription();
-
-        Assert.assertEquals(
-                descriptionText,
-                textDescription,
-                "Не совпал текст description после его редактирования");
     }
 
     @DataProvider

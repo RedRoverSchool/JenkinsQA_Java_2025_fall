@@ -7,8 +7,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
-import java.util.List;
-
 public class NewItemPage extends BasePage {
 
     public NewItemPage(WebDriver driver) {
@@ -33,13 +31,13 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public ConfigurationFolderPage selectFolderAndSubmit() {
+    public FolderConfigurationPage selectFolderAndSubmit() {
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
 
-        return new ConfigurationFolderPage(getDriver());
+        return new FolderConfigurationPage(getDriver());
 
     }
 
@@ -49,73 +47,65 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public MultibranchPipelineConfigPage selectMultibranchPipelineAndSubmit() {
+    public MultibranchPipelineConfigurationPage selectMultibranchPipelineAndSubmit() {
         getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
 
-        return new MultibranchPipelineConfigPage(getDriver());
+        return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
-    public MultibranchPipelineConfigPage selectMultibranchPipelineWithJsAndSubmit() {
-        TestUtils.clickJS(getDriver(), By.cssSelector("[class$='MultiBranchProject']"));
-
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
-
-        return new MultibranchPipelineConfigPage(getDriver());
-    }
-
-    public ConfigurationPipelinePage selectPipelineAndSubmit() {
+    public PipelineConfigurationPage selectPipelineAndSubmit() {
         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
 
-        return new ConfigurationPipelinePage(getDriver());
+        return new PipelineConfigurationPage(getDriver());
     }
 
-    public String getDuplicateErrorMessage() {
+    public String getDuplicateOrUnsafeCharacterErrorMessage() {
         WebElement errorMessage = getWait10().until(
-                ExpectedConditions.presenceOfElementLocated(By.id("itemname-invalid")));
+                ExpectedConditions.visibilityOfElementLocated(By.id("itemname-invalid")));
+
         return errorMessage.getText();
     }
 
-    public ConfigurationFreestyleProjectPage selectFreestyleProjectAndSubmit() {
+    public FreestyleProjectConfigurationPage selectFreestyleProjectAndSubmit() {
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
 
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[@id = 'general']")));
 
-        return new ConfigurationFreestyleProjectPage(getDriver());
+        return new FreestyleProjectConfigurationPage(getDriver());
     }
 
-    public HomePage sendNewNameAndOriginalNameAndSubmit(String newItemName, String originalItemName) {
-        this.sendName(newItemName);
-        getDriver().findElement(By.id("from")).sendKeys(originalItemName);
+    public NewItemPage sendNameToCopyFromAndSubmit(String name) {
+        getDriver().findElement(By.id("from")).sendKeys(name);
 
         getDriver().findElement(By.id("ok-button")).click();
 
-        return new HomePage(getDriver());
+        return this;
     }
 
-    public MultibranchPipelineConfigPage selectMultiConfigurationAndSubmit() {
+
+    public MultibranchPipelineConfigurationPage selectMultiConfigurationAndSubmit() {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Multi-configuration project']"));
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(), 'General')]")));
 
-        return new MultibranchPipelineConfigPage(getDriver());
+        return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
-    public ConfigurationOrganizationFolderPage selectOrganizationFolderAndSubmit() {
+    public OrganizationFolderConfigurationPage selectOrganizationFolderAndSubmit() {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Organization Folder']"));
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(), 'General')]")));
 
-        return new ConfigurationOrganizationFolderPage(getDriver());
+        return new OrganizationFolderConfigurationPage(getDriver());
     }
 
     public HomePage selectItemTypeAndSubmitAndGoHome(String itemType) {
@@ -133,7 +123,7 @@ public class NewItemPage extends BasePage {
                 selectMultiConfigurationAndSubmit().gotoHomePage();
                 break;
             case "Multibranch Pipeline":
-                selectMultibranchPipelineWithJsAndSubmit().gotoHomePage();
+                selectMultibranchPipelineAndSubmit().gotoHomePage();
                 break;
             case "Organization Folder":
                 selectOrganizationFolderAndSubmit().gotoHomePage();
@@ -163,20 +153,12 @@ public class NewItemPage extends BasePage {
     }
 
     public boolean isOkButtonEnabled() {
+
         return getDriver().findElement(By.id("ok-button")).isEnabled();
     }
 
-    public WebElement getSectionTitle() {
-
-        return getDriver().findElement(By.xpath("//div[text()='Select an item type']"));
-    }
-
-    public List<WebElement> getItemTypes() {
-
-        return getDriver().findElements(By.xpath("//div[@id='items']//label"));
-    }
-  
     public String getTextHintFromCopyField() {
+
         return getDriver().findElement(By.xpath("//p[@class='jenkins-form-label']")).getText();
     }
 
@@ -187,6 +169,18 @@ public class NewItemPage extends BasePage {
     }
 
     public String getHeadingText() {
+
         return getDriver().findElement(By.tagName("h1")).getText();
+    }
+
+    public String getNameDataValid() {
+
+        return getDriver().findElement(By.id("name")).getAttribute("data-valid");
+    }
+
+    public RestApiPage clickRestApiLink() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='api/']"))).click();
+
+        return new RestApiPage(getDriver());
     }
 }
