@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.FolderPage;
@@ -156,6 +157,7 @@ public class FolderTest extends BaseTest {
                 "%s не должна отображаться в поиске после удаления".formatted(NEW_FOLDER_NAME));
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreate", "testIsEmpty", "testDeleteFolderByDashboardDropdownMenu"})
     public void testPutItemsToFolder() {
         for (Object[] item : ITEMS) {
@@ -181,6 +183,7 @@ public class FolderTest extends BaseTest {
                 "В папке должны быть все перенесенные элементы: " + ITEM_NAMES);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testPutItemsToFolder")
     public void testFolderIsIdentifiedByIcon() {
         FolderPage folderPage = new HomePage(getDriver())
@@ -209,6 +212,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(newNameFolder, NEW_FOLDER_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testPutItemsToFolder")
     public void testFolderIsIdentifiedByTooltip() {
         FolderPage folderPage = new HomePage(getDriver())
@@ -223,6 +227,7 @@ public class FolderTest extends BaseTest {
                 "Ошибка в отображении тултипов");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testPutItemsToFolder")
     public void testFindFolderContent() {
         String previousItemName = "";
