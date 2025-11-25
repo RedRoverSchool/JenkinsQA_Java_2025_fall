@@ -16,8 +16,8 @@ import java.time.Duration;
 
 
 public class MultiConfigurationProjectTest extends BaseTest {
-    private static final String MULTICONFIGURATION_PROJECT_NAME = "Multiconfiguration project";
-    private static final String RENAMED_MULTICONFIGURATION_PROJECT = "RenamedMulticonfiguration project";
+    private static final String NAME_OF_PROJECT = "Group-Code-Coffee_java_project";
+    private static final String RENAMED_MULTICONFIGURATION_PROJECT = "Renamed multiconfiguration project";
     private static final String DESCRIPTION = "Description for this project...";
 
     SoftAssert softAssert = new SoftAssert();
@@ -81,17 +81,16 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .getText();
     }
 
-    @Ignore
     @Test
     public void testCreateProject() {
         createNewJob();
-        setNameOfProject(MULTICONFIGURATION_PROJECT_NAME);
+        setNameOfProject(NAME_OF_PROJECT);
         selectProject();
         submitCreateProject();
         submitConfigure();
 
-        softAssert.assertEquals(getTitleOfProject(), MULTICONFIGURATION_PROJECT_NAME);
-        softAssert.assertTrue(waitTime(20).until(ExpectedConditions.urlContains(MULTICONFIGURATION_PROJECT_NAME)));
+        softAssert.assertEquals(getTitleOfProject(), NAME_OF_PROJECT);
+        softAssert.assertTrue(waitTime(20).until(ExpectedConditions.urlContains(NAME_OF_PROJECT)));
         softAssert.assertAll();
     }
 
@@ -99,12 +98,12 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testRenameProject() {
         createNewJob();
-        setNameOfProject(MULTICONFIGURATION_PROJECT_NAME);
+        setNameOfProject(NAME_OF_PROJECT);
         selectProject();
         submitCreateProject();
         submitConfigure();
         goToDashBoard();
-        goToProject(MULTICONFIGURATION_PROJECT_NAME);
+        goToProject(NAME_OF_PROJECT);
         renameWithSidePanel("NewNameProject");
         getTitleOfProject();
 
@@ -115,12 +114,12 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test
     public void testAddDescriptionToProject() {
         createNewJob();
-        setNameOfProject(MULTICONFIGURATION_PROJECT_NAME);
+        setNameOfProject(NAME_OF_PROJECT);
         selectProject();
         submitCreateProject();
         submitConfigure();
         goToDashBoard();
-        goToProject(MULTICONFIGURATION_PROJECT_NAME);
+        goToProject(NAME_OF_PROJECT);
         editDescription(DESCRIPTION);
         String result = checkDescription();
 
@@ -131,10 +130,10 @@ public class MultiConfigurationProjectTest extends BaseTest {
     public void testRenameViaDropDownMenu() {
         String actualProjectName = new HomePage(getDriver())
                 .clickSidebarNewItem()
-                .sendName(MULTICONFIGURATION_PROJECT_NAME)
+                .sendName(NAME_OF_PROJECT)
                 .selectMultiConfigurationProjectAndSubmit()
                 .clickSubmit()
-                .clickRenameViaDropDownMenu()
+                .clickRenameViaDashboardDropDownMenu()
                 .renameProject(RENAMED_MULTICONFIGURATION_PROJECT)
                 .getHeading();
 

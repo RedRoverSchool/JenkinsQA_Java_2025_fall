@@ -20,10 +20,15 @@ public class MultiConfigurationProjectPage extends BasePage {
         return new MultiConfigurationProjectPage(getDriver());
     }
 
-    public MultiConfigurationProjectPage clickRenameViaDropDownMenu() {
+    public MultiConfigurationProjectPage clickRenameViaDashboardDropDownMenu() {
         Actions actions = new Actions(getDriver());
-        actions.moveToElement(getDriver().findElement(By.cssSelector("[class$='hoverable-children-model-link']"))).perform();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[href$='confirm-rename']"))).click();
+
+        WebElement hoverElement = getWait10().until(
+                ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//*[contains(@class, 'hoverable-children-model-link')]")));
+        actions.moveToElement(hoverElement).perform();
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[href$='confirm-rename']"))).click();
 
         return new MultiConfigurationProjectPage(getDriver());
     }
