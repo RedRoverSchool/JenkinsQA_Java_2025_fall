@@ -94,12 +94,6 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public FolderRenamingPage clickRenameItemInDropdownMenu() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='tippy-content']//div[@class='jenkins-dropdown']//a[normalize-space()='Rename']"))).click();
-
-        return new FolderRenamingPage(getDriver());
-    }
-
     public HomePage confirmDelete() {
         WebElement yesButton = getWait2().until(
                 ExpectedConditions.elementToBeClickable(

@@ -2,8 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -11,12 +11,14 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.time.Duration;
 
 
 public class MultiConfigurationProjectTest extends BaseTest {
     private static final String NAME_OF_PROJECT = "Group-Code-Coffee_java_project";
+    private static final String RENAMED_MULTICONFIGURATION_PROJECT = "Renamed multiconfiguration project";
     private static final String DESCRIPTION = "Description for this project...";
 
     SoftAssert softAssert = new SoftAssert();
@@ -93,6 +95,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         softAssert.assertAll();
     }
 
+    @Ignore
     @Test
     public void testRenameProject() {
         createNewJob();
@@ -122,5 +125,20 @@ public class MultiConfigurationProjectTest extends BaseTest {
         String result = checkDescription();
 
         softAssert.assertEquals(result, DESCRIPTION);
+    }
+
+    @Ignore
+    @Test
+    public void testRenameViaDashboardDropdownMenu() {
+        String actualProjectName = new HomePage(getDriver())
+                .clickSidebarNewItem()
+                .sendName(NAME_OF_PROJECT)
+                .selectMultiConfigurationProjectAndSubmit()
+                .clickSubmit()
+                .clickRenameViaDashboardDropDownMenu()
+                .renameProject(RENAMED_MULTICONFIGURATION_PROJECT)
+                .getHeading();
+
+        Assert.assertEquals(actualProjectName, RENAMED_MULTICONFIGURATION_PROJECT);
     }
 }

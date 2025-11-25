@@ -48,7 +48,7 @@ public class NewItemPage extends BasePage {
     }
 
     public MultibranchPipelineConfigurationPage selectMultibranchPipelineAndSubmit() {
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Multibranch Pipeline']"));
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
@@ -182,5 +182,12 @@ public class NewItemPage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='api/']"))).click();
 
         return new RestApiPage(getDriver());
+    }
+
+    public MultiConfigurationProjectPage selectMultiConfigurationProjectAndSubmit() {
+        getDriver().findElement(By.cssSelector("[class='hudson_matrix_MatrixProject']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+
+        return new MultiConfigurationProjectPage(getDriver());
     }
 }

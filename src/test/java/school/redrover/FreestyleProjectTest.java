@@ -1,14 +1,18 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 
 public class FreestyleProjectTest extends BaseTest {
+
+    private static final String PROJECT_NAME = "FreestyleProject";
 
     @Test
     public void testCreateFreestyleProject() throws InterruptedException {
@@ -32,38 +36,6 @@ public class FreestyleProjectTest extends BaseTest {
         WebElement projectTitle = getDriver().findElement(By.xpath("//h1"));
 
         Assert.assertEquals(projectTitle.getText(), "Freestyle Project");
-    }
-
-    @Ignore
-    @Test
-    public void testAddDescription() throws InterruptedException {
-        WebElement createJob = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
-        createJob.click();
-
-        WebElement projectName = getDriver().findElement(By.id("name"));
-        projectName.sendKeys("Freestyle Project");
-
-        WebElement freestyleProjectOption = getDriver().findElement(By.xpath("//span[text()='Freestyle project']"));
-        freestyleProjectOption.click();
-
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
-        okButton.click();
-
-        WebElement saveButton = getDriver().findElement(By.name("Submit"));
-        saveButton.click();
-
-        WebElement addDescription = getDriver().findElement(By.id("description-link"));
-        addDescription.click();
-
-        WebElement textBox = getDriver().findElement(By.xpath("//textarea"));
-        textBox.sendKeys("This is a Freestyle Project");
-
-        WebElement saveButtonDescription = getDriver().findElement(By.name("Submit"));
-        saveButtonDescription.click();
-
-        WebElement description = getDriver().findElement(By.id("description-content"));
-
-        Assert.assertEquals(description.getText(), "This is a Freestyle Project");
     }
 
     @Ignore
@@ -98,4 +70,20 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(build.isDisplayed());
     }
 
+    @Test
+    public void testDeleteFreestyleProject() {
+        final String expectedHeadingText = "Welcome to Jenkins!";
+
+        HomePage homePage = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .clickSave()
+                .gotoHomePage()
+                .openDropdownMenu(PROJECT_NAME)
+                .clickDeleteItemInDropdownMenu()
+                .confirmDelete();
+
+        Assert.assertEquals(homePage.getHeadingText(), expectedHeadingText);
+    }
 }

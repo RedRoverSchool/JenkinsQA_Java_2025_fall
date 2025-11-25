@@ -59,4 +59,8 @@ public class SystemConfigurationPage extends BasePage {
         saveButton.click();
     }
 
+    public String getHeadingText() {
+        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.
+                tagName("h1"))).getText().trim();
+    }
 }

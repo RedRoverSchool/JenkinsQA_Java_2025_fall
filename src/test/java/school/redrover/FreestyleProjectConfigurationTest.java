@@ -19,6 +19,7 @@ import java.util.List;
 public class FreestyleProjectConfigurationTest extends BaseTest {
 
     private static final String PROJECT_NAME = "FreestyleProject";
+    private static final String PROJECT_DESCRIPTION_EXPECTED = "This is a description for Freestyle Project";
     private static final String SCM_TITLE_EXPECTED = "Source Code Management";
 
     private static final List<String> BUILD_STEPS = List.of(
@@ -30,6 +31,18 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
             "Run with timeout",
             "Set build status to \"pending\" on GitHub commit"
     );
+
+    @Test
+    public void testAddDescription() {
+        String actualDescriptionText = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .setDescription(PROJECT_DESCRIPTION_EXPECTED)
+                .clickSave()
+                .getDescription();
+        Assert.assertEquals(actualDescriptionText, PROJECT_DESCRIPTION_EXPECTED);
+    }
 
     @Test
     public void testDisableProjectViaConfigureDropdownMenu() {
@@ -130,7 +143,6 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
         }
     }
 
-// Source Code Management Section
 
     @Test
     public void testAccessSCMInNewJob() {
@@ -203,5 +215,17 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
                 .getTriggerTitleText();
 
         Assert.assertEquals(triggerTitle, "Triggers");
+    }
+
+    @Test
+    public void testSaveButtonIsVisibleAndClickable() {
+
+        WebElement saveButton = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .getSaveButton();
+
+        Assert.assertTrue(saveButton.isDisplayed());
     }
 }
