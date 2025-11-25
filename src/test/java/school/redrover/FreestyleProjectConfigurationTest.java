@@ -86,6 +86,7 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
                     "Filter didn't match expected build step");
         }
     }
+
     @Test
     public void testEnableProjectViaMainMenuConfigure() {
         createFreestyleProject(PROJECT_NAME);
@@ -161,10 +162,10 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit();
 
-        Assert.assertTrue(configPage.getScmDescription().isDisplayed(),"SCM Description is not displayed or the description text doesn't match");
-        Assert.assertEquals(configPage.getSelectedRadioLabel(), "None","Radio button 'None' should be selected by default");
-        Assert.assertTrue(configPage.isGitOptionDisplayed(),"Radio button 'Git' should be displayed");
-        Assert.assertEquals(configPage.getGitTooltipText(),"Help for feature: Git","Tooltip text should match expected value");
+        Assert.assertTrue(configPage.getScmDescription().isDisplayed(), "SCM Description is not displayed or the description text doesn't match");
+        Assert.assertEquals(configPage.getSelectedRadioLabel(), "None", "Radio button 'None' should be selected by default");
+        Assert.assertTrue(configPage.isGitOptionDisplayed(), "Radio button 'Git' should be displayed");
+        Assert.assertEquals(configPage.getGitTooltipText(), "Help for feature: Git", "Tooltip text should match expected value");
     }
 
     @Test
@@ -206,7 +207,7 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
     }
 
     @Test
-    public void testNavigationToTriggersBySideMenu () {
+    public void testNavigationToTriggersBySideMenu() {
         String triggerTitle = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
@@ -215,6 +216,19 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
                 .getTriggerTitleText();
 
         Assert.assertEquals(triggerTitle, "Triggers");
+    }
+
+    @Test(dependsOnMethods = "testNavigationToTriggersBySideMenu")
+    public void testTriggersSectionDescriptionIsDisplayed() {
+        final String expectedDescription = "Set up automated actions that start your build based on specific events, like code changes or scheduled times.";
+
+        String triggerDescription = new HomePage(getDriver())
+                .openPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .clickConfigure(PROJECT_NAME)
+                .clickTriggerLinkInSideMenu()
+                .getTriggerDescriptionText();
+
+        Assert.assertEquals(triggerDescription, expectedDescription);
     }
 
     @Test

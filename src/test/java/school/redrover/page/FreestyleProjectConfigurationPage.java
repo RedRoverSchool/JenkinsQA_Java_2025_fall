@@ -168,7 +168,13 @@ public class FreestyleProjectConfigurationPage extends BasePage {
     }
 
     public String getTriggerTitleText () {
-        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("triggers")))
+        return getDriver().findElement(By.id("triggers"))
+                .getText();
+    }
+
+    public String getTriggerDescriptionText () {
+        return getDriver()
+                .findElement(By.xpath("//div[@class='jenkins-section__description' and contains(text(), 'Set up automated actions')]"))
                 .getText();
     }
 }
