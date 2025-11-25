@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -198,5 +199,27 @@ public class FolderPage extends BasePage {
 
     public boolean checkURLContains(String expectedPath) {
         return Objects.requireNonNull(getDriver().getCurrentUrl()).contains(expectedPath);
+    }
+
+    public FolderPage openItemDropdownMenu(String itemName) {
+        WebElement dropdownButton = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .xpath("//a[contains(@href, '/%s')]/button[@class='jenkins-menu-dropdown-chevron']"
+                        .formatted(itemName))));
+
+        TestUtils.mouseEnterJS(getDriver(), dropdownButton);
+        TestUtils.clickJS(getDriver(), dropdownButton);
+
+        return this;
+    }
+
+    public WebElement getMenuItemInDropdown(String menuItem) {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//a[contains(@class, 'jenkins-dropdown__item') and contains(., '%s')]".formatted(menuItem))));
+    }
+
+    public <T extends FolderPage> T openItemPage(String itemName, T resultPage) {
+        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(itemName.trim())));
+
+        return resultPage;
     }
 }

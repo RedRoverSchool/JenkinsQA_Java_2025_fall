@@ -1,6 +1,7 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -60,9 +61,13 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public FolderConfigurationPage clickAddMetricButton() {
-        getDriver().findElement(By.cssSelector("button.jenkins-button.hetero-list-add")).click();
-        getWait2().until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//input[@class='jenkins-dropdown__filter-input']")));
+        WebElement addMetricButton = getDriver().findElement(By.cssSelector("button.jenkins-button.hetero-list-add"));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView(true);", addMetricButton);
+        addMetricButton.click();
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//input[@class='jenkins-dropdown__filter-input']")));
 
         return this;
     }
