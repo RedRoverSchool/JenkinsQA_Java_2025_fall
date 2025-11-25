@@ -16,7 +16,7 @@ import java.time.Duration;
 
 public class ManageJenkinsTest extends BaseTest {
     private final String TITLE_TEXT = "Dashboard - Jenkins";
-    private static final String SETTING_TITLE = "system";
+    private static final String SETTING_TITLE = "System";
 
     private void openGlobalProperties() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
@@ -111,5 +111,16 @@ public class ManageJenkinsTest extends BaseTest {
                 .getSearchResults();
 
         Assert.assertEquals(searchResults, List.of("System", "System Information", "System Log"));
+    }
+
+    @Test
+    public void testSearchAndOpenSetting() {
+        String searchHeading = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .sendTitle(SETTING_TITLE)
+                .clickSearchResult()
+                .getHeadingText();
+
+        Assert.assertEquals(searchHeading, "System");
     }
 }

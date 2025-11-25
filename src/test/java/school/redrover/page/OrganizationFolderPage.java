@@ -32,4 +32,12 @@ public class OrganizationFolderPage extends BasePage {
 
         return new HomePage(getDriver());
     }
+
+    public OrganizationFolderPage clickConfigureLinkInSideMenu() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//a[contains(@href, '/configure')]"))).click();
+
+        return new OrganizationFolderPage(getDriver());
+
+    }
 }
