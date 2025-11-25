@@ -58,10 +58,10 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         return this;
     }
 
-    public FreestyleProjectConfigurationPage clickSave() {
+    public FreestyleProjectPage clickSave() {
         getDriver().findElement(By.name("Submit")).click();
 
-        return this;
+        return new FreestyleProjectPage(getDriver());
     }
 
     public WebElement getSaveButton() {
