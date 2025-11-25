@@ -10,18 +10,18 @@ import school.redrover.common.BasePage;
 import java.time.Duration;
 
 
-public class ManageUsersPage extends BasePage {
+public class UsersPage extends BasePage {
 
     private static final By ACCOUNT_MENU_ITEM = By.xpath("//a[contains(., 'Account')]");
 
-    public ManageUsersPage(WebDriver driver) {
+    public UsersPage(WebDriver driver) {
         super(driver);
     }
 
-    public CreateUserPage clickCreateUserButton() {
+    public UserCreatingPage clickCreateUserButton() {
         getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
 
-        return new CreateUserPage(getDriver());
+        return new UserCreatingPage(getDriver());
     }
 
     public String getUserName(String userName) {
