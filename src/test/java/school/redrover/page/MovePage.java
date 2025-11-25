@@ -22,6 +22,6 @@ public class MovePage extends BasePage {
         String urlBeforeMoving = getDriver().getCurrentUrl();
         getDriver().findElement(By.name("Submit")).click();
         getWait5().until(ExpectedConditions.not(ExpectedConditions.urlToBe(urlBeforeMoving)));
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[contains(@class, 'jenkins-mobile-hide')][1]"))).click();
+        gotoHomePage();
     }
 }
