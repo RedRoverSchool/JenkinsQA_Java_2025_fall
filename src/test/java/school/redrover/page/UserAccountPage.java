@@ -15,12 +15,6 @@ public class UserAccountPage extends BasePage {
         super(driver);
     }
 
-    public String getUserName() {
-        return getWait10()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")))
-                .getText();
-    }
-
     public String getUserID() {
         return getDriver().findElement(By
                         .xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
@@ -45,5 +39,17 @@ public class UserAccountPage extends BasePage {
         getDriver().findElement(By.xpath("//a[@href='api/']")).click();
 
         return new RestApiPage(getDriver());
+    }
+
+    public UserAccountPage editDescription(String text) {
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).sendKeys(text);
+        getDriver().findElement(By.name("Submit")).click();
+
+        return this;
+    }
+
+    public String getDescriptionText() {
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
     }
 }

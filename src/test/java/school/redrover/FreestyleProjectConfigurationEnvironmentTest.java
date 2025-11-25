@@ -6,10 +6,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 
-public class ConfigurationMatrix2Test extends BaseTest {
+public class FreestyleProjectConfigurationEnvironmentTest extends BaseTest {
 
     @Test
-    public void testSetUpEnvironmentAfterRefresh() {
+    public void testTestAccessAfterRefresh() {
 
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys("NewFreestyleProject");
