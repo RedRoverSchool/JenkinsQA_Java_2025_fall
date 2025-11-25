@@ -68,4 +68,18 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .changeTheme(theme);
         Assert.assertEquals(checking, theme);
     }
+
+        @Test
+        public void testThemesAndSaveButton() {
+            String popUpSaveButtonText = new HomePage(getDriver())
+                    .clickGearManageJenkinsButton()
+                    .clickAppearanceLink()
+                    .clickDarkSystemTheme()
+                    .clickLightTheme()
+                    .clickDarkTheme()
+                    .clickSaveButton()
+                    .getPopUpSaveButtonText();
+
+            Assert.assertEquals(popUpSaveButtonText, "Saved");
+        }
 }
