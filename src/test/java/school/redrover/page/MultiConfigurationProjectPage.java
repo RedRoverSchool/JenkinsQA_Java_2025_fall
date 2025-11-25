@@ -18,7 +18,7 @@ public class MultiConfigurationProjectPage extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                         .xpath("//a[contains(@href, '/configure')]"))).click();
 
-        return this;
+        return new MultiConfigurationProjectPage(getDriver());
     }
 
     public MultiConfigurationProjectPage clickSubmit() {
@@ -37,7 +37,7 @@ public class MultiConfigurationProjectPage extends BasePage {
 
         getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("[href$='confirm-rename']"))).click();
 
-        return new MultiConfigurationProjectPage(getDriver());
+        return this;
     }
 
 
@@ -50,7 +50,7 @@ public class MultiConfigurationProjectPage extends BasePage {
 
         getWait5().until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
 
-        return new MultiConfigurationProjectPage(getDriver());
+        return this;
     }
 
     public String getHeading() {
