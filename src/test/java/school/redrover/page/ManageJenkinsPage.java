@@ -1,14 +1,13 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 import java.util.List;
+
 
 public class ManageJenkinsPage extends BasePage {
 
@@ -16,10 +15,10 @@ public class ManageJenkinsPage extends BasePage {
         super(driver);
     }
 
-    public ManageUsersPage clickUserButton() {
+    public UsersPage clickUserButton() {
         getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
 
-        return new ManageUsersPage(getDriver());
+        return new UsersPage(getDriver());
     }
 
     public CredentialsPage clickCredentialsLink() {

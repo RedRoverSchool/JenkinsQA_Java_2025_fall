@@ -9,6 +9,7 @@ import school.redrover.common.BasePage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FolderPage extends BasePage {
 
@@ -193,5 +194,9 @@ public class FolderPage extends BasePage {
         }
 
         return itemsWithTooltip;
+    }
+
+    public boolean checkURLContains(String expectedPath) {
+        return Objects.requireNonNull(getDriver().getCurrentUrl()).contains(expectedPath);
     }
 }
