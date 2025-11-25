@@ -42,5 +42,4 @@ public class AppearancePage extends BasePage {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id='notification-bar']"))).getText();
     }
-
 }
