@@ -183,4 +183,11 @@ public class NewItemPage extends BasePage {
 
         return new RestApiPage(getDriver());
     }
+
+    public MultiConfigurationProjectPage selectMultiConfigurationProjectAndSubmit() {
+        getDriver().findElement(By.cssSelector("[class='hudson_matrix_MatrixProject']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+
+        return new MultiConfigurationProjectPage(getDriver());
+    }
 }
