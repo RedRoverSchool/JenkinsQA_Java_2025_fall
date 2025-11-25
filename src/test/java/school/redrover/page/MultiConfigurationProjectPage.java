@@ -14,6 +14,13 @@ public class MultiConfigurationProjectPage extends BasePage {
         super(driver);
     }
 
+    public MultiConfigurationProjectPage clickConfigureLinkInSideMenu() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .xpath("//a[contains(@href, '/configure')]"))).click();
+
+        return new MultiConfigurationProjectPage(getDriver());
+    }
+
     public MultiConfigurationProjectPage clickSubmit() {
         getDriver().findElement(By.name("Submit")).click();
 
@@ -32,6 +39,7 @@ public class MultiConfigurationProjectPage extends BasePage {
 
         return new MultiConfigurationProjectPage(getDriver());
     }
+
 
     public MultiConfigurationProjectPage renameProject(String jobName) {
         getDriver().findElement(By.cssSelector("[href$='confirm-rename']")).click();
