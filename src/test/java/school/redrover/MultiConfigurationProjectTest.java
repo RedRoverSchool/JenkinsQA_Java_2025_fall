@@ -19,7 +19,6 @@ import java.time.Duration;
 public class MultiConfigurationProjectTest extends BaseTest {
     private static final String NAME_OF_PROJECT = "Group-Code-Coffee_java_project";
     private static final String RENAMED_MULTICONFIGURATION_PROJECT = "Renamed multiconfiguration project";
-
     private static final String DESCRIPTION = "Description for this project...";
 
     SoftAssert softAssert = new SoftAssert();
