@@ -35,12 +35,12 @@ public class AppearancePage extends BasePage {
     public AppearancePage clickSaveButton() {
         getDriver().findElement(By.cssSelector("button.jenkins-button.apply-button")).click();
 
-        return new AppearancePage(getDriver());
+        return this;
     }
 
     public String getPopUpSaveButtonText() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[@id=\"notification-bar\"]"))).getText();
+                "//*[@id='notification-bar']"))).getText();
     }
 
 }
