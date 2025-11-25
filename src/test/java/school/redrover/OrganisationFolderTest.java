@@ -8,10 +8,26 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 import java.time.Duration;
 
+
 public class OrganisationFolderTest extends BaseTest {
+
+    private static final String FOLDER_NAME = "Organization Folder";
+
+    @Test
+    public void testCreateOrganisationFolder() {
+        String OrganizationFolderName = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(FOLDER_NAME)
+                .selectOrganizationFolderAndSubmit()
+                .clickSave()
+                .getNameFolder();
+
+        Assert.assertEquals(OrganizationFolderName, FOLDER_NAME);
+    }
 
     @Test
     public void testOrganisationFolderNameAndDescription() throws InterruptedException{
