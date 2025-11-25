@@ -18,7 +18,7 @@ public class FreestyleProjectPage extends BasePage {
     }
 
     public String getHeadingText() {
-        return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.
+        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.
                 tagName("h1"))).getText();
     }
 
