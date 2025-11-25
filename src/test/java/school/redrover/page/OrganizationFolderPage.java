@@ -20,4 +20,16 @@ public class OrganizationFolderPage extends BasePage {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.id("view-message"))).getText();
     }
+
+    public OrganizationFolderPage clickDelete() {
+         getWait2().until(ExpectedConditions.elementToBeClickable(By.className("icon-edit-delete"))).click();
+
+         return this;
+    }
+
+    public HomePage clickYesConfirmationDelete() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-id='ok']"))).click();
+
+        return new HomePage(getDriver());
+    }
 }
