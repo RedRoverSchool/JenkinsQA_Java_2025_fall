@@ -83,4 +83,9 @@ public class ManageJenkinsPage extends BasePage {
         getDriver().findElement(By.cssSelector("button.jenkins-submit-button")).click();
         return getDriver().findElement(By.cssSelector("html")).getAttribute("data-theme");
     }
+
+    public AppearancePage clickAppearanceLink() {
+        getDriver().findElement(By.xpath("//a[@href = 'appearance']")).click();
+        return new AppearancePage(getDriver());
+    }
 }
