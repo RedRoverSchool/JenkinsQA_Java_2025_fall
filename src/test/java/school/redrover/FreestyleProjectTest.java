@@ -7,9 +7,12 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
 
 
 public class FreestyleProjectTest extends BaseTest {
+
+    private static final String PROJECT_NAME = "FreestyleProject";
 
     @Test
     public void testCreateFreestyleProject() throws InterruptedException {
@@ -83,5 +86,22 @@ public class FreestyleProjectTest extends BaseTest {
 
         WebElement actualDesc = driver.findElement(By.id("description-content"));
         Assert.assertEquals(actualDesc.getText(), description);
+    }
+
+    @Test
+    public void testDeleteFreestyleProject() {
+        final String expectedHeadingText = "Welcome to Jenkins!";
+
+        HomePage homePage = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .clickSave()
+                .gotoHomePage()
+                .openDropdownMenu(PROJECT_NAME)
+                .clickDeleteItemInDropdownMenu()
+                .confirmDelete();
+
+        Assert.assertEquals(homePage.getHeadingText(), expectedHeadingText);
     }
 }
