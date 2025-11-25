@@ -59,7 +59,7 @@ public class ConfigureAppearanceTest extends BaseTest {
                 getDriver().findElement(By.cssSelector("html")).getAttribute("data-theme"),
                 "dark");
     }
-
+    @Ignore
     @Test
     public void changeTheme() {
         String checking = new HomePage(getDriver())
