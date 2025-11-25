@@ -7,29 +7,30 @@ import school.redrover.common.BasePage;
 
 import java.util.List;
 
-public class CreateUserPage extends BasePage {
 
-    public CreateUserPage(WebDriver driver) {
+public class UserCreatingPage extends BasePage {
+
+    public UserCreatingPage(WebDriver driver) {
         super(driver);
     }
 
-    public CreateUserPage sendUserName(String userName) {
+    public UserCreatingPage sendUserName(String userName) {
         getDriver().findElement(By.id("username")).sendKeys(userName);
 
         return this;
     }
 
-    public CreateUserPage sendPassword(String password) {
+    public UserCreatingPage sendPassword(String password) {
         getDriver().findElement(By.name("password1")).sendKeys(password);
         return this;
     }
 
-    public CreateUserPage sendConfirmPassword(String password) {
+    public UserCreatingPage sendConfirmPassword(String password) {
         getDriver().findElement(By.name("password2")).sendKeys(password);
         return this;
     }
 
-    public CreateUserPage sendEmail(String email) {
+    public UserCreatingPage sendEmail(String email) {
         getDriver().findElement(By.name("email")).sendKeys(email);
         return this;
     }
