@@ -23,10 +23,8 @@ public class FreestyleProjectPage extends BasePage {
         return this;
     }
 
-
     public String getHeadingText() {
-        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.
-                tagName("h1"))).getText();
+        return getWait10().until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".jenkins-app-bar h1"))).getText();
     }
 
     public String getDescription() {
