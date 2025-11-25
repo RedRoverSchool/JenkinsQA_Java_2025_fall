@@ -4,6 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BaseModel;
+import school.redrover.common.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,10 +79,7 @@ public class SearchModalPage extends BaseModel {
     public FreestyleProjectPage moveAndClickResult(){
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.className("jenkins-command-palette__results__heading")));
 
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(searchResults), 0, 0)
-                .click()
-                .perform();
+        TestUtils.clickJS(getDriver(), getDriver().findElement(searchResults));
 
         return new FreestyleProjectPage(getDriver());
     }
