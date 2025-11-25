@@ -72,6 +72,8 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .getPopUpSaveButtonText();
 
         Assert.assertEquals(popUpSaveButtonText, "Saved");
+    }
+    
     public void changeTheme() {
         String checking = new HomePage(getDriver())
                 .clickManageJenkinsIcon()
