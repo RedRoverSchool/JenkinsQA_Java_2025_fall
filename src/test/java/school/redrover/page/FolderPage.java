@@ -122,10 +122,10 @@ public class FolderPage extends BasePage {
         return this;
     }
 
-    public RenameFolderPage clickRenameItemInDropdownMenu() {
+    public FolderRenamingPage clickRenameItemInDropdownMenu() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='tippy-content']//div[@class='jenkins-dropdown']//a[normalize-space()='Rename']"))).click();
 
-        return new RenameFolderPage(getDriver());
+        return new FolderRenamingPage(getDriver());
     }
 
     public FolderPage clickDeleteItemInDropdownMenu() {
