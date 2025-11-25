@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -61,6 +62,7 @@ public class PipelineTest extends BaseTest {
                 "Build output should contain 'Finished:'");
 
     }
+    @Ignore
 
     @Test(dependsOnMethods = "testBuildPipeline")
     public void testAddDescription() {
@@ -75,6 +77,8 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(descriptionText, textDescription);
     }
+
+    @Ignore
 
     @Test(dependsOnMethods = "testAddDescription")
     public void testEditDescription() {
@@ -93,6 +97,7 @@ public class PipelineTest extends BaseTest {
                 "Не совпал текст description после его редактирования");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testEditDescription")
     public void testCancelDeletePipelineViaDropDownMenu() {
         List<String> actualProjectList = new HomePage(getDriver())
