@@ -1,14 +1,11 @@
 package school.redrover;
 
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.FolderPage;
 import school.redrover.page.HomePage;
 
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -16,9 +13,9 @@ public class FolderTest extends BaseTest {
 
     private static final String FOLDER_NAME = "TestFolder";
     private static final String FOLDER_NAME_2 = "Folder2";
-    private static final String NEW_FOLDER_NAME_2 = "NewFolder2";
+    private static final String NEW_FOLDER_NAME = "NewFolderName";
     private static final String SUB_FOLDER_NAME = "SubFolder";
-    private static final List<String> itemNames = List.of(
+    private static final List<String> ITEM_NAMES = List.of(
             SUB_FOLDER_NAME,
             "SubFreestyleProject",
             "SubMultibranchPipeline",
@@ -26,6 +23,14 @@ public class FolderTest extends BaseTest {
             "SubOrganizationFolder",
             "SubPipeline"
     );
+    private static final Object[][] ITEMS = {
+            {ITEM_NAMES.get(0), "Folder"},
+            {ITEM_NAMES.get(1), "Freestyle project"},
+            {ITEM_NAMES.get(2), "Multibranch Pipeline"},
+            {ITEM_NAMES.get(3), "Multi-configuration project"},
+            {ITEM_NAMES.get(4), "Organization Folder"},
+            {ITEM_NAMES.get(5), "Pipeline"}
+    };
 
     @Test
     public void testCreate() {
@@ -40,26 +45,39 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(projectList.get(0), FOLDER_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreate")
-    public void testNewFolderDefaultAddedToExistingFolder() {
-        List<String> childFolderBreadcrumbList = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+    @Test(dependsOnMethods = "testIsEmpty")
+    public void testNewItemDefaultAddedToExistingFolder() {
+        new HomePage(getDriver())
                 .clickSidebarNewItem()
-                .sendName(SUB_FOLDER_NAME)
+                .sendName(FOLDER_NAME_2)
                 .selectFolderAndSubmit()
                 .clickSave()
-                .getBreadcrumbTexts();
+                .gotoHomePage();
 
-        Assert.assertEquals(
-                childFolderBreadcrumbList,
-                List.of(FOLDER_NAME, SUB_FOLDER_NAME),
-                "Путь хлебных крошек не соответствует ожидаемому");
+        for (Object[] item : ITEMS) {
+            String itemName = (String) item[0];
+            String itemType = (String) item[1];
+            new HomePage(getDriver())
+                    .openPage(FOLDER_NAME_2, new FolderPage(getDriver()))
+                    .clickSidebarNewItem()
+                    .sendName(itemName)
+                    .selectItemTypeAndSubmitAndGoHome(itemType);
+        }
+
+        List<String> folderItemList = new HomePage(getDriver())
+                .openPage(FOLDER_NAME_2, new FolderPage(getDriver()))
+                .getProjectList();
+
+        Assert.assertTrue(folderItemList.size() >= ITEM_NAMES.size(),
+                "В папке должно быть как минимум %s элементов".formatted(ITEM_NAMES.size()));
+        Assert.assertTrue(folderItemList.containsAll(ITEM_NAMES),
+                "В папке должны быть все соданные элементы: " + ITEM_NAMES);
     }
 
-    @Test(dependsOnMethods = "testNewFolderDefaultAddedToExistingFolder")
+    @Test(dependsOnMethods = "testNewItemDefaultAddedToExistingFolder")
     public void testPreventDuplicateItemNamesInFolder() {
         String duplicateErrorMessage = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openPage(FOLDER_NAME_2, new FolderPage(getDriver()))
                 .clickSidebarNewItem()
                 .sendName(SUB_FOLDER_NAME)
                 .selectFolder()
@@ -71,19 +89,18 @@ public class FolderTest extends BaseTest {
                 "Неверное сообщение о дублировании имени");
     }
 
-    @Test(dependsOnMethods = "testPreventDuplicateItemNamesInFolder")
+    @Test(dependsOnMethods = {"testPreventDuplicateItemNamesInFolder", "testSameItemNamesInTwoFolders"})
     public void testDeleteFolderBySidebar() {
         boolean isFolderDeleted = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .openFolderPage(SUB_FOLDER_NAME)
+                .openPage(FOLDER_NAME_2, new FolderPage(getDriver()))
                 .clickDeleteFolder()
-                .confirmDeleteChildItem()
+                .confirmDeleteFolder()
                 .clickSearchButton()
-                .searchFor(SUB_FOLDER_NAME)
-                .isNoResultsFound(SUB_FOLDER_NAME);
+                .searchFor(FOLDER_NAME_2)
+                .isNoResultsFound(FOLDER_NAME_2);
 
         Assert.assertTrue(isFolderDeleted,
-                "%s не должна отображаться в поиске после удаления".formatted(SUB_FOLDER_NAME));
+                "%s не должна отображаться в поиске после удаления".formatted(FOLDER_NAME_2));
     }
 
     @Test(dependsOnMethods = "testCreate")
@@ -102,67 +119,46 @@ public class FolderTest extends BaseTest {
                 "Описание папки не соответствует ожидаемому");
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = "testNewItemDefaultAddedToExistingFolder")
     public void testSameItemNamesInTwoFolders() {
-        final String pipelineName = "TwoPipelines";
-
         List<String> jobsInFirstFolder = new HomePage(getDriver())
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .clickSidebarNewItem()
-                .sendName(pipelineName)
-                .selectPipelineAndSubmit()
+                .sendName(SUB_FOLDER_NAME)
+                .selectFolderAndSubmit()
                 .gotoHomePage()
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .getProjectList();
 
-        List<String> jobsInSecondFolder = new HomePage(getDriver())
-                .gotoHomePage()
-                .clickSidebarNewItem()
-                .sendName(FOLDER_NAME_2)
-                .selectFolderAndSubmit()
-                .clickSave()
-                .clickSidebarNewItem()
-                .sendName(pipelineName)
-                .selectPipelineAndSubmit()
+        List<String> jobsInSecondFolder = new FolderPage(getDriver())
                 .gotoHomePage()
                 .openPage(FOLDER_NAME_2, new FolderPage(getDriver()))
                 .getProjectList();
 
-        Assert.assertTrue(jobsInFirstFolder.contains(pipelineName),
-                "Пайплайн '%s' должен присутствовать в первой папке '%s'".formatted(pipelineName, FOLDER_NAME));
-        Assert.assertTrue(jobsInSecondFolder.contains(pipelineName),
-                "Пайплайн '%s' должен присутствовать во второй папке '%s'".formatted(pipelineName, FOLDER_NAME_2));
+        Assert.assertTrue(jobsInFirstFolder.contains(SUB_FOLDER_NAME),
+                "Пайплайн '%s' должен присутствовать в первой папке '%s'".formatted(SUB_FOLDER_NAME, FOLDER_NAME));
+        Assert.assertTrue(jobsInSecondFolder.contains(SUB_FOLDER_NAME),
+                "Пайплайн '%s' должен присутствовать во второй папке '%s'".formatted(SUB_FOLDER_NAME, FOLDER_NAME_2));
     }
 
     @Test(dependsOnMethods = "testRenameFolder")
     public void testDeleteFolderByDashboardDropdownMenu() {
         boolean isFolderDeleted = new HomePage(getDriver())
-                .openDropdownMenu(NEW_FOLDER_NAME_2)
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openDropdownMenu(NEW_FOLDER_NAME)
                 .clickDeleteItemInDropdownMenu()
-                .confirmDelete()
+                .confirmDeleteChildFolder()
                 .clickSearchButton()
-                .searchFor(NEW_FOLDER_NAME_2)
-                .isNoResultsFound(NEW_FOLDER_NAME_2);
+                .searchFor(NEW_FOLDER_NAME)
+                .isNoResultsFound(NEW_FOLDER_NAME);
 
         Assert.assertTrue(isFolderDeleted,
-                "%s не должна отображаться в поиске после удаления".formatted(NEW_FOLDER_NAME_2));
+                "%s не должна отображаться в поиске после удаления".formatted(NEW_FOLDER_NAME));
     }
 
-    @Test(dependsOnMethods = {"testCreate", "testDeleteFolderBySidebar"})
+    @Test(dependsOnMethods = {"testCreate", "testIsEmpty", "testDeleteFolderByDashboardDropdownMenu"})
     public void testPutItemsToFolder() {
-        final Object[][] items = {
-                {itemNames.get(0), "Folder"},
-                {itemNames.get(1), "Freestyle project"},
-                {itemNames.get(2), "Multibranch Pipeline"},
-                {itemNames.get(3), "Multi-configuration project"},
-                {itemNames.get(4), "Organization Folder"},
-                {itemNames.get(5), "Pipeline"}
-        };
-        List<String> expectedItems = Arrays.stream(items)
-                .map(item -> (String) item[0])
-                .toList();
-
-        for (Object[] item : items) {
+        for (Object[] item : ITEMS) {
             String itemName = (String) item[0];
             String itemType = (String) item[1];
             new HomePage(getDriver())
@@ -176,19 +172,19 @@ public class FolderTest extends BaseTest {
         }
 
         List<String> folderItemList = new HomePage(getDriver())
-                .clickFolder(FOLDER_NAME)
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
                 .getProjectList();
 
-        Assert.assertTrue(folderItemList.size() >= expectedItems.size(),
-                "В папке должно быть как минимум %s элементов".formatted(expectedItems.size()));
-        Assert.assertTrue(folderItemList.containsAll(expectedItems),
-                "В папке должны быть все перенесенные элементы: " + expectedItems);
+        Assert.assertTrue(folderItemList.size() >= ITEM_NAMES.size(),
+                "В папке должно быть как минимум %s элементов".formatted(ITEM_NAMES.size()));
+        Assert.assertTrue(folderItemList.containsAll(ITEM_NAMES),
+                "В папке должны быть все перенесенные элементы: " + ITEM_NAMES);
     }
 
     @Test(dependsOnMethods = "testPutItemsToFolder")
     public void testFolderIsIdentifiedByIcon() {
         FolderPage folderPage = new HomePage(getDriver())
-                .clickFolder(FOLDER_NAME);
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()));
         String folderIconAttribute = folderPage.getFolderIconAttribute(SUB_FOLDER_NAME);
         List<String> itemsWithIconAttribute = folderPage.getItemsWithIconAttribute(folderIconAttribute);
 
@@ -202,20 +198,21 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testSameItemNamesInTwoFolders")
     public void testRenameFolder() {
         String newNameFolder = new HomePage(getDriver())
-                .openDropdownMenu(FOLDER_NAME_2)
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openDropdownMenu(SUB_FOLDER_NAME)
                 .clickRenameItemInDropdownMenu()
                 .clearName()
-                .sendNewName(NEW_FOLDER_NAME_2)
+                .sendNewName(NEW_FOLDER_NAME)
                 .renameButtonClick()
                 .getNameFolder();
 
-        Assert.assertEquals(newNameFolder, NEW_FOLDER_NAME_2);
+        Assert.assertEquals(newNameFolder, NEW_FOLDER_NAME);
     }
 
     @Test(dependsOnMethods = "testPutItemsToFolder")
     public void testFolderIsIdentifiedByTooltip() {
         FolderPage folderPage = new HomePage(getDriver())
-                .clickFolder(FOLDER_NAME);
+                .openPage(FOLDER_NAME, new FolderPage(getDriver()));
         String folderTooltip = folderPage.getFolderTooltip(SUB_FOLDER_NAME);
         List<String> itemsWithTooltip = folderPage.getItemsWithTooltip(folderTooltip);
 
@@ -230,7 +227,7 @@ public class FolderTest extends BaseTest {
     public void testFindFolderContent() {
         String previousItemName = "";
 
-        for (String itemName : itemNames) {
+        for (String itemName : ITEM_NAMES) {
             List<String> searchResults = new HomePage(getDriver())
                     .clickSearchButton()
                     .searchFor(itemName, previousItemName)
@@ -243,7 +240,6 @@ public class FolderTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testIsEmpty() {
         String actualContext = new HomePage(getDriver())
@@ -252,22 +248,5 @@ public class FolderTest extends BaseTest {
 
         String expectedContext = "This folder is empty";
         Assert.assertEquals(actualContext, expectedContext);
-
-    }
-
-    @Test(dependsOnMethods = {"testCreate", "testPutItemsToFolder"})
-    public void testAddNewItemToFolder() {
-        final String newJob = "multibrunch pipeline";
-
-        WebElement jobCreated = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickNewItem()
-                .sendName(newJob)
-                .selectMultibranchPipelineAndSubmit()
-                .gotoHomePage()
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .getElement(newJob);
-
-        Assert.assertTrue(jobCreated.isDisplayed());
     }
 }
