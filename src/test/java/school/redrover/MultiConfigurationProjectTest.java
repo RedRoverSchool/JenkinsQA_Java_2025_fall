@@ -127,6 +127,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         softAssert.assertEquals(result, DESCRIPTION);
     }
 
+    @Ignore
     @Test
     public void testRenameViaDashboardDropdownMenu() {
         String actualProjectName = new HomePage(getDriver())

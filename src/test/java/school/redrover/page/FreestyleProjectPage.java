@@ -21,4 +21,9 @@ public class FreestyleProjectPage extends BasePage {
         return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.
                 tagName("h1"))).getText();
     }
+
+    public String getDescription() {
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.id("description-content"))).getText();
+    }
 }
