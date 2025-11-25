@@ -8,6 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.HomePage;
+
 import java.time.Duration;
 
 public class ConfigureAppearanceTest extends BaseTest {
@@ -55,5 +57,19 @@ public class ConfigureAppearanceTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector("html")).getAttribute("data-theme"),
                 "dark");
+    }
+
+    @Test
+    public void testThemesAndSaveButton() {
+        String popUpSaveButtonText = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickAppearanceLink()
+                .clickDarkSystemTheme()
+                .clickLightTheme()
+                .clickDarkTheme()
+                .clickSaveButton()
+                .getPopUpSaveButtonText();
+
+        Assert.assertEquals(popUpSaveButtonText, "Saved");
     }
 }
