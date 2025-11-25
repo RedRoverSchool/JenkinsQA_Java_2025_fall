@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.OrganizationFolderPage;
+import java.util.List;
 
 public class OrganizationFolderTest extends BaseTest {
 
@@ -40,5 +41,19 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertEquals(actualDisplayName, expectedDisplayName);
         Assert.assertEquals(actualDescription, expectedDescription);
+    }
+    @Test
+    public void testDeleteOrganizationFolder() {
+        List<String> actualListOfItems = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .sendName(FOLDER_NAME)
+                .selectOrganizationFolderAndSubmit()
+                .clickSave()
+                .clickDelete()
+                .clickYesConfirmationDelete()
+                .getProjectList();
+
+        Assert.assertFalse(actualListOfItems.contains(FOLDER_NAME),
+                "Folder should be deleted but is still present in the list");
     }
 }
