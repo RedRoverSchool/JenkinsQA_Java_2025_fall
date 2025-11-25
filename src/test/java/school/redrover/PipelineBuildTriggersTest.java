@@ -1,14 +1,12 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.PipelineConfigurationPage;
 
-import java.time.Duration;
 
 public class PipelineBuildTriggersTest extends BaseTest {
     private static final String pipelineName = "pipeline_name";
@@ -16,10 +14,15 @@ public class PipelineBuildTriggersTest extends BaseTest {
     @Test
     public void testSelectTriggers() {
         HomePage homePage = new HomePage(getDriver());
-        homePage.clickNewItemOnLeftMenu()
+        PipelineConfigurationPage myPage = homePage.clickNewItemOnLeftMenu()
                 .sendName(pipelineName)
-                        .selectPipelineAndSubmit()
-                .selectAllTriggersWithAssert()
-                        .clickSaveButton();
+                        .selectPipelineAndSubmit();
+                WebElement[] triggersSelected = myPage.selectAllTriggers();
+
+        for (WebElement trigger : triggersSelected){
+            Assert.assertTrue(trigger.isEnabled());
+        }
+        myPage.clickSaveButton();
+
     }
 }
