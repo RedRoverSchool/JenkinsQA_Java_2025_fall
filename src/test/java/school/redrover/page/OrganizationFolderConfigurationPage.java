@@ -12,11 +12,23 @@ public class OrganizationFolderConfigurationPage extends BasePage {
         super(driver);
     }
 
-    public FolderPage clickSave() {
+    public OrganizationFolderPage clickSave() {
         WebElement button = getDriver().findElement(By.name("Submit"));
         button.click();
         getWait2().until(ExpectedConditions.invisibilityOf(button));
 
-        return new FolderPage(getDriver());
+        return new OrganizationFolderPage(getDriver());
+    }
+
+    public OrganizationFolderConfigurationPage inputDisplayName(String name) {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.displayNameOrNull"))).sendKeys(name);
+
+        return this;
+    }
+
+    public OrganizationFolderConfigurationPage inputDescription(String name) {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.description"))).sendKeys(name);
+
+        return this;
     }
 }
