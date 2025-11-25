@@ -13,6 +13,7 @@ import school.redrover.page.HomePage;
 import java.time.Duration;
 
 public class ConfigureAppearanceTest extends BaseTest {
+    final String theme = "dark";
 
     @Test
     public void testChangeTheme() {
@@ -71,5 +72,11 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .getPopUpSaveButtonText();
 
         Assert.assertEquals(popUpSaveButtonText, "Saved");
+    public void changeTheme() {
+        String checking = new HomePage(getDriver())
+                .clickManageJenkinsIcon()
+                .clickAppearance()
+                .changeTheme(theme);
+        Assert.assertEquals(checking, theme);
     }
 }

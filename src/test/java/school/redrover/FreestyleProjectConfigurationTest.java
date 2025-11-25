@@ -130,7 +130,6 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
         }
     }
 
-// Source Code Management Section
 
     @Test
     public void testAccessSCMInNewJob() {
@@ -203,5 +202,17 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
                 .getTriggerTitleText();
 
         Assert.assertEquals(triggerTitle, "Triggers");
+    }
+
+    @Test
+    public void testSaveButtonIsVisibleAndClickable() {
+
+        WebElement saveButton = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .getSaveButton();
+
+        Assert.assertTrue(saveButton.isDisplayed());
     }
 }
