@@ -3,15 +3,15 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.CreateUserPage;
+import school.redrover.page.UserCreatingPage;
 import school.redrover.page.HomePage;
-import school.redrover.page.ManageUsersPage;
+import school.redrover.page.UsersPage;
 import school.redrover.page.UserStatusPage;
 
 import java.util.List;
 
 
-public class CreateUserTest extends BaseTest {
+public class UserTest extends BaseTest {
 
     private final static String USER_NAME = "testUserLogin";
     private final static String USER_PASSWORD = "testUserPassword";
@@ -32,7 +32,7 @@ public class CreateUserTest extends BaseTest {
                 .clickGearManageJenkinsButton()
                 .clickUserButton()
                 .clickCreateUserButton()
-                .clickCreateUserButton(new CreateUserPage(getDriver()))
+                .clickCreateUserButton(new UserCreatingPage(getDriver()))
                 .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);
@@ -53,7 +53,7 @@ public class CreateUserTest extends BaseTest {
                 .sendPassword(USER_PASSWORD)
                 .sendConfirmPassword(USER_PASSWORD)
                 .sendEmail(USER_EMAIL)
-                .clickCreateUserButton(new CreateUserPage(getDriver()))
+                .clickCreateUserButton(new UserCreatingPage(getDriver()))
                 .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);
@@ -74,7 +74,7 @@ public class CreateUserTest extends BaseTest {
                 .sendUserName(userName)
                 .sendPassword(USER_PASSWORD)
                 .sendConfirmPassword(USER_PASSWORD)
-                .clickCreateUserButton(new CreateUserPage(getDriver()))
+                .clickCreateUserButton(new UserCreatingPage(getDriver()))
                 .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);
@@ -96,7 +96,7 @@ public class CreateUserTest extends BaseTest {
                 .sendPassword(USER_PASSWORD)
                 .sendConfirmPassword(userUnmatchedPassword)
                 .sendEmail(USER_EMAIL)
-                .clickCreateUserButton(new CreateUserPage(getDriver()))
+                .clickCreateUserButton(new UserCreatingPage(getDriver()))
                 .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);
@@ -113,7 +113,7 @@ public class CreateUserTest extends BaseTest {
                 .sendPassword(USER_PASSWORD)
                 .sendConfirmPassword(USER_PASSWORD)
                 .sendEmail(USER_EMAIL)
-                .clickCreateUserButton(new ManageUsersPage(getDriver()))
+                .clickCreateUserButton(new UsersPage(getDriver()))
                 .getUserName(USER_NAME);
 
         Assert.assertEquals(actualUserName, USER_NAME);
