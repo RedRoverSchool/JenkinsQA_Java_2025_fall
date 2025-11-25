@@ -53,4 +53,15 @@ public class ManageJenkinsPage extends BasePage {
                 .map(WebElement::getText)
                 .toList();
     }
+
+    public ManageJenkinsPage clickAppearance() {
+        getDriver().findElement(By.cssSelector("a[href='appearance']")).click();
+        return this;
+    }
+
+    public String changeTheme(String theme) {
+        getDriver().findElement(By.cssSelector("label:has(> div[data-theme='%s'])".formatted(theme))).click();
+        getDriver().findElement(By.cssSelector("button.jenkins-submit-button")).click();
+        return getDriver().findElement(By.cssSelector("html")).getAttribute("data-theme");
+    }
 }
