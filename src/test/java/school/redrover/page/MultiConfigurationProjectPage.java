@@ -18,7 +18,7 @@ public class MultiConfigurationProjectPage extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                         .xpath("//a[contains(@href, '/configure')]"))).click();
 
-        return new MultiConfigurationProjectPage(getDriver());
+        return this;
     }
 
     public MultiConfigurationProjectPage clickSubmit() {
