@@ -115,12 +115,12 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testSearchAndOpenSetting() {
-        String searchTitle = new HomePage(getDriver())
+        String searchHeading = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .sendTitle(SETTING_TITLE)
                 .clickSearchResult()
                 .getHeadingText();
 
-        Assert.assertEquals(searchTitle, "System");
+        Assert.assertEquals(searchHeading, "System");
     }
 }
