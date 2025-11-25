@@ -94,6 +94,12 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public FreestyleProjectConfigurationPage clickConfigureInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'configure')]"))).click();
+
+        return new FreestyleProjectConfigurationPage(getDriver());
+    }
+
     public HomePage confirmDelete() {
         WebElement yesButton = getWait2().until(
                 ExpectedConditions.elementToBeClickable(
@@ -193,7 +199,7 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public WebElement getRestApiLink(){
+    public WebElement getRestApiLink() {
 
         return getDriver().findElement(By.xpath("//a[@href='api/']"));
     }
@@ -252,36 +258,36 @@ public class HomePage extends BasePage {
                 .getText();
     }
 
-    public EditViewPage clickEditViewButton(String listViewName){
+    public EditViewPage clickEditViewButton(String listViewName) {
         getWait10().until(ExpectedConditions.elementToBeClickable(By
                 .xpath(".//a[@href='/view/%s/configure']".formatted(listViewName)))).click();
 
         return new EditViewPage(getDriver());
     }
 
-    public String getTitle () {
+    public String getTitle() {
         return getDriver().getTitle();
     }
 
-    public NewNodePage clickSetUpAnAgent(){
+    public NewNodePage clickSetUpAnAgent() {
         getDriver().findElement(By.xpath("//div/section[2]/ul/li[1]/a")).click();
 
         return new NewNodePage(getDriver());
     }
 
-    public NodesPage clickBuildExecutorStatus(){
+    public NodesPage clickBuildExecutorStatus() {
         getDriver().findElement(By.linkText("Build Executor Status")).click();
 
         return new NodesPage(getDriver());
     }
 
-    public BuildHistoryOfJenkinsPage clickBuildHistory(){
-    getDriver().findElement(By.xpath("//div[2]/span/a")).click();
+    public BuildHistoryOfJenkinsPage clickBuildHistory() {
+        getDriver().findElement(By.xpath("//div[2]/span/a")).click();
 
-    return new BuildHistoryOfJenkinsPage(getDriver());
+        return new BuildHistoryOfJenkinsPage(getDriver());
     }
 
-    public ArchitectingforScalePage clickLearnMoreAboutDistributedBuildsLink(){
+    public ArchitectingforScalePage clickLearnMoreAboutDistributedBuildsLink() {
         getDriver().findElement(By.xpath(".//a[span[text()='Learn more about distributed builds']]"))
                 .click();
         Object[] windowHandles = getDriver().getWindowHandles().toArray();
@@ -289,6 +295,11 @@ public class HomePage extends BasePage {
 
         getWait2().until(ExpectedConditions.urlContains("architecting-for-scale"));
 
-        return new ArchitectingforScalePage (getDriver());
+        return new ArchitectingforScalePage(getDriver());
+    }
+
+    public boolean isBuildButtonVisible(String projectName) {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("(//a[@title='Schedule a Build for %s'])[1]".formatted(projectName)))).isDisplayed();
     }
 }

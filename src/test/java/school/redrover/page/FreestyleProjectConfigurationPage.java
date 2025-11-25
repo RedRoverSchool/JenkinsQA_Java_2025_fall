@@ -167,7 +167,13 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         return this;
     }
 
-    public String getTriggerTitleText () {
+    public FreestyleProjectConfigurationPage clickEnableDisableProject() {
+        getWait5().until(ExpectedConditions
+                .visibilityOfElementLocated(By.cssSelector("#toggle-switch-enable-disable-project"))).click();
+        return this;
+    }
+
+    public String getTriggerTitleText() {
         return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("triggers")))
                 .getText();
     }
