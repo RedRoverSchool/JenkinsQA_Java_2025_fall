@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +87,7 @@ public class FolderPage extends BasePage {
         return this;
     }
 
-    public FolderPage confirmDeleteChildItem() {
+    public HomePage confirmDeleteFolder() {
         String urlBeforeDelete = getDriver().getCurrentUrl();
 
         WebElement yesButton = getWait2().until(
@@ -96,7 +97,41 @@ public class FolderPage extends BasePage {
         yesButton.click();
 
         getWait5().until(ExpectedConditions.not(ExpectedConditions.urlToBe(urlBeforeDelete)));
-        return new FolderPage(getDriver());
+        return new HomePage(getDriver());
+    }
+
+    public FolderPage confirmDeleteChildFolder() {
+        WebElement yesButton = getWait2().until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("//dialog[@open]//button[@data-id='ok']"))
+        );
+        yesButton.click();
+        getWait5().until(ExpectedConditions.stalenessOf(yesButton));
+
+        return this;
+    }
+
+    public FolderPage openDropdownMenu(String itemName) {
+        WebElement dropdownButton = getWait5().until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                        "//a[.//span[text()='%s']]//button[@class='jenkins-menu-dropdown-chevron']".formatted(itemName))));
+
+        TestUtils.mouseEnterJS(getDriver(), dropdownButton);
+        TestUtils.clickJS(getDriver(), dropdownButton);
+
+        return this;
+    }
+
+    public RenameFolderPage clickRenameItemInDropdownMenu() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='tippy-content']//div[@class='jenkins-dropdown']//a[normalize-space()='Rename']"))).click();
+
+        return new RenameFolderPage(getDriver());
+    }
+
+    public FolderPage clickDeleteItemInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'jenkins-dropdown__item') and contains(., 'Delete')]"))).click();
+
+        return this;
     }
 
     public FolderPage clickAddDescriptionButton() {
