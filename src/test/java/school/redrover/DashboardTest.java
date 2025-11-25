@@ -82,16 +82,15 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(actualJobs, CREATED_JOBS_NAME, "Имена созданных jobs не совпадают!");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCheckCreatedJobsOnDashboard")
     public void testSearchCreatedJobs() {
         String searchResults = new HomePage(getDriver())
                 .clickSearchButton()
-                .searchFor(CREATED_JOBS_NAME.get(1))
+                .searchFor(CREATED_JOBS_NAME.get(0))
                 .moveAndClickResult()
                 .getHeadingText();
 
-        Assert.assertEquals(searchResults, CREATED_JOBS_NAME.get(1));
+        Assert.assertEquals(searchResults, CREATED_JOBS_NAME.get(0));
     }
 
     @Test
