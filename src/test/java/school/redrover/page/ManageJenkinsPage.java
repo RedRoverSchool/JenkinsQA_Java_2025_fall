@@ -72,6 +72,6 @@ public class ManageJenkinsPage extends BasePage {
 
     public AppearancePage clickAppearanceLink() {
         getDriver().findElement(By.xpath("//a[@href = 'appearance']")).click();
-        return this;
+        return new AppearancePage(getDriver());
     }
 }
