@@ -92,7 +92,7 @@ public abstract class BaseTest {
         }
     }
 
-    @AfterMethod
+   @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) {
         if (ProjectUtils.isRunCI() && !testResult.isSuccess()) {
             ProjectUtils.takeScreenshot(getDriver(), this.getClass().getName(), method.getName());

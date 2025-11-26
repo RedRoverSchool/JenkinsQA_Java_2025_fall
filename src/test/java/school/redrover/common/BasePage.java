@@ -86,4 +86,10 @@ public abstract class BasePage extends BaseModel {
 
         return new UserAccountPage(getDriver());
     }
+
+    public boolean isSearchButtonPresent() {
+        return getDriver().findElement(By.id("root-action-SearchAction")).isDisplayed();
+    }
+
+
 }
