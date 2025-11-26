@@ -22,10 +22,10 @@ public abstract class BasePage extends BaseModel {
         return new HomePage(getDriver());
     }
 
-    public ManageJenkinsPage clickGearManageJenkinsButton() {
+    public JenkinsManagementPage clickGearManageJenkinsButton() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
 
-        return new ManageJenkinsPage(getDriver());
+        return new JenkinsManagementPage(getDriver());
     }
 
     public UserStatusPage clickUserAccountViaDropDownMenu(String userName) {
