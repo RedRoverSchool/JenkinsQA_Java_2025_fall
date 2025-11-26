@@ -241,5 +241,16 @@ public class CreateNewItemTest extends BaseTest {
 
         Assert.assertEquals(originalItemSettingsList, copiedItemSettingsList);
     }
+    @Test
+    public void testErrorDisplayedForEmptyItemName(){
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .clickOkButton()
+                .getErrorDisplayedForEmptyItemName();
+
+        Assert.assertEquals(errorMessage, "» This field cannot be empty, please enter a valid name");
+
+
+    }
 }
 
