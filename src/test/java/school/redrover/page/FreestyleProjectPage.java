@@ -29,6 +29,12 @@ public class FreestyleProjectPage extends BasePage {
         return new FreestyleProjectConfigurationPage(getDriver());
     }
 
+    public FreestyleProjectPage clickBuildNow() {
+        getDriver().findElement(By.xpath("//div[@id='tasks']/div[4]/span/a")).click();
+
+        return this;
+    }
+
     public String getHeadingText() {
         return headingText.getText();
     }
@@ -36,4 +42,15 @@ public class FreestyleProjectPage extends BasePage {
     public String getDescription() {
         return descriptionText.getText();
     }
+
+    public String getNotificationBuildScheduled() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@id='notification-bar']"))).getText();
+    }
+
+    public String getDisableProjectMessage() {
+        return getWait5().until(ExpectedConditions
+                .visibilityOfElementLocated(By.cssSelector(".warning"))).getText().split("\\R")[0];
+    }
+
 }
