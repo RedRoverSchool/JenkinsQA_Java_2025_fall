@@ -5,7 +5,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -13,7 +12,6 @@ import school.redrover.page.FreestyleProjectConfigurationPage;
 import school.redrover.page.FreestyleProjectPage;
 import school.redrover.page.HomePage;
 
-import java.time.Duration;
 import java.util.List;
 
 public class FreestyleProjectConfigurationTest extends BaseTest {
@@ -143,13 +141,13 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
 
     @Test
     public void testAccessSCMInNewJob() {
-        WebElement scmTitle = new HomePage(getDriver())
+        String scmTitle = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
-                .verifySCMTitleIsVisible();
+                .getSCMTitleText();
 
-        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+        Assert.assertEquals(scmTitle, SCM_TITLE_EXPECTED);
     }
 
     @Test
@@ -166,40 +164,40 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
 
     @Test
     public void testAccessSCMInExistingJob() {
-        WebElement scmTitle = new HomePage(getDriver())
+        String scmTitle = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
                 .gotoHomePage()
                 .openPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
-                .verifySCMTitleIsVisible();
+                .getSCMTitleText();
 
-        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+        Assert.assertEquals(scmTitle, SCM_TITLE_EXPECTED);
     }
 
     @Test
     public void testNavigationToSCMViaMenu() {
-        WebElement scmTitle = new HomePage(getDriver())
+        String scmTitle = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
                 .clickSourceCodeManagementMenuOption()
-                .verifySCMTitleIsVisible();
+                .getSCMTitleText();
 
-        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+        Assert.assertEquals(scmTitle, SCM_TITLE_EXPECTED);
     }
 
     @Test
     public void testNavigationToSCMByScrollingDown() {
-        WebElement scmTitle = new HomePage(getDriver())
+        String scmTitle = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
                 .scrollToSourceCodeManagementWithJS()
-                .verifySCMTitleIsVisible();
+                .getSCMTitleText();
 
-        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+        Assert.assertEquals(scmTitle, SCM_TITLE_EXPECTED);
     }
 
     @Test
@@ -217,12 +215,12 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
     @Test
     public void testSaveButtonIsVisibleAndClickable() {
 
-        WebElement saveButton = new HomePage(getDriver())
+        boolean isSaveButtonDisplayed = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
-                .getSaveButton();
+                .isSaveButtonDisplayed();
 
-        Assert.assertTrue(saveButton.isDisplayed());
+        Assert.assertTrue(isSaveButtonDisplayed);
     }
 }
