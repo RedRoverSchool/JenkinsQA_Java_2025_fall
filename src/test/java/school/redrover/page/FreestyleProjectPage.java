@@ -11,8 +11,9 @@ public class FreestyleProjectPage extends BasePage {
         super(driver);
     }
 
-    public FreestyleProjectConfigurationPage clickConfigure(String projectName) {
-        getDriver().findElement(By.xpath("//a[@href='/job/%s/configure']".formatted(projectName))).click();
+    public FreestyleProjectConfigurationPage clickConfigureLinkInSideMenu() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//a[contains(@href, '/configure')]"))).click();
 
         return new FreestyleProjectConfigurationPage(getDriver());
     }

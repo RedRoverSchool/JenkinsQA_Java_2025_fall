@@ -12,7 +12,7 @@ import java.util.List;
 
 public class FolderConfigurationTest extends BaseTest {
 
-   private static final String FOLDER_NAME = "my folder";
+   private static final String FOLDER_NAME = "MyFolder";
 
    @DataProvider
    public Object[][] itemsData() {
@@ -49,7 +49,7 @@ public class FolderConfigurationTest extends BaseTest {
     public void testHealthMetricButtonIsDisplayed(){
         String buttonDisplayed = new HomePage(getDriver())
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureLinkInSideMenu()
                 .getHealthMetricsButton();
 
         Assert.assertEquals(buttonDisplayed,"Health metrics");
@@ -59,7 +59,7 @@ public class FolderConfigurationTest extends BaseTest {
     public void testHealthMetricSectionNavigation(){
         String sectionName = new HomePage(getDriver())
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsSidebarLink()
                 .getSectionName();
 
@@ -73,7 +73,7 @@ public class FolderConfigurationTest extends BaseTest {
 
         List<String> actualMetricTypes = new HomePage(getDriver())
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsSidebarLink()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
@@ -90,7 +90,7 @@ public class FolderConfigurationTest extends BaseTest {
 
         String actualMetricAdded = new HomePage(getDriver())
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickWorstHealthButton()
@@ -106,7 +106,7 @@ public class FolderConfigurationTest extends BaseTest {
 
         String actualMetricAdded = new HomePage(getDriver())
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickGivenNameButton()
@@ -122,7 +122,7 @@ public class FolderConfigurationTest extends BaseTest {
 
         String actualTopMetric = new HomePage(getDriver())
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickGivenNameButton()
@@ -138,7 +138,7 @@ public class FolderConfigurationTest extends BaseTest {
     public void testDeleteMetric() {
         List <String> metricList = new HomePage(getDriver())
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickGivenNameButton()
@@ -158,7 +158,7 @@ public class FolderConfigurationTest extends BaseTest {
 
         String actualText = new HomePage(getDriver())
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickGivenNameButton()
@@ -175,7 +175,7 @@ public class FolderConfigurationTest extends BaseTest {
 
         String actualText = new HomePage(getDriver())
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickGivenNameButton()
@@ -192,7 +192,7 @@ public class FolderConfigurationTest extends BaseTest {
 
         String actualText = new HomePage(getDriver())
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickWorstHealthButton()
@@ -209,7 +209,7 @@ public class FolderConfigurationTest extends BaseTest {
 
         String actualText = new HomePage(getDriver())
                 .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickWorstHealthButton()
@@ -234,5 +234,25 @@ public class FolderConfigurationTest extends BaseTest {
                 .getMenuItemInDropdown(menuItem);
 
         Assert.assertTrue(configureMenuItem.isDisplayed());
+    }
+
+    @Test
+    public void testNavigateToConfigurationViaSideMenuForPipeline() {
+        final String itemName = "pipeline01";
+        final String expectedPageHeader = "Configuration";
+        createFolder();
+
+        WebElement actualPageHeader = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME)
+                .clickSidebarNewItem()
+                .sendName(itemName)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
+                .clickFolder(FOLDER_NAME)
+                .openItemPage(itemName, new PipelinePage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .getPageHeader();
+
+        Assert.assertEquals(actualPageHeader.getText(), expectedPageHeader);
     }
 }

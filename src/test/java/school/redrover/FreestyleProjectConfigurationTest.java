@@ -94,8 +94,7 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
                 .visibilityOfElementLocated(By.cssSelector("#toggle-switch-enable-disable-project"))).click();
         getDriver().findElement(By.xpath("//button[@value='Save']")).click();
 
-        getWait5().until(ExpectedConditions
-                .elementToBeClickable(By.cssSelector(".jenkins-header__navigation a"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.className("app-jenkins-logo"))).click();
 
         getWait5().until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//td/a[@href='job/%s/']".formatted(PROJECT_NAME)))).click();
@@ -106,8 +105,7 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
                 .visibilityOfElementLocated(By.cssSelector("#toggle-switch-enable-disable-project"))).click();
         getDriver().findElement(By.xpath("//button[@value='Save']")).click();
 
-        getWait5().until(ExpectedConditions
-                .elementToBeClickable(By.cssSelector(".jenkins-header__navigation a"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.className("app-jenkins-logo"))).click();
 
         WebElement buildButtonWhenProjectEnabled = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("(//a[@title='Schedule a Build for %s'])[1]".formatted(PROJECT_NAME))));
@@ -143,7 +141,6 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
         }
     }
 
-
     @Test
     public void testAccessSCMInNewJob() {
         WebElement scmTitle = new HomePage(getDriver())
@@ -175,7 +172,7 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
                 .selectFreestyleProjectAndSubmit()
                 .gotoHomePage()
                 .openPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickConfigure(PROJECT_NAME)
+                .clickConfigureLinkInSideMenu()
                 .verifySCMTitleIsVisible();
 
         Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);

@@ -33,7 +33,7 @@ public class PipelineConfigurationTest extends BaseTest {
 
         String toggleLabelText = new HomePage(getDriver())
                 .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickConfigureLinkInSideMenu()
                 .clickToggle()
                 .getToggleUncheckedLabelText();
 
@@ -45,7 +45,7 @@ public class PipelineConfigurationTest extends BaseTest {
 
         String actualProjectStatus = new HomePage(getDriver())
                 .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickConfigureLinkInSideMenu()
                 .clickToggle()
                 .clickSaveButton()
                 .gotoHomePage()
@@ -86,7 +86,7 @@ public class PipelineConfigurationTest extends BaseTest {
     public void testNavigationToAdvancedBySideMenu() {
         String actualAdvancedSectionTitle = new HomePage(getDriver())
                 .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickConfigureLinkInSideMenu()
                 .clickAdvancedLinkInSideMenu()
                 .getAdvancedTitleText();
 
@@ -97,7 +97,7 @@ public class PipelineConfigurationTest extends BaseTest {
     public void testAdvancedSectionQuietPeriodElements() {
         String actualQuietPeriodLabel = new HomePage(getDriver())
                 .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .getQuietPeriodLabelText();
 
@@ -110,7 +110,7 @@ public class PipelineConfigurationTest extends BaseTest {
     public void testAdvancedSectionDisplayNameFieldElements() {
         String actualDisplayNameLabel = new HomePage(getDriver())
                 .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .getDisplayNameLabelText();
 
@@ -123,7 +123,7 @@ public class PipelineConfigurationTest extends BaseTest {
     public void testAdvancedSectionQuietPeriodElementsAfterSelecting() {
         String actualNumberOfSecondsLabel = new HomePage(getDriver())
                 .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .clickQuitePeriod()
                 .getNumberOfSecondsLabelText();
@@ -167,7 +167,7 @@ public class PipelineConfigurationTest extends BaseTest {
 
         List<String> actualTooltipList = new HomePage(getDriver())
                 .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .getTooltipList();
 
@@ -178,7 +178,7 @@ public class PipelineConfigurationTest extends BaseTest {
     public void testAdvancedSectionHelpAreaIsDisplayed() {
         List<WebElement> tooltipList = new HomePage(getDriver())
                 .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .getTooltipListWeb();
 
