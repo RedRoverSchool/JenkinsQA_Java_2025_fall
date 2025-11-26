@@ -47,20 +47,21 @@ public class AppearancePage extends BasePage {
     }
 
     public AppearancePage pipelineStagesandGraph() {
+        getDriver().findElement(By.name("_.theme")).click();
         getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[4]/div[2]/div[1]/span/label")).click();
         return this;
     }
 
     public AppearancePage changePrismSyntaxHighlightingThemeDefault() {
-        new Select(getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select"))).selectByValue("PRISM");
+        new Select(getDriver().findElement(By.name("_.theme"))).selectByValue("PRISM");
         return this;
     }
     public AppearancePage changePrismSyntaxHighlightingThemeCoy() {
-        new Select(getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select"))).selectByValue("COY");
+        new Select(getDriver().findElement(By.name("_.theme"))).selectByValue("COY");
         return this;
     }
     public AppearancePage changePrismSyntaxHighlightingDark() {
-        new Select(getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select"))).selectByValue("DARK");
+        new Select(getDriver().findElement(By.name("_.theme"))).selectByValue("DARK");
         return this;
     }
 }
