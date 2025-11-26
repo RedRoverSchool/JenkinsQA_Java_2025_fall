@@ -71,7 +71,7 @@ public class ConfigureAppearanceTest extends BaseTest {
     }
 
     @Test
-    public void testThemesAndApplyButton() {
+    public void testThemesAndApplyButtonPopUp() {
         String popUpApplyButtonText = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickAppearanceLink()
