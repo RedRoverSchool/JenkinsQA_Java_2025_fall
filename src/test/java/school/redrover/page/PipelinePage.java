@@ -3,19 +3,23 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class PipelinePage extends BasePage {
+
+    @FindBy(xpath = "//a[contains(@href, '/configure')]")
+    private WebElement configureMenuItem;
 
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
 
     public PipelineConfigurationPage clickConfigureLinkInSideMenu() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//a[contains(@href, '/configure')]"))).click();
+        configureMenuItem.click();
 
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit")));
         return new PipelineConfigurationPage(getDriver());
     }
 

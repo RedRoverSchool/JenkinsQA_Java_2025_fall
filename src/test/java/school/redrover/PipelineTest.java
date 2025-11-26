@@ -21,7 +21,7 @@ public class PipelineTest extends BaseTest {
                 .clickCreateJob()
                 .sendName(name)
                 .selectPipelineAndSubmit()
-                .clickSaveButton();
+                .clickSubmitButton();
     }
 
     @Test

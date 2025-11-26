@@ -240,9 +240,10 @@ public class FolderConfigurationTest extends BaseTest {
     public void testNavigateToConfigurationViaSideMenuForPipeline() {
         final String itemName = "pipeline01";
         final String expectedPageHeader = "Configuration";
+
         createFolder();
 
-        WebElement actualPageHeader = new HomePage(getDriver())
+        String actualPageHeader = new HomePage(getDriver())
                 .clickFolder(FOLDER_NAME)
                 .clickSidebarNewItem()
                 .sendName(itemName)
@@ -253,6 +254,6 @@ public class FolderConfigurationTest extends BaseTest {
                 .clickConfigureLinkInSideMenu()
                 .getPageHeader();
 
-        Assert.assertEquals(actualPageHeader.getText(), expectedPageHeader);
+        Assert.assertEquals(actualPageHeader, expectedPageHeader);
     }
 }
