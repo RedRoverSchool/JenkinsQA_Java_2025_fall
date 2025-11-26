@@ -40,6 +40,7 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .clickManageJenkinsIcon()
                 .clickAppearanceLink()
                 .disableUserThemes()
+                .changePrismSyntaxHighlightingThemeDefault()
                 .changePrismSyntaxHighlightingThemeCoy()
                 .changePrismSyntaxHighlightingDark()
                 .changePrismSyntaxHighlightingThemeCoy()

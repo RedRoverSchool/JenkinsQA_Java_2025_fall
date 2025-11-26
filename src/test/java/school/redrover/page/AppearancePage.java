@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
 
 public class AppearancePage extends BasePage {
@@ -50,12 +51,16 @@ public class AppearancePage extends BasePage {
         return this;
     }
 
+    public AppearancePage changePrismSyntaxHighlightingThemeDefault() {
+        new Select(getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select"))).selectByValue("PRISM");
+        return this;
+    }
     public AppearancePage changePrismSyntaxHighlightingThemeCoy() {
-        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select/option[2]")).click();
+        new Select(getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select"))).selectByValue("COY");
         return this;
     }
     public AppearancePage changePrismSyntaxHighlightingDark() {
-        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select/option[3]")).click();
+        new Select(getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select"))).selectByValue("DARK");
         return this;
     }
 }
