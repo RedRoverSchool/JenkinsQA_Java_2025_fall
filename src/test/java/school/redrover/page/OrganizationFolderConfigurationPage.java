@@ -31,4 +31,16 @@ public class OrganizationFolderConfigurationPage extends BasePage {
 
         return this;
     }
+
+    public OrganizationFolderConfigurationPage clickDisplayNameTooltip() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By
+                .cssSelector("a[tooltip='Help for feature: Display Name']"))).click();
+
+        return this;
+    }
+
+    public String getDisplayNameTooltipLink() {
+        return getWait2().until(ExpectedConditions.elementToBeClickable(By
+                .linkText("Branch API Plugin"))).getAttribute("href");
+    }
 }
