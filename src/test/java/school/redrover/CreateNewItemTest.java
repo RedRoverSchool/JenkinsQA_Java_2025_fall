@@ -235,8 +235,8 @@ public class CreateNewItemTest extends BaseTest {
                 .sendName(newName)
                 .sendNameToCopyFromAndSubmit(originalName)
                 .gotoHomePage()
-                .openPage(newName, new FreestyleProjectPage(getDriver()))
-                .clickConfigure(newName)
+                .openProject(newName, () -> new FreestyleProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .getSettingsToList();
 
         Assert.assertEquals(originalItemSettingsList, copiedItemSettingsList);

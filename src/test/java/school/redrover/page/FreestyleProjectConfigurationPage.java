@@ -4,31 +4,45 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.common.BasePage;
 
+import javax.swing.*;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FreestyleProjectConfigurationPage extends BasePage {
 
+    @FindBy(name = "description")
+    private WebElement descriptionInput;
+
+    @FindBy(xpath = "//label[text()='Discard old builds']")
+    private WebElement oldBuildsCheck;
+
+    @FindBy(name = "_.daysToKeepStr")
+    private WebElement daysToKeepStrCheck;
+
+    @FindBy(name = "_.numToKeepStr")
+    private WebElement numToKeepStrCheck;
+
     public FreestyleProjectConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
     public FreestyleProjectConfigurationPage setDescription(String description) {
-        getDriver().findElement(By.name("description")).sendKeys(description);
+        descriptionInput.sendKeys(description);
 
         return this;
     }
 
     public FreestyleProjectConfigurationPage setCheckBoxDiscardAndSetDaysNum(String daysToKeep, String maxOfBuilds) {
-        getDriver().findElement(By.xpath("//label[text()='Discard old builds']")).click();
+        oldBuildsCheck.click();
 
-        getDriver().findElement(By.name("_.daysToKeepStr")).sendKeys(daysToKeep);
-        getDriver().findElement(By.name("_.numToKeepStr")).sendKeys(maxOfBuilds);
+        daysToKeepStrCheck.sendKeys(daysToKeep);
+        numToKeepStrCheck.sendKeys(maxOfBuilds);
 
         return this;
     }
@@ -61,15 +75,12 @@ public class FreestyleProjectConfigurationPage extends BasePage {
     public FreestyleProjectPage clickSave() {
         getDriver().findElement(By.name("Submit")).click();
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new FreestyleProjectPage(getDriver());
     }
 
-    public WebElement getSaveButton() {
-        return getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Submit")));
-    }
-
-    public WebElement getApplyButton() {
-        return getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Apply")));
+    public boolean isSaveButtonDisplayed() {
+        return getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).isDisplayed();
     }
 
     public List<String> getSettingsToList() {
@@ -87,10 +98,8 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         return settingsList;
     }
 
-    public WebElement verifySCMTitleIsVisible() {
-        WebElement scmTitle = getDriver().findElement(By.id("source-code-management"));
-
-        return getWait5().until(ExpectedConditions.visibilityOf(scmTitle));
+    public String getSCMTitleText() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("source-code-management"))).getText();
     }
 
     public FreestyleProjectConfigurationPage clickSourceCodeManagementMenuOption() {

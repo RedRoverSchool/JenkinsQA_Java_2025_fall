@@ -12,10 +12,9 @@ public class PipelinePage extends BasePage {
         super(driver);
     }
 
-    public PipelineConfigurationPage clickConfigureInSideMenu(String newPipelineName) {
+    public PipelineConfigurationPage clickConfigureLinkInSideMenu() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                        .xpath(".//a[@href='/job/%s/configure']".formatted(newPipelineName))))
-                .click();
+                .xpath("//a[contains(@href, '/configure')]"))).click();
 
         return new PipelineConfigurationPage(getDriver());
     }
