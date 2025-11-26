@@ -59,6 +59,7 @@ public class ConfigureAppearanceTest extends BaseTest {
                 getDriver().findElement(By.cssSelector("html")).getAttribute("data-theme"),
                 "dark");
     }
+
     @Ignore
     @Test
     public void changeTheme() {
@@ -69,17 +70,17 @@ public class ConfigureAppearanceTest extends BaseTest {
         Assert.assertEquals(checking, theme);
     }
 
-        @Test
-        public void testThemesAndSaveButton() {
-            String popUpSaveButtonText = new HomePage(getDriver())
-                    .clickGearManageJenkinsButton()
-                    .clickAppearanceLink()
-                    .clickDarkSystemTheme()
-                    .clickLightTheme()
-                    .clickDarkTheme()
-                    .clickSaveButton()
-                    .getPopUpSaveButtonText();
+    @Test
+    public void testThemesAndApplyButton() {
+        String popUpApplyButtonText = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickAppearanceLink()
+                .clickDarkSystemTheme()
+                .clickLightTheme()
+                .clickDarkTheme()
+                .clickApplyButton()
+                .getPopUpApplyButtonText();
 
-            Assert.assertEquals(popUpSaveButtonText, "Saved");
-        }
+        Assert.assertEquals(popUpApplyButtonText, "Saved");
+    }
 }

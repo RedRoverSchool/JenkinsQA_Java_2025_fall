@@ -29,13 +29,13 @@ public class AppearancePage extends BasePage {
         return this;
     }
 
-    public AppearancePage clickSaveButton() {
+    public AppearancePage clickApplyButton() {
         getDriver().findElement(By.cssSelector("button.jenkins-button.apply-button")).click();
 
         return this;
     }
 
-    public String getPopUpSaveButtonText() {
+    public String getPopUpApplyButtonText() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id='notification-bar']"))).getText();
     }
