@@ -10,11 +10,11 @@ import school.redrover.common.BasePage;
 import java.util.List;
 
 
-public class ManageJenkinsPage extends BasePage {
+public class JenkinsManagementPage extends BasePage {
 
     private final By searchResults = By.cssSelector(".jenkins-dropdown__item:nth-of-type(1)");
 
-    public ManageJenkinsPage(WebDriver driver) {
+    public JenkinsManagementPage(WebDriver driver) {
         super(driver);
     }
 
@@ -41,7 +41,7 @@ public class ManageJenkinsPage extends BasePage {
                 tagName("h1"))).getText().trim();
     }
 
-    public ManageJenkinsPage sendTitle(String settingTitle) {
+    public JenkinsManagementPage sendTitle(String settingTitle) {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("settings-search-bar"))).sendKeys(settingTitle);
 
         return this;
@@ -68,7 +68,7 @@ public class ManageJenkinsPage extends BasePage {
                 .toList();
     }
 
-    public ManageJenkinsPage clickAppearance() {
+    public JenkinsManagementPage clickAppearance() {
         getDriver().findElement(By.cssSelector("a[href='appearance']")).click();
         return this;
     }

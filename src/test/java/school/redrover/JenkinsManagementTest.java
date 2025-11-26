@@ -8,14 +8,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
 import java.util.List;
 import java.time.Duration;
 
-public class ManageJenkinsTest extends BaseTest {
+public class JenkinsManagementTest extends BaseTest {
     private final String TITLE_TEXT = "Dashboard - Jenkins";
     private static final String SETTING_TITLE = "System";
 
