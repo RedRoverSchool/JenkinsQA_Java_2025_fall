@@ -39,4 +39,27 @@ public class AppearancePage extends BasePage {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id='notification-bar']"))).getText();
     }
+
+    public AppearancePage disableUserThemes() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[1]/div[4]/div[1]/span/label")).click();
+        return this;
+    }
+
+    public AppearancePage pipelineStagesandGraph() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[4]/div[2]/div[1]/span/label")).click();
+        return this;
+    }
+
+    public AppearancePage changePrismSyntaxHighlightingThemeDefault() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select/option[1]")).click();
+        return this;
+    }
+    public AppearancePage changePrismSyntaxHighlightingThemeCoy() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select/option[2]")).click();
+        return this;
+    }
+    public AppearancePage changePrismSyntaxHighlightingDark() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select/option[3]")).click();
+        return this;
+    }
 }
