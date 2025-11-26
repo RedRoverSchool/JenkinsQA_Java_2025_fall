@@ -38,7 +38,7 @@ public class PipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testCancelDeletePipelineViaSideMenu() {
         List<String> actualProjectList = new HomePage(getDriver())
-                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
                 .clickDeletePipeline()
                 .cancelDelete()
                 .gotoHomePage()
@@ -51,7 +51,7 @@ public class PipelineTest extends BaseTest {
     public void testBuildPipeline() {
 
         String consoleOutput = new HomePage(getDriver())
-                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
                 .clickBuildNow()
                 .clickBuildHistory()
                 .clickConsoleOutput()
@@ -68,7 +68,7 @@ public class PipelineTest extends BaseTest {
 
         String descriptionText = new HomePage(getDriver())
                 .gotoHomePage()
-                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
                 .clickAddDescriptionButton()
                 .addDescriptionAndSave(textDescription)
                 .getDescription();
@@ -81,7 +81,7 @@ public class PipelineTest extends BaseTest {
         final String textDescription = "D0XVcGo8k(=D7myr/.YC6umm>]\"gY)?X_E|#HPku6T5im[oYHD-\\|B`";
 
         String descriptionText = new HomePage(getDriver())
-                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
                 .clickEditDescriptionButton()
                 .clearDescription()
                 .addDescriptionAndSave(textDescription)

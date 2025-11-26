@@ -83,6 +83,7 @@ public class SearchModalPage extends BaseModel {
                 .click()
                 .perform();
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new FreestyleProjectPage(getDriver());
     }
 
