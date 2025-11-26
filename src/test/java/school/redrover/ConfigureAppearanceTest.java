@@ -81,6 +81,6 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .clickApplyButton()
                 .getPopUpApplyButtonText();
 
-        Assert.assertEquals(popUpApplyButtonText, "Saved");
+        Assert.assertEquals(popUpApplyButtonText,"Saved");
     }
 }
