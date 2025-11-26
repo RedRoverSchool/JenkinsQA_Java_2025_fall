@@ -158,11 +158,11 @@ public class PipelineConfigurationPage extends BasePage {
     public WebElement[] selectAllTriggers() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
-       final WebElement trigger1 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/section/div[4]/div[1]/div/span")));
-       final WebElement trigger2 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/section/div[5]/div[1]/div/span")));
-       final WebElement trigger3 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/section/div[6]/div[1]/div/span")));
-       final WebElement trigger4 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/section/div[7]/div[1]/div/span")));
-       final WebElement trigger5 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='main-panel']/form/div[1]/div[5]/div[1]/div/span")));
+       final WebElement trigger1 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Build after other projects are built']")));
+       final WebElement trigger2 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Build periodically']")));
+       final WebElement trigger3 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='GitHub hook trigger for GITScm polling']")));
+       final WebElement trigger4 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Poll SCM']")));
+       final WebElement trigger5 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Trigger builds remotely (e.g., from scripts)']")));
 
        final WebElement[] triggers = {trigger1, trigger2, trigger3, trigger4, trigger5};
 
@@ -170,7 +170,6 @@ public class PipelineConfigurationPage extends BasePage {
             js.executeScript("arguments[0].scrollIntoView({block: 'center'});", trigger);
             getWait10().until(ExpectedConditions.elementToBeClickable(trigger));
             trigger.click();
-
         }
         return triggers;
     }

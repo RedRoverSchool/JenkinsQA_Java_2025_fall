@@ -5,7 +5,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-import school.redrover.page.PipelineConfigurationPage;
 
 
 public class PipelineBuildTriggersTest extends BaseTest {
@@ -13,16 +12,14 @@ public class PipelineBuildTriggersTest extends BaseTest {
 
     @Test
     public void testSelectTriggers() {
-        HomePage homePage = new HomePage(getDriver());
-        PipelineConfigurationPage myPage = homePage.clickNewItemOnLeftMenu()
+        WebElement[] triggersSelected =
+                new HomePage(getDriver()).clickNewItemOnLeftMenu()
                 .sendName(pipelineName)
-                        .selectPipelineAndSubmit();
-                WebElement[] triggersSelected = myPage.selectAllTriggers();
+                .selectPipelineAndSubmit()
+                .selectAllTriggers();
 
         for (WebElement trigger : triggersSelected){
             Assert.assertTrue(trigger.isEnabled());
         }
-        myPage.clickSaveButton();
-
     }
 }
