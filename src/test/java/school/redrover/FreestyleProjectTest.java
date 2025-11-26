@@ -43,7 +43,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreate")
     public void testScheduleBuild() {
         String actualNotificationBuildScheduled = new HomePage(getDriver())
-                .openPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
                 .clickBuildNow()
                 .getNotificationBuildScheduled();
 
@@ -53,8 +53,8 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testScheduleBuild")
     public void testAddDescription() {
         String actualDescriptionText = new HomePage(getDriver())
-                .openPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickConfigure(PROJECT_NAME)
+                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .setDescription(PROJECT_DESCRIPTION_EXPECTED)
                 .clickSave()
                 .getDescription();
@@ -77,8 +77,8 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testDisableProjectViaConfigureDropdownMenu")
     public void testEnableProjectViaMainMenuConfigure() {
         boolean visibleBuildButtonForEnabledProject = new HomePage(getDriver())
-                .openPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickConfigure(PROJECT_NAME)
+                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickEnableDisableProject()
                 .clickSave()
                 .gotoHomePage()
@@ -92,8 +92,8 @@ public class FreestyleProjectTest extends BaseTest {
     public void testBuildStepsFilterNames() {
 
         FreestyleProjectConfigurationPage configPage = new HomePage(getDriver())
-                .openPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickConfigure(PROJECT_NAME)
+                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickBuildStepMenuOption();
 
         for (String buildStep : BUILD_STEPS) {
@@ -128,13 +128,13 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testAccessSCMInNewJob() {
-        WebElement scmTitle = new HomePage(getDriver())
+        String scmTitleText = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
-                .verifySCMTitleIsVisible();
+                .getSCMTitleText();
 
-        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+        Assert.assertEquals(scmTitleText, SCM_TITLE_EXPECTED);
     }
 
     @Test
@@ -151,40 +151,40 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testAccessSCMInExistingJob() {
-        WebElement scmTitle = new HomePage(getDriver())
+        String scmTitleText = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
                 .gotoHomePage()
-                .openPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
-                .clickConfigure(PROJECT_NAME)
-                .verifySCMTitleIsVisible();
+                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .getSCMTitleText();
 
-        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+        Assert.assertEquals(scmTitleText, SCM_TITLE_EXPECTED);
     }
 
     @Test
     public void testNavigationToSCMViaMenu() {
-        WebElement scmTitle = new HomePage(getDriver())
+        String scmTitleText = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
                 .clickSourceCodeManagementMenuOption()
-                .verifySCMTitleIsVisible();
+                .getSCMTitleText();
 
-        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+        Assert.assertEquals(scmTitleText, SCM_TITLE_EXPECTED);
     }
 
     @Test
     public void testNavigationToSCMByScrollingDown() {
-        WebElement scmTitle = new HomePage(getDriver())
+        String scmTitleText = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
                 .scrollToSourceCodeManagementWithJS()
-                .verifySCMTitleIsVisible();
+                .getSCMTitleText();
 
-        Assert.assertEquals(scmTitle.getText(), SCM_TITLE_EXPECTED);
+        Assert.assertEquals(scmTitleText, SCM_TITLE_EXPECTED);
     }
 
     @Test
@@ -202,13 +202,13 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testSaveButtonIsVisibleAndClickable() {
 
-        WebElement saveButton = new HomePage(getDriver())
+        boolean saveButton = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
-                .getSaveButton();
+                .isSaveButtonDisplayed();
 
-        Assert.assertTrue(saveButton.isDisplayed());
+        Assert.assertTrue(saveButton);
     }
 
     @Test(dependsOnMethods = "testBuildStepsFilterNames")
