@@ -43,6 +43,7 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .changePrismSyntaxHighlightingThemeDefault()
                 .changePrismSyntaxHighlightingThemeCoy()
                 .changePrismSyntaxHighlightingDark()
+                .changePrismSyntaxHighlightingThemeCoy()
                 .pipelineStagesandGraph()
                 .clickSaveButton()
                 .getPopUpSaveButtonText();
