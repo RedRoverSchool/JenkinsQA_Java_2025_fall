@@ -11,6 +11,7 @@ import school.redrover.common.TestUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 
 public class HomePage extends BasePage {
@@ -44,10 +45,11 @@ public class HomePage extends BasePage {
         return new FolderPage(getDriver());
     }
 
-    public <T extends BasePage> T openPage(String jobName, T resultPage) {
+    public <T extends BasePage> T openProject(String jobName, Supplier<T> resultPage) {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
 
-        return resultPage;
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
+        return resultPage.get();
     }
 
     public NewItemPage clickSidebarNewItem() {

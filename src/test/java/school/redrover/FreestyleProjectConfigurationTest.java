@@ -169,7 +169,7 @@ public class FreestyleProjectConfigurationTest extends BaseTest {
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
                 .gotoHomePage()
-                .openPage(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
+                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .getSCMTitleText();
 

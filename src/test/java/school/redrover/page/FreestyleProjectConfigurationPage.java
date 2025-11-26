@@ -75,6 +75,7 @@ public class FreestyleProjectConfigurationPage extends BasePage {
     public FreestyleProjectPage clickSave() {
         getDriver().findElement(By.name("Submit")).click();
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new FreestyleProjectPage(getDriver());
     }
 
