@@ -52,15 +52,20 @@ public class AppearancePage extends BasePage {
     }
 
     public AppearancePage changePrismSyntaxHighlightingThemeDefault() {
-        new Select(getDriver().findElement(By.name("_.theme"))).selectByValue("PRISM");
+        Select ch = new Select(getWait5().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
+        ch.selectByValue("PRISM");
         return this;
     }
+
     public AppearancePage changePrismSyntaxHighlightingThemeCoy() {
-        new Select(getDriver().findElement(By.name("_.theme"))).selectByValue("COY");
+        Select ch = new Select(getWait5().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
+        ch.selectByValue("COY");
         return this;
     }
+
     public AppearancePage changePrismSyntaxHighlightingDark() {
-        new Select(getDriver().findElement(By.name("_.theme"))).selectByValue("DARK");
+        Select ch = new Select(getWait5().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
+        ch.selectByValue("DARK");
         return this;
     }
 }
