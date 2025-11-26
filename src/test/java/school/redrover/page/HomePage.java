@@ -190,10 +190,10 @@ public class HomePage extends BasePage {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
     }
 
-    public ManageJenkinsPage clickManageJenkinsIcon() {
+    public JenkinsManagementPage clickManageJenkinsIcon() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
 
-        return new ManageJenkinsPage(getDriver());
+        return new JenkinsManagementPage(getDriver());
     }
 
     public HomePage clearTextDescription() {
