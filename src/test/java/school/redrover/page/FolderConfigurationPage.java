@@ -220,4 +220,9 @@ public class FolderConfigurationPage extends BasePage {
     public String getRecursiveTooltipText() {
         return recursiveTooltipContent.getText().trim();
     }
+
+    public String getBreadcrumbItem() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//span[contains(text(),'Configuration')]"))).getText();
+    }
 }

@@ -246,9 +246,10 @@ public class FolderPage extends BasePage {
         return this;
     }
 
-    public WebElement getMenuItemInDropdown(String menuItem) {
+    public boolean isMenuItemInDropdownDisplayed(String menuItem) {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//a[contains(@class, 'jenkins-dropdown__item') and contains(., '%s')]".formatted(menuItem))));
+                .xpath("//a[contains(@class, 'jenkins-dropdown__item') and contains(., '%s')]".formatted(menuItem))))
+                .isDisplayed();
     }
 
     public <T extends BasePage> T openItemPage(String itemName, T itemPage) {

@@ -186,4 +186,9 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("triggers")))
                 .getText();
     }
+
+    public String getBreadcrumbItem() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//span[contains(text(),'Configuration')]"))).getText();
+    }
 }
