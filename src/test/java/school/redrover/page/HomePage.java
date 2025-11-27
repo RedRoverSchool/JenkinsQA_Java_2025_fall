@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
@@ -15,6 +16,9 @@ import java.util.function.Supplier;
 
 
 public class HomePage extends BasePage {
+
+    @FindBy(xpath = "//a[@href='/view/all/newJob']")
+    private WebElement sidebarNewItem;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -27,8 +31,9 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItemOnLeftMenu() {
-        getDriver().findElement(By.linkText("New Item")).click();
+        sidebarNewItem.click();
 
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
         return new NewItemPage(getDriver());
     }
 
@@ -53,8 +58,9 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickSidebarNewItem() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        sidebarNewItem.click();
 
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
         return new NewItemPage(getDriver());
     }
 
