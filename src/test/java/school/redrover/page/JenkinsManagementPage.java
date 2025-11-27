@@ -42,7 +42,7 @@ public class JenkinsManagementPage extends BasePage {
     }
 
     public String getHTMLAttributThemeText() {
-        return getWait5().until(ExpectedConditions.presenceOfElementLocated(
+        return getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.cssSelector("html"))).getAttribute("data-theme");
     }
 
@@ -93,6 +93,5 @@ public class JenkinsManagementPage extends BasePage {
         getDriver().findElement(By.xpath("//a[@href = 'appearance']")).click();
         return new AppearancePage(getDriver());
     }
-
 
 }

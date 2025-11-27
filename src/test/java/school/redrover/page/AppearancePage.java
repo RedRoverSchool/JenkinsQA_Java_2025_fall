@@ -30,7 +30,7 @@ public class AppearancePage extends BasePage {
     }
 
     public AppearancePage clickDoNotAllowDifferentTheme() {
-        getDriver().findElement(By.xpath("//label[contains(., 'Do not allow users to select a different theme')]")).click();
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/div[4]/div[1]/span/label")).click();
 
         return this;
     }
