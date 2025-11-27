@@ -132,7 +132,7 @@ public class DashboardTest extends BaseTest {
         final String expectedTitle = "Manage Jenkins";
 
         String actualTitle = new HomePage(getDriver())
-                .clickManageJenkinsIcon()
+                .clickGearManageJenkinsButton()
                 .getHeadingText();
 
         Assert.assertEquals(actualTitle, expectedTitle);

@@ -150,7 +150,7 @@ public class UserTest extends BaseTest {
         final String description = "Lorem ipsum dolor sit amet.";
 
         String actualDescriptionText = new HomePage(getDriver())
-                .clickManageJenkinsIcon()
+                .clickGearManageJenkinsButton()
                 .clickUserButton()
                 .clickSignOut()
                 .signIn(USER_NAME, USER_PASSWORD)

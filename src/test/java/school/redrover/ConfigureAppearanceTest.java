@@ -63,7 +63,7 @@ public class ConfigureAppearanceTest extends BaseTest {
     @Test
     public void changeTheme() {
         String checking = new HomePage(getDriver())
-                .clickManageJenkinsIcon()
+                .clickGearManageJenkinsButton()
                 .clickAppearance()
                 .changeTheme(theme);
         Assert.assertEquals(checking, theme);
