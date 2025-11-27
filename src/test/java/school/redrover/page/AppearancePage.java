@@ -52,19 +52,20 @@ public class AppearancePage extends BasePage {
     }
 
     public AppearancePage changePrismSyntaxHighlightingThemeDefault() {
-        Select ch = new Select(getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select"))));
+
+        Select ch = new Select(getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
         ch.selectByValue("PRISM");
         return this;
     }
 
     public AppearancePage changePrismSyntaxHighlightingThemeCoy() {
-        Select ch = new Select(getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select"))));
+        Select ch = new Select(getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
         ch.selectByValue("COY");
         return this;
     }
 
     public AppearancePage changePrismSyntaxHighlightingDark() {
-        Select ch = new Select(getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[5]/div[2]/div[2]/div/select"))));
+        Select ch = new Select(getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
         ch.selectByValue("DARK");
         return this;
     }
