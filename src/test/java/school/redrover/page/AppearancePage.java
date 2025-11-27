@@ -47,7 +47,7 @@ public class AppearancePage extends BasePage {
     }
 
     public AppearancePage pipelineStagesandGraph() {
-        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[4]/div[2]/div[1]/span/label")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[4]/div[2]/div[1]/span/label")));
         return this;
     }
 
