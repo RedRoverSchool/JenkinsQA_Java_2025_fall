@@ -4,10 +4,17 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class MultibranchPipelineConfigurationPage extends BasePage {
+
+    @FindBy(name = "_.description")
+    private WebElement descriptionField;
+
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
 
     public MultibranchPipelineConfigurationPage(WebDriver driver) {
         super(driver);
@@ -20,7 +27,7 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     }
 
     public MultibranchPipelineProjectPage clickSaveButton() {
-        getDriver().findElement(By.name("Submit")).click();
+        submitButton.click();
         getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                 By.cssSelector(".empty-state-section h2")));
 
@@ -64,8 +71,6 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     }
 
     public MultibranchPipelineConfigurationPage sendDescription(String description) {
-        WebElement descriptionField = getDriver().findElement(By.name("_.description"));
-
         descriptionField.clear();
         descriptionField.sendKeys(description);
 

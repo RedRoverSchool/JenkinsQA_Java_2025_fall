@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.common.BasePage;
 
-import javax.swing.*;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +26,15 @@ public class FreestyleProjectConfigurationPage extends BasePage {
 
     @FindBy(name = "_.numToKeepStr")
     private WebElement numToKeepStrCheck;
+
+    @FindBy(id = "triggers")
+    private WebElement triggersTitle;
+
+    @FindBy(xpath = "//button[@data-section-id='triggers']")
+    private WebElement triggersLinkSideMenu;
+
+    @FindBy(xpath = "//div[@class='jenkins-section__description' and contains(text(), 'Set up automated actions')]")
+    private WebElement triggersDescription;
 
     public FreestyleProjectConfigurationPage(WebDriver driver) {
         super(driver);
@@ -170,8 +178,8 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         return this;
     }
 
-    public FreestyleProjectConfigurationPage clickTriggerLinkInSideMenu() {
-        getDriver().findElement(By.xpath("//button[@data-section-id='triggers']")).click();
+    public FreestyleProjectConfigurationPage clickTriggersLinkInSideMenu() {
+        triggersLinkSideMenu.click();
 
         return this;
     }
@@ -183,8 +191,11 @@ public class FreestyleProjectConfigurationPage extends BasePage {
     }
 
     public String getTriggerTitleText() {
-        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("triggers")))
-                .getText();
+        return triggersTitle.getText();
+    }
+
+    public String getTriggersDescriptionText () {
+        return triggersDescription.getText();
     }
 
     public String getBreadcrumbItem() {
