@@ -37,7 +37,7 @@ public class FolderSettingsTest extends BaseTest {
 
         FolderPage.FolderInfo actualInfo = new HomePage(getDriver())
                 .clickFolder(DISPLAY_NAME)
-                .clickConfigure()
+                .clickConfigureLinkInSideMenu()
                 .setDescription(description)
                 .clickSave()
                 .getInfo();

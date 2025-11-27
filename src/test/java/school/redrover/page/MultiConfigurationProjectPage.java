@@ -23,8 +23,10 @@ public class MultiConfigurationProjectPage extends BasePage {
 
     public MultiConfigurationProjectPage clickSubmit() {
         getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.className("permalinks-header")));
 
-        return new MultiConfigurationProjectPage(getDriver());
+        return this;
     }
 
     public MultiConfigurationProjectPage clickRenameViaDashboardDropDownMenu() {
@@ -40,20 +42,27 @@ public class MultiConfigurationProjectPage extends BasePage {
         return this;
     }
 
-
-    public MultiConfigurationProjectPage renameProject(String jobName) {
+    public MultiConfigurationProjectPage clearNameField() {
         getDriver().findElement(By.cssSelector("[href$='confirm-rename']")).click();
 
         WebElement renameField = getDriver().findElement(By.name("newName"));
         renameField.clear();
-        renameField.sendKeys(jobName + Keys.ENTER);
+        return this;
+    }
+
+    public MultiConfigurationProjectPage setNewProjectName(String jobName) {
+        getDriver().findElement(By.name("newName")).sendKeys(jobName + Keys.ENTER);
 
         getWait5().until(ExpectedConditions.not(ExpectedConditions.urlContains("confirm-rename")));
-
         return this;
     }
 
     public String getHeading() {
         return getDriver().findElement(By.tagName("h1")).getText();
+    }
+
+    public String getBreadcrumbItem() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//span[contains(text(),'Configuration')]"))).getText();
     }
 }

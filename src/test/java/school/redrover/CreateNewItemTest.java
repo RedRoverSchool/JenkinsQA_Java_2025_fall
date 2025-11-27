@@ -235,11 +235,22 @@ public class CreateNewItemTest extends BaseTest {
                 .sendName(newName)
                 .sendNameToCopyFromAndSubmit(originalName)
                 .gotoHomePage()
-                .openPage(newName, new FreestyleProjectPage(getDriver()))
-                .clickConfigure(newName)
+                .openProject(newName, () -> new FreestyleProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .getSettingsToList();
 
         Assert.assertEquals(originalItemSettingsList, copiedItemSettingsList);
+    }
+    @Test
+    public void testErrorDisplayedForEmptyItemName(){
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .clickOkButton()
+                .getErrorDisplayedForEmptyItemName();
+
+        Assert.assertEquals(errorMessage, "» This field cannot be empty, please enter a valid name");
+
+
     }
 }
 

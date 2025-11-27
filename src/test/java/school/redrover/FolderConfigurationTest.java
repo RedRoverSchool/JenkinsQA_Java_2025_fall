@@ -6,13 +6,12 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.*;
-
 import java.util.Arrays;
 import java.util.List;
 
 public class FolderConfigurationTest extends BaseTest {
 
-   private static final String FOLDER_NAME = "my folder";
+   private static final String FOLDER_NAME = "MyFolder";
 
    @DataProvider
    public Object[][] itemsData() {
@@ -48,8 +47,8 @@ public class FolderConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testHealthMetricButtonIsDisplayed(){
         String buttonDisplayed = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .getHealthMetricsButton();
 
         Assert.assertEquals(buttonDisplayed,"Health metrics");
@@ -58,8 +57,8 @@ public class FolderConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testHealthMetricSectionNavigation(){
         String sectionName = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsSidebarLink()
                 .getSectionName();
 
@@ -72,8 +71,8 @@ public class FolderConfigurationTest extends BaseTest {
         final List<String> expectedMetricTypes= Arrays.asList("Child item with the given name","Child item with worst health");
 
         List<String> actualMetricTypes = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsSidebarLink()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
@@ -89,8 +88,8 @@ public class FolderConfigurationTest extends BaseTest {
         final String expectedMetric = "Child item with worst health";
 
         String actualMetricAdded = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickWorstHealthButton()
@@ -105,8 +104,8 @@ public class FolderConfigurationTest extends BaseTest {
         final String expectedMetric = "Child item with the given name";
 
         String actualMetricAdded = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickGivenNameButton()
@@ -121,8 +120,8 @@ public class FolderConfigurationTest extends BaseTest {
         final String expectedTopMetric = "Child item with worst health";
 
         String actualTopMetric = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickGivenNameButton()
@@ -137,8 +136,8 @@ public class FolderConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testHealthMetricLinkIsDisplayed")
     public void testDeleteMetric() {
         List <String> metricList = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickGivenNameButton()
@@ -157,8 +156,8 @@ public class FolderConfigurationTest extends BaseTest {
         final String textOnHover = "Help for feature: Child Name";
 
         String actualText = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickGivenNameButton()
@@ -174,8 +173,8 @@ public class FolderConfigurationTest extends BaseTest {
         final String expectedTooltip = "Controls the child item within this folder representing to the health of this folder.";
 
         String actualText = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickGivenNameButton()
@@ -191,8 +190,8 @@ public class FolderConfigurationTest extends BaseTest {
         final String textOnHover = "Help";
 
         String actualText = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickWorstHealthButton()
@@ -208,8 +207,8 @@ public class FolderConfigurationTest extends BaseTest {
         final String expectedTooltip = "Controls whether items within sub-folders will be considered as contributing to the health of this folder.";
 
         String actualText = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
-                .clickConfigure()
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickHealthMetricsButton()
                 .clickAddMetricButton()
                 .clickWorstHealthButton()
@@ -224,15 +223,89 @@ public class FolderConfigurationTest extends BaseTest {
         final String menuItem = "Configure";
         createFolder();
 
-        WebElement configureMenuItem = new HomePage(getDriver())
+        boolean isConfigureMenuItemDisplayed = new HomePage(getDriver())
                 .clickFolder(FOLDER_NAME)
                 .clickSidebarNewItem()
                 .sendName(itemName)
                 .selectItemTypeAndSubmitAndGoHome(itemType)
                 .clickFolder(FOLDER_NAME)
                 .openItemDropdownMenu(itemName)
-                .getMenuItemInDropdown(menuItem);
+                .isMenuItemInDropdownDisplayed(menuItem);
 
-        Assert.assertTrue(configureMenuItem.isDisplayed());
+        Assert.assertTrue(isConfigureMenuItemDisplayed);
+    }
+
+    @Test
+    public void testNavigateToConfigurationViaSideMenuForPipeline() {
+        final String itemName = "pipeline01";
+
+        createFolder();
+
+        String actualHeadingText = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME)
+                .clickSidebarNewItem()
+                .sendName(itemName)
+                .selectPipelineAndSubmit()
+                .gotoHomePage()
+                .clickFolder(FOLDER_NAME)
+                .openItemPage(itemName, new PipelinePage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .getHeadingText();
+
+        Assert.assertEquals(actualHeadingText, "Configure");
+    }
+
+    @Test(dataProvider = "itemsData")
+    public void testNavigateToConfigurationViaSideMenuForEachJob(String itemName, String itemType) {
+        final String expectedBreadcrumbItem = "Configuration";
+
+        createFolder();
+
+        new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME)
+                .clickSidebarNewItem()
+                .sendName(itemName)
+                .selectItemTypeAndSubmitAndGoHome(itemType)
+                .clickFolder(FOLDER_NAME);
+
+        String actualBreadcrumbItem = getBreadcrumbItem(itemName, itemType);
+        Assert.assertEquals(actualBreadcrumbItem, expectedBreadcrumbItem);
+    }
+
+    private String getBreadcrumbItem(String itemName, String itemType) {
+        switch (itemType) {
+            case "Freestyle project":
+                return new FolderPage(getDriver())
+                        .openItemPage(itemName, new FreestyleProjectPage(getDriver()))
+                        .clickConfigureLinkInSideMenu()
+                        .getBreadcrumbItem();
+            case "Pipeline":
+                return new FolderPage(getDriver())
+                        .openItemPage(itemName, new PipelinePage(getDriver()))
+                        .clickConfigureLinkInSideMenu()
+                        .getBreadcrumbItem();
+            case "Multi-configuration project":
+                return new FolderPage(getDriver())
+                        .openItemPage(itemName, new MultiConfigurationProjectPage(getDriver()))
+                        .clickConfigureLinkInSideMenu()
+                        .getBreadcrumbItem();
+            case "Folder":
+                return new FolderPage(getDriver())
+                        .openItemPage(itemName, new FolderPage(getDriver()))
+                        .clickConfigureLinkInSideMenu()
+                        .getBreadcrumbItem();
+            case "Multibranch Pipeline":
+                return new FolderPage(getDriver())
+                        .openItemPage(itemName, new MultibranchPipelineProjectPage(getDriver()))
+                        .clickConfigureLinkInSideMenu()
+                        .getBreadcrumbItem();
+            case "Organization Folder":
+                return new FolderPage(getDriver())
+                        .openItemPage(itemName, new OrganizationFolderPage(getDriver()))
+                        .clickConfigureLinkInSideMenu()
+                        .getBreadcrumbItem();
+            default:
+                throw new IllegalArgumentException("Unknown item type: " + itemType);
+        }
     }
 }

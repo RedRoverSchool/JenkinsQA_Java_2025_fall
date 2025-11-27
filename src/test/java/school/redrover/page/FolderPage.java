@@ -18,8 +18,8 @@ public class FolderPage extends BasePage {
         super(driver);
     }
 
-    public FolderConfigurationPage clickConfigure() {
-        getDriver().findElement(By.xpath("//span[text()='Configure']/..")).click();
+    public FolderConfigurationPage clickConfigureLinkInSideMenu() {
+        getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]")).click();
 
         return new FolderConfigurationPage(getDriver());
     }
@@ -122,10 +122,10 @@ public class FolderPage extends BasePage {
         return this;
     }
 
-    public RenameFolderPage clickRenameItemInDropdownMenu() {
+    public FolderRenamingPage clickRenameItemInDropdownMenu() {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='tippy-content']//div[@class='jenkins-dropdown']//a[normalize-space()='Rename']"))).click();
 
-        return new RenameFolderPage(getDriver());
+        return new FolderRenamingPage(getDriver());
     }
 
     public FolderPage clickDeleteItemInDropdownMenu() {
@@ -246,14 +246,15 @@ public class FolderPage extends BasePage {
         return this;
     }
 
-    public WebElement getMenuItemInDropdown(String menuItem) {
+    public boolean isMenuItemInDropdownDisplayed(String menuItem) {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//a[contains(@class, 'jenkins-dropdown__item') and contains(., '%s')]".formatted(menuItem))));
+                .xpath("//a[contains(@class, 'jenkins-dropdown__item') and contains(., '%s')]".formatted(menuItem))))
+                .isDisplayed();
     }
 
-    public <T extends FolderPage> T openItemPage(String itemName, T resultPage) {
+    public <T extends BasePage> T openItemPage(String itemName, T itemPage) {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(itemName.trim())));
 
-        return resultPage;
+        return itemPage;
     }
 }

@@ -84,15 +84,14 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testCreateProject() {
-        createNewJob();
-        setNameOfProject(NAME_OF_PROJECT);
-        selectProject();
-        submitCreateProject();
-        submitConfigure();
+        String actualProjectName = new HomePage(getDriver())
+                .clickSidebarNewItem()
+                .sendName(NAME_OF_PROJECT)
+                .selectMultiConfigurationProjectAndSubmit()
+                .clickSubmit()
+                .getHeading();
 
-        softAssert.assertEquals(getTitleOfProject(), NAME_OF_PROJECT);
-        softAssert.assertTrue(waitTime(20).until(ExpectedConditions.urlContains(NAME_OF_PROJECT)));
-        softAssert.assertAll();
+        Assert.assertEquals(actualProjectName, NAME_OF_PROJECT);
     }
 
     @Ignore
@@ -135,7 +134,8 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .selectMultiConfigurationProjectAndSubmit()
                 .clickSubmit()
                 .clickRenameViaDashboardDropDownMenu()
-                .renameProject(RENAMED_MULTICONFIGURATION_PROJECT)
+                .clearNameField()
+                .setNewProjectName(RENAMED_MULTICONFIGURATION_PROJECT)
                 .getHeading();
 
         Assert.assertEquals(actualProjectName, RENAMED_MULTICONFIGURATION_PROJECT);

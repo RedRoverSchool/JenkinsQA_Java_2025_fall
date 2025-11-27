@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElementsLocatedBy;
 
+
 public class ConfigurationMatrixTest extends BaseTest {
 
     private void createConfigurationMatrix() {
@@ -52,5 +53,22 @@ public class ConfigurationMatrixTest extends BaseTest {
         Assert.assertEquals(items.size(), 1, "Dropdown should contain exactly one item");
         Assert.assertEquals(items.get(0).getText().trim(), "User-defined Axis",
                 "The only option must be 'User-defined Axis'");
+    }
+
+    @Test
+    public void testSetUpEnvironmentAfterRefresh() {
+
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys("NewFreestyleProject");
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@data-section-id='environment']")).click();
+
+        String urlBeforeRefresh = getDriver().getCurrentUrl();
+        getDriver().navigate().refresh();
+        String urlAfterRefresh = getDriver().getCurrentUrl();
+        getWait10().until(ExpectedConditions.urlToBe(urlBeforeRefresh));
+
+        Assert.assertEquals(urlAfterRefresh, urlBeforeRefresh);
     }
 }

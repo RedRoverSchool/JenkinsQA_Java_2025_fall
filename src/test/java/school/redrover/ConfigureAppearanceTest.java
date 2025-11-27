@@ -63,23 +63,23 @@ public class ConfigureAppearanceTest extends BaseTest {
     @Test
     public void changeTheme() {
         String checking = new HomePage(getDriver())
-                .clickManageJenkinsIcon()
+                .clickGearManageJenkinsButton()
                 .clickAppearance()
                 .changeTheme(theme);
         Assert.assertEquals(checking, theme);
     }
 
         @Test
-        public void testThemesAndSaveButton() {
-            String popUpSaveButtonText = new HomePage(getDriver())
+        public void testThemesAndApplyPopUpButton() {
+            String popUpApplyButtonText = new HomePage(getDriver())
                     .clickGearManageJenkinsButton()
                     .clickAppearanceLink()
                     .clickDarkSystemTheme()
                     .clickLightTheme()
                     .clickDarkTheme()
-                    .clickSaveButton()
-                    .getPopUpSaveButtonText();
+                    .clickApplyButton()
+                    .getPopUpApplyButtonText();
 
-            Assert.assertEquals(popUpSaveButtonText, "Saved");
+            Assert.assertEquals(popUpApplyButtonText,"Saved");
         }
 }

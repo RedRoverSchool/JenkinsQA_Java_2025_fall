@@ -58,14 +58,14 @@ public class FolderTest extends BaseTest {
             String itemName = (String) item[0];
             String itemType = (String) item[1];
             new HomePage(getDriver())
-                    .openPage(FOLDER_NAME_2, new FolderPage(getDriver()))
+                    .openProject(FOLDER_NAME_2, () -> new FolderPage(getDriver()))
                     .clickSidebarNewItem()
                     .sendName(itemName)
                     .selectItemTypeAndSubmitAndGoHome(itemType);
         }
 
         List<String> folderItemList = new HomePage(getDriver())
-                .openPage(FOLDER_NAME_2, new FolderPage(getDriver()))
+                .openProject(FOLDER_NAME_2, () -> new FolderPage(getDriver()))
                 .getProjectList();
 
         Assert.assertTrue(folderItemList.size() >= ITEM_NAMES.size(),
@@ -77,7 +77,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testNewItemDefaultAddedToExistingFolder")
     public void testPreventDuplicateItemNamesInFolder() {
         String duplicateErrorMessage = new HomePage(getDriver())
-                .openPage(FOLDER_NAME_2, new FolderPage(getDriver()))
+                .openProject(FOLDER_NAME_2, () -> new FolderPage(getDriver()))
                 .clickSidebarNewItem()
                 .sendName(SUB_FOLDER_NAME)
                 .selectFolder()
@@ -92,7 +92,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = {"testPreventDuplicateItemNamesInFolder", "testSameItemNamesInTwoFolders"})
     public void testDeleteFolderBySidebar() {
         boolean isFolderDeleted = new HomePage(getDriver())
-                .openPage(FOLDER_NAME_2, new FolderPage(getDriver()))
+                .openProject(FOLDER_NAME_2, () -> new FolderPage(getDriver()))
                 .clickDeleteFolder()
                 .confirmDeleteFolder()
                 .clickSearchButton()
@@ -108,7 +108,7 @@ public class FolderTest extends BaseTest {
         final String descriptionText = "Folder description";
 
         String actualDescription = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
                 .clickAddDescriptionButton()
                 .addDescriptionAndSave(descriptionText)
                 .getDescription();
@@ -122,29 +122,29 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testNewItemDefaultAddedToExistingFolder")
     public void testSameItemNamesInTwoFolders() {
         List<String> jobsInFirstFolder = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
                 .clickSidebarNewItem()
                 .sendName(SUB_FOLDER_NAME)
                 .selectFolderAndSubmit()
                 .gotoHomePage()
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
                 .getProjectList();
 
         List<String> jobsInSecondFolder = new FolderPage(getDriver())
                 .gotoHomePage()
-                .openPage(FOLDER_NAME_2, new FolderPage(getDriver()))
+                .openProject(FOLDER_NAME_2, () -> new FolderPage(getDriver()))
                 .getProjectList();
 
         Assert.assertTrue(jobsInFirstFolder.contains(SUB_FOLDER_NAME),
-                "Пайплайн '%s' должен присутствовать в первой папке '%s'".formatted(SUB_FOLDER_NAME, FOLDER_NAME));
+                "'%s' должен присутствовать в первой папке '%s'".formatted(SUB_FOLDER_NAME, FOLDER_NAME));
         Assert.assertTrue(jobsInSecondFolder.contains(SUB_FOLDER_NAME),
-                "Пайплайн '%s' должен присутствовать во второй папке '%s'".formatted(SUB_FOLDER_NAME, FOLDER_NAME_2));
+                "'%s' должен присутствовать во второй папке '%s'".formatted(SUB_FOLDER_NAME, FOLDER_NAME_2));
     }
 
     @Test(dependsOnMethods = "testRenameFolder")
     public void testDeleteFolderByDashboardDropdownMenu() {
         boolean isFolderDeleted = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
                 .openDropdownMenu(NEW_FOLDER_NAME)
                 .clickDeleteItemInDropdownMenu()
                 .confirmDeleteChildFolder()
@@ -172,7 +172,7 @@ public class FolderTest extends BaseTest {
         }
 
         List<String> folderItemList = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
                 .getProjectList();
 
         Assert.assertTrue(folderItemList.size() >= ITEM_NAMES.size(),
@@ -184,7 +184,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testPutItemsToFolder")
     public void testFolderIsIdentifiedByIcon() {
         FolderPage folderPage = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()));
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()));
         String folderIconAttribute = folderPage.getFolderIconAttribute(SUB_FOLDER_NAME);
         List<String> itemsWithIconAttribute = folderPage.getItemsWithIconAttribute(folderIconAttribute);
 
@@ -198,7 +198,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testSameItemNamesInTwoFolders")
     public void testRenameFolder() {
         String newNameFolder = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
                 .openDropdownMenu(SUB_FOLDER_NAME)
                 .clickRenameItemInDropdownMenu()
                 .clearName()
@@ -212,7 +212,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testPutItemsToFolder")
     public void testFolderIsIdentifiedByTooltip() {
         FolderPage folderPage = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()));
+                .openProject(FOLDER_NAME, () ->new FolderPage(getDriver()));
         String folderTooltip = folderPage.getFolderTooltip(SUB_FOLDER_NAME);
         List<String> itemsWithTooltip = folderPage.getItemsWithTooltip(folderTooltip);
 
@@ -243,7 +243,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = "testCreate")
     public void testIsEmpty() {
         String actualContext = new HomePage(getDriver())
-                .openPage(FOLDER_NAME, new FolderPage(getDriver()))
+                .openProject(FOLDER_NAME, () -> new FolderPage(getDriver()))
                 .getFolderContext();
 
         String expectedContext = "This folder is empty";
