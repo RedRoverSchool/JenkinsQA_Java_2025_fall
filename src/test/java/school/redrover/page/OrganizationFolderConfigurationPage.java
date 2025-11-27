@@ -31,4 +31,9 @@ public class OrganizationFolderConfigurationPage extends BasePage {
 
         return this;
     }
+
+    public String getBreadcrumbItem() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//span[contains(text(),'Configuration')]"))).getText();
+    }
 }

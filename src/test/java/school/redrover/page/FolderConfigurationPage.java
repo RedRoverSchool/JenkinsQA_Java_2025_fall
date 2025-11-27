@@ -193,4 +193,9 @@ public class FolderConfigurationPage extends BasePage {
                 .getText()
                 .trim();
     }
+
+    public String getBreadcrumbItem() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//span[contains(text(),'Configuration')]"))).getText();
+    }
 }

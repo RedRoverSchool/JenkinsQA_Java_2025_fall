@@ -56,4 +56,9 @@ public class MultiConfigurationProjectPage extends BasePage {
     public String getHeading() {
         return getDriver().findElement(By.tagName("h1")).getText();
     }
+
+    public String getBreadcrumbItem() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//span[contains(text(),'Configuration')]"))).getText();
+    }
 }

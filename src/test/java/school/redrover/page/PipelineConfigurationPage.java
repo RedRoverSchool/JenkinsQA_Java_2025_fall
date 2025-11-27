@@ -172,8 +172,13 @@ public class PipelineConfigurationPage extends BasePage {
         return this;
     }
 
-    public String getPageHeader() {
-        return getDriver().findElement(By
-                .xpath("//span[text()='Configuration']")).getText();
+    public String getBreadcrumbItem() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//span[contains(text(),'Configuration')]"))).getText();
+    }
+
+    public String getHeadingText() {
+        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.
+                tagName("h1"))).getText().trim();
     }
 }

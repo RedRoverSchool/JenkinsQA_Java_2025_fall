@@ -224,26 +224,25 @@ public class FolderConfigurationTest extends BaseTest {
         final String menuItem = "Configure";
         createFolder();
 
-        WebElement configureMenuItem = new HomePage(getDriver())
+        boolean isConfigureMenuItemDisplayed = new HomePage(getDriver())
                 .clickFolder(FOLDER_NAME)
                 .clickSidebarNewItem()
                 .sendName(itemName)
                 .selectItemTypeAndSubmitAndGoHome(itemType)
                 .clickFolder(FOLDER_NAME)
                 .openItemDropdownMenu(itemName)
-                .getMenuItemInDropdown(menuItem);
+                .isMenuItemInDropdownDisplayed(menuItem);
 
-        Assert.assertTrue(configureMenuItem.isDisplayed());
+        Assert.assertTrue(isConfigureMenuItemDisplayed);
     }
 
     @Test
     public void testNavigateToConfigurationViaSideMenuForPipeline() {
         final String itemName = "pipeline01";
-        final String expectedPageHeader = "Configuration";
 
         createFolder();
 
-        String actualPageHeader = new HomePage(getDriver())
+        String actualHeadingText = new HomePage(getDriver())
                 .clickFolder(FOLDER_NAME)
                 .clickSidebarNewItem()
                 .sendName(itemName)
@@ -252,8 +251,62 @@ public class FolderConfigurationTest extends BaseTest {
                 .clickFolder(FOLDER_NAME)
                 .openItemPage(itemName, new PipelinePage(getDriver()))
                 .clickConfigureLinkInSideMenu()
-                .getPageHeader();
+                .getHeadingText();
 
-        Assert.assertEquals(actualPageHeader, expectedPageHeader);
+        Assert.assertEquals(actualHeadingText, "Configure");
+    }
+
+    @Test(dataProvider = "itemsData")
+    public void testNavigateToConfigurationViaSideMenuForEachJob(String itemName, String itemType) {
+        final String expectedBreadcrumbItem = "Configuration";
+
+        createFolder();
+
+        new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME)
+                .clickSidebarNewItem()
+                .sendName(itemName)
+                .selectItemTypeAndSubmitAndGoHome(itemType)
+                .clickFolder(FOLDER_NAME);
+
+        String actualBreadcrumbItem = getBreadcrumbItem(itemName, itemType);
+        Assert.assertEquals(actualBreadcrumbItem, expectedBreadcrumbItem);
+    }
+
+    private String getBreadcrumbItem(String itemName, String itemType) {
+        switch (itemType) {
+            case "Freestyle project":
+                return new FolderPage(getDriver())
+                        .openItemPage(itemName, new FreestyleProjectPage(getDriver()))
+                        .clickConfigureLinkInSideMenu()
+                        .getBreadcrumbItem();
+            case "Pipeline":
+                return new FolderPage(getDriver())
+                        .openItemPage(itemName, new PipelinePage(getDriver()))
+                        .clickConfigureLinkInSideMenu()
+                        .getBreadcrumbItem();
+            case "Multi-configuration project":
+                return new FolderPage(getDriver())
+                        .openItemPage(itemName, new MultiConfigurationProjectPage(getDriver()))
+                        .clickConfigureLinkInSideMenu()
+                        .getBreadcrumbItem();
+            case "Folder":
+                return new FolderPage(getDriver())
+                        .openItemPage(itemName, new FolderPage(getDriver()))
+                        .clickConfigureLinkInSideMenu()
+                        .getBreadcrumbItem();
+            case "Multibranch Pipeline":
+                return new FolderPage(getDriver())
+                        .openItemPage(itemName, new MultibranchPipelineProjectPage(getDriver()))
+                        .clickConfigureLinkInSideMenu()
+                        .getBreadcrumbItem();
+            case "Organization Folder":
+                return new FolderPage(getDriver())
+                        .openItemPage(itemName, new OrganizationFolderPage(getDriver()))
+                        .clickConfigureLinkInSideMenu()
+                        .getBreadcrumbItem();
+            default:
+                throw new IllegalArgumentException("Unknown item type: " + itemType);
+        }
     }
 }
