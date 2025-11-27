@@ -193,10 +193,23 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
-                .clickTriggerLinkInSideMenu()
+                .clickTriggersLinkInSideMenu()
                 .getTriggerTitleText();
 
         Assert.assertEquals(triggerTitle, "Triggers");
+    }
+
+    @Test(dependsOnMethods = "testNavigationToTriggersBySideMenu")
+    public void testTriggersSectionDescriptionIsDisplayed() {
+        final String expectedDescription = "Set up automated actions that start your build based on specific events, like code changes or scheduled times.";
+
+        String triggersDescription = new HomePage(getDriver())
+                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .clickTriggersLinkInSideMenu()
+                .getTriggersDescriptionText();
+
+        Assert.assertEquals(triggersDescription, expectedDescription);
     }
 
     @Test
