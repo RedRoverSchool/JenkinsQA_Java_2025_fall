@@ -141,9 +141,21 @@ public class DashboardTest extends BaseTest {
     @Test
     public void testAddColumnsInListViewOnDashboard() {
         final String listViewName = "ListView_01";
+        final List<String> expectedColumnList = List.of(
+                "Status",
+                "Weather",
+                "Name",
+                "Last Success",
+                "Last Failure",
+                "Last Duration",
+                "Build Button",
+                "Last Stable",
+                "Git Branches",
+                "Project description"
+        );
 
         HomePage homePage = new HomePage(getDriver());
-        Set<String> columnSetToAdd = homePage
+        homePage
                 .clickCreateJob()
                 .sendName(PIPELINE_NAME)
                 .selectItemTypeAndSubmitAndGoHome("Pipeline")
@@ -151,17 +163,15 @@ public class DashboardTest extends BaseTest {
                 .sendViewName(listViewName)
                 .selectListViewRadioAndCreate()
                 .selectJobCheckbox(PIPELINE_NAME)
-                .clickAddColumnDropDownButton()
-                .getColumnSetToAdd();
+                .clickAddColumnDropDownButton();
 
         EditViewPage editViewPage = new EditViewPage(getDriver());
-
         List<String> actualColumnList = editViewPage
                 .addColumnInListView()
                 .getCurrentColumnList();
 
         Assert.assertNotEquals(actualColumnList.size(), 0);
-        Assert.assertTrue(actualColumnList.containsAll(columnSetToAdd));
+        Assert.assertEquals(actualColumnList, expectedColumnList);
 
         editViewPage.clickSubmitButton();
         int actualCountDisplayedColumns = homePage.getCountOfDisplayedColumnsOnDashboard();

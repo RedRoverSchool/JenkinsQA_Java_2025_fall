@@ -10,10 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
-
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class EditViewPage extends BasePage {
 
@@ -45,18 +42,8 @@ public class EditViewPage extends BasePage {
                 .xpath("//div[@class='repeated-chunk__header']")))
                 .stream()
                 .map(WebElement::getText)
+                .map(String::trim)
                 .toList();
-    }
-
-    public Set<String> getColumnSetToAdd() {
-        Set<String> columnSetToAdd = new HashSet<>();
-
-        Assert.assertNotEquals(columnListForAdd.size(), 0);
-        for (WebElement element : columnListForAdd) {
-            String columnName = element.getText().trim();
-            columnSetToAdd.add(columnName);
-        }
-        return columnSetToAdd;
     }
 
     public EditViewPage addColumnInListView() {
