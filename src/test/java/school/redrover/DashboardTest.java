@@ -153,28 +153,17 @@ public class DashboardTest extends BaseTest {
                 .clickAddColumnDropDownButton();
 
         EditViewPage editViewPage = new EditViewPage(getDriver());
-        List<String> currentColumnListText = editViewPage.getCurrentColumnList();
 
-        Set<String> addColumnSet = new HashSet<>();
+        Set<String> columnSetToAdd = editViewPage.getColumnSetToAdd();
+        editViewPage.addColumnInListView();
 
-        List<WebElement> columnListForAdd = editViewPage.getAddColumnList();
-        Assert.assertNotEquals(columnListForAdd.size(), 0);
-        for (WebElement element : columnListForAdd) {
-            String columnName = element.getText().trim();
-            addColumnSet.add(columnName);
-            if (!currentColumnListText.contains(columnName)) {
-                TestUtils.mouseEnterJS(getDriver(), element);
-                TestUtils.clickJS(getDriver(), element);
-            }
-        }
-
-        List<String> addedColumnList = editViewPage.getCurrentColumnList();
-        Assert.assertNotEquals(addedColumnList.size(), 0);
-        Assert.assertTrue(addedColumnList.containsAll(addColumnSet));
+        List<String> actualColumnList = editViewPage.getCurrentColumnList();
+        Assert.assertNotEquals(actualColumnList.size(), 0);
+        Assert.assertTrue(actualColumnList.containsAll(columnSetToAdd));
 
         editViewPage.clickSubmitButton();
         int actualCountDisplayedColumns = homePage.getCountOfDisplayedColumnsOnDashboard();
-        Assert.assertEquals(actualCountDisplayedColumns, addedColumnList.size());
+        Assert.assertEquals(actualCountDisplayedColumns, actualColumnList.size());
     }
 
     @Test(dependsOnMethods = "testAddColumnsInListViewOnDashboard")

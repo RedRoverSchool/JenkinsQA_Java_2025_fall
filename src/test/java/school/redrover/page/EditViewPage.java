@@ -5,12 +5,23 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class EditViewPage extends BasePage {
+
+    @FindBy(xpath = "//button[@class='jenkins-dropdown__item ']")
+    private List<WebElement> columnListForAdd;
+
+    @FindBy(xpath = "//div[@class='repeated-chunk__header']")
+    private List<WebElement> currentColumnList;
 
     public EditViewPage(WebDriver driver) {
         super(driver);
@@ -27,17 +38,36 @@ public class EditViewPage extends BasePage {
                 .perform();
     }
 
-    public List<WebElement> getAddColumnList() {
-        return getDriver().findElements(By.xpath("//button[@class='jenkins-dropdown__item ']"));
+    public List<String> getCurrentColumnList() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//div[@class=contains(text(),'Columns')]")));
+
+        return currentColumnList.stream().map(WebElement::getText).toList();
     }
 
-    public List<String> getCurrentColumnList() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class=contains(text(),'Columns')]")));
+    public Set<String> getColumnSetToAdd() {
+        Set<String> columnSetToAdd = new HashSet<>();
 
-        return getDriver().findElements(By.xpath("//div[@class='repeated-chunk__header']"))
-                .stream()
-                .map(WebElement::getText)
-                .toList();
+        Assert.assertNotEquals(columnListForAdd.size(), 0);
+        for (WebElement element : columnListForAdd) {
+            String columnName = element.getText().trim();
+            columnSetToAdd.add(columnName);
+        }
+        return columnSetToAdd;
+    }
+
+    public void addColumnInListView() {
+        List<String> currentColumnList = getCurrentColumnList();
+
+        Assert.assertNotEquals(columnListForAdd.size(), 0);
+        for (WebElement element : columnListForAdd) {
+            String columnName = element.getText().trim();
+
+            if (!currentColumnList.contains(columnName)) {
+                TestUtils.mouseEnterJS(getDriver(), element);
+                TestUtils.clickJS(getDriver(), element);
+            }
+        }
     }
 
     public EditViewPage selectJobCheckbox(String jobName) {
