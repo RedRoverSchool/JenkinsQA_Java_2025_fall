@@ -3,10 +3,20 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class MultibranchPipelineProjectPage extends BasePage {
+
+    @FindBy(id = "view-message")
+    private WebElement description;
+
+    @FindBy(css = "a[href$='/confirm-rename']")
+    private WebElement sidebarRenameLink;
+
+    @FindBy(tagName = "h1")
+    private WebElement pageHeading;
 
     public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
@@ -20,7 +30,7 @@ public class MultibranchPipelineProjectPage extends BasePage {
     }
 
     public String getDescription() {
-        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message"))).getText();
+        return description.getText();
     }
 
     public String getDisabledText() {
@@ -28,14 +38,13 @@ public class MultibranchPipelineProjectPage extends BasePage {
     }
 
     public MultibranchPipelineConfirmRenamePage clickRenameLinkInSideMenu() {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
-                .click();
+        sidebarRenameLink.click();
 
         return new MultibranchPipelineConfirmRenamePage(getDriver());
     }
 
     public String getHeading() {
-        return getDriver().findElement(By.tagName("h1")).getText();
+        return pageHeading.getText();
     }
 
     public MultibranchPipelineProjectPage clickAddDescriptionLink() {

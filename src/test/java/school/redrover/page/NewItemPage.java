@@ -3,18 +3,28 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
 public class NewItemPage extends BasePage {
 
+    @FindBy(id = "name")
+    private WebElement nameField;
+
+    @FindBy(xpath = "//span[text()='Multibranch Pipeline']")
+    private WebElement multibranchPipelineOption;
+
+    @FindBy(id = "ok-button")
+    private WebElement okButton;
+
     public NewItemPage(WebDriver driver) {
         super(driver);
     }
 
     public NewItemPage sendName(String name) {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
+        nameField.sendKeys(name);
 
         return this;
     }
@@ -48,9 +58,9 @@ public class NewItemPage extends BasePage {
     }
 
     public MultibranchPipelineConfigurationPage selectMultibranchPipelineAndSubmit() {
-        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Multibranch Pipeline']"));
+        TestUtils.clickJS(getDriver(), multibranchPipelineOption);
+        okButton.click();
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
 
         return new MultibranchPipelineConfigurationPage(getDriver());
@@ -183,17 +193,20 @@ public class NewItemPage extends BasePage {
 
         return new RestApiPage(getDriver());
     }
+
     public MultiConfigurationProjectPage selectMultiConfigurationProjectAndSubmit() {
         getDriver().findElement(By.cssSelector("[class='hudson_matrix_MatrixProject']")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
 
         return new MultiConfigurationProjectPage(getDriver());
     }
+
     public NewItemPage clickOkButton() {
         getDriver().findElement(By.id("ok-button")).click();
 
         return this;
     }
+
     public String getErrorDisplayedForEmptyItemName() {
         return getDriver().findElement(By.id("itemname-required")).getText();
     }
