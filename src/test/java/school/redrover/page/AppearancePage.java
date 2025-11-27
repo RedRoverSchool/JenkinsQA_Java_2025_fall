@@ -47,26 +47,23 @@ public class AppearancePage extends BasePage {
     }
 
     public AppearancePage pipelineStagesandGraph() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[4]/div[2]/div[1]/span/label")));
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='main-panel']/form/div[1]/section[4]/div[2]/div[1]/span/label")));
         return this;
     }
 
     public AppearancePage changePrismSyntaxHighlightingThemeDefault() {
 
-        Select ch = new Select(getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
-        ch.selectByValue("PRISM");
+        new Select(getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme")))).selectByValue("PRISM");
         return this;
     }
 
     public AppearancePage changePrismSyntaxHighlightingThemeCoy() {
-        Select ch = new Select(getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
-        ch.selectByValue("COY");
+        new Select(getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme")))).selectByValue("COY");
         return this;
     }
 
     public AppearancePage changePrismSyntaxHighlightingDark() {
-        Select ch = new Select(getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
-        ch.selectByValue("DARK");
+        new Select(getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme")))).selectByValue("DARK");
         return this;
     }
 }
