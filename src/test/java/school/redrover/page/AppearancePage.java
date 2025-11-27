@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
 
 public class AppearancePage extends BasePage {
@@ -38,5 +39,33 @@ public class AppearancePage extends BasePage {
     public String getPopUpApplyButtonText() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "//*[@id='notification-bar']"))).getText();
+    }
+
+    public AppearancePage disableUserThemes() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[1]/div[4]/div[1]/span/label")).click();
+        return this;
+    }
+
+    public AppearancePage pipelineStagesandGraph() {
+        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[4]/div[2]/div[1]/span/label")).click();
+        return this;
+    }
+
+    public AppearancePage changePrismSyntaxHighlightingThemeDefault() {
+        Select ch = new Select(getWait5().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
+        ch.selectByValue("PRISM");
+        return this;
+    }
+
+    public AppearancePage changePrismSyntaxHighlightingThemeCoy() {
+        Select ch = new Select(getWait5().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
+        ch.selectByValue("COY");
+        return this;
+    }
+
+    public AppearancePage changePrismSyntaxHighlightingDark() {
+        Select ch = new Select(getWait5().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
+        ch.selectByValue("DARK");
+        return this;
     }
 }
