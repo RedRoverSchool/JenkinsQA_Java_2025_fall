@@ -95,6 +95,7 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .changePrismSyntaxHighlightingThemeCoy()
                 .changePrismSyntaxHighlightingDark()
                 .changePrismSyntaxHighlightingThemeCoy()
+                .pipelineStagesandGraph()
                 .clickApplyButton()
                 .getPopUpApplyButtonText();
 
