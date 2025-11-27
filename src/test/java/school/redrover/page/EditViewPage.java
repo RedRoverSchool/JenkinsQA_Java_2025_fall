@@ -58,9 +58,6 @@ public class EditViewPage extends BasePage {
                 TestUtils.clickJS(getDriver(), element);
             }
         }
-        getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
-                .xpath("//div[@class='repeated-chunk__header']")));
-
         return this;
     }
 
