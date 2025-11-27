@@ -155,9 +155,11 @@ public class DashboardTest extends BaseTest {
         EditViewPage editViewPage = new EditViewPage(getDriver());
 
         Set<String> columnSetToAdd = editViewPage.getColumnSetToAdd();
-        editViewPage.addColumnInListView();
 
-        List<String> actualColumnList = editViewPage.getCurrentColumnList();
+        List<String> actualColumnList = editViewPage
+                .addColumnInListView()
+                .getCurrentColumnList();
+
         Assert.assertNotEquals(actualColumnList.size(), 0);
         Assert.assertTrue(actualColumnList.containsAll(columnSetToAdd));
 

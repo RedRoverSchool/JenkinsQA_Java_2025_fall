@@ -56,7 +56,7 @@ public class EditViewPage extends BasePage {
         return columnSetToAdd;
     }
 
-    public void addColumnInListView() {
+    public EditViewPage addColumnInListView() {
         List<String> currentColumnList = getCurrentColumnList();
 
         Assert.assertNotEquals(columnListForAdd.size(), 0);
@@ -68,6 +68,10 @@ public class EditViewPage extends BasePage {
                 TestUtils.clickJS(getDriver(), element);
             }
         }
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//div[@class='repeated-chunk__header']")));
+
+        return this;
     }
 
     public EditViewPage selectJobCheckbox(String jobName) {
