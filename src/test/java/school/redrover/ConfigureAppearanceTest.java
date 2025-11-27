@@ -44,7 +44,7 @@ public class ConfigureAppearanceTest extends BaseTest {
 
     @Test
     public void testChangeThemeDarkAndCheckBoxAllow() {
-        String themaHtml = new HomePage(getDriver())
+        String themaHtmltext = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickAppearanceLink()
                 .clickDoNotAllowDifferentTheme()
@@ -53,7 +53,7 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .clickSaveButton()
                 .getHTMLAttributThemeText();
 
-        Assert.assertEquals(themaHtml, "dark");
+        Assert.assertEquals(themaHtmltext, "dark");
     }
 
     @Ignore
