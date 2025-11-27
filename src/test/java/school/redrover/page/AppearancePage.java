@@ -42,17 +42,16 @@ public class AppearancePage extends BasePage {
     }
 
     public AppearancePage disableUserThemes() {
-        getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/form/div[1]/section[1]/div[4]/div[1]/span/label")).click();
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/div[4]/div[1]/span/label")).click();
         return this;
     }
 
     public AppearancePage pipelineStagesandGraph() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='main-panel']/form/div[1]/section[4]/div[2]/div[1]/span/label")));
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='main-panel']/form/div[1]/section[4]/div[2]/div[1]/span/label")));
         return this;
     }
 
     public AppearancePage changePrismSyntaxHighlightingThemeDefault() {
-
         new Select(getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme")))).selectByValue("PRISM");
         return this;
     }
