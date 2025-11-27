@@ -143,18 +143,18 @@ public class DashboardTest extends BaseTest {
         final String listViewName = "ListView_01";
 
         HomePage homePage = new HomePage(getDriver());
-        homePage.clickCreateJob()
+        Set<String> columnSetToAdd = homePage
+                .clickCreateJob()
                 .sendName(PIPELINE_NAME)
                 .selectItemTypeAndSubmitAndGoHome("Pipeline")
                 .clickPlusToCreateView()
                 .sendViewName(listViewName)
                 .selectListViewRadioAndCreate()
                 .selectJobCheckbox(PIPELINE_NAME)
-                .clickAddColumnDropDownButton();
+                .clickAddColumnDropDownButton()
+                .getColumnSetToAdd();
 
         EditViewPage editViewPage = new EditViewPage(getDriver());
-
-        Set<String> columnSetToAdd = editViewPage.getColumnSetToAdd();
 
         List<String> actualColumnList = editViewPage
                 .addColumnInListView()

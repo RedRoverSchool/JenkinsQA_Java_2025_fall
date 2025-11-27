@@ -20,14 +20,11 @@ public class EditViewPage extends BasePage {
     @FindBy(xpath = "//button[@class='jenkins-dropdown__item ']")
     private List<WebElement> columnListForAdd;
 
-    @FindBy(xpath = "//div[@class='repeated-chunk__header']")
-    private List<WebElement> currentColumnList;
-
     public EditViewPage(WebDriver driver) {
         super(driver);
     }
 
-    public void clickAddColumnDropDownButton() {
+    public EditViewPage clickAddColumnDropDownButton() {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView({block: 'center'});",
                 getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Add column']"))));
 
@@ -36,13 +33,19 @@ public class EditViewPage extends BasePage {
                 .xpath("//button[text()='Add column']"))))
                 .click()
                 .perform();
+
+        return this;
     }
 
     public List<String> getCurrentColumnList() {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//div[@class=contains(text(),'Columns')]")));
 
-        return currentColumnList.stream().map(WebElement::getText).toList();
+        return getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
+                .xpath("//div[@class='repeated-chunk__header']")))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 
     public Set<String> getColumnSetToAdd() {
@@ -68,7 +71,7 @@ public class EditViewPage extends BasePage {
                 TestUtils.clickJS(getDriver(), element);
             }
         }
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+        getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
                 .xpath("//div[@class='repeated-chunk__header']")));
 
         return this;
