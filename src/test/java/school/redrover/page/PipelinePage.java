@@ -12,6 +12,21 @@ public class PipelinePage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, '/configure')]")
     private WebElement configureMenuItem;
 
+    @FindBy(id = "description-link")
+    private WebElement descriptionButton;
+
+    @FindBy(xpath = "//a[@href = 'editDescription']")
+    private WebElement editDescriptionButton;
+
+    @FindBy(name = "description")
+    private WebElement descriptionTextarea;
+
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
+
+    @FindBy(id = "description-content")
+    private WebElement descriptionContent;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -34,17 +49,15 @@ public class PipelinePage extends BasePage {
     }
 
     public PipelinePage addDescriptionAndSave(String description) {
-        getDriver().findElement(By.name("description")).sendKeys(description);
-        getDriver().findElement(By.name("Submit")).click();
+        descriptionTextarea.sendKeys(description);
+        submitButton.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
 
         return this;
     }
 
     public String getDescription() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
-        return getWait5()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content")))
-                .getText();
+        return descriptionContent.getText();
     }
 
     public PipelinePage clearDescription() {
@@ -58,14 +71,12 @@ public class PipelinePage extends BasePage {
     }
 
     public PipelinePage clickAddDescriptionButton() {
-        getDriver().findElement(By.id("description-link")).click();
+        descriptionButton.click();
         return this;
     }
 
     public PipelinePage clickEditDescriptionButton() {
-        getWait5()
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'editDescription']")))
-                .click();
+        editDescriptionButton.click();
         return this;
     }
 
