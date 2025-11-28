@@ -36,6 +36,28 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testSyntaxDocumentationViaSideMenu() {
+
+        final List<String> expectedSideMenu = List.of(
+                "Snippet Generator",
+                "Declarative Directive Generator",
+                "Declarative Online Documentation",
+                "Steps Reference",
+                "Global Variables Reference",
+                "Online Documentation",
+                "Examples Reference",
+                "IntelliJ IDEA GDSL"
+        );
+
+        List <String> actualSideMenu = new HomePage(getDriver())
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .clickPipelineSyntax()
+                .getListOfButtonsInSideMenu();
+
+        Assert.assertEquals(actualSideMenu, expectedSideMenu);
+    }
+
+    @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testCancelDeletePipelineViaSideMenu() {
         List<String> actualProjectList = new HomePage(getDriver())
                 .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
@@ -47,7 +69,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME));
     }
 
-    @Test(dependsOnMethods = "testCancelDeletePipelineViaSideMenu")
+    @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testBuildPipeline() {
 
         String consoleOutput = new HomePage(getDriver())
@@ -62,7 +84,7 @@ public class PipelineTest extends BaseTest {
 
     }
 
-    @Test(dependsOnMethods = "testBuildPipeline")
+    @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testAddDescription() {
         final String textDescription = "@0*8nFP'cRU0k.|6Gz-wO*se h~OtJ4kz0!)cl0ZAE3vN>q";
 
@@ -93,7 +115,7 @@ public class PipelineTest extends BaseTest {
                 "Не совпал текст description после его редактирования");
     }
 
-    @Test(dependsOnMethods = "testEditDescription")
+    @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testCancelDeletePipelineViaDropDownMenu() {
         List<String> actualProjectList = new HomePage(getDriver())
                 .gotoHomePage()
@@ -105,11 +127,14 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME));
     }
 
-    @Test(dependsOnMethods = "testCancelDeletePipelineViaDropDownMenu")
+    @Test
     public void testDeletePipelineViaDropDownMenu() {
         final String expectedHomePageHeading = "Welcome to Jenkins!";
 
+        createPipeline(PIPELINE_NAME);
+
         String actualHomePageHeading = new HomePage(getDriver())
+                .gotoHomePage()
                 .openDropdownMenu(PIPELINE_NAME)
                 .clickDeleteItemInDropdownMenu()
                 .confirmDelete()
