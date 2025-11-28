@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
 
 public class AppearancePage extends BasePage {
@@ -50,5 +51,31 @@ public class AppearancePage extends BasePage {
         getDriver().findElement(By.cssSelector("button.jenkins-submit-button")).click();
 
         return new JenkinsManagementPage(getDriver());
+    }
+
+    public AppearancePage disableUserThemes() {
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/div[4]/div[1]/span/label")).click();
+        return this;
+    }
+
+    public AppearancePage pipelineStagesandGraph() {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='main-panel']/form/div[1]/section[4]/div[2]/div[1]/span/label")));
+        return this;
+    }
+
+    public AppearancePage changePrismSyntaxHighlightingThemeDefault() {
+
+        new Select(getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("_.theme")))).selectByValue("PRISM");
+        return this;
+    }
+
+    public AppearancePage changePrismSyntaxHighlightingThemeCoy() {
+        new Select(getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("_.theme")))).selectByValue("COY");
+        return this;
+    }
+
+    public AppearancePage changePrismSyntaxHighlightingDark() {
+        new Select(getWait10().until(ExpectedConditions.presenceOfElementLocated(By.name("_.theme")))).selectByValue("DARK");
+        return this;
     }
 }

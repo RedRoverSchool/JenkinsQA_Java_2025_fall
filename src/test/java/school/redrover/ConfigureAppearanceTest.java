@@ -79,4 +79,21 @@ public class ConfigureAppearanceTest extends BaseTest {
 
         Assert.assertEquals(popUpApplyButtonText, "Saved");
     }
+    @Test
+    public void testAppearance() {
+        String popUpSaveButtonText =  new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickAppearanceLink()
+                .clickDoNotAllowDifferentTheme()
+                .pipelineStagesandGraph()
+                .changePrismSyntaxHighlightingThemeDefault()
+                .changePrismSyntaxHighlightingThemeCoy()
+                .changePrismSyntaxHighlightingDark()
+                .changePrismSyntaxHighlightingThemeCoy()
+                .clickApplyButton()
+                .getPopUpApplyButtonText();
+
+        Assert.assertEquals(popUpSaveButtonText, "Saved");
+    }
+
 }
