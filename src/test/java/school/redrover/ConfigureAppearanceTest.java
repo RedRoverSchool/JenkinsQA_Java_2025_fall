@@ -85,7 +85,6 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .clickGearManageJenkinsButton()
                 .clickAppearanceLink()
                 .clickDoNotAllowDifferentTheme()
-                .pipelineStagesandGraph()
                 .changePrismSyntaxHighlightingThemeDefault()
                 .changePrismSyntaxHighlightingThemeCoy()
                 .changePrismSyntaxHighlightingDark()
