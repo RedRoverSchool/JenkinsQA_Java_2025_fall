@@ -9,10 +9,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import school.redrover.common.BasePage;
 
-import javax.swing.*;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FreestyleProjectConfigurationPage extends BasePage {
 
@@ -27,6 +27,15 @@ public class FreestyleProjectConfigurationPage extends BasePage {
 
     @FindBy(name = "_.numToKeepStr")
     private WebElement numToKeepStrCheck;
+
+    @FindBy(id = "triggers")
+    private WebElement triggersTitle;
+
+    @FindBy(xpath = "//button[@data-section-id='triggers']")
+    private WebElement triggersLinkSideMenu;
+
+    @FindBy(xpath = "//div[@class='jenkins-section__description' and contains(text(), 'Set up automated actions')]")
+    private WebElement triggersDescription;
 
     public FreestyleProjectConfigurationPage(WebDriver driver) {
         super(driver);
@@ -84,18 +93,16 @@ public class FreestyleProjectConfigurationPage extends BasePage {
     }
 
     public List<String> getSettingsToList() {
-        List<String> settingsList = new ArrayList<>();
-
-        settingsList.add(getDriver().findElement(By.name("description")).getText());
-        settingsList.add(getDriver().findElement(By.name("_.daysToKeepStr")).getAttribute("value"));
-        settingsList.add(getDriver().findElement(By.name("_.numToKeepStr")).getAttribute("value"));
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollBy(0, 800);");
-        settingsList.add(getDriver().findElement(By.name("_.url")).getAttribute("value"));
-        js.executeScript("window.scrollBy(0, 800);");
-        settingsList.add(getDriver().findElement(By.name("authToken")).getAttribute("value"));
-
-        return settingsList;
+        return getDriver().findElements(By.cssSelector("[name]"))
+                        .stream()
+                        .filter(element ->
+                                Objects.equals(element.getAttribute("name"), "description") ||
+                                Objects.equals(element.getAttribute("name"), "_.daysToKeepStr") ||
+                                Objects.equals(element.getAttribute("name"), "_.numToKeepStr") ||
+                                Objects.equals(element.getAttribute("name"), "_.url") ||
+                                Objects.equals(element.getAttribute("name"), "authToken"))
+                        .map(element -> element.getAttribute("value"))
+                        .toList();
     }
 
     public String getSCMTitleText() {
@@ -170,8 +177,8 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         return this;
     }
 
-    public FreestyleProjectConfigurationPage clickTriggerLinkInSideMenu() {
-        getDriver().findElement(By.xpath("//button[@data-section-id='triggers']")).click();
+    public FreestyleProjectConfigurationPage clickTriggersLinkInSideMenu() {
+        triggersLinkSideMenu.click();
 
         return this;
     }
@@ -183,8 +190,11 @@ public class FreestyleProjectConfigurationPage extends BasePage {
     }
 
     public String getTriggerTitleText() {
-        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("triggers")))
-                .getText();
+        return triggersTitle.getText();
+    }
+
+    public String getTriggersDescriptionText () {
+        return triggersDescription.getText();
     }
 
     public String getBreadcrumbItem() {

@@ -4,34 +4,33 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class MultibranchPipelineConfirmRenamePage extends BasePage {
+
+    @FindBy(name = "newName")
+    private WebElement renameField;
 
     public MultibranchPipelineConfirmRenamePage(WebDriver driver) {
         super(driver);
     }
 
     public MultibranchPipelineConfirmRenamePage renameJob(String jobName) {
-        WebElement newNameField = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
-
-        newNameField.clear();
-        newNameField.sendKeys(jobName);
+        renameField.clear();
+        renameField.sendKeys(jobName);
 
         return this;
     }
 
-    public <T extends BasePage> T submitForm(T page) {
+    public ErrorPage submitForm() {
         getDriver().findElement(By.tagName("form")).submit();
 
-        return page;
+        return new ErrorPage(getDriver());
     }
 
     public MultibranchPipelineProjectPage renameMultibranchPipeline(String jobName) {
-        getDriver().findElement(By.cssSelector("[href$='confirm-rename']")).click();
-
-        WebElement renameField = getDriver().findElement(By.name("newName"));
         renameField.clear();
         renameField.sendKeys(jobName + Keys.ENTER);
 
