@@ -42,7 +42,6 @@ public class ConfigureAppearanceTest extends BaseTest {
         });
     }
 
-    @Ignore //Test failed on CI
     @Test
     public void testChangeThemeDarkAndCheckBoxAllow() {
         String themaHtmltext = new HomePage(getDriver())
@@ -52,7 +51,7 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .clickDarkTheme()
                 .clickDoNotAllowDifferentTheme()
                 .clickSaveButton()
-                .getHTMLAttributThemeText();
+                .getHTMLAttributeThemeText();
 
         Assert.assertEquals(themaHtmltext, "dark");
     }
