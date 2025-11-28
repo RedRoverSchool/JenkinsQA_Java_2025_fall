@@ -64,7 +64,7 @@ public class AppearancePage extends BasePage {
     }
 
     public AppearancePage changePrismSyntaxHighlightingThemeDefault() {
-        new Select(getDriver().findElement(By.cssSelector("[name='_.theme']"))).selectByValue("PRISM");
+        new Select(getWait5().until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("select[name='_.theme']")))).selectByValue("PRISM");
         return this;
     }
 
