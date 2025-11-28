@@ -27,6 +27,15 @@ public class PipelinePage extends BasePage {
     @FindBy(id = "description-content")
     private WebElement descriptionContent;
 
+    @FindBy(xpath = "//a[@data-build-success='Build scheduled']")
+    private WebElement buildNow;
+
+    @FindBy(className = "confirmation-link")
+    private WebElement deletePipeline;
+
+    @FindBy(xpath = "//a[@href='/job/PipelineName/pipeline-syntax']")
+    private WebElement pipelineSyntax;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -81,17 +90,18 @@ public class PipelinePage extends BasePage {
     }
 
     public PipelinePage clickBuildNow() {
-        getDriver().findElement(By.xpath("//a[@data-build-success='Build scheduled']"))
-                .click();
-
+        buildNow.click();
         return this;
     }
 
     public PipelinePage clickDeletePipeline() {
-        getDriver().findElement(By.className("confirmation-link"))
-                .click();
-
+        deletePipeline.click();
         return this;
+    }
+
+    public PipelineSyntaxPage clickPipelineSyntax() {
+        pipelineSyntax.click();
+        return new PipelineSyntaxPage(getDriver());
     }
 
     public PipelineHistoryPage clickBuildHistory() {
