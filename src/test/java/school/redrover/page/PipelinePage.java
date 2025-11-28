@@ -22,7 +22,7 @@ public class PipelinePage extends BasePage {
     private WebElement descriptionTextarea;
 
     @FindBy(name = "Submit")
-    private WebElement submitButton;
+    private WebElement descriptionSubmitButton;
 
     @FindBy(id = "description-content")
     private WebElement descriptionContent;
@@ -50,7 +50,7 @@ public class PipelinePage extends BasePage {
 
     public PipelinePage addDescriptionAndSave(String description) {
         descriptionTextarea.sendKeys(description);
-        submitButton.click();
+        descriptionSubmitButton.click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.id("description-link")));
 
         return this;
