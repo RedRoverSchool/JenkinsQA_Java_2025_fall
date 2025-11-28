@@ -12,6 +12,7 @@ import school.redrover.common.BasePage;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FreestyleProjectConfigurationPage extends BasePage {
 
@@ -92,18 +93,16 @@ public class FreestyleProjectConfigurationPage extends BasePage {
     }
 
     public List<String> getSettingsToList() {
-        List<String> settingsList = new ArrayList<>();
-
-        settingsList.add(getDriver().findElement(By.name("description")).getText());
-        settingsList.add(getDriver().findElement(By.name("_.daysToKeepStr")).getAttribute("value"));
-        settingsList.add(getDriver().findElement(By.name("_.numToKeepStr")).getAttribute("value"));
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollBy(0, 800);");
-        settingsList.add(getDriver().findElement(By.name("_.url")).getAttribute("value"));
-        js.executeScript("window.scrollBy(0, 800);");
-        settingsList.add(getDriver().findElement(By.name("authToken")).getAttribute("value"));
-
-        return settingsList;
+        return getDriver().findElements(By.cssSelector("[name]"))
+                        .stream()
+                        .filter(element ->
+                                Objects.equals(element.getAttribute("name"), "description") ||
+                                Objects.equals(element.getAttribute("name"), "_.daysToKeepStr") ||
+                                Objects.equals(element.getAttribute("name"), "_.numToKeepStr") ||
+                                Objects.equals(element.getAttribute("name"), "_.url") ||
+                                Objects.equals(element.getAttribute("name"), "authToken"))
+                        .map(element -> element.getAttribute("value"))
+                        .toList();
     }
 
     public String getSCMTitleText() {
