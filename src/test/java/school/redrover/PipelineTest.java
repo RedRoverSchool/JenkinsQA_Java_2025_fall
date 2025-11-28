@@ -62,6 +62,7 @@ public class PipelineTest extends BaseTest {
 
     }
 
+
     @Test(dependsOnMethods = "testBuildPipeline")
     public void testAddDescription() {
         final String textDescription = "@0*8nFP'cRU0k.|6Gz-wO*se h~OtJ4kz0!)cl0ZAE3vN>q";
@@ -75,6 +76,8 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(descriptionText, textDescription);
     }
+
+
 
     @Test(dependsOnMethods = "testAddDescription")
     public void testEditDescription() {
@@ -92,6 +95,7 @@ public class PipelineTest extends BaseTest {
                 textDescription,
                 "Не совпал текст description после его редактирования");
     }
+
 
     @Test(dependsOnMethods = "testEditDescription")
     public void testCancelDeletePipelineViaDropDownMenu() {
