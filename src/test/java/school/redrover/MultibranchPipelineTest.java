@@ -179,7 +179,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void isAddDescriptionLinkEnabled() {
+    public void testAddDescriptionLinkIsEnabled() {
       boolean isAddDescriptionLinkEnabled = new HomePage(getDriver())
                 .clickNewItemOnLeftMenu()
                 .sendName(MULTIBRANCH_PIPELINE_NAME)
