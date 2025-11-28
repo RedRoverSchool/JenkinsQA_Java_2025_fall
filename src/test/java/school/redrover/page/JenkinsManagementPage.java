@@ -1,6 +1,7 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -41,9 +42,13 @@ public class JenkinsManagementPage extends BasePage {
                 tagName("h1"))).getText().trim();
     }
 
-    public String getHTMLAttributThemeText() {
-        return getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.cssSelector("html"))).getAttribute("data-theme");
+    public String getHTMLAttributeThemeText() {
+        try {
+            return (String) ((JavascriptExecutor) getDriver())
+                    .executeScript("return document.documentElement.getAttribute('data-theme') || 'unknown'");
+        } catch (Exception e) {
+            return "unknown";
+        }
     }
 
     public JenkinsManagementPage sendTitle(String settingTitle) {
@@ -93,6 +98,4 @@ public class JenkinsManagementPage extends BasePage {
         getDriver().findElement(By.xpath("//a[@href = 'appearance']")).click();
         return new AppearancePage(getDriver());
     }
-
-
 }
