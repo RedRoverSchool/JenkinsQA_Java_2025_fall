@@ -96,11 +96,11 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         return getDriver().findElements(By.cssSelector("[name]"))
                         .stream()
                         .filter(element ->
-                             Objects.equals(element.getAttribute("name"), "description") ||
-                             Objects.equals(element.getAttribute("name"), "_.daysToKeepStr") ||
-                             Objects.equals(element.getAttribute("name"), "_.numToKeepStr") ||
-                             Objects.equals(element.getAttribute("name"), "_.url") ||
-                             Objects.equals(element.getAttribute("name"), "authToken"))
+                                Objects.equals(element.getAttribute("name"), "description") ||
+                                Objects.equals(element.getAttribute("name"), "_.daysToKeepStr") ||
+                                Objects.equals(element.getAttribute("name"), "_.numToKeepStr") ||
+                                Objects.equals(element.getAttribute("name"), "_.url") ||
+                                Objects.equals(element.getAttribute("name"), "authToken"))
                         .map(element -> element.getAttribute("value"))
                         .toList();
     }
