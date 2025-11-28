@@ -98,6 +98,4 @@ public class JenkinsManagementPage extends BasePage {
         getDriver().findElement(By.xpath("//a[@href = 'appearance']")).click();
         return new AppearancePage(getDriver());
     }
-
-
 }
