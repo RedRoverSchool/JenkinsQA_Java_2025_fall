@@ -21,6 +21,9 @@ public class MultibranchPipelineProjectPage extends BasePage {
     @FindBy(id = "description-link")
     private WebElement addDescriptionLink;
 
+    @FindBy(name = "description")
+    private WebElement descriptionField;
+
     public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -57,8 +60,6 @@ public class MultibranchPipelineProjectPage extends BasePage {
     }
 
     public MultibranchPipelineProjectPage sendDescription(String description) {
-        WebElement descriptionField = getDriver().findElement(By.name("description"));
-
         descriptionField.clear();
         descriptionField.sendKeys(description);
 
@@ -66,8 +67,7 @@ public class MultibranchPipelineProjectPage extends BasePage {
     }
 
     public String getDescriptionFieldText() {
-        return getDriver()
-                .findElement(By.name("description"))
+        return descriptionField
                 .getShadowRoot()
                 .findElement(By.cssSelector("div"))
                 .getText();
