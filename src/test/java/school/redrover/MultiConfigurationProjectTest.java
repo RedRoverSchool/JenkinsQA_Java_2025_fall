@@ -1,9 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -17,9 +15,9 @@ import java.time.Duration;
 
 
 public class MultiConfigurationProjectTest extends BaseTest {
-    private static final String NAME_OF_PROJECT = "Group-Code-Coffee_java_project";
-    private static final String RENAMED_MULTICONFIGURATION_PROJECT = "Renamed multiconfiguration project";
-    private static final String DESCRIPTION = "Description for this project...";
+    private static final String PROJECT_NAME = "Multiconfiguration project name";
+    private static final String RENAMED_PROJECT = "Renamed multiconfiguration project";
+    private static final String PROJECT_DESCRIPTION = "Project description...";
 
     SoftAssert softAssert = new SoftAssert();
 
@@ -48,10 +46,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    public String getTitleOfProject() {
-        return getDriver().findElement(By.xpath("//h1[@class= 'matrix-project-headline page-headline']")).getText();
-    }
-
     public void goToProject(String projectName) {
         getDriver().findElement(By.xpath(String.format("//td/a[@href='job/%s/']", projectName))).click();
     }
@@ -59,13 +53,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
     public void goToDashBoard() {
         waitTime(30).until(ExpectedConditions.visibilityOfElementLocated((By.className("app-jenkins-logo"))))
                 .click();
-    }
-
-    public void renameWithSidePanel(String newName) {
-        getDriver().findElement(By.xpath("(//div[@id='side-panel']//div[@class='task '])[7]")).click();
-        WebElement rename = getDriver().findElement(By.name("newName"));
-        rename.clear();
-        rename.sendKeys(newName, Keys.ENTER);
     }
 
     public void editDescription(String text) {
@@ -86,58 +73,57 @@ public class MultiConfigurationProjectTest extends BaseTest {
     public void testCreateProject() {
         String actualProjectName = new HomePage(getDriver())
                 .clickSidebarNewItem()
-                .sendName(NAME_OF_PROJECT)
+                .sendName(PROJECT_NAME)
                 .selectMultiConfigurationProjectAndSubmit()
                 .clickSubmit()
                 .getHeading();
 
-        Assert.assertEquals(actualProjectName, NAME_OF_PROJECT);
+        Assert.assertEquals(actualProjectName, PROJECT_NAME);
     }
 
-    @Ignore
     @Test
-    public void testRenameProject() {
-        createNewJob();
-        setNameOfProject(NAME_OF_PROJECT);
-        selectProject();
-        submitCreateProject();
-        submitConfigure();
-        goToDashBoard();
-        goToProject(NAME_OF_PROJECT);
-        renameWithSidePanel("NewNameProject");
-        getTitleOfProject();
+    public void testRenameViaSidebar() {
+        String actualProjectName = new HomePage(getDriver())
+                .clickSidebarNewItem()
+                .sendName(PROJECT_NAME)
+                .selectMultiConfigurationProjectAndSubmit()
+                .clickSubmit()
+                .clickRenameLinkInSideMenu()
+                .clearNameField()
+                .setNewProjectName(RENAMED_PROJECT)
+                .getHeading();
 
-        softAssert.assertEquals(getTitleOfProject(), "NewNameProject");
+        Assert.assertEquals(actualProjectName, RENAMED_PROJECT);
     }
 
     @Ignore
     @Test
     public void testAddDescriptionToProject() {
         createNewJob();
-        setNameOfProject(NAME_OF_PROJECT);
+        setNameOfProject(PROJECT_NAME);
         selectProject();
         submitCreateProject();
         submitConfigure();
         goToDashBoard();
-        goToProject(NAME_OF_PROJECT);
-        editDescription(DESCRIPTION);
+        goToProject(PROJECT_NAME);
+        editDescription(PROJECT_DESCRIPTION);
         String result = checkDescription();
 
-        softAssert.assertEquals(result, DESCRIPTION);
+        softAssert.assertEquals(result, PROJECT_DESCRIPTION);
     }
 
     @Test
     public void testRenameViaDashboardDropdownMenu() {
         String actualProjectName = new HomePage(getDriver())
                 .clickSidebarNewItem()
-                .sendName(NAME_OF_PROJECT)
+                .sendName(PROJECT_NAME)
                 .selectMultiConfigurationProjectAndSubmit()
                 .clickSubmit()
                 .clickRenameViaDashboardDropDownMenu()
                 .clearNameField()
-                .setNewProjectName(RENAMED_MULTICONFIGURATION_PROJECT)
+                .setNewProjectName(RENAMED_PROJECT)
                 .getHeading();
 
-        Assert.assertEquals(actualProjectName, RENAMED_MULTICONFIGURATION_PROJECT);
+        Assert.assertEquals(actualProjectName, RENAMED_PROJECT);
     }
 }
