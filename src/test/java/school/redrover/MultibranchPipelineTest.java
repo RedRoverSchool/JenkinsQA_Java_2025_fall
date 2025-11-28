@@ -4,7 +4,6 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.ErrorPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.MultibranchPipelineProjectPage;
 import school.redrover.page.NewItemPage;
@@ -223,7 +222,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .openProject(MULTIBRANCH_PIPELINE_NAME, () -> new MultibranchPipelineProjectPage(getDriver()))
                 .clickRenameLinkInSideMenu()
                 .renameJob(MULTIBRANCH_PIPELINE_NAME + ".")
-                .submitForm(new ErrorPage(getDriver()))
+                .submitForm()
                 .getErrorMessage();
 
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage);

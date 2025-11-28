@@ -26,10 +26,10 @@ public class MultibranchPipelineConfirmRenamePage extends BasePage {
         return this;
     }
 
-    public <T extends BasePage> T submitForm(T page) {
+    public ErrorPage submitForm() {
         getDriver().findElement(By.tagName("form")).submit();
 
-        return page;
+        return new ErrorPage(getDriver());
     }
 
     public MultibranchPipelineProjectPage renameMultibranchPipeline(String jobName) {
