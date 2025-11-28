@@ -18,18 +18,16 @@ public class MultibranchPipelineConfirmRenamePage extends BasePage {
     }
 
     public MultibranchPipelineConfirmRenamePage renameJob(String jobName) {
-        WebElement newNameField = getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName")));
-
-        newNameField.clear();
-        newNameField.sendKeys(jobName);
+        renameField.clear();
+        renameField.sendKeys(jobName);
 
         return this;
     }
 
-    public <T extends BasePage> T submitForm(T page) {
+    public ErrorPage submitForm() {
         getDriver().findElement(By.tagName("form")).submit();
 
-        return page;
+        return new ErrorPage(getDriver());
     }
 
     public MultibranchPipelineProjectPage renameMultibranchPipeline(String jobName) {
