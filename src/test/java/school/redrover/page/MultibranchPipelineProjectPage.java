@@ -18,6 +18,9 @@ public class MultibranchPipelineProjectPage extends BasePage {
     @FindBy(tagName = "h1")
     private WebElement pageHeading;
 
+    @FindBy(id = "description-link")
+    private WebElement addDescriptionLink;
+
     public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -48,7 +51,7 @@ public class MultibranchPipelineProjectPage extends BasePage {
     }
 
     public MultibranchPipelineProjectPage clickAddDescriptionLink() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(addDescriptionLink)).click();
 
         return this;
     }
@@ -70,7 +73,7 @@ public class MultibranchPipelineProjectPage extends BasePage {
                 .getText();
     }
 
-    public WebElement getAddDescriptionLink() {
-        return getDriver().findElement(By.id("description-link"));
+    public boolean isAddDescriptionLinkEnabled() {
+        return addDescriptionLink.isEnabled();
     }
 }

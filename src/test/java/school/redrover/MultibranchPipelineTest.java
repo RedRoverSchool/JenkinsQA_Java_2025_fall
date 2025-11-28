@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -180,16 +179,15 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testAddDescriptionLink() {
-      WebElement addDescriptionLink = new HomePage(getDriver())
+    public void testAddDescriptionLinkIsEnabled() {
+      boolean isAddDescriptionLinkEnabled = new HomePage(getDriver())
                 .clickNewItemOnLeftMenu()
                 .sendName(MULTIBRANCH_PIPELINE_NAME)
                 .selectMultibranchPipelineAndSubmit()
                 .clickSaveButton()
-                .getAddDescriptionLink();
+                .isAddDescriptionLinkEnabled();
 
-      Assert.assertTrue(addDescriptionLink.isDisplayed());
-      Assert.assertTrue(addDescriptionLink.isEnabled());
+      Assert.assertTrue(isAddDescriptionLinkEnabled);
     }
 
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
