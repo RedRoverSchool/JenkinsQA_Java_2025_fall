@@ -4,12 +4,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.*;
 
 
 public abstract class BasePage extends BaseModel {
+
+    @FindBy(id = "root-action-ManageJenkinsAction")
+    private WebElement manageJenkinsButton;
 
     public BasePage(WebDriver driver) {
         super(driver);
@@ -23,8 +27,9 @@ public abstract class BasePage extends BaseModel {
     }
 
     public JenkinsManagementPage clickGearManageJenkinsButton() {
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        manageJenkinsButton.click();
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new JenkinsManagementPage(getDriver());
     }
 
