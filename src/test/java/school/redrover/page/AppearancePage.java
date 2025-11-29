@@ -60,7 +60,7 @@ public class AppearancePage extends BasePage {
         getWait10().until(webDriver -> ((JavascriptExecutor) webDriver)
                 .executeScript("return document.readyState").equals("complete"));
 
-        WebElement themeSelectElement = getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme")));
+        WebElement themeSelectElement = getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@name='_.theme']")));
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(themeSelectElement).click().perform();
