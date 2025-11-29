@@ -29,6 +29,9 @@ public class MultiConfigurationProjectPage extends BasePage {
     @FindBy(tagName = "h1")
     private WebElement pageHeading;
 
+    @FindBy(id = "configuration-matrix")
+    private WebElement configurationMatrix;
+
     public MultiConfigurationProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -80,5 +83,9 @@ public class MultiConfigurationProjectPage extends BasePage {
     public String getBreadcrumbItem() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//span[contains(text(),'Configuration')]"))).getText();
+    }
+
+    public String getConfigurationMatrixText() {
+        return configurationMatrix.getText().trim();
     }
 }
