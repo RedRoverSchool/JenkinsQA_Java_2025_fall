@@ -60,12 +60,12 @@ public class SearchModalPage extends BaseModel {
         return searchResultsTexts;
     }
 
-    public UserAccountPage searchForUser(String userName) {
+    public UserStatusPage searchForUser(String userName) {
         getWait2().until(ExpectedConditions.elementToBeClickable(inputField));
         getDriver().findElement(By.id("command-bar")).sendKeys(userName);
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#search-results [href='/user/%s']".formatted(userName).toLowerCase())));
         getDriver().findElement(By.id("command-bar")).sendKeys(Keys.ENTER);
-        return new UserAccountPage(getDriver());
+        return new UserStatusPage(getDriver());
     }
 
     public List<String> searchResults() {
