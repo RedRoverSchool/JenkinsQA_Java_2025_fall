@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
+
 public class AppearancePage extends BasePage {
 
     public AppearancePage(WebDriver driver) {
@@ -50,5 +51,11 @@ public class AppearancePage extends BasePage {
         getDriver().findElement(By.cssSelector("button.jenkins-submit-button")).click();
 
         return new JenkinsManagementPage(getDriver());
+    }
+
+    public AppearancePage clickAppearanceDropdownItem(int num) {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='main-panel']//div/select/option[%s]".formatted(num)))).click();
+
+        return this;
     }
 }

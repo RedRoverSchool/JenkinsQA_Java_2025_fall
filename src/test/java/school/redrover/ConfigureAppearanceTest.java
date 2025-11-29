@@ -14,7 +14,7 @@ import java.time.Duration;
 
 public class ConfigureAppearanceTest extends BaseTest {
     final String theme = "dark";
-
+    final int[] num = {1,2,3,4,5,6,7,8};
     @Test
     public void testChangeTheme() {
 
@@ -78,5 +78,25 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .getPopUpApplyButtonText();
 
         Assert.assertEquals(popUpApplyButtonText, "Saved");
+    }
+
+    @Test
+    public void testAppearance() {
+        String popUpSaveButtonText =  new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickAppearanceLink()
+                .clickDoNotAllowDifferentTheme()
+                .clickAppearanceDropdownItem(num[0])
+                .clickAppearanceDropdownItem(num[1])
+                .clickAppearanceDropdownItem(num[2])
+                .clickAppearanceDropdownItem(num[3])
+                .clickAppearanceDropdownItem(num[4])
+                .clickAppearanceDropdownItem(num[5])
+                .clickAppearanceDropdownItem(num[7])
+                .clickAppearanceDropdownItem(num[6])
+                .clickApplyButton()
+                .getPopUpApplyButtonText();
+
+        Assert.assertEquals(popUpSaveButtonText, "Saved");
     }
 }
