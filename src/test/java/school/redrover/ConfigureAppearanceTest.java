@@ -9,12 +9,11 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-
 import java.time.Duration;
 
 public class ConfigureAppearanceTest extends BaseTest {
     final String theme = "dark";
-    final int[] num = {1,2,3,4,5,6,7,8};
+    final String[] userThemes = {"PRISM","COY","DARK","FUNKY","OKAIDIA","SOLARIZED_LIGHT","TOMORROW_NIGHT","TWILIGHT"};
 
     @Test
     public void testChangeTheme() {
@@ -82,23 +81,22 @@ public class ConfigureAppearanceTest extends BaseTest {
     }
 
     @Test
-    public void testAppearanceDropdownItem() {
+    public void testAppearanceDropdownItems() {
         String popUpSaveButtonText = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickAppearanceLink()
                 .clickDoNotAllowDifferentTheme()
-                .clickAppearanceDropdownItem(num[0])
-                .clickAppearanceDropdownItem(num[1])
-                .clickAppearanceDropdownItem(num[2])
-                .clickAppearanceDropdownItem(num[3])
-                .clickAppearanceDropdownItem(num[4])
-                .clickAppearanceDropdownItem(num[5])
-                .clickAppearanceDropdownItem(num[7])
-                .clickAppearanceDropdownItem(num[6])
+                .clickAppearanceDropdownItem(userThemes[0])
+                .clickAppearanceDropdownItem(userThemes[1])
+                .clickAppearanceDropdownItem(userThemes[2])
+                .clickAppearanceDropdownItem(userThemes[3])
+                .clickAppearanceDropdownItem(userThemes[4])
+                .clickAppearanceDropdownItem(userThemes[5])
+                .clickAppearanceDropdownItem(userThemes[7])
+                .clickAppearanceDropdownItem(userThemes[6])
                 .clickApplyButton()
                 .getPopUpApplyButtonText();
 
         Assert.assertEquals(popUpSaveButtonText, "Saved");
-
     }
 }

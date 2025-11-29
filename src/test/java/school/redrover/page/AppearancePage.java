@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
 
 public class AppearancePage extends BasePage {
@@ -52,9 +53,16 @@ public class AppearancePage extends BasePage {
         return new JenkinsManagementPage(getDriver());
     }
 
-    public AppearancePage clickAppearanceDropdownItem(int num) {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[2]/div[2]/div/select/option[%s]".formatted(num)))).click();
+    public AppearancePage clickAppearanceDropdownItem(String userThemes) {
 
+        Select themeSelect = new Select(getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
+        themeSelect.selectByValue(userThemes);
         return this;
     }
+
+
+//        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[2]/div[2]/div/select/option[%s]".formatted(num)))).click();
+//
+//        return this;}
 }
+
