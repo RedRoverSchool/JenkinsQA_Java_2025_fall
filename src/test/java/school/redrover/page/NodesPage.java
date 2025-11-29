@@ -10,10 +10,10 @@ public class NodesPage  extends BasePage {
         super(driver);
     }
 
-    public RestApiPage clickRestApiLink(){
-        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
-
-        return new RestApiPage(getDriver());
-    }
+//    public RestApiPage clickRestApiLink(){
+//        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+//
+//        return new RestApiPage(getDriver());
+//    }
 }
 
