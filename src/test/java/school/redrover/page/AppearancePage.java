@@ -51,4 +51,10 @@ public class AppearancePage extends BasePage {
 
         return new JenkinsManagementPage(getDriver());
     }
+
+    public AppearancePage clickAppearanceDropdownItem(int num) {
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='main-panel']//div/select/option[%s]".formatted(num)))).click();
+
+        return this;
+    }
 }
