@@ -15,11 +15,6 @@ public class UserAccountPage extends BasePage {
         super(driver);
     }
 
-    public String getUserID() {
-        return getDriver().findElement(By
-                        .xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
-                .getText().substring(17);
-    }
 
     public UserAccountPage sendFullName(String fullName) {
         WebElement fullNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(FULL_NAME_FIELD));

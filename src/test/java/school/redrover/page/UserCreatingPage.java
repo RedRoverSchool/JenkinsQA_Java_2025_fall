@@ -49,4 +49,8 @@ public class UserCreatingPage extends BasePage {
                 .map(WebElement::getText)
                 .toList();
     }
-}
+
+    public String checkCreatedUser() {
+        return getDriver().findElement(By.cssSelector("div.error.jenkins-\\!-margin-bottom-2")).getText();
+    }
+    }

@@ -29,10 +29,6 @@ public class UsersPage extends BasePage {
         return getDriver().findElement(By.xpath("//td[text()='%s']".formatted(userName))).getText();
     }
 
-    public String checkCreatedUser() {
-        return getDriver().findElement(By.cssSelector("div.error.jenkins-\\!-margin-bottom-2")).getText();
-    }
-
     public UserAccountPage clickAccountMenuItem(String userName) {
 
         return clickPopUpMenuItem(userName, ACCOUNT_MENU_ITEM, new UserAccountPage(getDriver()));
