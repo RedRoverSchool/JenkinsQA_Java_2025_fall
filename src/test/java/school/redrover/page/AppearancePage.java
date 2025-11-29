@@ -1,7 +1,10 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.common.BasePage;
@@ -54,7 +57,12 @@ public class AppearancePage extends BasePage {
     }
 
     public AppearancePage clickAppearanceDropdownItem(String userThemes) {
-        Select themeSelect = new Select(getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
+        WebElement themeSelectElement = getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme")));
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(themeSelectElement).click().perform();
+
+        Select themeSelect = new Select(themeSelectElement);
         themeSelect.selectByValue(userThemes);
 
         return this;
