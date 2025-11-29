@@ -21,6 +21,9 @@ public class NewItemPage extends BasePage {
     @FindBy(id = "ok-button")
     private WebElement okButton;
 
+    @FindBy(className = "hudson_matrix_MatrixProject")
+    private WebElement multiConfigurationProject;
+
     @FindBy(css = "[class$='WorkflowJob']")
     private WebElement pipelineType;
 
@@ -201,8 +204,10 @@ public class NewItemPage extends BasePage {
     }
 
     public MultiConfigurationProjectPage selectMultiConfigurationProjectAndSubmit() {
-        getDriver().findElement(By.cssSelector("[class='hudson_matrix_MatrixProject']")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        multiConfigurationProject.click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(okButton)).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
 
         return new MultiConfigurationProjectPage(getDriver());
     }
