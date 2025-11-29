@@ -57,6 +57,9 @@ public class AppearancePage extends BasePage {
     }
 
     public AppearancePage clickAppearanceDropdownItem(String userThemes) {
+        getWait10().until(webDriver -> ((JavascriptExecutor) webDriver)
+                .executeScript("return document.readyState").equals("complete"));
+
         WebElement themeSelectElement = getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme")));
 
         Actions actions = new Actions(getDriver());
