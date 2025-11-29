@@ -1,9 +1,11 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -11,6 +13,9 @@ import java.util.List;
 
 
 public class JenkinsManagementPage extends BasePage {
+
+    @FindBy(id = "settings-search-bar")
+    private WebElement sendTitle;
 
     private final By searchResults = By.cssSelector(".jenkins-dropdown__item:nth-of-type(1)");
 
@@ -41,8 +46,17 @@ public class JenkinsManagementPage extends BasePage {
                 tagName("h1"))).getText().trim();
     }
 
+    public String getHTMLAttributeThemeText() {
+        try {
+            return (String) ((JavascriptExecutor) getDriver())
+                    .executeScript("return document.documentElement.getAttribute('data-theme') || 'unknown'");
+        } catch (Exception e) {
+            return "unknown";
+        }
+    }
+
     public JenkinsManagementPage sendTitle(String settingTitle) {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("settings-search-bar"))).sendKeys(settingTitle);
+        sendTitle.sendKeys(settingTitle);
 
         return this;
     }
@@ -55,6 +69,7 @@ public class JenkinsManagementPage extends BasePage {
                 .click()
                 .perform();
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new SystemConfigurationPage(getDriver());
     }
 
