@@ -16,6 +16,9 @@ public class NewItemPage extends BasePage {
     @FindBy(xpath = "//span[text()='Multibranch Pipeline']")
     private WebElement multibranchPipelineOption;
 
+    @FindBy(className = "hudson_model_FreeStyleProject")
+    private WebElement freestyleProjectOption;
+
     @FindBy(id = "ok-button")
     private WebElement okButton;
 
@@ -83,9 +86,9 @@ public class NewItemPage extends BasePage {
     }
 
     public FreestyleProjectConfigurationPage selectFreestyleProjectAndSubmit() {
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        freestyleProjectOption.click();
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(okButton)).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[@id = 'general']")));
 
         return new FreestyleProjectConfigurationPage(getDriver());
