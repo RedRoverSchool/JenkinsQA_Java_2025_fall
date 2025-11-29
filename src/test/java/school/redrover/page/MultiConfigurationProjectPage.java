@@ -38,7 +38,7 @@ public class MultiConfigurationProjectPage extends BasePage {
 
     public MultiConfigurationProjectPage clickConfigureLinkInSideMenu() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                        .xpath("//a[contains(@href, '/configure')]"))).click();
+                .xpath("//a[contains(@href, '/configure')]"))).click();
 
         return new MultiConfigurationProjectPage(getDriver());
     }
