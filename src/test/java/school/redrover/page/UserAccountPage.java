@@ -30,12 +30,6 @@ public class UserAccountPage extends BasePage {
         return returnedPage;
     }
 
-    public RestApiPage clickRestApiLink(){
-        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
-
-        return new RestApiPage(getDriver());
-    }
-
     public UserAccountPage editDescription(String text) {
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(text);
