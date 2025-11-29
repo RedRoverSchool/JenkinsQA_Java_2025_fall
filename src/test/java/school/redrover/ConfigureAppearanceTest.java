@@ -81,7 +81,7 @@ public class ConfigureAppearanceTest extends BaseTest {
     }
 
     @Test
-    public void testAppearance() {
+    public void testAppearanceDropdownItem() {
         String popUpSaveButtonText =  new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickAppearanceLink()
