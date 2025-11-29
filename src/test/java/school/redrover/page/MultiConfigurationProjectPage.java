@@ -86,6 +86,6 @@ public class MultiConfigurationProjectPage extends BasePage {
     }
 
     public String getConfigurationMatrixText() {
-        return configurationMatrix.getText().trim();
+        return getWait5().until(ExpectedConditions.visibilityOf(configurationMatrix)).getText().trim();
     }
 }
