@@ -8,6 +8,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.PipelineConfigurationPage;
 import school.redrover.page.PipelinePage;
 
 import java.util.List;
@@ -15,6 +16,19 @@ import java.util.List;
 public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "PipelineName";
+
+    @DataProvider
+    public Object[][] validAliases() {
+        return new String[][]{
+                {"@yearly"},
+                {"@annually"},
+                {"@monthly"},
+                {"@weekly"},
+                {"@daily"},
+                {"@midnight"},
+                {"@hourly"}
+        };
+    }
 
     private void createPipeline(String name) {
         new HomePage(getDriver())
@@ -157,44 +171,22 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
     }
 
-    @DataProvider
-    public Object[][] validAliases() {
-        return new String[][]{
-                {"@yearly"},
-                {"@annually"},
-                {"@monthly"},
-                {"@weekly"},
-                {"@daily"},
-                {"@midnight"},
-                {"@hourly"}
-        };
-    }
-
     @Test(dataProvider = "validAliases")
     public void testScheduleWithValidData(String validTimePeriod) {
         createPipeline(PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//a[contains(@href , 'configure')]")).click();
+        String textAreaValidationMessage = new PipelinePage(getDriver())
+                .clickConfigureLinkInSideMenu()
+                .clickTriggersSectionButton()
+                .selectBuildPeriodicallyCheckbox()
+                .sendScheduleText(validTimePeriod)
+                .clickApplyButton()
+                .getTextAreaValidationMessage();
 
-        WebElement triggersSectionButton = getDriver().findElement(By.xpath("//button[@data-section-id = 'triggers']"));
-        triggersSectionButton.click();
-        getWait2()
-                .until(ExpectedConditions.attributeContains(triggersSectionButton, "class", "task-link--active"));
-
-        getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = '_.spec']")).sendKeys(validTimePeriod);
-        getDriver().findElement(By.xpath("//button[text() = 'Apply']")).click();
-
-        WebElement actualNotificationMessage = getWait2()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']")));
-
-        WebElement actualTextAreaValidationMessage = getDriver()
-                .findElement(By.xpath("//div[contains(text(), 'Schedule')]/following-sibling::div" +
-                        "//div[@class = 'ok']"));
-
-        Assert.assertEquals(actualNotificationMessage.getText(), "Saved");
-        Assert.assertTrue(actualTextAreaValidationMessage.getText()
-                        .matches("(?s)Would last have run at .*; would next run at .*"),
+        Assert.assertEquals(new PipelineConfigurationPage(getDriver()).getNotificationSaveMessage(),
+                "Saved");
+        Assert.assertTrue(textAreaValidationMessage.matches(
+                "(?s)Would last have run at .*; would next run at .*"),
                 "Alias " + validTimePeriod + " не прошёл валидацию");
     }
 
