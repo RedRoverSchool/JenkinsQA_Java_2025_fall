@@ -197,12 +197,6 @@ public class NewItemPage extends BasePage {
         return getDriver().findElement(By.id("name")).getAttribute("data-valid");
     }
 
-//    public RestApiPage clickRestApiLink() {
-//        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='api/']"))).click();
-//
-//        return new RestApiPage(getDriver());
-//    }
-
     public MultiConfigurationProjectPage selectMultiConfigurationProjectAndSubmit() {
         multiConfigurationProject.click();
         getWait2().until(ExpectedConditions.elementToBeClickable(okButton)).click();
