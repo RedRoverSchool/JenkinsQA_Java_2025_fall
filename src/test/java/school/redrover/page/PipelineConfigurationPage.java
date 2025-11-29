@@ -76,7 +76,7 @@ public class PipelineConfigurationPage extends BasePage {
     public PipelineConfigurationPage clickApplyButton() {
         applyButton.click();
 
-        getWait5().until(ExpectedConditions.presenceOfElementLocated((By
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated((By
                 .xpath("//div[contains(text(), 'Would last have run at') and contains(text(), 'would next run at')]"))));
 
         return this;
