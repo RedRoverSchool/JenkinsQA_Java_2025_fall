@@ -54,15 +54,9 @@ public class AppearancePage extends BasePage {
     }
 
     public AppearancePage clickAppearanceDropdownItem(String userThemes) {
-
         Select themeSelect = new Select(getWait10().until(ExpectedConditions.elementToBeClickable(By.name("_.theme"))));
         themeSelect.selectByValue(userThemes);
+
         return this;
     }
-
-
-//        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[2]/div[2]/div/select/option[%s]".formatted(num)))).click();
-//
-//        return this;}
 }
-
