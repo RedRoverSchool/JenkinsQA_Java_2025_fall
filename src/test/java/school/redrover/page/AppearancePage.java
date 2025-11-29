@@ -53,7 +53,7 @@ public class AppearancePage extends BasePage {
     }
 
     public AppearancePage clickAppearanceDropdownItem(int num) {
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='main-panel']//div/select/option[%s]".formatted(num)))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='main-panel']/form/div[1]/section[5]/div[2]/div[2]/div/select/option[%s]".formatted(num)))).click();
 
         return this;
     }
