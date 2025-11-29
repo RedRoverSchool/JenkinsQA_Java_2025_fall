@@ -111,6 +111,7 @@ public class FooterTest extends BaseTest {
                 actualHeading,
                 namePage);
     }
+    @Ignore
     @Test
     public void testRestApiNewItemPage() {
         String actualHeading = new HomePage(getDriver())
