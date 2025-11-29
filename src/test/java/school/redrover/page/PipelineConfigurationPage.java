@@ -20,6 +20,9 @@ public class PipelineConfigurationPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
+    @FindBy(xpath = "//button[text() = 'Apply']")
+    private WebElement applyButton;
+
     @FindBy(xpath = "//button[@data-section-id='advanced']")
     private WebElement advancedMenuItem;
 
@@ -47,6 +50,21 @@ public class PipelineConfigurationPage extends BasePage {
     @FindBy(name = "quiet_period")
     private WebElement numberOfSecondsInput;
 
+    @FindBy(xpath = "//button[@data-section-id = 'triggers']")
+    private WebElement triggersSectionButton;
+
+    @FindBy(xpath = "//label[contains(text(), 'Build periodically')]")
+    private WebElement buildPeriodicallyLabel;
+
+    @FindBy(xpath = "//textarea[@name = '_.spec']")
+    private WebElement scheduleTextarea;
+
+    @FindBy(xpath = "//span[text() = 'Saved']")
+    private WebElement notificationSaveMessage;
+
+    @FindBy(xpath = "//div[contains(text(), 'Would last have run at') and contains(text(), 'would next run at')]")
+    private WebElement textAreaValidationMessage;
+
     public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -56,6 +74,15 @@ public class PipelineConfigurationPage extends BasePage {
 
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new PipelinePage(getDriver());
+    }
+
+    public PipelineConfigurationPage clickApplyButton() {
+        applyButton.click();
+
+        getWait5().until(ExpectedConditions.presenceOfElementLocated((By
+                .xpath("//div[contains(text(), 'Would last have run at') and contains(text(), 'would next run at')]"))));
+
+        return this;
     }
 
     public PipelineConfigurationPage clickAdvancedLinkInSideMenu() {
@@ -86,6 +113,7 @@ public class PipelineConfigurationPage extends BasePage {
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath(".//label[text()='Quiet period']")));
+
         return this;
     }
 
@@ -103,6 +131,7 @@ public class PipelineConfigurationPage extends BasePage {
         new Actions(getDriver()).moveToElement(quietPeriodLabel).click().perform();
 
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.name("quiet_period")));
+
         return this;
     }
 
@@ -146,6 +175,7 @@ public class PipelineConfigurationPage extends BasePage {
             new Actions(getDriver()).moveToElement(webElement).click().perform();
             isHelpElementDisplayed = helpElement.isDisplayed();
         }
+
         return isHelpElementDisplayed;
     }
 
@@ -169,6 +199,7 @@ public class PipelineConfigurationPage extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                         .id("toggle-switch-enable-disable-project")))
                 .click();
+
         return this;
     }
 
@@ -181,4 +212,33 @@ public class PipelineConfigurationPage extends BasePage {
         return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.
                 tagName("h1"))).getText().trim();
     }
-}
+
+    public PipelineConfigurationPage clickTriggersSectionButton() {
+        triggersSectionButton.click();
+
+        getWait5().until(ExpectedConditions.attributeContains(
+                triggersSectionButton, "class", "task-link--active"));
+
+        return this;
+    }
+
+    public PipelineConfigurationPage selectBuildPeriodicallyCheckbox() {
+        buildPeriodicallyLabel.click();
+
+        return this;
+    }
+
+    public PipelineConfigurationPage sendScheduleText(String validTimePeriod) {
+        scheduleTextarea.sendKeys(validTimePeriod);
+
+        return this;
+    }
+
+    public String getNotificationSaveMessage() {
+        return notificationSaveMessage.getText();
+    }
+
+    public String getTextAreaValidationMessage() {
+        return textAreaValidationMessage.getText();
+    }
+  }
