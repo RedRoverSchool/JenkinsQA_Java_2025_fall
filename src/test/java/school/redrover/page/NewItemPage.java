@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
+import java.util.Objects;
+
 public class NewItemPage extends BasePage {
 
     @FindBy(id = "name")
@@ -21,6 +23,12 @@ public class NewItemPage extends BasePage {
 
     @FindBy(className = "hudson_matrix_MatrixProject")
     private WebElement multiConfigurationProject;
+
+    @FindBy(css = "[class$='WorkflowJob']")
+    private WebElement pipelineType;
+
+    @FindBy(xpath = "//*[contains(@class, 'WorkflowJob')]")
+    private WebElement pipelineTypeCheck;
 
     public NewItemPage(WebDriver driver) {
         super(driver);
@@ -148,26 +156,24 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage selectPipeline() {
-        getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
+        pipelineType.click();
 
         return this;
     }
 
     public boolean isPipelineSelected() {
-        WebElement pipelineType = getDriver().findElement(By.xpath("//*[contains(@class, 'WorkflowJob')]"));
 
-        return "true".equals(pipelineType.getAttribute("aria-checked"));
+        return "true".equals(pipelineTypeCheck.getAttribute("aria-checked"));
     }
 
     public boolean isPipelineHighlighted() {
-        WebElement pipelineType = getDriver().findElement(By.xpath("//*[contains(@class, 'WorkflowJob')]"));
 
-        return pipelineType.getAttribute("class").contains("active");
+        return Objects.requireNonNull(pipelineTypeCheck.getAttribute("class")).contains("active");
     }
 
     public boolean isOkButtonEnabled() {
 
-        return getDriver().findElement(By.id("ok-button")).isEnabled();
+        return okButton.isEnabled();
     }
 
     public String getTextHintFromCopyField() {
