@@ -52,7 +52,7 @@ public class HomePage extends BasePage {
     public NewItemPage clickNewItemOnLeftMenu() {
         sidebarNewItem.click();
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
         return new NewItemPage(getDriver());
     }
 
