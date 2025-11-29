@@ -56,9 +56,19 @@ public class AppearancePage extends BasePage {
         return new JenkinsManagementPage(getDriver());
     }
 
+    public AppearancePage clickAppearanceDropdown(){
+        WebElement themePreSelector =
+                getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[2]/div/form/div[1]/section[5]/div[2]/div[2]/div/select")));
+
+        Actions actions = new Actions(getDriver());
+
+        actions.moveToElement(themePreSelector).moveByOffset(10,0)
+                .click().perform();
+
+        return this;
+    }
+
     public AppearancePage clickAppearanceDropdownItem(String userThemes) {
-        getWait10().until(webDriver -> ((JavascriptExecutor) webDriver)
-                .executeScript("return document.readyState").equals("complete"));
 
         WebElement themeSelectElement = getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@name='_.theme']")));
 

@@ -86,6 +86,7 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .clickGearManageJenkinsButton()
                 .clickAppearanceLink()
                 .clickDoNotAllowDifferentTheme()
+                .clickAppearanceDropdown()
                 .clickAppearanceDropdownItem(userThemes[0])
                 .clickAppearanceDropdownItem(userThemes[1])
                 .clickAppearanceDropdownItem(userThemes[2])
