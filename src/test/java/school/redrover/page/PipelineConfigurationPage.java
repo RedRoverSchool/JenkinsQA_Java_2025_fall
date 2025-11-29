@@ -59,9 +59,6 @@ public class PipelineConfigurationPage extends BasePage {
     @FindBy(xpath = "//textarea[@name = '_.spec']")
     private WebElement scheduleTextarea;
 
-    @FindBy(xpath = "//span[text() = 'Saved']")
-    private WebElement notificationSaveMessage;
-
     @FindBy(xpath = "//div[contains(text(), 'Would last have run at') and contains(text(), 'would next run at')]")
     private WebElement textAreaValidationMessage;
 
@@ -235,7 +232,8 @@ public class PipelineConfigurationPage extends BasePage {
     }
 
     public String getNotificationSaveMessage() {
-        return notificationSaveMessage.getText();
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//span[text() = 'Saved']"))).getText();
     }
 
     public String getTextAreaValidationMessage() {
