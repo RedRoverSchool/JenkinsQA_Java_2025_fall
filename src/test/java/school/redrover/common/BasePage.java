@@ -93,4 +93,10 @@ public abstract class BasePage extends BaseModel {
 
         return new UserAccountPage(getDriver());
     }
+
+    public UserStatusPage clickUserStatusIcon() {
+        getDriver().findElement(By.id("root-action-UserAction")).click();
+
+        return new UserStatusPage(getDriver());
+    }
 }

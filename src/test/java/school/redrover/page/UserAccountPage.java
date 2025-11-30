@@ -10,6 +10,8 @@ import school.redrover.common.BasePage;
 public class UserAccountPage extends BasePage {
 
     private static final By FULL_NAME_FIELD = By.name("_.fullName");
+    private static final By EMAIL_FIELD = By.xpath("//*[@id='main-panel']//section[4]/div[4]/div[1]/input");
+
 
     public UserAccountPage(WebDriver driver) {
         super(driver);
@@ -41,4 +43,19 @@ public class UserAccountPage extends BasePage {
     public String getDescriptionText() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
     }
+
+    public UserAccountPage editEmail(String EMAIL) {
+        WebElement emailField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD));
+        emailField.clear();
+        emailField.sendKeys(EMAIL);
+        getDriver().findElement(By.name("Apply")).click();
+
+        return this;
+    }
+
+    public String getEmailText() throws InterruptedException {
+        Thread.sleep(10000);
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD)).getCssValue("value");
+    }
+
 }
