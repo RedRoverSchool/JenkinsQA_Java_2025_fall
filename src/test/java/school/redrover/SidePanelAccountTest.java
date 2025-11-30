@@ -13,11 +13,11 @@ public class SidePanelAccountTest extends BaseTest {
         String actualEmailText = new HomePage(getDriver())
                 .clickUserStatusIcon()
                 .clickSidePanelAccount()
-                // .editEmail(EMAIL)
+                .editEmail(EMAIL)
                 .getEmailText();
         System.out.println("Email" + actualEmailText);
 
 
-      //  Assert.assertEquals(actualEmailText, EMAIL);
+        Assert.assertEquals(actualEmailText, EMAIL);
     }
 }

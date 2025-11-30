@@ -54,8 +54,7 @@ public class UserAccountPage extends BasePage {
     }
 
     public String getEmailText() throws InterruptedException {
-        Thread.sleep(10000);
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD)).getCssValue("value");
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD)).getAttribute("value");
     }
 
 }
