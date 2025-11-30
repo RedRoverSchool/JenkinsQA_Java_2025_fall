@@ -30,4 +30,10 @@ public class UserStatusPage extends BasePage {
                         .xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
                 .getText().substring(17);
     }
+
+    public UserAccountPage clickSidePanelAccount() {
+        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(4) > span > a")).click();
+
+        return new UserAccountPage(getDriver());
+    }
 }
