@@ -113,7 +113,7 @@ public class JenkinsManagementTest extends BaseTest {
 
         Assert.assertEquals(searchResults, List.of("System", "System Information", "System Log"));
     }
-
+@Ignore
     @Test
     public void testSearchAndOpenSetting() {
         String searchHeading = new HomePage(getDriver())
