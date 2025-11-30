@@ -15,6 +15,12 @@ public abstract class BasePage extends BaseModel {
     @FindBy(id = "root-action-ManageJenkinsAction")
     private WebElement manageJenkinsButton;
 
+    @FindBy(id="root-action-UserAction")
+    private WebElement userAccountButton;
+
+    @FindBy(xpath = "//a[@href='api/']")
+    private WebElement restApiLink;
+
     public BasePage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
@@ -78,8 +84,9 @@ public abstract class BasePage extends BaseModel {
     }
 
     public RestApiPage clickRestApiLink() {
-        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+        restApiLink.click();
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new RestApiPage(getDriver());
     }
 
@@ -89,8 +96,9 @@ public abstract class BasePage extends BaseModel {
     }
 
     public UserAccountPage clickUserAccount() {
-        getDriver().findElement(By.id("root-action-UserAction")).click();
+        userAccountButton.click();
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new UserAccountPage(getDriver());
     }
 }
