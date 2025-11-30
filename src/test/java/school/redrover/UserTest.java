@@ -167,7 +167,7 @@ public class UserTest extends BaseTest {
 
         String userID = new HomePage(getDriver())
                 .clickUserStatusIcon()
-                .getUserID();
+                .getUserIDNew();
 
         String actualEmailText = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()

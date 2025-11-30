@@ -50,7 +50,7 @@ public class UsersPage extends BasePage {
 
     public UserAccountPage clickAccountMenuItemNew(String userName) {
 
-        return clickPopUpMenuItem(userName, ACCOUNT_MENU_ITEM, new UserAccountPage(getDriver()));
+        return clickPopUpMenuItemNew(userName, ACCOUNT_MENU_ITEM, new UserAccountPage(getDriver()));
     }
 
     private <P extends BasePage> P clickPopUpMenuItemNew(String userName, By menuItemLocator, P returnedPage) {
