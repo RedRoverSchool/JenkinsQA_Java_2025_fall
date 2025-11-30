@@ -52,7 +52,7 @@ public class UserAccountPage extends BasePage {
         return this;
     }
 
-    public String getEmailText() throws InterruptedException {
+    public String getEmailText(){
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD)).getAttribute("value");
     }
 }
