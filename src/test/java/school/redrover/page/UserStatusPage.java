@@ -2,6 +2,7 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -21,7 +22,7 @@ public class UserStatusPage extends BasePage {
     public String getUserNameInBreadcrumbs(String userName) {
 
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
-                .xpath("//a[@href='/user/%s/']".formatted(userName))))
+                        .xpath("//a[@href='/user/%s/']".formatted(userName))))
                 .getText();
     }
 
@@ -29,5 +30,17 @@ public class UserStatusPage extends BasePage {
         return getDriver().findElement(By
                         .xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
                 .getText().substring(17);
+    }
+
+    public String getUserIDNew() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .xpath("//*[@id=\"main-panel\"]/div[3]")))
+                .getText().substring(17);
+    }
+
+    public UserAccountPage clickSidePanelAccount() {
+        getDriver().findElement(By.cssSelector("a[data-task-success='Done.'][href='/user/admin/account']")).click();
+
+        return new UserAccountPage(getDriver());
     }
 }

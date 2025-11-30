@@ -28,7 +28,7 @@ public class UserTest extends BaseTest {
                 "Invalid e-mail address"
         );
 
-        List <String> actualErrors = new HomePage(getDriver())
+        List<String> actualErrors = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickUserButton()
                 .clickCreateUserButton()
@@ -45,7 +45,7 @@ public class UserTest extends BaseTest {
         final List<String> expectedErrors = List.of(
                 "User name must only contain alphanumeric characters, underscore and dash");
 
-        List <String> actualErrors = new HomePage(getDriver())
+        List<String> actualErrors = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickUserButton()
                 .clickCreateUserButton()
@@ -67,7 +67,7 @@ public class UserTest extends BaseTest {
                 "User name is already taken",
                 "Invalid e-mail address");
 
-        List <String> actualErrors = new HomePage(getDriver())
+        List<String> actualErrors = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickUserButton()
                 .clickCreateUserButton()
@@ -88,7 +88,7 @@ public class UserTest extends BaseTest {
                 "Password didn't match",
                 "Password didn't match");
 
-        List <String> actualErrors = new HomePage(getDriver())
+        List<String> actualErrors = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickUserButton()
                 .clickCreateUserButton()
@@ -159,5 +159,23 @@ public class UserTest extends BaseTest {
                 .getDescriptionText();
 
         Assert.assertEquals(actualDescriptionText, description);
+    }
+
+    @Test
+    public void testChangeEmailOnUserPage() {
+        final String EMAIL = "gkg@kgk.kgk";
+
+        String userID = new HomePage(getDriver())
+                .clickUserStatusIcon()
+                .getUserIDNew();
+
+        String actualEmailText = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserButton()
+                .clickAccountMenuItemNew(userID)
+                .editEmail(EMAIL)
+                .getEmailText();
+
+        Assert.assertEquals(actualEmailText, EMAIL);
     }
 }
