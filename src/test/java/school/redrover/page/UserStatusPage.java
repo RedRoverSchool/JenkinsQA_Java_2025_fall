@@ -36,7 +36,4 @@ public class UserStatusPage extends BasePage {
 
         return new UserAccountPage(getDriver());
     }
-
 }
-
-
