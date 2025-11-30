@@ -9,6 +9,7 @@ import school.redrover.page.FreestyleProjectConfigurationPage;
 import school.redrover.page.FreestyleProjectPage;
 import school.redrover.page.HomePage;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
@@ -210,6 +211,26 @@ public class FreestyleProjectTest extends BaseTest {
                 .getTriggersDescriptionText();
 
         Assert.assertEquals(triggersDescription, expectedDescription);
+    }
+
+    @Test
+    public void testAllTriggerCheckboxesAreAvailable() {
+        final List<String> expectedCheckboxes = List.of(
+                "Trigger builds remotely (e.g., from scripts)",
+                "Build after other projects are built",
+                "Build periodically",
+                "GitHub hook trigger for GITScm polling",
+                "Poll SCM"
+        );
+
+        List<String> actualCheckboxes = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .clickTriggersLinkInSideMenu()
+                .getTriggerCheckboxLabels();
+
+        Assert.assertEquals(actualCheckboxes, expectedCheckboxes);
     }
 
     @Test

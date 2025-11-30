@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class FreestyleProjectConfigurationPage extends BasePage {
 
@@ -36,6 +37,9 @@ public class FreestyleProjectConfigurationPage extends BasePage {
 
     @FindBy(xpath = "//div[@class='jenkins-section__description' and contains(text(), 'Set up automated actions')]")
     private WebElement triggersDescription;
+
+    @FindBy(xpath = "//section[@class='jenkins-section'][2]//label[@class='attach-previous ']")
+    private List<WebElement> checkboxTriggersLabels;
 
     public FreestyleProjectConfigurationPage(WebDriver driver) {
         super(driver);
@@ -94,15 +98,15 @@ public class FreestyleProjectConfigurationPage extends BasePage {
 
     public List<String> getSettingsToList() {
         return getDriver().findElements(By.cssSelector("[name]"))
-                        .stream()
-                        .filter(element ->
-                                Objects.equals(element.getAttribute("name"), "description") ||
+                .stream()
+                .filter(element ->
+                        Objects.equals(element.getAttribute("name"), "description") ||
                                 Objects.equals(element.getAttribute("name"), "_.daysToKeepStr") ||
                                 Objects.equals(element.getAttribute("name"), "_.numToKeepStr") ||
                                 Objects.equals(element.getAttribute("name"), "_.url") ||
                                 Objects.equals(element.getAttribute("name"), "authToken"))
-                        .map(element -> element.getAttribute("value"))
-                        .toList();
+                .map(element -> element.getAttribute("value"))
+                .toList();
     }
 
     public String getSCMTitleText() {
@@ -193,12 +197,19 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         return triggersTitle.getText();
     }
 
-    public String getTriggersDescriptionText () {
+    public String getTriggersDescriptionText() {
         return triggersDescription.getText();
     }
 
     public String getBreadcrumbItem() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//span[contains(text(),'Configuration')]"))).getText();
+    }
+
+    public List<String> getTriggerCheckboxLabels() {
+        return checkboxTriggersLabels.stream()
+                .limit(5)
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
     }
 }
