@@ -163,7 +163,7 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testChangeEmailOnUserPage() {
-        final String EMAIL = "gkg@kgk.kg";
+        final String EMAIL = "gkg@kgk.kgk";
         String actualEmailText = new HomePage(getDriver())
                 .clickUserStatusIcon()
                 .clickSidePanelAccount()
