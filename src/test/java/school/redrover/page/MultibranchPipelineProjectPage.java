@@ -24,6 +24,9 @@ public class MultibranchPipelineProjectPage extends BasePage {
     @FindBy(name = "description")
     private WebElement descriptionField;
 
+    @FindBy(id = "disabled-message")
+    private WebElement disabledMessage;
+
     public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -40,7 +43,7 @@ public class MultibranchPipelineProjectPage extends BasePage {
     }
 
     public String getDisabledText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("disabled-message"))).getText();
+        return disabledMessage.getText();
     }
 
     public MultibranchPipelineConfirmRenamePage clickRenameLinkInSideMenu() {

@@ -44,7 +44,7 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage clearSendName() {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).clear();
+        nameField.clear();
 
         return this;
     }
@@ -66,7 +66,7 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage selectMultibranchPipeline() {
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        multibranchPipelineOption.click();
 
         return this;
     }
