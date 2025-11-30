@@ -31,16 +31,4 @@ public class UserStatusPage extends BasePage {
                         .xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
                 .getText().substring(17);
     }
-
-    public String getUserIDNew() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
-                        .xpath("//*[@id=\"main-panel\"]/div[3]")))
-                .getText().substring(17);
-    }
-
-    public UserAccountPage clickSidePanelAccount() {
-        getDriver().findElement(By.cssSelector("a[data-task-success='Done.'][href='/user/admin/account']")).click();
-
-        return new UserAccountPage(getDriver());
-    }
 }

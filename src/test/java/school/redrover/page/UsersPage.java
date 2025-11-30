@@ -47,26 +47,4 @@ public class UsersPage extends BasePage {
 
         return returnedPage;
     }
-
-    public UserAccountPage clickAccountMenuItemNew(String userName) {
-
-        return clickPopUpMenuItemNew(userName, ACCOUNT_MENU_ITEM, new UserAccountPage(getDriver()));
-    }
-
-    private <P extends BasePage> P clickPopUpMenuItemNew(String userName, By menuItemLocator, P returnedPage) {
-        new Actions(getDriver())
-                .moveToElement(getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='%s']".formatted(userName)))))
-                .pause(Duration.ofSeconds(2))
-                .moveToElement(getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath(
-                        "//*[@id='people']/tbody/tr/td[2]/a/button"))))
-                .click()
-                .perform();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='tippy-3']/div/div/div/a[3]")))
-                .sendKeys(Keys.ENTER);
-        getWait10().until(ExpectedConditions.elementToBeClickable(menuItemLocator))
-                .click();
-
-        return returnedPage;
-    }
 }
