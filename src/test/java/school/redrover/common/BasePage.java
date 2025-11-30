@@ -16,7 +16,7 @@ public abstract class BasePage extends BaseModel {
     private WebElement manageJenkinsButton;
 
     @FindBy(id="root-action-UserAction")
-    private WebElement userAccountButton;
+    private WebElement userAccountIcon;
 
     @FindBy(xpath = "//a[@href='api/']")
     private WebElement restApiLink;
@@ -95,10 +95,10 @@ public abstract class BasePage extends BaseModel {
         return getDriver().getCurrentUrl();
     }
 
-    public UserAccountPage clickUserAccount() {
-        userAccountButton.click();
+    public UserStatusPage clickUserAccount() {
+        userAccountIcon.click();
 
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
-        return new UserAccountPage(getDriver());
+        return new UserStatusPage(getDriver());
     }
 }
