@@ -32,7 +32,7 @@ public class UserStatusPage extends BasePage {
     }
 
     public UserAccountPage clickSidePanelAccount() {
-        getDriver().findElement(By.cssSelector("a[data-task-success=\"Done.\"][href=\"/user/admin/account\"]\n")).click();
+        getDriver().findElement(By.cssSelector("a[data-task-success='Done.'][href='/user/admin/account']")).click();
 
         return new UserAccountPage(getDriver());
     }
