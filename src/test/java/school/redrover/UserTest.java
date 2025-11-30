@@ -164,9 +164,15 @@ public class UserTest extends BaseTest {
     @Test
     public void testChangeEmailOnUserPage() {
         final String EMAIL = "gkg@kgk.kgk";
-        String actualEmailText = new HomePage(getDriver())
+
+        String userID = new HomePage(getDriver())
                 .clickUserStatusIcon()
-                .clickSidePanelAccount()
+                .getUserID();
+
+        String actualEmailText = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserButton()
+                .clickAccountMenuItemNew(userID)
                 .editEmail(EMAIL)
                 .getEmailText();
 
