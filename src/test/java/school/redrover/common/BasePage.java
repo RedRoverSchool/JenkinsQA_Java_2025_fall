@@ -97,6 +97,7 @@ public abstract class BasePage extends BaseModel {
     public UserStatusPage clickUserStatusIcon() {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(getDriver().findElement(By.id("root-action-UserAction"))).perform();
+        getDriver().findElement(By.cssSelector(".jenkins-dropdown__item:first-child")).click();
         getDriver().findElement(By.id("root-action-UserAction")).click();
 
         return new UserStatusPage(getDriver());
