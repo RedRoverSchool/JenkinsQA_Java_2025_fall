@@ -2,6 +2,7 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -32,8 +33,8 @@ public class UserStatusPage extends BasePage {
     }
 
     public String getUserIDNew() {
-        return getDriver().findElement(By
-                        .xpath("//*[@id=\"main-panel\"]/div[3]"))
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .xpath("//*[@id=\"main-panel\"]/div[3]")))
                 .getText().substring(17);
     }
 
