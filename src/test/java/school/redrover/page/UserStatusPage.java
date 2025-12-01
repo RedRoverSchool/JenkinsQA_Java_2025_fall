@@ -24,4 +24,10 @@ public class UserStatusPage extends BasePage {
                 .xpath("//a[@href='/user/%s/']".formatted(userName))))
                 .getText();
     }
+
+    public String getUserID() {
+        return getDriver().findElement(By
+                        .xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
+                .getText().substring(17);
+    }
 }

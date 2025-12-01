@@ -81,7 +81,6 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(actualJobs, CREATED_JOBS_NAME, "Имена созданных jobs не совпадают!");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCheckCreatedJobsOnDashboard")
     public void testSearchCreatedJobs() {
         String searchResults = new HomePage(getDriver())
@@ -125,6 +124,14 @@ public class DashboardTest extends BaseTest {
                 .getStatusProjectIconTooltipTextOnHover();
 
         Assert.assertEquals(actualStatusTooltip, tooltipEnableText, "Проект отключен или не создан!");
+    }
+
+    @Test
+    public void testLogo() {
+        String logoText = new HomePage(getDriver())
+                .getlogoText();
+
+        Assert.assertEquals(logoText, "Jenkins", "Надпись рядом с логотипом должна быть 'Jenkins'");
     }
 
     @Test
