@@ -58,6 +58,28 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testSyntaxDocumentationViaDropDownMenu() {
+
+        final List<String> expectedSideMenu = List.of(
+                "Snippet Generator",
+                "Declarative Directive Generator",
+                "Declarative Online Documentation",
+                "Steps Reference",
+                "Global Variables Reference",
+                "Online Documentation",
+                "Examples Reference",
+                "IntelliJ IDEA GDSL"
+        );
+
+        List <String> actualSideMenu = new HomePage(getDriver())
+                .openDropdownMenu(PIPELINE_NAME)
+                .clickPipelineSyntaxInDropdownMenu()
+                .getListOfButtonsInSideMenu();
+
+        Assert.assertEquals(actualSideMenu, expectedSideMenu);
+    }
+
+    @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testCancelDeletePipelineViaSideMenu() {
         List<String> actualProjectList = new HomePage(getDriver())
                 .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
