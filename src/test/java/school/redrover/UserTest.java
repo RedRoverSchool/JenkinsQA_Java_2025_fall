@@ -154,10 +154,24 @@ public class UserTest extends BaseTest {
                 .clickUserButton()
                 .clickSignOut()
                 .signIn(USER_NAME, USER_PASSWORD)
-                .clickUserAccount()
+                .clickUserAccountIcon()
                 .editDescription(description)
                 .getDescriptionText();
 
         Assert.assertEquals(actualDescriptionText, description);
+    }
+
+    @Test(dependsOnMethods = "searchUser")
+    public void testChangeEmailOnUserPage() {
+        final String EMAIL = "gkg@kgk.kgk";
+
+        String actualEmailText = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserButton()
+                .clickAccountMenuItem(USER_NAME)
+                .editEmail(EMAIL)
+                .getEmailText();
+
+        Assert.assertEquals(actualEmailText, EMAIL);
     }
 }

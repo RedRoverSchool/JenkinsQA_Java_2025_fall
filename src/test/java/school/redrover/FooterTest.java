@@ -1,16 +1,13 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.HomePage;
-import school.redrover.page.NewItemPage;
-import school.redrover.page.UserAccountPage;
-
 import java.util.List;
+
 
 public class FooterTest extends BaseTest {
 
@@ -103,7 +100,7 @@ public class FooterTest extends BaseTest {
     @Test
     public void testRestApiUserPage() {
         String actualHeading = new HomePage(getDriver())
-                .clickUserAccount()
+                .clickUserAccountIcon()
                 .clickRestApiLink()
                 .getNamePage();
 

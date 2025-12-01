@@ -50,8 +50,15 @@ public class JenkinsManagementPage extends BasePage {
 
     public String getHTMLAttributeThemeText() {
         try {
-            return (String) ((JavascriptExecutor) getDriver())
-                    .executeScript("return document.documentElement.getAttribute('data-theme') || 'unknown'");
+            getWait10().until(driver -> {
+                Object value = ((JavascriptExecutor) driver)
+                     .executeScript("return document.documentElement.getAttribute('data-theme');");
+                return value != null && !value.toString().isBlank();
+            });
+
+                Object result = ((JavascriptExecutor) getDriver())
+                    .executeScript("return document.documentElement.getAttribute('data-theme');");
+                return (result != null && !result.toString().isBlank()) ? result.toString() : "unknown";
         } catch (Exception e) {
             return "unknown";
         }
