@@ -12,13 +12,13 @@ public class UserAccountPage extends BasePage {
 
     private static final By FULL_NAME_FIELD = By.name("_.fullName");
     private static final By EMAIL_FIELD = By.xpath("//input[@name='email.address']");
+
     @FindBy(xpath = "//button[@name='Apply']")
     private WebElement applyButton;
 
     public UserAccountPage(WebDriver driver) {
         super(driver);
     }
-
 
     public UserAccountPage sendFullName(String fullName) {
         WebElement fullNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(FULL_NAME_FIELD));
