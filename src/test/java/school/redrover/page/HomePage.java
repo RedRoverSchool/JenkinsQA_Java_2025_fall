@@ -29,6 +29,16 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//div[@class='tabBar']/div")
     private List<WebElement> viewNameList;
 
+    @FindBy(xpath = "//div/section[2]/ul/li[1]/a")
+    private WebElement setUpAnAgentButton;
+
+    @FindBy(linkText = "Build Executor Status")
+    private WebElement buildExecutorStatusButton;
+
+    @FindBy(xpath = "//div[2]/span/a")
+    private WebElement buildHistoryButton;
+
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -42,7 +52,7 @@ public class HomePage extends BasePage {
     public NewItemPage clickNewItemOnLeftMenu() {
         sidebarNewItem.click();
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
         return new NewItemPage(getDriver());
     }
 
@@ -277,20 +287,23 @@ public class HomePage extends BasePage {
     }
 
     public NewNodePage clickSetUpAnAgent() {
-        getDriver().findElement(By.xpath("//div/section[2]/ul/li[1]/a")).click();
+        setUpAnAgentButton.click();
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new NewNodePage(getDriver());
     }
 
     public NodesPage clickBuildExecutorStatus() {
-        getDriver().findElement(By.linkText("Build Executor Status")).click();
+        buildExecutorStatusButton.click();
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new NodesPage(getDriver());
     }
 
     public BuildHistoryOfJenkinsPage clickBuildHistory() {
-        getDriver().findElement(By.xpath("//div[2]/span/a")).click();
+        buildHistoryButton.click();
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new BuildHistoryOfJenkinsPage(getDriver());
     }
 

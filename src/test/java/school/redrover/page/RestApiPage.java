@@ -13,7 +13,8 @@ public class RestApiPage extends BasePage {
     public RestApiPage(WebDriver driver) { super(driver); }
 
     public String getHeadingText(){
-       return getDriver().findElement(By.tagName("h1")).getText();
+
+        return getDriver().findElement(By.tagName("h1")).getText();
     }
 
     public List<String> getXmlJsonPythonApiLinksText(){

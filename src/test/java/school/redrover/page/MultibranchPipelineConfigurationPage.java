@@ -16,6 +16,12 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
+    @FindBy(css = "[data-title='Disabled']")
+    private WebElement toggleSwitcher;
+
+    @FindBy(id = "toggle-switch-enable-disable-project")
+    private WebElement toggleTooltipOnHover;
+
     public MultibranchPipelineConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -46,7 +52,7 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     }
 
     public MultibranchPipelineConfigurationPage clickToggle() {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-title='Disabled']"))).click();
+        toggleSwitcher.click();
 
         return this;
     }
@@ -62,9 +68,7 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     }
 
     public String getToggleTooltipTextOnHover() {
-        WebElement toggleElement = getDriver().findElement(By.id("toggle-switch-enable-disable-project"));
-
-        new Actions(getDriver()).moveToElement(toggleElement).perform();
+        new Actions(getDriver()).moveToElement(toggleTooltipOnHover).perform();
 
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
                 .getText();
