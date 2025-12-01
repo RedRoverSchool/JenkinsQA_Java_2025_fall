@@ -160,4 +160,18 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(actualDescriptionText, description);
     }
+
+    @Test(dependsOnMethods = "searchUser")
+    public void testChangeEmailOnUserPage() {
+        final String EMAIL = "gkg@kgk.kgk";
+
+        String actualEmailText = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserButton()
+                .clickAccountMenuItem(USER_NAME)
+                .editEmail(EMAIL)
+                .getEmailText();
+
+        Assert.assertEquals(actualEmailText, EMAIL);
+    }
 }
