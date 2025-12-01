@@ -30,15 +30,4 @@ public class UserAccountPage extends BasePage {
         return returnedPage;
     }
 
-    public UserAccountPage editDescription(String text) {
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(text);
-        getDriver().findElement(By.name("Submit")).click();
-
-        return this;
-    }
-
-    public String getDescriptionText() {
-        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
-    }
 }
