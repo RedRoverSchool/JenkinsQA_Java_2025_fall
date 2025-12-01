@@ -42,36 +42,8 @@ public class FolderPage extends BasePage {
     public FolderConfigurationPage clickConfigureLinkInSideMenu() {
         configureMenuItem.click();
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
         return new FolderConfigurationPage(getDriver());
-    }
-
-    public FolderPage clickStatusLinkInSideMenu() {
-        statusMenuItem.click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
-
-        return this;
-    }
-
-    public BuildHistoryOfJenkinsPage clickBuildHistoryLinkInSideMenu() {
-        buildHistoryMenuItem.click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
-
-        return new BuildHistoryOfJenkinsPage(getDriver());
-    }
-
-    public FolderRenamingPage clickRenameLinkInSideMenu() {
-        renameMenuItem.click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
-
-        return new FolderRenamingPage(getDriver());
-    }
-
-    public FolderCredentialsPage clickCredentialsLinkInSideMenu() {
-        credentialsMenuItem.click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
-
-        return new FolderCredentialsPage(getDriver());
     }
 
     public FolderInfo getInfo() {
