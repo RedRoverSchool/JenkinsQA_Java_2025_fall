@@ -30,4 +30,16 @@ public class UserStatusPage extends BasePage {
                         .xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
                 .getText().substring(17);
     }
+
+    public UserStatusPage editDescription(String text) {
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).sendKeys(text);
+        getDriver().findElement(By.name("Submit")).click();
+
+        return this;
+    }
+
+    public String getDescriptionText() {
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
+    }
 }

@@ -62,6 +62,9 @@ public class PipelineConfigurationPage extends BasePage {
     @FindBy(xpath = "//div[contains(text(), 'Would last have run at') and contains(text(), 'would next run at')]")
     private WebElement textAreaValidationMessage;
 
+    @FindBy(xpath = "//div[contains(text(), 'Schedule')]/following-sibling::div" + "//div[@class = 'error']")
+    private WebElement textErrorMessage;
+
     public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -75,9 +78,6 @@ public class PipelineConfigurationPage extends BasePage {
 
     public PipelineConfigurationPage clickApplyButton() {
         applyButton.click();
-
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated((By
-                .xpath("//div[contains(text(), 'Would last have run at') and contains(text(), 'would next run at')]"))));
 
         return this;
     }
@@ -228,6 +228,7 @@ public class PipelineConfigurationPage extends BasePage {
     public PipelineConfigurationPage sendScheduleText(String validTimePeriod) {
         scheduleTextarea.sendKeys(validTimePeriod);
 
+        getDriver().findElement(By.tagName("body")).click();
         return this;
     }
 
@@ -239,4 +240,15 @@ public class PipelineConfigurationPage extends BasePage {
     public String getTextAreaValidationMessage() {
         return textAreaValidationMessage.getText();
     }
-  }
+
+    public String getTextErrorMessage() {
+        return textErrorMessage.getText();
+    }
+
+    public String getErrorDescriptionModalWindow() {
+        WebElement errorDescriptionModalWindow = getDriver().findElement(By.cssSelector("#error-description > h2"));
+        getWait5().until(ExpectedConditions.visibilityOf(errorDescriptionModalWindow));
+
+        return errorDescriptionModalWindow.getText();
+    }
+}

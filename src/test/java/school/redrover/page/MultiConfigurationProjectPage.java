@@ -14,6 +14,15 @@ public class MultiConfigurationProjectPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
+    @FindBy(id = "description-link")
+    private WebElement editDescriptionLink;
+
+    @FindBy(name = "description")
+    private WebElement descriptionField;
+
+    @FindBy(xpath = "//div[@id='description-content']")
+    private WebElement projectDescription;
+
     @FindBy(css = "a[href$='/confirm-rename']")
     private WebElement sidebarRenameLink;
 
@@ -49,6 +58,25 @@ public class MultiConfigurationProjectPage extends BasePage {
                 By.className("permalinks-header")));
 
         return this;
+    }
+
+    public MultiConfigurationProjectPage clearDescriptionField() {
+        editDescriptionLink.click();
+        descriptionField.clear();
+        return this;
+    }
+
+    public MultiConfigurationProjectPage sendDescription(String description) {
+        descriptionField.sendKeys(description);
+        submitButton.click();
+
+        return this;
+    }
+
+    public String getDescription() {
+        getWait2().until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//div[@id='description-content']")));
+        return projectDescription.getText();
     }
 
     public MultiConfigurationProjectPage clickRenameLinkInSideMenu() {

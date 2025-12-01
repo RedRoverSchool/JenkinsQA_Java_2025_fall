@@ -8,8 +8,6 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.FreestyleProjectConfigurationPage;
 import school.redrover.page.FreestyleProjectPage;
 import school.redrover.page.HomePage;
-
-import java.util.Arrays;
 import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
@@ -88,7 +86,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(visibleBuildButtonForEnabledProject);
     }
 
-
     @Test(dependsOnMethods = "testEnableProjectViaMainMenuConfigure")
     public void testBuildStepsFilterNames() {
 
@@ -126,7 +123,6 @@ public class FreestyleProjectTest extends BaseTest {
         }
     }
 
-
     @Test
     public void testAccessSCMInNewJob() {
         String scmTitleText = new HomePage(getDriver())
@@ -140,11 +136,13 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testSCMSectionElements() {
+        final String expectedCSMText = "Connect and manage your code repository to automatically pull the latest code for your builds.";
+
         FreestyleProjectConfigurationPage configPage = new HomePage(getDriver()).clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit();
 
-        Assert.assertTrue(configPage.getScmDescription().isDisplayed(),"SCM Description is not displayed or the description text doesn't match");
+        Assert.assertEquals(configPage.getScmDescriptionText(), expectedCSMText,"SCM Description is not displayed or the description text doesn't match");
         Assert.assertEquals(configPage.getSelectedRadioLabel(), "None","Radio button 'None' should be selected by default");
         Assert.assertTrue(configPage.isGitOptionDisplayed(),"Radio button 'Git' should be displayed");
         Assert.assertEquals(configPage.getGitTooltipText(),"Help for feature: Git","Tooltip text should match expected value");
@@ -256,5 +254,4 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(homePage.getHeadingText(), expectedHeadingText);
     }
-
 }
