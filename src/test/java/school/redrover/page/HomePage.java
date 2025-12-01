@@ -115,6 +115,13 @@ public class HomePage extends BasePage {
         return new MovePage(getDriver());
     }
 
+    public PipelineSyntaxPage clickPipelineSyntaxInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@class, 'jenkins-dropdown__item') and contains(., 'Pipeline Syntax')]"))).click();
+
+        return new PipelineSyntaxPage(getDriver());
+    }
+
+
     public HomePage clickDeleteItemInDropdownMenu() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'jenkins-dropdown__item') and contains(., 'Delete')]"))).click();
 
