@@ -8,7 +8,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
-
 import java.util.List;
 
 
@@ -56,7 +55,6 @@ public class JenkinsManagementPage extends BasePage {
                         .executeScript("return document.documentElement.getAttribute('data-theme');");
                 return value != null && !value.toString().isBlank();
             });
-
             Object result = ((JavascriptExecutor) getDriver())
                     .executeScript("return document.documentElement.getAttribute('data-theme');");
             return (result != null && !result.toString().isBlank()) ? result.toString() : "unknown";

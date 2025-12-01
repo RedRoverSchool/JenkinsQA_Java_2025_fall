@@ -86,7 +86,6 @@ public class AppearancePage extends BasePage {
                         .executeScript("return document.documentElement.getAttribute('data-theme');");
                 return value != null && !value.toString().isBlank();
             });
-
             Object result = ((JavascriptExecutor) getDriver())
                     .executeScript("return document.documentElement.getAttribute('data-theme');");
             return (result != null && !result.toString().isBlank()) ? result.toString() : "unknown";
