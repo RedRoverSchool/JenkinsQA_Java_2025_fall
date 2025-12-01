@@ -9,7 +9,7 @@ import school.redrover.page.HomePage;
 public class ConfigureAppearanceTest extends BaseTest {
     private final String THEME = "dark";
 
-    @Test
+   @Test
     public void testThemesAndApplyButtonPopUp() {
         String expectedText = "Saved";
         String popUpApplyButtonText = new HomePage(getDriver())
@@ -23,7 +23,7 @@ public class ConfigureAppearanceTest extends BaseTest {
         Assert.assertEquals(popUpApplyButtonText, expectedText);
     }
 
-    @Test(dependsOnMethods = "testThemesAndApplyButtonPopUp")
+   @Test(dependsOnMethods = "testThemesAndApplyButtonPopUp")
     public void testChangeThemeAndSaveButton() {
         String expectedTeg = "dark";
         String themaHtmlText = new HomePage(getDriver())

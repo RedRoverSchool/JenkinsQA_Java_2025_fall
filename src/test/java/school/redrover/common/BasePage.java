@@ -15,8 +15,8 @@ public abstract class BasePage extends BaseModel {
     @FindBy(id = "root-action-ManageJenkinsAction")
     private WebElement manageJenkinsButton;
 
-    @FindBy(id="root-action-UserAction")
-    private WebElement userAccountButton;
+    @FindBy(id = "root-action-UserAction")
+    private WebElement userAccountIcon;
 
     @FindBy(xpath = "//a[@href='api/']")
     private WebElement restApiLink;
@@ -95,10 +95,15 @@ public abstract class BasePage extends BaseModel {
         return getDriver().getCurrentUrl();
     }
 
-    public UserAccountPage clickUserAccount() {
-        userAccountButton.click();
+    public UserStatusPage clickUserAccountIcon() {
+        userAccountIcon.click();
 
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
-        return new UserAccountPage(getDriver());
+        return new UserStatusPage(getDriver());
+    }
+
+    public String getlogoText() {
+        return getWait5().until(ExpectedConditions.
+                visibilityOfElementLocated(By.className("app-jenkins-logo"))).getText();
     }
 }
