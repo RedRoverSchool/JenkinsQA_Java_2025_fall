@@ -56,6 +56,13 @@ public class AppearancePage extends BasePage {
         return this;
     }
 
+    public AppearancePage checkAllowTheme() {
+        if (!getDriver().findElement(By.cssSelector("input[name='_.disableUserThemes']")).isSelected()) {
+            checkBoxAllowDifferentTheme.click();
+        }
+        return this;
+    }
+
     public AppearancePage clickApplyButton() {
         applyButton.click();
 
@@ -71,7 +78,7 @@ public class AppearancePage extends BasePage {
         saveButton.click();
 
         getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                By.id("root-action-UserAction")));
+                By.xpath("//*[@id='main-panel']/section[2]/h2[text() = 'System Configuration']")));
         getWait5().until(webDriver ->
                 ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
 

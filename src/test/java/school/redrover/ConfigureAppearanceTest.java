@@ -31,6 +31,7 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .clickAppearanceLink()
                 .clickDoNotAllowDifferentTheme()
                 .clickDarkTheme()
+                .checkAllowTheme()
                 .clickSaveButton()
                 .getHTMLAttributeThemeText();
 
