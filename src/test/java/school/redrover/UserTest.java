@@ -154,7 +154,7 @@ public class UserTest extends BaseTest {
                 .clickUserButton()
                 .clickSignOut()
                 .signIn(USER_NAME, USER_PASSWORD)
-                .clickUserAccount()
+                .clickUserAccountIcon()
                 .editDescription(description)
                 .getDescriptionText();
 
