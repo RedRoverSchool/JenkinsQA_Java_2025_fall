@@ -8,7 +8,6 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.FreestyleProjectConfigurationPage;
 import school.redrover.page.FreestyleProjectPage;
 import school.redrover.page.HomePage;
-
 import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
