@@ -29,9 +29,8 @@ public class ConfigureAppearanceTest extends BaseTest {
         String themaHtmlText = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickAppearanceLink()
-                .clickDoNotAllowDifferentTheme()
                 .clickDarkTheme()
-                .clickDoNotAllowDifferentTheme()
+                .checkAllowTheme()
                 .clickSaveButton()
                 .getHTMLAttributeThemeText();
 

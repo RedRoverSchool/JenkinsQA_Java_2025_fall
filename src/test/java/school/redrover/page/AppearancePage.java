@@ -19,7 +19,7 @@ public class AppearancePage extends BasePage {
     @FindBy(xpath = "//label[span[text() = 'Dark']]")
     private WebElement darkTheme;
 
-    @FindBy(xpath = "//label[span[text() = 'Dark']]")
+    @FindBy(xpath = "//label[contains(., 'Do not allow users to select a different theme')]")
     private WebElement checkBoxAllowDifferentTheme;
 
     @FindBy(css = "button.jenkins-button.apply-button")
@@ -60,6 +60,7 @@ public class AppearancePage extends BasePage {
         if (!getDriver().findElement(By.cssSelector("input[name='_.disableUserThemes']")).isSelected()) {
             checkBoxAllowDifferentTheme.click();
         }
+
         return this;
     }
 
