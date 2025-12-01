@@ -41,7 +41,7 @@ public class ConfigureAppearanceTest extends BaseTest {
             }
         });
     }
-@Ignore
+
     @Test
     public void testChangeThemeDarkAndCheckBoxAllow() {
         String themaHtmltext = new HomePage(getDriver())

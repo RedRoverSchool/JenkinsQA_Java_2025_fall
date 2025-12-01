@@ -101,4 +101,9 @@ public abstract class BasePage extends BaseModel {
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new UserStatusPage(getDriver());
     }
+
+    public String getlogoText() {
+        return getWait5().until(ExpectedConditions.
+                visibilityOfElementLocated(By.className("app-jenkins-logo"))).getText();
+    }
 }
