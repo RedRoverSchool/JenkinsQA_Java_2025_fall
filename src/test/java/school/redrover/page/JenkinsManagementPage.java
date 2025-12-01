@@ -8,7 +8,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
-
 import java.util.List;
 
 
@@ -16,6 +15,9 @@ public class JenkinsManagementPage extends BasePage {
 
     @FindBy(id = "settings-search-bar")
     private WebElement sendTitle;
+
+    @FindBy(xpath = "//a[@href = 'appearance']")
+    private WebElement appearanceLink;
 
     private final By searchResults = By.cssSelector(".jenkins-dropdown__item:nth-of-type(1)");
 
@@ -84,7 +86,7 @@ public class JenkinsManagementPage extends BasePage {
     }
 
     public AppearancePage clickAppearanceLink() {
-        getDriver().findElement(By.xpath("//a[@href = 'appearance']")).click();
+        appearanceLink.click();
         return new AppearancePage(getDriver());
     }
 }

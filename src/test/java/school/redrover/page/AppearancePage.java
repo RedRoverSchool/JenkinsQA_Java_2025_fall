@@ -3,41 +3,61 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class AppearancePage extends BasePage {
+
+    @FindBy(xpath = "//label[span[text() = 'Light']]")
+    private WebElement lightTheme;
+
+    @FindBy(xpath = "//label[span[text() = 'Dark (System)']]")
+    private WebElement darkSystemTheme;
+
+    @FindBy(xpath = "//label[span[text() = 'Dark']]")
+    private WebElement darkTheme;
+
+    @FindBy(xpath = "//label[span[text() = 'Dark']]")
+    private WebElement checkBoxAllowDifferentTheme;
+
+    @FindBy(css = "button.jenkins-button.apply-button")
+    private WebElement applyButton;
+
+    @FindBy(css = "button.jenkins-submit-button")
+    private WebElement saveButton;
 
     public AppearancePage(WebDriver driver) {
         super(driver);
     }
 
     public AppearancePage clickLightTheme() {
-        getDriver().findElement(By.xpath("//label[span[text() = 'Light']]")).click();
+        lightTheme.click();
 
         return this;
     }
 
     public AppearancePage clickDarkSystemTheme() {
-        getDriver().findElement(By.xpath("//label[span[text() = 'Dark (System)']]")).click();
+        darkSystemTheme.click();
 
         return this;
     }
 
     public AppearancePage clickDarkTheme() {
-        getDriver().findElement(By.xpath("//label[span[text() = 'Dark']]")).click();
+        darkTheme.click();
 
         return this;
     }
 
     public AppearancePage clickDoNotAllowDifferentTheme() {
-        getDriver().findElement(By.xpath("//label[contains(., 'Do not allow users to select a different theme')]")).click();
+        checkBoxAllowDifferentTheme.click();
 
         return this;
     }
 
     public AppearancePage clickApplyButton() {
-        getDriver().findElement(By.cssSelector("button.jenkins-button.apply-button")).click();
+        applyButton.click();
 
         return this;
     }
@@ -48,24 +68,14 @@ public class AppearancePage extends BasePage {
     }
 
     public JenkinsManagementPage clickSaveButton() {
-        getDriver().findElement(By.cssSelector("button.jenkins-submit-button")).click();
+        saveButton.click();
 
         return new JenkinsManagementPage(getDriver());
     }
 
-
     public AppearancePage changeTheme(String theme) {
         getDriver().findElement(By.cssSelector("label:has(> div[data-theme='%s'])".formatted(theme))).click();
 
-        return this;
-    }
-
-    public AppearancePage clickAllowDifferentTheme() {
-        if (!getDriver().findElement(By.cssSelector("input[name='_.disableUserThemes']")).isSelected()) {
-            getDriver().findElement(
-                    By.xpath("//label[contains(., 'Do not allow users to select a different theme')]")
-            ).click();
-        }
         return this;
     }
 

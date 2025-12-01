@@ -7,46 +7,46 @@ import school.redrover.page.HomePage;
 
 
 public class ConfigureAppearanceTest extends BaseTest {
-    final String theme = "dark";
+    private final String THEME = "dark";
 
     @Test
-    public void testThemesAndApplyPopUpButton() {
+    public void testThemesAndApplyButtonPopUp() {
+        String expectedText = "Saved";
         String popUpApplyButtonText = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickAppearanceLink()
                 .clickDarkSystemTheme()
                 .clickLightTheme()
-                .clickDarkTheme()
                 .clickApplyButton()
                 .getPopUpApplyButtonText();
 
-        Assert.assertEquals(popUpApplyButtonText, "Saved");
+        Assert.assertEquals(popUpApplyButtonText, expectedText);
     }
 
-    @Test
-    public void testChangeThemeDarkAndCheckBoxAllow() {
-        String themaHtmltext = new HomePage(getDriver())
+    @Test(dependsOnMethods = "testThemesAndApplyButtonPopUp")
+    public void testChangeThemeAndSaveButton() {
+        String expectedTeg = "dark";
+        String themaHtmlText = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickAppearanceLink()
                 .clickDoNotAllowDifferentTheme()
                 .clickDarkTheme()
-                .clickDoNotAllowDifferentTheme()
                 .clickSaveButton()
                 .getHTMLAttributeThemeText();
 
-        Assert.assertEquals(themaHtmltext, theme);
+        Assert.assertEquals(themaHtmlText, expectedTeg);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testThemesAndApplyButtonPopUp")
     public void changeTheme() {
         String checking = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickAppearanceLink()
-                .changeTheme(theme)
-                .clickAllowDifferentTheme()
+                .changeTheme(THEME)
+                .clickDoNotAllowDifferentTheme()
                 .clickApplyButton()
                 .getHTMLAttributeThemeText();
 
-        Assert.assertEquals(checking, theme);
+        Assert.assertEquals(checking, THEME);
     }
 }
