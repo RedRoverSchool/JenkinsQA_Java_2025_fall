@@ -19,6 +19,9 @@ public class JenkinsManagementPage extends BasePage {
     @FindBy(xpath = "//a[@href = 'appearance']")
     private WebElement appearanceLink;
 
+    @FindBy(xpath = "//a[@href='securityRealm/']")
+    private WebElement usersLink;
+
     private final By searchResults = By.cssSelector(".jenkins-dropdown__item:nth-of-type(1)");
 
     public JenkinsManagementPage(WebDriver driver) {
@@ -26,7 +29,7 @@ public class JenkinsManagementPage extends BasePage {
     }
 
     public UsersPage clickUserButton() {
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        usersLink.click();
 
         return new UsersPage(getDriver());
     }
