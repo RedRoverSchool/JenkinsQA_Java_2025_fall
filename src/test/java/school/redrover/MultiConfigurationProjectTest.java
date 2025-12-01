@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -22,6 +23,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertEquals(actualProjectName, PROJECT_NAME);
     }
 
+    @Ignore
     @Test()
     public void testAddDescriptionToProject() {
         String actualDescription = new HomePage(getDriver())

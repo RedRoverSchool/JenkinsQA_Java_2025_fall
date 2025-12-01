@@ -41,6 +41,9 @@ public class FreestyleProjectConfigurationPage extends BasePage {
     @FindBy(xpath = "//section[@class='jenkins-section'][2]//label[@class='attach-previous ']")
     private List<WebElement> checkboxTriggersLabels;
 
+    @FindBy(xpath = "//div[@id='source-code-management']/following-sibling::div[contains(@class, 'jenkins-section__description')]")
+    private WebElement sourceCodeManagementDescription;
+
     public FreestyleProjectConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -141,9 +144,8 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         return this;
     }
 
-    public WebElement getScmDescription() {
-        return getDriver().findElement(By.xpath(
-                "//div[normalize-space()='Connect and manage your code repository to automatically pull the latest code for your builds.']"));
+    public String getScmDescriptionText() {
+       return sourceCodeManagementDescription.getText();
     }
 
     public String getSelectedRadioLabel() {
