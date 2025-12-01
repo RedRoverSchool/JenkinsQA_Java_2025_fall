@@ -23,7 +23,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertEquals(actualProjectName, PROJECT_NAME);
     }
 
-    @Ignore
     @Test()
     public void testAddDescriptionToProject() {
         String actualDescription = new HomePage(getDriver())
