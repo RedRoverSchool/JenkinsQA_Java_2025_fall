@@ -70,8 +70,11 @@ public class AppearancePage extends BasePage {
     public JenkinsManagementPage clickSaveButton() {
         saveButton.click();
 
-        getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                 By.id("root-action-UserAction")));
+        getWait5().until(webDriver ->
+                ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+
         return new JenkinsManagementPage(getDriver());
     }
 
