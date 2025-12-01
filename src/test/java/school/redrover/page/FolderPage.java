@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
@@ -11,17 +12,66 @@ import school.redrover.common.TestUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 public class FolderPage extends BasePage {
+
+    @FindBy(xpath = "//a[contains(@href, '/configure')]")
+    private WebElement configureMenuItem;
+
+    @FindBy(xpath = "//span[text()='Status']/ancestor::a")
+    private WebElement statusMenuItem;
+
+    @FindBy(xpath = "//span[text()='New Item']/..")
+    private WebElement newItemOfMenuItem;
+
+    @FindBy(xpath = "//span[text()='Build History']/ancestor::a")
+    private WebElement buildHistoryMenuItem;
+
+    @FindBy(xpath = "//span[text()='Rename']/ancestor::a")
+    private WebElement renameMenuItem;
+
+    @FindBy(xpath = "//span[text()='Credentials']/ancestor::a")
+    private WebElement credentialsMenuItem;
+
 
     public FolderPage(WebDriver driver) {
         super(driver);
     }
 
     public FolderConfigurationPage clickConfigureLinkInSideMenu() {
-        getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]")).click();
+        configureMenuItem.click();
 
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
         return new FolderConfigurationPage(getDriver());
+    }
+
+    public FolderPage clickStatusLinkInSideMenu() {
+        statusMenuItem.click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+
+        return this;
+    }
+
+    public BuildHistoryOfJenkinsPage clickBuildHistoryLinkInSideMenu() {
+        buildHistoryMenuItem.click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+
+        return new BuildHistoryOfJenkinsPage(getDriver());
+    }
+
+    public FolderRenamingPage clickRenameLinkInSideMenu() {
+        renameMenuItem.click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+
+        return new FolderRenamingPage(getDriver());
+    }
+
+    public FolderCredentialsPage clickCredentialsLinkInSideMenu() {
+        credentialsMenuItem.click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+
+        return new FolderCredentialsPage(getDriver());
     }
 
     public FolderInfo getInfo() {
@@ -256,5 +306,30 @@ public class FolderPage extends BasePage {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(itemName.trim())));
 
         return itemPage;
+    }
+
+    public <T extends BasePage> T openSideMenuItemPage(WebElement menuItem, Supplier<T> resultPage) {
+        TestUtils.clickJS(getDriver(), menuItem);
+
+        return resultPage.get();
+    }
+
+    public BasePage goToSideMenuItemPage(String menuItemName) {
+        switch (menuItemName) {
+            case "Status":
+                return openSideMenuItemPage(statusMenuItem, () -> new FolderPage(getDriver()));
+            case "Configure":
+                return openSideMenuItemPage(configureMenuItem, () -> new FolderConfigurationPage(getDriver()));
+            case "New Item":
+                return openSideMenuItemPage(newItemOfMenuItem, () -> new NewItemPage(getDriver()));
+            case "Build History":
+                return openSideMenuItemPage(buildHistoryMenuItem, () -> new BuildHistoryOfJenkinsPage(getDriver()));
+            case "Rename":
+                return openSideMenuItemPage(renameMenuItem, () -> new FolderRenamingPage(getDriver()));
+            case "Credentials":
+                return openSideMenuItemPage(credentialsMenuItem, () -> new FolderCredentialsPage(getDriver()));
+            default:
+                throw new IllegalArgumentException("Unknown item type: " + menuItemName);
+        }
     }
 }

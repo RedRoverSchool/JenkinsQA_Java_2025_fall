@@ -22,6 +22,18 @@ public class FolderManagementTest extends BaseTest {
         };
     }
 
+    @DataProvider
+    public Object[][] sideMenuItemsData() {
+        return new Object[][]{
+                {"Status", FOLDER_NAME},
+                {"Configure", "Configuration"},
+                {"New Item", "New Item"},
+                {"Build History", "Build History of Jenkins"},
+                {"Rename", "Rename Folder MyFolder"},
+                {"Credentials", "Credentials"}
+        };
+    }
+
     public void createFolder() {
         new HomePage(getDriver())
                 .clickCreateJob()
@@ -120,5 +132,17 @@ public class FolderManagementTest extends BaseTest {
             default:
                 throw new IllegalArgumentException("Unknown item type: " + itemType);
         }
+    }
+
+    @Test(dataProvider = "sideMenuItemsData")
+    public void testNavigateToPageOfSideMenuItemOfFolder(String menuItemName, String expectedHeading){
+        createFolder();
+
+        String actualHeading = new HomePage(getDriver())
+                .clickFolder(FOLDER_NAME)
+                .goToSideMenuItemPage(menuItemName)
+                .getHeadingText();
+
+        Assert.assertEquals(actualHeading, expectedHeading);
     }
 }
