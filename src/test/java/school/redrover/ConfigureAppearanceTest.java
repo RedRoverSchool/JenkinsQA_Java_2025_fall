@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -35,16 +34,19 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .clickSaveButton()
                 .getHTMLAttributeThemeText();
 
-        Assert.assertEquals(themaHtmltext, "dark");
+        Assert.assertEquals(themaHtmltext, theme);
     }
 
-    @Ignore
     @Test
     public void changeTheme() {
         String checking = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
-                .clickAppearance()
-                .changeTheme(theme);
+                .clickAppearanceLink()
+                .changeTheme(theme)
+                .clickAllowDifferentTheme()
+                .clickApplyButton()
+                .getHTMLAttributeThemeText();
+
         Assert.assertEquals(checking, theme);
     }
 }

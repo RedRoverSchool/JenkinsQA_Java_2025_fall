@@ -83,22 +83,6 @@ public class JenkinsManagementPage extends BasePage {
                 .toList();
     }
 
-    public JenkinsManagementPage clickAppearance() {
-        getDriver().findElement(By.cssSelector("a[href='appearance']")).click();
-        return this;
-    }
-
-    public String changeTheme(String theme) {
-        getDriver().findElement(By.cssSelector("label:has(> div[data-theme='%s'])".formatted(theme))).click();
-        if (!getDriver().findElement(By.cssSelector("input[name='_.disableUserThemes']")).isSelected()) {
-            getDriver().findElement(
-                    By.xpath("//label[contains(., 'Do not allow users to select a different theme')]")
-            ).click();
-        }
-        getDriver().findElement(By.cssSelector("button.jenkins-submit-button")).click();
-        return getDriver().findElement(By.cssSelector("html")).getAttribute("data-theme");
-    }
-
     public AppearancePage clickAppearanceLink() {
         getDriver().findElement(By.xpath("//a[@href = 'appearance']")).click();
         return new AppearancePage(getDriver());
