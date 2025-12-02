@@ -22,7 +22,7 @@ public class FolderPage extends BasePage {
     @FindBy(xpath = "//span[text()='Status']/ancestor::a")
     private WebElement statusMenuItem;
 
-    @FindBy(xpath = "//span[text()='New Item']/..")
+    @FindBy(xpath = "//a[contains(@href, '/newJob')]")
     private WebElement newItemOfMenuItem;
 
     @FindBy(xpath = "//span[text()='Build History']/ancestor::a")
@@ -73,7 +73,7 @@ public class FolderPage extends BasePage {
     }
 
     public NewItemPage clickSidebarNewItem() {
-        getDriver().findElement(By.xpath("//a[contains(@href, '/newJob')]")).click();
+        newItemOfMenuItem.click();
         return new NewItemPage(getDriver());
     }
 
@@ -283,6 +283,7 @@ public class FolderPage extends BasePage {
     public <T extends BasePage> T openSideMenuItemPage(WebElement menuItem, Supplier<T> resultPage) {
         TestUtils.clickJS(getDriver(), menuItem);
 
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
         return resultPage.get();
     }
 
