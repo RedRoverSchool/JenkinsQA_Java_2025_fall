@@ -62,7 +62,7 @@ public class UserStatusPage extends BasePage {
     }
 
     public String getDescriptionText() {
-        return getWait2().until(ExpectedConditions.visibilityOf(descriptionContent))
+        return getWait5().until(ExpectedConditions.visibilityOf(descriptionContent))
                 .getText();
     }
 }
