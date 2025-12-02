@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.FreestyleProjectConfigurationPage;
 import school.redrover.page.HomePage;
 
 import java.util.List;
@@ -57,13 +58,24 @@ public class ConfigurationMatrixTest extends BaseTest {
     @Test
     public void testSetUpEnvironmentAfterRefresh() {
 
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys("NewFreestyleProject");
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@data-section-id='environment']")).click();
+        String urlAfterRefresh = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .clickEnvironmentMenuOption()
+                .getConfigUrl(); // сохранение текущего url
+                // метод рефреш
 
-        String urlBeforeRefresh = getDriver().getCurrentUrl();
+
+//        String urlBeforeRefresh = new FreestyleProjectConfigurationPage(getDriver())
+
+//        getDriver().findElement(By.linkText("New Item")).click();
+//        getDriver().findElement(By.id("name")).sendKeys("NewFreestyleProject");
+//        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+//        getDriver().findElement(By.id("ok-button")).click();
+//        getDriver().findElement(By.xpath("//button[@data-section-id='environment']")).click();
+
+//        String urlBeforeRefresh = getDriver().getCurrentUrl();
         getDriver().navigate().refresh();
         String urlAfterRefresh = getDriver().getCurrentUrl();
         getWait10().until(ExpectedConditions.urlToBe(urlBeforeRefresh));
