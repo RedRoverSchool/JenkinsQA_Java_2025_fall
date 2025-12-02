@@ -44,8 +44,14 @@ public class UserStatusPage extends BasePage {
                 .getText();
     }
 
-    public String getUserID() {
+    public String getUserNameAdminInBreadcrumbs() {
 
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .xpath("//a[@href='/user/admin/']")))
+                .getText();
+    }
+
+    public String getUserID() {
         return userIDElement.getText().substring(17);
     }
 

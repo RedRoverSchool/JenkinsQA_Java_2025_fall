@@ -74,7 +74,7 @@ public class MultiConfigurationProjectPage extends BasePage {
     }
 
     public String getDescription() {
-        getWait2().until(ExpectedConditions.presenceOfElementLocated(
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                         By.xpath("//div[@id='description-content']")));
         return projectDescription.getText();
     }
