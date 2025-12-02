@@ -15,6 +15,7 @@ public class FreestyleProjectTest extends BaseTest {
     private static final String PROJECT_NAME = "FreestyleProject";
     private static final String PROJECT_DESCRIPTION_EXPECTED = "This is a description for Freestyle Project";
     private static final String SCM_TITLE_EXPECTED = "Source Code Management";
+    private static final String PARAMETRIZATION_CHECKBOX = "This project is parameterized";
 
     private static final List<String> BUILD_STEPS = List.of(
             "Execute Windows batch command",
@@ -24,6 +25,17 @@ public class FreestyleProjectTest extends BaseTest {
             "Invoke top-level Maven targets",
             "Run with timeout",
             "Set build status to \"pending\" on GitHub commit"
+    );
+
+    private static final List<String> PARAMETER_EXPECTED = List.of(
+            "Boolean Parameter",
+            "Choice Parameter",
+            "Credentials Parameter",
+            "File Parameter",
+            "Multi-line String Parameter",
+            "Password Parameter",
+            "Run Parameter",
+            "String Parameter"
     );
 
     @Test
@@ -142,10 +154,10 @@ public class FreestyleProjectTest extends BaseTest {
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit();
 
-        Assert.assertEquals(configPage.getScmDescriptionText(), expectedCSMText,"SCM Description is not displayed or the description text doesn't match");
-        Assert.assertEquals(configPage.getSelectedRadioLabel(), "None","Radio button 'None' should be selected by default");
-        Assert.assertTrue(configPage.isGitOptionDisplayed(),"Radio button 'Git' should be displayed");
-        Assert.assertEquals(configPage.getGitTooltipText(),"Help for feature: Git","Tooltip text should match expected value");
+        Assert.assertEquals(configPage.getScmDescriptionText(), expectedCSMText, "SCM Description is not displayed or the description text doesn't match");
+        Assert.assertEquals(configPage.getSelectedRadioLabel(), "None", "Radio button 'None' should be selected by default");
+        Assert.assertTrue(configPage.isGitOptionDisplayed(), "Radio button 'Git' should be displayed");
+        Assert.assertEquals(configPage.getGitTooltipText(), "Help for feature: Git", "Tooltip text should match expected value");
     }
 
     @Test
@@ -187,7 +199,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testNavigationToTriggersBySideMenu () {
+    public void testNavigationToTriggersBySideMenu() {
         String triggerTitle = new HomePage(getDriver())
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
@@ -253,5 +265,34 @@ public class FreestyleProjectTest extends BaseTest {
                 .confirmDelete();
 
         Assert.assertEquals(homePage.getHeadingText(), expectedHeadingText);
+    }
+
+    @Test
+    public void testParametersForParameterizationOfBuildsIsDisplayed() {
+        List<String> actualParameterList = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .selectCheckbox(PARAMETRIZATION_CHECKBOX)
+                .clickAddParameterDropDownButton()
+                .getAddParameterList();
+
+        Assert.assertEquals(actualParameterList, PARAMETER_EXPECTED);
+    }
+
+    @Test
+    public void testAddParameterForParameterizationOfBuilds() {
+        String parameterName = PARAMETER_EXPECTED.get(0);
+
+        List<String> selectedParameterList = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .selectCheckbox(PARAMETRIZATION_CHECKBOX)
+                .clickAddParameterDropDownButton()
+                .selectParameterInDropDownButton(parameterName)
+                .getSelectedParameterList();
+
+        Assert.assertTrue(selectedParameterList.contains(parameterName));
     }
 }

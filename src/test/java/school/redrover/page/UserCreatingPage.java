@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 import java.util.List;
@@ -35,10 +36,18 @@ public class UserCreatingPage extends BasePage {
         return this;
     }
 
-    public <P extends BasePage> P clickCreateUserButton(P page) {
+    public UsersPage clickCreateAndGoToUsersPage() {
         getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(.,'Users')]")));
 
-        return page;
+        return new UsersPage(getDriver());
+    }
+
+    public UserCreatingPage clickCreateAndKeepUserCreatingPage() {
+        getDriver().findElement(By.name("Submit")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Create User']")));
+
+        return this;
     }
 
     public List<String> getAllErrors() {

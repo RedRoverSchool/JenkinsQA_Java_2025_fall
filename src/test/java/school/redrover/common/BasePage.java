@@ -21,6 +21,9 @@ public abstract class BasePage extends BaseModel {
     @FindBy(xpath = "//a[@href='api/']")
     private WebElement restApiLink;
 
+    @FindBy(tagName = "h1")
+    private WebElement headingText;
+
     public BasePage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
@@ -34,8 +37,8 @@ public abstract class BasePage extends BaseModel {
 
     public JenkinsManagementPage clickGearManageJenkinsButton() {
         manageJenkinsButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(),'Manage Jenkins')]")));
 
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new JenkinsManagementPage(getDriver());
     }
 
@@ -78,15 +81,15 @@ public abstract class BasePage extends BaseModel {
     }
 
     public String getRestApiLinkText() {
-
         WebElement footer = getDriver().findElement(By.tagName("footer"));
+
         return footer.findElement(By.linkText("REST API")).getText();
     }
 
     public RestApiPage clickRestApiLink() {
         restApiLink.click();
-
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
+
         return new RestApiPage(getDriver());
     }
 
@@ -97,13 +100,17 @@ public abstract class BasePage extends BaseModel {
 
     public UserStatusPage clickUserAccountIcon() {
         userAccountIcon.click();
-
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
+
         return new UserStatusPage(getDriver());
     }
 
     public String getlogoText() {
         return getWait5().until(ExpectedConditions.
                 visibilityOfElementLocated(By.className("app-jenkins-logo"))).getText();
+    }
+
+    public String getHeadingText() {
+        return headingText.getText();
     }
 }
