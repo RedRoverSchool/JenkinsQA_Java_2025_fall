@@ -73,7 +73,7 @@ public class PipelineTest extends BaseTest {
                 "IntelliJ IDEA GDSL"
         );
 
-        List <String> actualSideMenu = new HomePage(getDriver())
+        List<String> actualSideMenu = new HomePage(getDriver())
                 .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
                 .clickPipelineSyntax()
                 .getListOfButtonsInSideMenu();
@@ -95,7 +95,7 @@ public class PipelineTest extends BaseTest {
                 "IntelliJ IDEA GDSL"
         );
 
-        List <String> actualSideMenu = new HomePage(getDriver())
+        List<String> actualSideMenu = new HomePage(getDriver())
                 .openDropdownMenu(PIPELINE_NAME)
                 .clickPipelineSyntaxInDropdownMenu()
                 .getListOfButtonsInSideMenu();
@@ -130,6 +130,7 @@ public class PipelineTest extends BaseTest {
 
     }
 
+
     @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testAddDescription() {
         final String textDescription = "@0*8nFP'cRU0k.|6Gz-wO*se h~OtJ4kz0!)cl0ZAE3vN>q";
@@ -143,6 +144,7 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(descriptionText, textDescription);
     }
+
 
     @Test(dependsOnMethods = "testAddDescription")
     public void testEditDescription() {
@@ -218,7 +220,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(new PipelineConfigurationPage(getDriver()).getNotificationSaveMessage(),
                 "Saved");
         Assert.assertTrue(textAreaValidationMessage.matches(
-                "(?s)Would last have run at .*; would next run at .*"),
+                        "(?s)Would last have run at .*; would next run at .*"),
                 "Alias " + validTimePeriod + " не прошёл валидацию");
     }
 

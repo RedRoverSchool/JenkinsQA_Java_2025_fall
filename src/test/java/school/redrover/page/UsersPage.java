@@ -15,13 +15,13 @@ import java.time.Duration;
 public class UsersPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(., 'Account')]")
-    private WebElement accountMenuItem;
+    private static WebElement accountMenuItem;
 
     @FindBy(xpath = "//a[@href='addUser']")
-    private WebElement createUserButton;
+    private static WebElement createUserButton;
 
     @FindBy(xpath = "(//button[@class='jenkins-menu-dropdown-chevron'])[2]")
-    private WebElement chevronButton;
+    private static WebElement chevronButton;
 
     public UsersPage(WebDriver driver) {
         super(driver);
