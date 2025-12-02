@@ -15,7 +15,7 @@ public class OrganizationFolderConfigurationPage extends BasePage {
     public OrganizationFolderPage clickSave() {
         WebElement button = getDriver().findElement(By.name("Submit"));
         button.click();
-        getWait2().until(ExpectedConditions.invisibilityOf(button));
+        getWait5().until(ExpectedConditions.invisibilityOf(button));
 
         return new OrganizationFolderPage(getDriver());
     }

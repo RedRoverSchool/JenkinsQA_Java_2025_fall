@@ -3,12 +3,16 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 import school.redrover.common.BasePage;
 
 import java.util.List;
 
 public class BuildHistoryOfJenkinsPage extends BasePage {
+
+    @FindBy(tagName = "h1")
+    private WebElement headingText;
 
     public BuildHistoryOfJenkinsPage(WebDriver driver) {
         super(driver);
@@ -19,7 +23,7 @@ public class BuildHistoryOfJenkinsPage extends BasePage {
     }
 
     public String getHeadingText() {
-        return getDriver().findElement(By.tagName("h1")).getText();
+        return headingText.getText();
     }
 
     public List<String> getTableHeadersText() {

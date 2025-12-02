@@ -127,7 +127,7 @@ public class NewItemPage extends BasePage {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Organization Folder']"));
 
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(), 'General')]")));
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(), 'General')]")));
 
         return new OrganizationFolderConfigurationPage(getDriver());
     }
