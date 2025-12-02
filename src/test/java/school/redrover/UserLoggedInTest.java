@@ -40,4 +40,28 @@ public class UserLoggedInTest extends BaseTest {
 
         Assert.assertEquals(actualDescription, expectedDescription);
     }
+
+    @Test
+    public void testUserNameInUserStatusBreadcrumbs() {
+        String expectedUserName = new HomePage(getDriver())
+                .getUserAccountNameViaDropDownMenu();
+
+        String actualUserName = new HomePage(getDriver())
+                .clickUserAccountViaDropDownMenu(expectedUserName)
+                .getUserNameAdminInBreadcrumbs();
+
+        Assert.assertTrue(actualUserName.contains(expectedUserName));
+    }
+
+    @Test
+    public void testUserNameInUserStatusHeading() {
+        String expectedUserName = new HomePage(getDriver())
+                .getUserAccountNameViaDropDownMenu();
+
+        String actualUserName = new HomePage(getDriver())
+                .clickUserAccountViaDropDownMenu(expectedUserName)
+                .getUserName();
+
+        Assert.assertEquals(actualUserName, expectedUserName);
+    }
 }

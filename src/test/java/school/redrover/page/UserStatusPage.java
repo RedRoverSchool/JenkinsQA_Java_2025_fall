@@ -27,6 +27,21 @@ public class UserStatusPage extends BasePage {
 
     @FindBy(id = "description-content")
     private WebElement description;
+  
+    @FindBy(xpath = "//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]")
+    private WebElement userIDElement;
+
+    @FindBy(id = "description-link")
+    private WebElement descriptionLink;
+
+    @FindBy(name = "description")
+    private WebElement descriptionField;
+
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
+
+    @FindBy(id = "description-content")
+    private WebElement descriptionContent;
 
     public UserStatusPage(WebDriver driver) {
         super(driver);
@@ -34,13 +49,21 @@ public class UserStatusPage extends BasePage {
 
     public String getUserName() {
 
-        return userName.getText();
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div//h1"))).getText();
+
     }
 
     public String getUserNameInBreadcrumbs(String userName) {
 
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//a[@href='/user/%s/']".formatted(userName))))
+                .getText();
+    }
+
+    public String getUserNameAdminInBreadcrumbs() {
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .xpath("//a[@href='/user/admin/']")))
                 .getText();
     }
 
@@ -51,7 +74,6 @@ public class UserStatusPage extends BasePage {
 
     public UserStatusPage clickEditDescription() {
         editDescriptionButton.click();
-
         getWait5().until(ExpectedConditions.elementToBeClickable(descriptionTextBox));
 
         return this;
@@ -63,12 +85,19 @@ public class UserStatusPage extends BasePage {
         saveButton.click();
 
         getWait5().until(ExpectedConditions.visibilityOf(description));
+        return userIDElement.getText().substring(17);
+    }
+
+    public UserStatusPage editDescription(String text) {
+        descriptionLink.click();
+        descriptionField.sendKeys(text);
+        submitButton.click();
 
         return this;
     }
 
     public String getDescriptionText() {
-
-        return description.getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(descriptionContent))
+                .getText();
     }
 }

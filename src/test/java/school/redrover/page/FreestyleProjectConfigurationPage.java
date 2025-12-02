@@ -4,10 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import school.redrover.common.BasePage;
+import school.redrover.common.TestUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -43,6 +46,18 @@ public class FreestyleProjectConfigurationPage extends BasePage {
 
     @FindBy(xpath = "//div[@id='source-code-management']/following-sibling::div[contains(@class, 'jenkins-section__description')]")
     private WebElement sourceCodeManagementDescription;
+
+    @FindBy(xpath = "//button[@data-section-id='environment']")
+    private WebElement clickEnvironmentMenuOption;
+  
+    @FindBy(xpath = "//button[@class='jenkins-dropdown__item ']")
+    private List<WebElement> addParameterList;
+
+    @FindBy(xpath = "//button[text()='Add Parameter']")
+    private WebElement addParameterDropDownButton;
+
+    @FindBy(xpath = "//div[@name ='parameterDefinitions']//div[@class= 'repeated-chunk__header']")
+    private List<WebElement> selectedParameterList;
 
     public FreestyleProjectConfigurationPage(WebDriver driver) {
         super(driver);
@@ -122,6 +137,12 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         return this;
     }
 
+    public FreestyleProjectConfigurationPage clickEnvironmentMenuOption() {
+        clickEnvironmentMenuOption.click();
+
+        return this;
+    }
+
     public FreestyleProjectConfigurationPage clickBuildStepMenuOption() {
 
         WebElement addBuildStep = getWait2().until(
@@ -145,7 +166,7 @@ public class FreestyleProjectConfigurationPage extends BasePage {
     }
 
     public String getScmDescriptionText() {
-       return sourceCodeManagementDescription.getText();
+        return sourceCodeManagementDescription.getText();
     }
 
     public String getSelectedRadioLabel() {
@@ -155,6 +176,16 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         String labelText = linkedLabel.getText();
 
         return labelText;
+    }
+
+    public String getConfigUrl() {
+        return getDriver().getCurrentUrl();
+    }
+
+    public FreestyleProjectConfigurationPage refreshPage() {
+        getDriver().navigate().refresh();
+
+        return this;
     }
 
     public boolean isGitOptionDisplayed() {
@@ -213,5 +244,59 @@ public class FreestyleProjectConfigurationPage extends BasePage {
                 .limit(5)
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
+    }
+
+    public FreestyleProjectConfigurationPage selectCheckbox(String checkBoxLabel) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(By
+                .xpath("//label[text()='%s']".formatted(checkBoxLabel))))
+                .click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurationPage clickAddParameterDropDownButton() {
+        ((JavascriptExecutor) getDriver())
+                .executeScript("arguments[0].scrollIntoView({block: 'center'});", addParameterDropDownButton);
+
+        new Actions(getDriver()).moveToElement(addParameterDropDownButton).click().perform();
+
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//button[@class='jenkins-dropdown__item ']")));
+        return this;
+    }
+
+    public List<String> getAddParameterList() {
+        return addParameterList
+                .stream()
+                .map(WebElement::getText)
+                .map(String::trim)
+                .toList();
+    }
+
+    public FreestyleProjectConfigurationPage selectParameterInDropDownButton(String parameterName) {
+        List<String> parameterList = getAddParameterList();
+
+        Assert.assertNotEquals(addParameterList.size(), 0);
+        for (WebElement element : addParameterList) {
+            if (parameterList.contains(parameterName)) {
+                TestUtils.mouseEnterJS(getDriver(), element);
+                TestUtils.clickJS(getDriver(), element);
+                break;
+            } else
+                System.out.println("Параметр " + parameterName + " не найден");
+        }
+
+        getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
+                .xpath("//div[@name ='parameterDefinitions']//div[@class= 'repeated-chunk__header']")));
+        return this;
+    }
+
+    public List<String> getSelectedParameterList() {
+        return selectedParameterList
+                .stream()
+                .map(WebElement::getText)
+                .map(text -> text.split("\\n")[0])
+                .map(String::trim)
+                .toList();
     }
 }

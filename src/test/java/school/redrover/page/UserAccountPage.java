@@ -10,11 +10,11 @@ import school.redrover.common.BasePage;
 
 public class UserAccountPage extends BasePage {
 
-    @FindBy(name = "_.fullName")
-    private WebElement fullNameField;
+    private static final By FULL_NAME_FIELD = By.name("_.fullName");
+    private static final By EMAIL_FIELD = By.xpath("//input[@name='email.address']");
 
-    @FindBy(xpath = "//*[@id='main-panel']//section[4]/div[4]/div[1]/input")
-    private WebElement emailField;
+    @FindBy(xpath = "//button[@name='Apply']")
+    private WebElement applyButton;
 
     @FindBy(name = "Submit")
     private WebElement saveButton;
@@ -22,7 +22,6 @@ public class UserAccountPage extends BasePage {
     public UserAccountPage(WebDriver driver) {
         super(driver);
     }
-
 
     public UserAccountPage sendFullName(String fullName) {
         fullNameField.clear();
@@ -42,12 +41,22 @@ public class UserAccountPage extends BasePage {
     public UserAccountPage sendEmail(String email) {
         emailField.clear();
         emailField.sendKeys(email);
+        public <P extends BasePage> P clickSave(P returnedPage) {
+        getWait5().until(ExpectedConditions.visibilityOf(saveButton)).click();
+        return returnedPage;
+    }
+
+    public UserAccountPage editEmail(String EMAIL) {
+        WebElement emailField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD));
+        emailField.clear();
+        emailField.sendKeys(EMAIL);
+        applyButton.click();
 
         return this;
     }
 
     public String getEmailText() {
-
-        return emailField.getAttribute("value");
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD))
+                .getAttribute("value");
     }
 }
