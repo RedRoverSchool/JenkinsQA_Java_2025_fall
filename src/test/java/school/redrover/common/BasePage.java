@@ -112,7 +112,7 @@ public abstract class BasePage extends BaseModel {
 
     public UserStatusPage clickUserAccountIcon() {
         userAccountIcon.click();
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
+        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]")));
 
         return new UserStatusPage(getDriver());
     }
