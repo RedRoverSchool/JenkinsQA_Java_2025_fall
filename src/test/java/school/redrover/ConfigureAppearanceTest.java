@@ -49,4 +49,18 @@ public class ConfigureAppearanceTest extends BaseTest {
 
         Assert.assertEquals(checking, THEME);
     }
+
+    @Test(dependsOnMethods = "changeTheme")
+    public void changeThemeLight() {
+        String finalTheme = "Saved";
+        String checkingLight = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickAppearanceLink()
+                .clickLightTheme()
+                .clickDoNotAllowDifferentTheme()
+                .clickApplyButton()
+                .getPopUpApplyButtonText();
+
+        Assert.assertEquals(checkingLight, finalTheme);
+    }
 }
