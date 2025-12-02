@@ -1,34 +1,30 @@
 package school.redrover.page;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.testng.Assert;
 import school.redrover.common.BasePage;
 
 import java.util.List;
 
 public class BuildHistoryOfJenkinsPage extends BasePage {
 
-    @FindBy(tagName = "h1")
-    private WebElement headingText;
+    @FindBy(xpath = "//table[@id='projectStatus']/tbody/tr")
+    private List<WebElement> buildHistoryTableRows;
+
+    @FindBy(css = "thead th a.sortheader")
+    private List<WebElement> tableHeaders;
 
     public BuildHistoryOfJenkinsPage(WebDriver driver) {
         super(driver);
     }
 
-    public boolean emptyTableIsDisplayed() {
-        return getDriver().findElement(By.xpath("//*[@id='projectStatus']")).isDisplayed();
-    }
-
-    public String getHeadingText() {
-        return headingText.getText();
+    public boolean isBuildHistoryEmpty() {
+        return buildHistoryTableRows.isEmpty();
     }
 
     public List<String> getTableHeadersText() {
-        return getDriver()
-                .findElements(By.cssSelector("thead th a.sortheader"))
+        return tableHeaders
                 .stream()
                 .map(webElement -> webElement.getText()
                         .replaceAll("[↓↑\\s\\u00A0]+$", "")

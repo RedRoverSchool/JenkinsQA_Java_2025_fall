@@ -27,7 +27,7 @@ public class BuildHistoryAccessTest extends BaseTest {
         BuildHistoryOfJenkinsPage buildHistoryOfJenkinsPage = new HomePage(getDriver())
                 .openProject("Build History", () -> new BuildHistoryOfJenkinsPage(getDriver()));
 
-        Assert.assertTrue(buildHistoryOfJenkinsPage.emptyTableIsDisplayed(), "The Build History table is not displayed.");
+        Assert.assertTrue(buildHistoryOfJenkinsPage.isBuildHistoryEmpty());
         Assert.assertEquals(buildHistoryOfJenkinsPage.getTableHeadersText(), expectedHeaders);
     }
 }
