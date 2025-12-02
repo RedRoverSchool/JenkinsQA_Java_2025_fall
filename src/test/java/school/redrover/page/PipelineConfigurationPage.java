@@ -158,13 +158,13 @@ public class PipelineConfigurationPage extends BasePage {
     public WebElement[] selectAllTriggers() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
-       final WebElement trigger1 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Build after other projects are built']")));
-       final WebElement trigger2 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Build periodically']")));
-       final WebElement trigger3 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='GitHub hook trigger for GITScm polling']")));
-       final WebElement trigger4 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Poll SCM']")));
-       final WebElement trigger5 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Trigger builds remotely (e.g., from scripts)']")));
+       WebElement trigger1 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Build after other projects are built']")));
+       WebElement trigger2 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Build periodically']")));
+       WebElement trigger3 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='GitHub hook trigger for GITScm polling']")));
+        WebElement trigger4 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Poll SCM']")));
+       WebElement trigger5 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Trigger builds remotely (e.g., from scripts)']")));
 
-       final WebElement[] triggers = {trigger1, trigger2, trigger3, trigger4, trigger5};
+       WebElement[] triggers = {trigger1, trigger2, trigger3, trigger4, trigger5};
 
         for (WebElement trigger : triggers) {
             js.executeScript("arguments[0].scrollIntoView({block: 'center'});", trigger);

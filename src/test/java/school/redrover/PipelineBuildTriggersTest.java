@@ -21,5 +21,6 @@ public class PipelineBuildTriggersTest extends BaseTest {
         for (WebElement trigger : triggersSelected){
             Assert.assertTrue(trigger.isEnabled());
         }
+        Assert.assertNotNull(triggersSelected);
     }
 }
