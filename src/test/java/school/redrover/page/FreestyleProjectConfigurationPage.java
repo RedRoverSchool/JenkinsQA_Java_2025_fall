@@ -47,6 +47,9 @@ public class FreestyleProjectConfigurationPage extends BasePage {
     @FindBy(xpath = "//div[@id='source-code-management']/following-sibling::div[contains(@class, 'jenkins-section__description')]")
     private WebElement sourceCodeManagementDescription;
 
+    @FindBy(xpath = "//button[@data-section-id='environment']")
+    private WebElement clickEnvironmentMenuOption;
+  
     @FindBy(xpath = "//button[@class='jenkins-dropdown__item ']")
     private List<WebElement> addParameterList;
 
@@ -134,6 +137,12 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         return this;
     }
 
+    public FreestyleProjectConfigurationPage clickEnvironmentMenuOption() {
+        clickEnvironmentMenuOption.click();
+
+        return this;
+    }
+
     public FreestyleProjectConfigurationPage clickBuildStepMenuOption() {
 
         WebElement addBuildStep = getWait2().until(
@@ -167,6 +176,16 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         String labelText = linkedLabel.getText();
 
         return labelText;
+    }
+
+    public String getConfigUrl() {
+        return getDriver().getCurrentUrl();
+    }
+
+    public FreestyleProjectConfigurationPage refreshPage() {
+        getDriver().navigate().refresh();
+
+        return this;
     }
 
     public boolean isGitOptionDisplayed() {
