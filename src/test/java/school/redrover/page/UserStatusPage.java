@@ -10,9 +10,6 @@ import school.redrover.common.BasePage;
 
 public class UserStatusPage extends BasePage {
 
-    @FindBy(xpath = "//div//h1")
-    private WebElement userNameElement;
-
     @FindBy(xpath = "//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]")
     private WebElement userIDElement;
 
@@ -34,7 +31,8 @@ public class UserStatusPage extends BasePage {
 
     public String getUserName() {
 
-        return getWait5().until(ExpectedConditions.visibilityOf(userNameElement)).getText();
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div//h1"))).getText();
+
     }
 
     public String getUserNameInBreadcrumbs(String userName) {

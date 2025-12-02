@@ -32,7 +32,6 @@ public class UserAccountPage extends BasePage {
     }
 
     public <P extends BasePage> P clickSave(P returnedPage) {
-       // getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
         getWait5().until(ExpectedConditions.visibilityOf(saveButton)).click();
         return returnedPage;
     }
