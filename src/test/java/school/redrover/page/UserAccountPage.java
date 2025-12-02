@@ -16,6 +16,9 @@ public class UserAccountPage extends BasePage {
     @FindBy(xpath = "//button[@name='Apply']")
     private WebElement applyButton;
 
+    @FindBy(name = "Submit")
+    private WebElement saveButton;
+
     public UserAccountPage(WebDriver driver) {
         super(driver);
     }
@@ -29,8 +32,8 @@ public class UserAccountPage extends BasePage {
     }
 
     public <P extends BasePage> P clickSave(P returnedPage) {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
-
+       // getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
+        getWait5().until(ExpectedConditions.visibilityOf(saveButton)).click();
         return returnedPage;
     }
 

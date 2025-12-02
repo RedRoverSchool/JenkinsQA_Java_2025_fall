@@ -3,7 +3,9 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import java.time.Duration;
@@ -13,12 +15,15 @@ public class UsersPage extends BasePage {
 
     private static final By ACCOUNT_MENU_ITEM = By.xpath("//a[contains(., 'Account')]");
 
+    @FindBy(xpath = "//a[@href='addUser']")
+    private WebElement createUserButton;
+
     public UsersPage(WebDriver driver) {
         super(driver);
     }
 
     public UserCreatingPage clickCreateUserButton() {
-        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
+        createUserButton.click();
 
         return new UserCreatingPage(getDriver());
     }
