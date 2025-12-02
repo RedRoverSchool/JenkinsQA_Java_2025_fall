@@ -113,4 +113,12 @@ public abstract class BasePage extends BaseModel {
     public String getHeadingText() {
         return headingText.getText();
     }
+
+    public String getUserAccountNameViaDropDownMenu() {
+        Actions actions = new Actions(getDriver());
+
+        actions.moveToElement(getDriver().findElement(By.id("root-action-UserAction"))).perform();
+        return getDriver().findElement(By.cssSelector(".jenkins-dropdown__item:first-child")).getText();
+
+    }
 }
