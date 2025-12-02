@@ -37,7 +37,7 @@ public class ConfigureAppearanceTest extends BaseTest {
         Assert.assertEquals(themaHtmlText, expectedTeg);
     }
 
-    @Test(dependsOnMethods = "testThemesAndApplyButtonPopUp")
+    @Test(dependsOnMethods = "testChangeThemeAndSaveButton")
     public void changeTheme() {
         String checking = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
@@ -57,7 +57,7 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .clickGearManageJenkinsButton()
                 .clickAppearanceLink()
                 .clickLightTheme()
-                .clickDoNotAllowDifferentTheme()
+                .checkAllowTheme()
                 .clickApplyButton()
                 .getPopUpApplyButtonText();
 
