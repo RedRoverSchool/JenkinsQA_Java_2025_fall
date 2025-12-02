@@ -93,6 +93,7 @@ public class JenkinsManagementTest extends BaseTest {
 
         Assert.assertEquals(actualHintText, expectedHintText, "Unexpected tooltip");
     }
+
     @Test
     public void testCheckAccessDashboardFromLogo() {
         String title = new HomePage(getDriver())

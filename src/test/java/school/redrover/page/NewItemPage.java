@@ -3,24 +3,48 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
+import java.util.Objects;
+
 public class NewItemPage extends BasePage {
+
+    @FindBy(id = "name")
+    private WebElement nameField;
+
+    @FindBy(xpath = "//span[text()='Multibranch Pipeline']")
+    private WebElement multibranchPipelineOption;
+
+    @FindBy(className = "hudson_model_FreeStyleProject")
+    private WebElement freestyleProjectOption;
+
+    @FindBy(id = "ok-button")
+    private WebElement okButton;
+
+    @FindBy(className = "hudson_matrix_MatrixProject")
+    private WebElement multiConfigurationProject;
+
+    @FindBy(css = "[class$='WorkflowJob']")
+    private WebElement pipelineType;
+
+    @FindBy(xpath = "//*[contains(@class, 'WorkflowJob')]")
+    private WebElement pipelineTypeCheck;
 
     public NewItemPage(WebDriver driver) {
         super(driver);
     }
 
     public NewItemPage sendName(String name) {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(name);
+        nameField.sendKeys(name);
 
         return this;
     }
 
     public NewItemPage clearSendName() {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).clear();
+        nameField.clear();
 
         return this;
     }
@@ -42,15 +66,15 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage selectMultibranchPipeline() {
-        getDriver().findElement(By.cssSelector("[class$='MultiBranchProject']")).click();
+        multibranchPipelineOption.click();
 
         return this;
     }
 
     public MultibranchPipelineConfigurationPage selectMultibranchPipelineAndSubmit() {
-        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='Multibranch Pipeline']"));
+        TestUtils.clickJS(getDriver(), multibranchPipelineOption);
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(okButton)).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'General']")));
 
         return new MultibranchPipelineConfigurationPage(getDriver());
@@ -73,9 +97,9 @@ public class NewItemPage extends BasePage {
     }
 
     public FreestyleProjectConfigurationPage selectFreestyleProjectAndSubmit() {
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        freestyleProjectOption.click();
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(okButton)).click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[@id = 'general']")));
 
         return new FreestyleProjectConfigurationPage(getDriver());
@@ -135,26 +159,24 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage selectPipeline() {
-        getDriver().findElement(By.cssSelector("[class$='WorkflowJob']")).click();
+        pipelineType.click();
 
         return this;
     }
 
     public boolean isPipelineSelected() {
-        WebElement pipelineType = getDriver().findElement(By.xpath("//*[contains(@class, 'WorkflowJob')]"));
 
-        return "true".equals(pipelineType.getAttribute("aria-checked"));
+        return "true".equals(pipelineTypeCheck.getAttribute("aria-checked"));
     }
 
     public boolean isPipelineHighlighted() {
-        WebElement pipelineType = getDriver().findElement(By.xpath("//*[contains(@class, 'WorkflowJob')]"));
 
-        return pipelineType.getAttribute("class").contains("active");
+        return Objects.requireNonNull(pipelineTypeCheck.getAttribute("class")).contains("active");
     }
 
     public boolean isOkButtonEnabled() {
 
-        return getDriver().findElement(By.id("ok-button")).isEnabled();
+        return okButton.isEnabled();
     }
 
     public String getTextHintFromCopyField() {
@@ -178,16 +200,22 @@ public class NewItemPage extends BasePage {
         return getDriver().findElement(By.id("name")).getAttribute("data-valid");
     }
 
-    public RestApiPage clickRestApiLink() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='api/']"))).click();
-
-        return new RestApiPage(getDriver());
-    }
-
     public MultiConfigurationProjectPage selectMultiConfigurationProjectAndSubmit() {
-        getDriver().findElement(By.cssSelector("[class='hudson_matrix_MatrixProject']")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        multiConfigurationProject.click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(okButton)).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
 
         return new MultiConfigurationProjectPage(getDriver());
+    }
+
+    public NewItemPage clickOkButton() {
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return this;
+    }
+
+    public String getErrorDisplayedForEmptyItemName() {
+        return getDriver().findElement(By.id("itemname-required")).getText();
     }
 }

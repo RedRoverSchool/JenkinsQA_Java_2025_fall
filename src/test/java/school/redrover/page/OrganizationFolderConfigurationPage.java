@@ -43,4 +43,9 @@ public class OrganizationFolderConfigurationPage extends BasePage {
         return getWait2().until(ExpectedConditions.elementToBeClickable(By
                 .linkText("Branch API Plugin"))).getAttribute("href");
     }
+
+    public String getBreadcrumbItem() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//span[contains(text(),'Configuration')]"))).getText();
+    }
 }

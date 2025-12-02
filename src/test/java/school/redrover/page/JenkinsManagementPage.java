@@ -1,9 +1,11 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -12,6 +14,19 @@ import java.util.List;
 
 public class JenkinsManagementPage extends BasePage {
 
+    @FindBy(id = "settings-search-bar")
+    private WebElement sendTitle;
+
+    @FindBy(xpath = "//a[@href = 'appearance']")
+    private WebElement appearanceLink;
+
+    @FindBy(xpath = "//a[@href='securityRealm/']")
+    private WebElement usersLink;
+
+    @FindBy(xpath = "//a[@href = 'credentials']")
+    private WebElement credentialsLink;
+
+
     private final By searchResults = By.cssSelector(".jenkins-dropdown__item:nth-of-type(1)");
 
     public JenkinsManagementPage(WebDriver driver) {
@@ -19,14 +34,14 @@ public class JenkinsManagementPage extends BasePage {
     }
 
     public UsersPage clickUserButton() {
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        usersLink.click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='addUser']")));
 
         return new UsersPage(getDriver());
     }
 
     public CredentialsPage clickCredentialsLink() {
-        getDriver().findElement(By.xpath("//a[@href = 'credentials']")).click();
+        credentialsLink.click();
 
         return new CredentialsPage(getDriver());
     }
@@ -42,8 +57,23 @@ public class JenkinsManagementPage extends BasePage {
                 tagName("h1"))).getText().trim();
     }
 
+    public String getHTMLAttributeThemeText() {
+        try {
+            getWait10().until(driver -> {
+                Object value = ((JavascriptExecutor) driver)
+                        .executeScript("return document.documentElement.getAttribute('data-theme');");
+                return value != null && !value.toString().isBlank();
+            });
+            Object result = ((JavascriptExecutor) getDriver())
+                    .executeScript("return document.documentElement.getAttribute('data-theme');");
+            return (result != null && !result.toString().isBlank()) ? result.toString() : "unknown";
+        } catch (Exception e) {
+            return "unknown";
+        }
+    }
+
     public JenkinsManagementPage sendTitle(String settingTitle) {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("settings-search-bar"))).sendKeys(settingTitle);
+        sendTitle.sendKeys(settingTitle);
 
         return this;
     }
@@ -56,6 +86,7 @@ public class JenkinsManagementPage extends BasePage {
                 .click()
                 .perform();
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new SystemConfigurationPage(getDriver());
     }
 
@@ -69,24 +100,8 @@ public class JenkinsManagementPage extends BasePage {
                 .toList();
     }
 
-    public JenkinsManagementPage clickAppearance() {
-        getDriver().findElement(By.cssSelector("a[href='appearance']")).click();
-        return this;
-    }
-
-    public String changeTheme(String theme) {
-        getDriver().findElement(By.cssSelector("label:has(> div[data-theme='%s'])".formatted(theme))).click();
-        if (!getDriver().findElement(By.cssSelector("input[name='_.disableUserThemes']")).isSelected()) {
-            getDriver().findElement(
-                    By.xpath("//label[contains(., 'Do not allow users to select a different theme')]")
-            ).click();
-        }
-        getDriver().findElement(By.cssSelector("button.jenkins-submit-button")).click();
-        return getDriver().findElement(By.cssSelector("html")).getAttribute("data-theme");
-    }
-
     public AppearancePage clickAppearanceLink() {
-        getDriver().findElement(By.xpath("//a[@href = 'appearance']")).click();
+        appearanceLink.click();
         return new AppearancePage(getDriver());
     }
 }

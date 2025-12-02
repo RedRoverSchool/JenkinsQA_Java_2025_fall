@@ -1,85 +1,52 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
-import java.time.Duration;
 
 public class ConfigureAppearanceTest extends BaseTest {
-    final String theme = "dark";
+    private final String THEME = "dark";
 
-    @Test
-    public void testChangeTheme() {
+   @Test
+    public void testThemesAndApplyButtonPopUp() {
+        String expectedText = "Saved";
+        String popUpApplyButtonText = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickAppearanceLink()
+                .clickDarkSystemTheme()
+                .clickLightTheme()
+                .clickApplyButton()
+                .getPopUpApplyButtonText();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getDriver().findElement(By.cssSelector("a[href='appearance']")).click();
-        getDriver().findElement(By.cssSelector("label:has(> div[data-theme='dark'])")).click();
-
-        if (!getDriver().findElement(By.cssSelector("input[name='_.disableUserThemes']")).isSelected()) {
-            getDriver().findElement(
-                    By.xpath("//label[contains(., 'Do not allow users to select a different theme')]")
-            ).click();
-        }
-
-        getDriver().findElement(By.cssSelector("button.jenkins-submit-button")).click();
-
-        wait.until(driver -> {
-            try {
-                WebElement html = driver.findElement(By.cssSelector("html"));
-                return "dark".equals(html.getAttribute("data-theme"));
-            } catch (StaleElementReferenceException e) {
-                return null;
-            }
-        });
-
-
+        Assert.assertEquals(popUpApplyButtonText, expectedText);
     }
 
-    @Ignore
-    @Test
-    public void testChangeThemeOld() throws InterruptedException {
+   @Test(dependsOnMethods = "testThemesAndApplyButtonPopUp")
+    public void testChangeThemeAndSaveButton() {
+        String expectedTeg = "dark";
+        String themaHtmlText = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickAppearanceLink()
+                .clickDarkTheme()
+                .checkAllowTheme()
+                .clickSaveButton()
+                .getHTMLAttributeThemeText();
 
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-        getDriver().findElement(By.cssSelector("a[href='appearance']")).click();
-        getDriver().findElement(By.xpath("//label[contains(., 'Do not allow users to select a different theme')]")).click();
-        Thread.sleep(2000);
-        getDriver().findElement(By.cssSelector("label:has(> div[data-theme='dark'])")).click();
-        getDriver().findElement(By.xpath("//label[contains(., 'Do not allow users to select a different theme')]")).click();
-        getDriver().findElement(By.cssSelector("button.jenkins-submit-button")).click();
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("html")).getAttribute("data-theme"),
-                "dark");
+        Assert.assertEquals(themaHtmlText, expectedTeg);
     }
-    @Ignore
-    @Test
+
+    @Test(dependsOnMethods = "testThemesAndApplyButtonPopUp")
     public void changeTheme() {
         String checking = new HomePage(getDriver())
-                .clickManageJenkinsIcon()
-                .clickAppearance()
-                .changeTheme(theme);
-        Assert.assertEquals(checking, theme);
+                .clickGearManageJenkinsButton()
+                .clickAppearanceLink()
+                .changeTheme(THEME)
+                .clickDoNotAllowDifferentTheme()
+                .clickApplyButton()
+                .getHTMLAttributeThemeText();
+
+        Assert.assertEquals(checking, THEME);
     }
-
-        @Test
-        public void testThemesAndApplyPopUpButton() {
-            String popUpApplyButtonText = new HomePage(getDriver())
-                    .clickGearManageJenkinsButton()
-                    .clickAppearanceLink()
-                    .clickDarkSystemTheme()
-                    .clickLightTheme()
-                    .clickDarkTheme()
-                    .clickApplyButton()
-                    .getPopUpApplyButtonText();
-
-            Assert.assertEquals(popUpApplyButtonText,"Saved");
-        }
 }

@@ -1,13 +1,11 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
+import school.redrover.page.PipelineConfigurationPage;
 import school.redrover.page.PipelinePage;
 
 import java.util.List;
@@ -15,6 +13,32 @@ import java.util.List;
 public class PipelineTest extends BaseTest {
 
     private static final String PIPELINE_NAME = "PipelineName";
+
+    @DataProvider
+    public Object[][] validAliases() {
+        return new String[][]{
+                {"@yearly"},
+                {"@annually"},
+                {"@monthly"},
+                {"@weekly"},
+                {"@daily"},
+                {"@midnight"},
+                {"@hourly"}
+        };
+    }
+
+    @DataProvider
+    public Object[][] invalidCronSyntaxAndAliases() {
+        return new String[][]{
+                {"60 * * * *", "60 is an invalid value. Must be within 0 and 59"},
+                {"* 25 * * *", "25 is an invalid value. Must be within 0 and 23"},
+                {"* * 32 * *", "32 is an invalid value. Must be within 1 and 31"},
+                {"* * * 13 * *", "13 is an invalid value. Must be within 1 and 12"},
+                {"* * * * 8", "8 is an invalid value. Must be within 0 and 7"},
+                {"@", "mismatched input"},
+                {"*****", "missing whitespace"}
+        };
+    }
 
     private void createPipeline(String name) {
         new HomePage(getDriver())
@@ -36,6 +60,50 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testSyntaxDocumentationViaSideMenu() {
+
+        final List<String> expectedSideMenu = List.of(
+                "Snippet Generator",
+                "Declarative Directive Generator",
+                "Declarative Online Documentation",
+                "Steps Reference",
+                "Global Variables Reference",
+                "Online Documentation",
+                "Examples Reference",
+                "IntelliJ IDEA GDSL"
+        );
+
+        List <String> actualSideMenu = new HomePage(getDriver())
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .clickPipelineSyntax()
+                .getListOfButtonsInSideMenu();
+
+        Assert.assertEquals(actualSideMenu, expectedSideMenu);
+    }
+
+    @Test(dependsOnMethods = "testCreateNewPipeline")
+    public void testSyntaxDocumentationViaDropDownMenu() {
+
+        final List<String> expectedSideMenu = List.of(
+                "Snippet Generator",
+                "Declarative Directive Generator",
+                "Declarative Online Documentation",
+                "Steps Reference",
+                "Global Variables Reference",
+                "Online Documentation",
+                "Examples Reference",
+                "IntelliJ IDEA GDSL"
+        );
+
+        List <String> actualSideMenu = new HomePage(getDriver())
+                .openDropdownMenu(PIPELINE_NAME)
+                .clickPipelineSyntaxInDropdownMenu()
+                .getListOfButtonsInSideMenu();
+
+        Assert.assertEquals(actualSideMenu, expectedSideMenu);
+    }
+
+    @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testCancelDeletePipelineViaSideMenu() {
         List<String> actualProjectList = new HomePage(getDriver())
                 .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
@@ -47,7 +115,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME));
     }
 
-    @Test(dependsOnMethods = "testCancelDeletePipelineViaSideMenu")
+    @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testBuildPipeline() {
 
         String consoleOutput = new HomePage(getDriver())
@@ -62,7 +130,7 @@ public class PipelineTest extends BaseTest {
 
     }
 
-    @Test(dependsOnMethods = "testBuildPipeline")
+    @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testAddDescription() {
         final String textDescription = "@0*8nFP'cRU0k.|6Gz-wO*se h~OtJ4kz0!)cl0ZAE3vN>q";
 
@@ -93,7 +161,7 @@ public class PipelineTest extends BaseTest {
                 "Не совпал текст description после его редактирования");
     }
 
-    @Test(dependsOnMethods = "testEditDescription")
+    @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testCancelDeletePipelineViaDropDownMenu() {
         List<String> actualProjectList = new HomePage(getDriver())
                 .gotoHomePage()
@@ -105,11 +173,14 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(actualProjectList.contains(PIPELINE_NAME));
     }
 
-    @Test(dependsOnMethods = "testCancelDeletePipelineViaDropDownMenu")
+    @Test
     public void testDeletePipelineViaDropDownMenu() {
         final String expectedHomePageHeading = "Welcome to Jenkins!";
 
+        createPipeline(PIPELINE_NAME);
+
         String actualHomePageHeading = new HomePage(getDriver())
+                .gotoHomePage()
                 .openDropdownMenu(PIPELINE_NAME)
                 .clickDeleteItemInDropdownMenu()
                 .confirmDelete()
@@ -132,84 +203,41 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualHomePageHeading, expectedHomePageHeading);
     }
 
-    @DataProvider
-    public Object[][] validAliases() {
-        return new String[][]{
-                {"@yearly"},
-                {"@annually"},
-                {"@monthly"},
-                {"@weekly"},
-                {"@daily"},
-                {"@midnight"},
-                {"@hourly"}
-        };
-    }
-
     @Test(dataProvider = "validAliases")
     public void testScheduleWithValidData(String validTimePeriod) {
         createPipeline(PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//a[contains(@href , 'configure')]")).click();
+        String textAreaValidationMessage = new PipelinePage(getDriver())
+                .clickConfigureLinkInSideMenu()
+                .clickTriggersSectionButton()
+                .selectBuildPeriodicallyCheckbox()
+                .sendScheduleText(validTimePeriod)
+                .clickApplyButton()
+                .getTextAreaValidationMessage();
 
-        WebElement triggersSectionButton = getDriver().findElement(By.xpath("//button[@data-section-id = 'triggers']"));
-        triggersSectionButton.click();
-        getWait2()
-                .until(ExpectedConditions.attributeContains(triggersSectionButton, "class", "task-link--active"));
-
-        getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = '_.spec']")).sendKeys(validTimePeriod);
-        getDriver().findElement(By.xpath("//button[text() = 'Apply']")).click();
-
-        WebElement actualNotificationMessage = getWait2()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text() = 'Saved']")));
-
-        WebElement actualTextAreaValidationMessage = getDriver()
-                .findElement(By.xpath("//div[contains(text(), 'Schedule')]/following-sibling::div" +
-                        "//div[@class = 'ok']"));
-
-        Assert.assertEquals(actualNotificationMessage.getText(), "Saved");
-        Assert.assertTrue(actualTextAreaValidationMessage.getText()
-                        .matches("(?s)Would last have run at .*; would next run at .*"),
+        Assert.assertEquals(new PipelineConfigurationPage(getDriver()).getNotificationSaveMessage(),
+                "Saved");
+        Assert.assertTrue(textAreaValidationMessage.matches(
+                "(?s)Would last have run at .*; would next run at .*"),
                 "Alias " + validTimePeriod + " не прошёл валидацию");
-    }
-
-    @DataProvider
-    public Object[][] invalidCronSyntaxAndAliases() {
-        return new String[][]{
-                {"60 * * * *", "60 is an invalid value. Must be within 0 and 59"},
-                {"* 25 * * *", "25 is an invalid value. Must be within 0 and 23"},
-                {"* * 32 * *", "32 is an invalid value. Must be within 1 and 31"},
-                {"* * * 13 * *", "13 is an invalid value. Must be within 1 and 12"},
-                {"* * * * 8", "8 is an invalid value. Must be within 0 and 7"},
-                {"@", "mismatched input"},
-                {"*****", "missing whitespace"}
-        };
     }
 
     @Test(dataProvider = "invalidCronSyntaxAndAliases")
     public void testScheduleWithInvalidData(String invalidTimePeriod, String expectedErrorMessage) {
         createPipeline(PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//a[contains(@href, 'configure')]")).click();
 
-        WebElement triggersSectionButton = getDriver().findElement(By.xpath("//button[@data-section-id = 'triggers']"));
-        triggersSectionButton.click();
-        getWait2()
-                .until(ExpectedConditions.attributeContains(triggersSectionButton, "class", "task-link--active"));
+        String actualTextErrorMessage = new PipelinePage(getDriver())
+                .clickConfigureLinkInSideMenu()
+                .clickTriggersSectionButton()
+                .selectBuildPeriodicallyCheckbox()
+                .sendScheduleText(invalidTimePeriod)
+                .clickApplyButton()
+                .getTextErrorMessage();
 
-        getDriver().findElement(By.xpath("//label[contains(text(), 'Build periodically')]")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = '_.spec']")).sendKeys(invalidTimePeriod);
-        getDriver().findElement(By.xpath("//button[text() = 'Apply']")).click();
-
-        WebElement actualTextErrorMessage = getDriver()
-                .findElement(By.xpath("//div[contains(text(), 'Schedule')]/following-sibling::div" +
-                        "//div[@class = 'error']"));
-        WebElement errorDescriptionModalWindow = getDriver().findElement(By.cssSelector("#error-description > h2"));
-        getWait2().until(ExpectedConditions.visibilityOf(errorDescriptionModalWindow));
-
-        Assert.assertTrue(
-                actualTextErrorMessage.getText().contains(expectedErrorMessage),
+        Assert.assertTrue(actualTextErrorMessage.contains(expectedErrorMessage),
                 String.format("Сообщение: '%s', не содержит ожидаемую ключевую информацию об ошибке: '%s'",
-                        actualTextErrorMessage.getText(), expectedErrorMessage));
-        Assert.assertEquals(errorDescriptionModalWindow.getText(), "A problem occurred while processing the request");
+                        actualTextErrorMessage, expectedErrorMessage));
+        Assert.assertEquals(new PipelineConfigurationPage(getDriver()).getErrorDescriptionModalWindow(),
+                "A problem occurred while processing the request");
     }
 }

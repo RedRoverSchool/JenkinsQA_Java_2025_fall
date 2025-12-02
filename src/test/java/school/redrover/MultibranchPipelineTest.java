@@ -1,11 +1,9 @@
 package school.redrover;
 
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.ErrorPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.MultibranchPipelineProjectPage;
 import school.redrover.page.NewItemPage;
@@ -77,7 +75,6 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualJobDescription, updatedJobDescription);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
     public void testTryCreateProjectExistName() {
         final String errorMessage = "» A job already exists with the name ‘%s’".formatted(MULTIBRANCH_PIPELINE_NAME);
@@ -120,7 +117,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(actualDisableText.contains(disableText));
     }
 
-    @Test
+    @Test(invocationCount = 5)
     public void testVerifyEnableToggleTooltip() {
         final String tooltipText =
                 "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
@@ -180,16 +177,15 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testAddDescriptionLink() {
-      WebElement addDescriptionLink = new HomePage(getDriver())
+    public void testAddDescriptionLinkIsEnabled() {
+      boolean isAddDescriptionLinkEnabled = new HomePage(getDriver())
                 .clickNewItemOnLeftMenu()
                 .sendName(MULTIBRANCH_PIPELINE_NAME)
                 .selectMultibranchPipelineAndSubmit()
                 .clickSaveButton()
-                .getAddDescriptionLink();
+                .isAddDescriptionLinkEnabled();
 
-      Assert.assertTrue(addDescriptionLink.isDisplayed());
-      Assert.assertTrue(addDescriptionLink.isEnabled());
+      Assert.assertTrue(isAddDescriptionLinkEnabled);
     }
 
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
@@ -225,7 +221,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .openProject(MULTIBRANCH_PIPELINE_NAME, () -> new MultibranchPipelineProjectPage(getDriver()))
                 .clickRenameLinkInSideMenu()
                 .renameJob(MULTIBRANCH_PIPELINE_NAME + ".")
-                .submitForm(new ErrorPage(getDriver()))
+                .submitForm()
                 .getErrorMessage();
 
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage);

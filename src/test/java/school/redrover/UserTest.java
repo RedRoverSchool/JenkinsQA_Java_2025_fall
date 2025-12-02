@@ -3,7 +3,9 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
+import school.redrover.page.UserCreatingPage;
 import school.redrover.page.HomePage;
+import school.redrover.page.UsersPage;
 import school.redrover.page.UserStatusPage;
 
 import java.util.List;
@@ -132,15 +134,29 @@ public class UserTest extends BaseTest {
         final String description = "Lorem ipsum dolor sit amet.";
 
         String actualDescriptionText = new HomePage(getDriver())
-                .clickManageJenkinsIcon()
+                .clickGearManageJenkinsButton()
                 .clickUserButton()
                 .clickSignOut()
                 .signIn(USER_NAME, USER_PASSWORD)
-                .clickUserAccount()
+                .clickUserAccountIcon()
                 .editDescription(description)
                 .getDescriptionText();
 
         Assert.assertEquals(actualDescriptionText, description);
+    }
+
+    @Test(dependsOnMethods = "searchUser")
+    public void testChangeEmailOnUserPage() {
+        final String EMAIL = "gkg@kgk.kgk";
+
+        String actualEmailText = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserButton()
+                .clickAccountMenuItem(USER_NAME)
+                .editEmail(EMAIL)
+                .getEmailText();
+
+        Assert.assertEquals(actualEmailText, EMAIL);
     }
 
     @Test(dependsOnMethods = "testAddDescriptionOnUserPage")

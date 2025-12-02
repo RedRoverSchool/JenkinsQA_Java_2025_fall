@@ -8,7 +8,6 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.FreestyleProjectConfigurationPage;
 import school.redrover.page.FreestyleProjectPage;
 import school.redrover.page.HomePage;
-
 import java.util.List;
 
 public class FreestyleProjectTest extends BaseTest {
@@ -87,7 +86,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(visibleBuildButtonForEnabledProject);
     }
 
-
     @Test(dependsOnMethods = "testEnableProjectViaMainMenuConfigure")
     public void testBuildStepsFilterNames() {
 
@@ -125,7 +123,6 @@ public class FreestyleProjectTest extends BaseTest {
         }
     }
 
-
     @Test
     public void testAccessSCMInNewJob() {
         String scmTitleText = new HomePage(getDriver())
@@ -139,11 +136,13 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testSCMSectionElements() {
+        final String expectedCSMText = "Connect and manage your code repository to automatically pull the latest code for your builds.";
+
         FreestyleProjectConfigurationPage configPage = new HomePage(getDriver()).clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit();
 
-        Assert.assertTrue(configPage.getScmDescription().isDisplayed(),"SCM Description is not displayed or the description text doesn't match");
+        Assert.assertEquals(configPage.getScmDescriptionText(), expectedCSMText,"SCM Description is not displayed or the description text doesn't match");
         Assert.assertEquals(configPage.getSelectedRadioLabel(), "None","Radio button 'None' should be selected by default");
         Assert.assertTrue(configPage.isGitOptionDisplayed(),"Radio button 'Git' should be displayed");
         Assert.assertEquals(configPage.getGitTooltipText(),"Help for feature: Git","Tooltip text should match expected value");
@@ -193,10 +192,43 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickCreateJob()
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
-                .clickTriggerLinkInSideMenu()
+                .clickTriggersLinkInSideMenu()
                 .getTriggerTitleText();
 
         Assert.assertEquals(triggerTitle, "Triggers");
+    }
+
+    @Test(dependsOnMethods = "testNavigationToTriggersBySideMenu")
+    public void testTriggersSectionDescriptionIsDisplayed() {
+        final String expectedDescription = "Set up automated actions that start your build based on specific events, like code changes or scheduled times.";
+
+        String triggersDescription = new HomePage(getDriver())
+                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .clickTriggersLinkInSideMenu()
+                .getTriggersDescriptionText();
+
+        Assert.assertEquals(triggersDescription, expectedDescription);
+    }
+
+    @Test
+    public void testAllTriggerCheckboxesAreAvailable() {
+        final List<String> expectedCheckboxes = List.of(
+                "Trigger builds remotely (e.g., from scripts)",
+                "Build after other projects are built",
+                "Build periodically",
+                "GitHub hook trigger for GITScm polling",
+                "Poll SCM"
+        );
+
+        List<String> actualCheckboxes = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .clickTriggersLinkInSideMenu()
+                .getTriggerCheckboxLabels();
+
+        Assert.assertEquals(actualCheckboxes, expectedCheckboxes);
     }
 
     @Test
@@ -222,5 +254,4 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(homePage.getHeadingText(), expectedHeadingText);
     }
-
 }
