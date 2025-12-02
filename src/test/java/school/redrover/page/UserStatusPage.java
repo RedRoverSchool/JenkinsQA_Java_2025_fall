@@ -2,11 +2,28 @@ package school.redrover.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 
 public class UserStatusPage extends BasePage {
+
+    @FindBy(xpath = "//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]")
+    private WebElement userIDElement;
+
+    @FindBy(id = "description-link")
+    private WebElement descriptionLink;
+
+    @FindBy(name = "description")
+    private WebElement descriptionField;
+
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
+
+    @FindBy(id = "description-content")
+    private WebElement descriptionContent;
 
     public UserStatusPage(WebDriver driver) {
         super(driver);
@@ -14,8 +31,8 @@ public class UserStatusPage extends BasePage {
 
     public String getUserName() {
 
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div//h1")))
-                .getText();
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div//h1"))).getText();
+
     }
 
     public String getUserNameInBreadcrumbs(String userName) {
@@ -33,19 +50,19 @@ public class UserStatusPage extends BasePage {
     }
 
     public String getUserID() {
-        return getDriver().findElement(By.xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
-                .getText().substring(17);
+        return userIDElement.getText().substring(17);
     }
 
     public UserStatusPage editDescription(String text) {
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(text);
-        getDriver().findElement(By.name("Submit")).click();
+        descriptionLink.click();
+        descriptionField.sendKeys(text);
+        submitButton.click();
 
         return this;
     }
 
     public String getDescriptionText() {
-        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(descriptionContent))
+                .getText();
     }
 }
