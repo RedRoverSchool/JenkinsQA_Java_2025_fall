@@ -278,4 +278,19 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(actualParameterList, PARAMETER_EXPECTED);
     }
+
+    @Test(dependsOnMethods = "testCreate")
+    public void testAddParameterForParameterizationOfBuilds() {
+        String parameterName = PARAMETER_EXPECTED.get(0);
+
+        List<String> selectedParameterList = new HomePage(getDriver())
+                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .selectCheckbox(PARAMETRIZATION_CHECKBOX)
+                .clickAddParameterDropDownButton()
+                .selectParameterInDropDownButton(parameterName)
+                .getSelectedParameterList();
+
+        Assert.assertTrue(selectedParameterList.contains(parameterName));
+    }
 }
