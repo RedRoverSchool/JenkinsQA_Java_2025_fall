@@ -28,7 +28,8 @@ public class UsersPage extends BasePage {
 
     public UserCreatingPage clickCreateUserButton() {
         createUserButton.click();
-
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Create User']")));
+        
         return new UserCreatingPage(getDriver());
     }
 
