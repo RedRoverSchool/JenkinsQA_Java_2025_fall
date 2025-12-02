@@ -24,6 +24,9 @@ public abstract class BasePage extends BaseModel {
     @FindBy(tagName = "h1")
     private WebElement headingText;
 
+    @FindBy(css = ".page-footer__links > button")
+    private WebElement jenkinsVersion;
+
     public BasePage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
@@ -70,7 +73,7 @@ public abstract class BasePage extends BaseModel {
     }
 
     public String getJenkinsVersion() {
-        return getDriver().findElement(By.cssSelector(".page-footer__links > button")).getText();
+        return jenkinsVersion.getText();
     }
 
     public FooterDropdownPage clickJenkinsVersion() {
