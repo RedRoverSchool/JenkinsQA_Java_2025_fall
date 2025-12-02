@@ -8,25 +8,36 @@ import school.redrover.page.HomePage;
 
 public class UserLoggedInTest extends BaseTest {
 
+    private static final String EXP_USER_NAME = "admin";
+
     @Test
-    public void testLoggedInUserNameInUserAccount() {
-        final String expectedUserName = "admin";
-
+    public void testLoggedInUserNameInUserAccountBreadcrumbs() {
         String actualUserName = new HomePage(getDriver())
-                .clickUserAccountViaDropDownMenu(expectedUserName)
-                .getUserNameInBreadcrumbs(expectedUserName);
+                .clickUserAccountViaDropDownMenu(EXP_USER_NAME)
+                .getUserNameInBreadcrumbs(EXP_USER_NAME);
 
-        Assert.assertTrue(actualUserName.contains(expectedUserName));
+        Assert.assertTrue(actualUserName.contains(EXP_USER_NAME));
     }
 
     @Test
     public void testAccessLoggedInUserAccountFromHome() {
-        final String expectedUserName = "admin";
-
         String actualUserName = new HomePage(getDriver())
-                .clickUserAccountViaDropDownMenu(expectedUserName)
+                .clickUserAccountViaDropDownMenu(EXP_USER_NAME)
                 .getUserName();
 
-        Assert.assertEquals(actualUserName, expectedUserName);
+        Assert.assertEquals(actualUserName, EXP_USER_NAME);
+    }
+
+    @Test
+    public void testAddDescriptionForLoggedInUser() {
+        final String expectedDescription = "Lorem ipsum dolor sit amet.";
+
+        String actualDescription = new HomePage(getDriver())
+                .clickUserAccountIcon()
+                .clickEditDescription()
+                .sendDescriptionAndSave(expectedDescription)
+                .getDescriptionText();
+
+        Assert.assertEquals(actualDescription, expectedDescription);
     }
 }

@@ -1,12 +1,9 @@
 package school.redrover;
 
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
-import school.redrover.common.TestUtils;
 import school.redrover.page.ArchitectingforScalePage;
 import school.redrover.page.CloudsPage;
 import school.redrover.page.EditViewPage;
@@ -15,10 +12,8 @@ import school.redrover.page.NewNodePage;
 import school.redrover.testdata.Page;
 import school.redrover.testdata.TestDataProvider;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class DashboardTest extends BaseTest {
 
@@ -129,7 +124,7 @@ public class DashboardTest extends BaseTest {
     @Test
     public void testLogo() {
         String logoText = new HomePage(getDriver())
-                .getlogoText();
+                .getLogoText();
 
         Assert.assertEquals(logoText, "Jenkins", "Надпись рядом с логотипом должна быть 'Jenkins'");
     }

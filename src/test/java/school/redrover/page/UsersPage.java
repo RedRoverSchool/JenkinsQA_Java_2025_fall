@@ -15,13 +15,13 @@ import java.time.Duration;
 public class UsersPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(., 'Account')]")
-    private static WebElement accountMenuItem;
+    private WebElement accountMenuItem;
 
     @FindBy(xpath = "//a[@href='addUser']")
-    private static WebElement createUserButton;
+    private WebElement createUserButton;
 
     @FindBy(xpath = "(//button[@class='jenkins-menu-dropdown-chevron'])[2]")
-    private static WebElement chevronButton;
+    private WebElement chevronButton;
 
     public UsersPage(WebDriver driver) {
         super(driver);
@@ -51,5 +51,13 @@ public class UsersPage extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Account']")));
 
         return new UserAccountPage(getDriver());
+    }
+
+    public UserStatusPage clickUserLink(String userName) {
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(userName))).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
+
+        return new UserStatusPage(getDriver());
     }
 }

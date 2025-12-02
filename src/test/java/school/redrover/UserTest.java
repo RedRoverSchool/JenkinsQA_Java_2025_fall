@@ -4,7 +4,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-import school.redrover.page.UserStatusPage;
 
 import java.util.List;
 
@@ -127,48 +126,61 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(findUser, USER_NAME);
     }
 
-    @Test(dependsOnMethods = "searchUser")
+    @Test(dependsOnMethods = "testCreateUser")
     public void testAddDescriptionOnUserPage() {
-        final String description = "Lorem ipsum dolor sit amet.";
+        final String expectedDescription = "Lorem ipsum dolor sit amet.";
 
-        String actualDescriptionText = new HomePage(getDriver())
+        String actualDescription = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickUserButton()
-                .clickSignOut()
-                .signIn(USER_NAME, USER_PASSWORD)
-                .clickUserAccountIcon()
-                .editDescription(description)
+                .clickUserLink(USER_NAME)
+                .clickEditDescription()
+                .sendDescriptionAndSave(expectedDescription)
                 .getDescriptionText();
 
-        Assert.assertEquals(actualDescriptionText, description);
+        Assert.assertEquals(actualDescription, expectedDescription);
     }
 
-    @Test(dependsOnMethods = "searchUser")
+    @Test(dependsOnMethods = "testCreateUser")
     public void testChangeEmailOnUserPage() {
-        final String EMAIL = "gkg@kgk.kgk";
+        final String email = "gkg@kgk.kgk";
 
         String actualEmailText = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickUserButton()
                 .clickAccountMenuItem(USER_NAME)
-                .editEmail(EMAIL)
+                .sendEmail(email)
                 .getEmailText();
 
-        Assert.assertEquals(actualEmailText, EMAIL);
+        Assert.assertEquals(actualEmailText, email);
     }
 
-    @Test(dependsOnMethods = "testAddDescriptionOnUserPage")
+    @Test
     public void testChangeUserName() {
         final String expFullUserName = "User Full Name";
+
+        createUser();
 
         String actFullUserName = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickUserButton()
                 .clickAccountMenuItem(USER_NAME)
                 .sendFullName(expFullUserName)
-                .clickSave(new UserStatusPage(getDriver()))
+                .clickSave()
                 .getUserName();
 
         Assert.assertEquals(actFullUserName, expFullUserName);
+    }
+
+    private void createUser() {
+        new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserButton()
+                .clickCreateUserButton()
+                .sendUserName(USER_NAME)
+                .sendPassword(USER_PASSWORD)
+                .sendConfirmPassword(USER_PASSWORD)
+                .sendEmail(USER_EMAIL)
+                .clickCreateAndGoToUsersPage();
     }
 }

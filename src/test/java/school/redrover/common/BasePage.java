@@ -97,12 +97,13 @@ public abstract class BasePage extends BaseModel {
 
     public UserStatusPage clickUserAccountIcon() {
         userAccountIcon.click();
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
 
         return new UserStatusPage(getDriver());
     }
 
-    public String getlogoText() {
+    public String getLogoText() {
         return getWait5().until(ExpectedConditions.
                 visibilityOfElementLocated(By.className("app-jenkins-logo"))).getText();
     }
