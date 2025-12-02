@@ -9,19 +9,21 @@ import school.redrover.page.HomePage;
 public class UserLoggedInTest extends BaseTest {
 
     @Test
-    public void testLoggedInUserNameInUserAccount() {
-        final String expectedUserName = "admin";
+    public void testUserNameInUserStatusBreadcrumbs() {
+        String expectedUserName = new HomePage(getDriver())
+                .getUserAccountNameViaDropDownMenu();
 
         String actualUserName = new HomePage(getDriver())
                 .clickUserAccountViaDropDownMenu(expectedUserName)
-                .getUserNameInBreadcrumbs(expectedUserName);
+                .getUserNameAdminInBreadcrumbs();
 
         Assert.assertTrue(actualUserName.contains(expectedUserName));
     }
 
     @Test
-    public void testAccessLoggedInUserAccountFromHome() {
-        final String expectedUserName = "admin";
+    public void testUserNameInUserStatusHeading() {
+        String expectedUserName = new HomePage(getDriver())
+                .getUserAccountNameViaDropDownMenu();
 
         String actualUserName = new HomePage(getDriver())
                 .clickUserAccountViaDropDownMenu(expectedUserName)
