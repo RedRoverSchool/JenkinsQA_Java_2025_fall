@@ -118,7 +118,8 @@ public abstract class BasePage extends BaseModel {
         Actions actions = new Actions(getDriver());
 
         actions.moveToElement(getDriver().findElement(By.id("root-action-UserAction"))).perform();
-        return getDriver().findElement(By.cssSelector(".jenkins-dropdown__item:first-child")).getText();
+        return getWait5().until(ExpectedConditions.
+                visibilityOfElementLocated(By.cssSelector(".jenkins-dropdown__item:first-child"))).getText();
 
     }
 }
