@@ -170,6 +170,12 @@ public class FreestyleProjectConfigurationPage extends BasePage {
         return getDriver().getCurrentUrl();
     }
 
+    public FreestyleProjectConfigurationPage refreshPage() {
+        getDriver().navigate().refresh();
+
+        return this;
+    }
+
     public boolean isGitOptionDisplayed() {
         return getDriver().findElement(By.xpath("//label[normalize-space(text())='Git']")).isDisplayed();
     }
