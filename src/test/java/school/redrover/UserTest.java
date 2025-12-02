@@ -3,9 +3,7 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
-import school.redrover.page.UserCreatingPage;
 import school.redrover.page.HomePage;
-import school.redrover.page.UsersPage;
 import school.redrover.page.UserStatusPage;
 
 import java.util.List;
@@ -32,13 +30,13 @@ public class UserTest extends BaseTest {
                 .clickGearManageJenkinsButton()
                 .clickUserButton()
                 .clickCreateUserButton()
-                .clickCreateUserButton(new UserCreatingPage(getDriver()))
+                .clickCreateAndKeepUserCreatingPage()
                 .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);
     }
 
-    @Test(dependsOnMethods = "testCheckingEmptyInput")
+    @Test
     public void testUsernameInvalidCharacters() {
         final String userName = "!$@(!%%!@_)__>><";
 
@@ -53,13 +51,13 @@ public class UserTest extends BaseTest {
                 .sendPassword(USER_PASSWORD)
                 .sendConfirmPassword(USER_PASSWORD)
                 .sendEmail(USER_EMAIL)
-                .clickCreateUserButton(new UserCreatingPage(getDriver()))
+                .clickCreateAndKeepUserCreatingPage()
                 .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);
     }
 
-    @Test(dependsOnMethods = "testUsernameInvalidCharacters")
+    @Test
     public void testErrorMessageWhenCreateAnExistingUserAndEmptyEmail() {
         final String userName = "admin";
 
@@ -74,13 +72,13 @@ public class UserTest extends BaseTest {
                 .sendUserName(userName)
                 .sendPassword(USER_PASSWORD)
                 .sendConfirmPassword(USER_PASSWORD)
-                .clickCreateUserButton(new UserCreatingPage(getDriver()))
+                .clickCreateAndKeepUserCreatingPage()
                 .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);
     }
 
-    @Test(dependsOnMethods = "testErrorMessageWhenCreateAnExistingUserAndEmptyEmail")
+    @Test
     public void testUnmatchedPasswords() {
         final String userUnmatchedPassword = "testNotUserPassword";
 
@@ -96,13 +94,13 @@ public class UserTest extends BaseTest {
                 .sendPassword(USER_PASSWORD)
                 .sendConfirmPassword(userUnmatchedPassword)
                 .sendEmail(USER_EMAIL)
-                .clickCreateUserButton(new UserCreatingPage(getDriver()))
+                .clickCreateAndKeepUserCreatingPage()
                 .getAllErrors();
 
         Assert.assertEquals(actualErrors, expectedErrors);
     }
 
-    @Test(dependsOnMethods = "testUnmatchedPasswords")
+    @Test
     public void testCreateUser() {
 
         String actualUserName = new HomePage(getDriver())
@@ -113,12 +111,11 @@ public class UserTest extends BaseTest {
                 .sendPassword(USER_PASSWORD)
                 .sendConfirmPassword(USER_PASSWORD)
                 .sendEmail(USER_EMAIL)
-                .clickCreateUserButton(new UsersPage(getDriver()))
+                .clickCreateAndGoToUsersPage()
                 .getUserName(USER_NAME);
 
         Assert.assertEquals(actualUserName, USER_NAME);
     }
-
 
     @Test(dependsOnMethods = "testCreateUser")
     public void searchUser() {
@@ -131,21 +128,6 @@ public class UserTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "searchUser")
-    public void testChangeUserName() {
-        final String expFullUserName = "User Full Name";
-
-        String actFullUserName = new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
-                .clickUserButton()
-                .clickAccountMenuItem(USER_NAME)
-                .sendFullName(expFullUserName)
-                .clickSave(new UserStatusPage(getDriver()))
-                .getUserName();
-
-        Assert.assertEquals(actFullUserName, expFullUserName);
-    }
-
-    @Test(dependsOnMethods = "testCreateUser")
     public void testAddDescriptionOnUserPage() {
         final String description = "Lorem ipsum dolor sit amet.";
 
@@ -159,5 +141,20 @@ public class UserTest extends BaseTest {
                 .getDescriptionText();
 
         Assert.assertEquals(actualDescriptionText, description);
+    }
+
+    @Test(dependsOnMethods = "testAddDescriptionOnUserPage")
+    public void testChangeUserName() {
+        final String expFullUserName = "User Full Name";
+
+        String actFullUserName = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserButton()
+                .clickAccountMenuItem(USER_NAME)
+                .sendFullName(expFullUserName)
+                .clickSave(new UserStatusPage(getDriver()))
+                .getUserName();
+
+        Assert.assertEquals(actFullUserName, expFullUserName);
     }
 }

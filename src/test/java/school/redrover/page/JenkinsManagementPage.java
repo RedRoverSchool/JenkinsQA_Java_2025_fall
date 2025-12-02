@@ -20,6 +20,7 @@ public class JenkinsManagementPage extends BasePage {
 
     public UsersPage clickUserButton() {
         getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='addUser']")));
 
         return new UsersPage(getDriver());
     }

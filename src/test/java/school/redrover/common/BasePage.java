@@ -24,6 +24,7 @@ public abstract class BasePage extends BaseModel {
 
     public JenkinsManagementPage clickGearManageJenkinsButton() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(),'Manage Jenkins')]")));
 
         return new JenkinsManagementPage(getDriver());
     }
