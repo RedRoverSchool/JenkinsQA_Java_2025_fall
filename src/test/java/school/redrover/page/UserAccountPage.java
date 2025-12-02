@@ -16,7 +16,6 @@ public class UserAccountPage extends BasePage {
         super(driver);
     }
 
-
     public UserAccountPage sendFullName(String fullName) {
         WebElement fullNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(FULL_NAME_FIELD));
         fullNameField.clear();
