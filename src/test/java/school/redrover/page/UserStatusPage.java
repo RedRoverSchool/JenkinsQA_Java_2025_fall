@@ -33,8 +33,7 @@ public class UserStatusPage extends BasePage {
     }
 
     public String getUserID() {
-        return getDriver().findElement(By
-                        .xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
+        return getDriver().findElement(By.xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
                 .getText().substring(17);
     }
 
