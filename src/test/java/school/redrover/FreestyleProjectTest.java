@@ -227,9 +227,9 @@ public class FreestyleProjectTest extends BaseTest {
     public void testAllTriggerCheckboxesAreAvailable() {
         final List<String> expectedCheckboxes = List.of(
                 "Trigger builds remotely (e.g., from scripts)",
-                "GitHub hook trigger for GITScm polling",
-                "Build periodically",
                 "Build after other projects are built",
+                "Build periodically",
+                "GitHub hook trigger for GITScm polling",
                 "Poll SCM"
         );
 
