@@ -12,11 +12,40 @@ public class OrganizationFolderConfigurationPage extends BasePage {
         super(driver);
     }
 
-    public FolderPage clickSave() {
+    public OrganizationFolderPage clickSave() {
         WebElement button = getDriver().findElement(By.name("Submit"));
         button.click();
-        getWait2().until(ExpectedConditions.invisibilityOf(button));
+        getWait5().until(ExpectedConditions.invisibilityOf(button));
 
-        return new FolderPage(getDriver());
+        return new OrganizationFolderPage(getDriver());
+    }
+
+    public OrganizationFolderConfigurationPage inputDisplayName(String name) {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.displayNameOrNull"))).sendKeys(name);
+
+        return this;
+    }
+
+    public OrganizationFolderConfigurationPage inputDescription(String name) {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("_.description"))).sendKeys(name);
+
+        return this;
+    }
+
+    public OrganizationFolderConfigurationPage clickDisplayNameTooltip() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By
+                .cssSelector("a[tooltip='Help for feature: Display Name']"))).click();
+
+        return this;
+    }
+
+    public String getDisplayNameTooltipLink() {
+        return getWait2().until(ExpectedConditions.elementToBeClickable(By
+                .linkText("Branch API Plugin"))).getAttribute("href");
+    }
+
+    public String getBreadcrumbItem() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//span[contains(text(),'Configuration')]"))).getText();
     }
 }

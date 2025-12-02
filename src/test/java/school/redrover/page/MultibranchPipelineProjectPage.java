@@ -3,10 +3,29 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class MultibranchPipelineProjectPage extends BasePage {
+
+    @FindBy(id = "view-message")
+    private WebElement description;
+
+    @FindBy(css = "a[href$='/confirm-rename']")
+    private WebElement sidebarRenameLink;
+
+    @FindBy(tagName = "h1")
+    private WebElement pageHeading;
+
+    @FindBy(id = "description-link")
+    private WebElement addDescriptionLink;
+
+    @FindBy(name = "description")
+    private WebElement descriptionField;
+
+    @FindBy(id = "disabled-message")
+    private WebElement disabledMessage;
 
     public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
@@ -20,33 +39,30 @@ public class MultibranchPipelineProjectPage extends BasePage {
     }
 
     public String getDescription() {
-        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("view-message"))).getText();
+        return description.getText();
     }
 
     public String getDisabledText() {
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("disabled-message"))).getText();
+        return disabledMessage.getText();
     }
 
     public MultibranchPipelineConfirmRenamePage clickRenameLinkInSideMenu() {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href$='/confirm-rename']")))
-                .click();
+        sidebarRenameLink.click();
 
         return new MultibranchPipelineConfirmRenamePage(getDriver());
     }
 
     public String getHeading() {
-        return getDriver().findElement(By.tagName("h1")).getText();
+        return pageHeading.getText();
     }
 
     public MultibranchPipelineProjectPage clickAddDescriptionLink() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(addDescriptionLink)).click();
 
         return this;
     }
 
     public MultibranchPipelineProjectPage sendDescription(String description) {
-        WebElement descriptionField = getDriver().findElement(By.name("description"));
-
         descriptionField.clear();
         descriptionField.sendKeys(description);
 
@@ -54,14 +70,13 @@ public class MultibranchPipelineProjectPage extends BasePage {
     }
 
     public String getDescriptionFieldText() {
-        return getDriver()
-                .findElement(By.name("description"))
+        return descriptionField
                 .getShadowRoot()
                 .findElement(By.cssSelector("div"))
                 .getText();
     }
 
-    public WebElement getAddDescriptionLink() {
-        return getDriver().findElement(By.id("description-link"));
+    public boolean isAddDescriptionLinkEnabled() {
+        return addDescriptionLink.isEnabled();
     }
 }

@@ -6,17 +6,17 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
 import java.util.List;
 import java.time.Duration;
 
-public class ManageJenkinsTest extends BaseTest {
+public class JenkinsManagementTest extends BaseTest {
     private final String TITLE_TEXT = "Dashboard - Jenkins";
-    private static final String SETTING_TITLE = "system";
+    private static final String SETTING_TITLE = "System";
 
     private void openGlobalProperties() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
@@ -93,6 +93,7 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertEquals(actualHintText, expectedHintText, "Unexpected tooltip");
     }
+
     @Test
     public void testCheckAccessDashboardFromLogo() {
         String title = new HomePage(getDriver())
@@ -111,5 +112,17 @@ public class ManageJenkinsTest extends BaseTest {
                 .getSearchResults();
 
         Assert.assertEquals(searchResults, List.of("System", "System Information", "System Log"));
+    }
+
+    @Ignore
+    @Test
+    public void testSearchAndOpenSetting() {
+        String searchHeading = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .sendTitle(SETTING_TITLE)
+                .clickSearchResult()
+                .getHeadingText();
+
+        Assert.assertEquals(searchHeading, "System");
     }
 }

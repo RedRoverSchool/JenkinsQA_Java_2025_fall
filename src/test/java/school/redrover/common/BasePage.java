@@ -4,14 +4,29 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.page.*;
 
 
 public abstract class BasePage extends BaseModel {
 
+    @FindBy(id = "root-action-ManageJenkinsAction")
+    private WebElement manageJenkinsButton;
+
+    @FindBy(id = "root-action-UserAction")
+    private WebElement userAccountIcon;
+
+    @FindBy(xpath = "//a[@href='api/']")
+    private WebElement restApiLink;
+
+    @FindBy(tagName = "h1")
+    private WebElement headingText;
+
     public BasePage(WebDriver driver) {
         super(driver);
+        PageFactory.initElements(driver, this);
     }
 
     public HomePage gotoHomePage() {
@@ -20,10 +35,11 @@ public abstract class BasePage extends BaseModel {
         return new HomePage(getDriver());
     }
 
-    public ManageJenkinsPage clickGearManageJenkinsButton() {
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
+    public JenkinsManagementPage clickGearManageJenkinsButton() {
+        manageJenkinsButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(),'Manage Jenkins')]")));
 
-        return new ManageJenkinsPage(getDriver());
+        return new JenkinsManagementPage(getDriver());
     }
 
     public UserStatusPage clickUserAccountViaDropDownMenu(String userName) {
@@ -65,13 +81,14 @@ public abstract class BasePage extends BaseModel {
     }
 
     public String getRestApiLinkText() {
-
         WebElement footer = getDriver().findElement(By.tagName("footer"));
+
         return footer.findElement(By.linkText("REST API")).getText();
     }
 
     public RestApiPage clickRestApiLink() {
-        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+        restApiLink.click();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
 
         return new RestApiPage(getDriver());
     }
@@ -81,11 +98,19 @@ public abstract class BasePage extends BaseModel {
         return getDriver().getCurrentUrl();
     }
 
-    public UserAccountPage clickUserAccount() {
-        getDriver().findElement(By.id("root-action-UserAction")).click();
+    public UserStatusPage clickUserAccountIcon() {
+        userAccountIcon.click();
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
 
-        return new UserAccountPage(getDriver());
+        return new UserStatusPage(getDriver());
     }
 
+    public String getlogoText() {
+        return getWait5().until(ExpectedConditions.
+                visibilityOfElementLocated(By.className("app-jenkins-logo"))).getText();
+    }
 
+    public String getHeadingText() {
+        return headingText.getText();
+    }
 }

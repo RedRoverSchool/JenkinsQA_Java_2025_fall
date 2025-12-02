@@ -5,10 +5,11 @@ import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
-public class ConfigureUserTest extends BaseTest {
+
+public class UserLoggedInTest extends BaseTest {
 
     @Test
-    public void testUserNameInUserAccount() {
+    public void testLoggedInUserNameInUserAccount() {
         final String expectedUserName = "admin";
 
         String actualUserName = new HomePage(getDriver())
@@ -19,7 +20,7 @@ public class ConfigureUserTest extends BaseTest {
     }
 
     @Test
-    public void testAccessUserAccountFromHome() {
+    public void testAccessLoggedInUserAccountFromHome() {
         final String expectedUserName = "admin";
 
         String actualUserName = new HomePage(getDriver())

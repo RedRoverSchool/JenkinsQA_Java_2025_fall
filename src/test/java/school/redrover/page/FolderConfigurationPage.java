@@ -1,27 +1,83 @@
 package school.redrover.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import java.util.List;
 
 public class FolderConfigurationPage extends BasePage {
 
+    @FindBy(css = "button[data-section-id='health-metrics']")
+    private WebElement healthMetricSidebarLink;
+
+    @FindBy(css = "button.jenkins-button.advanced-button")
+    private WebElement healthMetricButton;
+
+    @FindBy(id = "health-metrics")
+    private WebElement healthMetricsSection;
+
+    @FindBy(css = "button.jenkins-button.hetero-list-add")
+    private WebElement addMetricButton;
+
+    @FindBy(xpath = "//button[normalize-space(text())='Child item with worst health']")
+    private WebElement worstHealthButton;
+
+    @FindBy(xpath = "//div[@class='repeated-chunk__header'][1]")
+    private WebElement metricRowName;
+
+    @FindBy(xpath = "//div[@descriptorid='com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric']//div[@class='dd-handle']")
+    private WebElement dragHandle;
+
+    @FindBy(xpath = "//div[@descriptorid='com.cloudbees.hudson.plugins.folder.health.NamedChildHealthMetric']")
+    private WebElement givenNameRow;
+
+    @FindBy(xpath = ".//button[@title='Remove' and contains(@class, 'repeatable-delete')]")
+    private WebElement deleteMetric;
+
+    @FindBy(xpath = ".//div[@class='tbody dropdownList-container']")
+    private List <WebElement> metricList;
+
+    @FindBy(xpath = "//a[@tooltip='Help for feature: Child Name']")
+    private WebElement childNameTooltip;
+
+    @FindBy(css = "a[helpurl='/descriptor/com.cloudbees.hudson.plugins.folder.health.NamedChildHealthMetric/help/childName']")
+    private WebElement childNameHelp;
+
+    @FindBy(xpath = ".//div[contains(text(), 'Controls the child')]")
+    private WebElement childNameTooltipContent;
+
+    @FindBy(xpath = "//a[@tooltip='Help']")
+    private WebElement recursiveTooltip;
+
+    @FindBy(css = "a[helpurl='/descriptor/com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric/help/recursive']")
+    private WebElement recursiveHelp;
+
+    @FindBy(xpath = ".//div[contains(text(), 'Controls whether items')]")
+    private WebElement recursiveTooltipContent;
+
+    @FindBy(name ="_.displayNameOrNull")
+    private WebElement displayName;
+
+    @FindBy(name ="_.description")
+    private WebElement description;
+
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
     public FolderConfigurationPage setDisplayName(String name) {
-        getDriver().findElement(By.name("_.displayNameOrNull")).sendKeys(name);
+        displayName.sendKeys(name);
 
         return this;
     }
 
     public FolderConfigurationPage setDescription(String text) {
-        getDriver().findElement(By.name("_.description")).sendKeys(text);
+        description.sendKeys(text);
 
         return this;
     }
@@ -36,33 +92,33 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public String getHealthMetricsSidebarLink() {
-        return getDriver().findElement(By.cssSelector("button[data-section-id='health-metrics']")).getText().trim();
-    }
+        return healthMetricSidebarLink.getText().trim();}
 
     public String getHealthMetricsButton() {
-        return getDriver().findElement(By.cssSelector("button.jenkins-button.advanced-button")).getText().trim();
-    }
+        return healthMetricButton.getText().trim();}
 
     public FolderConfigurationPage clickHealthMetricsSidebarLink() {
-        getDriver().findElement(By.cssSelector("button[data-section-id='health-metrics']")).click();
+        healthMetricSidebarLink.click();
 
         return this;
     }
 
     public String getSectionName() {
-        return getDriver().findElement(By.id("health-metrics")).getText().trim();
-    }
+        return healthMetricsSection.getText().trim();}
 
     public FolderConfigurationPage clickHealthMetricsButton() {
-        getDriver().findElement(By.cssSelector("button.jenkins-button.advanced-button")).click();
+        healthMetricButton.click();
 
         return this;
     }
 
     public FolderConfigurationPage clickAddMetricButton() {
-        getDriver().findElement(By.cssSelector("button.jenkins-button.hetero-list-add")).click();
-        getWait2().until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//input[@class='jenkins-dropdown__filter-input']")));
+        ((JavascriptExecutor) getDriver()).executeScript(
+                "arguments[0].scrollIntoView(true);", addMetricButton);
+        addMetricButton.click();
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//input[@class='jenkins-dropdown__filter-input']")));
 
         return this;
     }
@@ -80,17 +136,16 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public FolderConfigurationPage clickWorstHealthButton() {
-        By worstHealthMetricRow = By.xpath("//div[@descriptorid='com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric']");
+       By worstHealthMetricRow = By.xpath("//div[@descriptorid='com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric']");
 
-        getDriver().findElement(By.xpath("//button[normalize-space(text())='Child item with worst health']"))
-                .click();
+        worstHealthButton.click();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(worstHealthMetricRow));
 
         return this;
     }
 
     public String getMetricRowName() {
-        return getDriver().findElement(By.xpath("//div[@class='repeated-chunk__header'][1]")).getText().trim();
+        return metricRowName.getText().trim();
     }
 
     public FolderConfigurationPage clickGivenNameButton() {
@@ -103,13 +158,6 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public FolderConfigurationPage dragWorstHealthRowToTop() {
-        WebElement worstHealthRow = getDriver()
-                .findElement(By.xpath("//div[@descriptorid='com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric']"));
-        WebElement dragHandle = worstHealthRow
-                .findElement(By.xpath(".//div[@class='dd-handle']"));
-        WebElement givenNameRow = getDriver()
-                .findElement(By.xpath("//div[@descriptorid='com.cloudbees.hudson.plugins.folder.health.NamedChildHealthMetric']"));
-
         new Actions(getDriver())
                 .clickAndHold(dragHandle)
                 .moveToElement(givenNameRow)
@@ -121,71 +169,60 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public FolderConfigurationPage deleteMetric() {
-        getDriver().findElement(By.xpath(".//button[@title='Remove' and contains(@class, 'repeatable-delete')]")).click();
+        deleteMetric.click();
 
         return this;
     }
 
     public List<String> getMetricList() {
-        return getDriver().findElements(By.xpath(".//div[@class='tbody dropdownList-container']"))
+        return metricList
                 .stream()
                 .map(WebElement::getText)
                 .toList();
     }
 
     public FolderConfigurationPage hoverChildNameTooltip() {
-        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@tooltip='Help for feature: Child Name']"));
-
-        new Actions(getDriver())
-                .moveToElement(elementToHover)
-                .perform();
+        new Actions(getDriver()).moveToElement(childNameTooltip).perform();
 
         return this;
     }
 
     public String getChildNameHelpText() {
-        return getDriver().findElement(By
-                .cssSelector("a[helpurl='/descriptor/com.cloudbees.hudson.plugins.folder.health.NamedChildHealthMetric/help/childName']"))
-                .getAttribute("tooltip");
+        return childNameHelp.getAttribute("tooltip");
     }
 
     public FolderConfigurationPage clickChildNameTooltip() {
-        getDriver().findElement(By.xpath("//a[@tooltip='Help for feature: Child Name']")).click();
+        childNameTooltip.click();
 
         return this;
     }
 
     public String getChildNameTooltipText() {
-       return getDriver().findElement(By.xpath(".//div[contains(text(), 'Controls the child')]"))
-                .getText()
-                .trim();
+       return childNameTooltipContent.getText().trim();
     }
 
     public FolderConfigurationPage hoverRecursiveTooltip() {
-        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@tooltip='Help']"));
-
-        new Actions(getDriver())
-                .moveToElement(elementToHover)
-                .perform();
+        new Actions(getDriver()).moveToElement(recursiveTooltip).perform();
 
         return this;
     }
 
     public String getTooltipTitle() {
-        return getDriver().findElement(By
-                .cssSelector("a[helpurl='/descriptor/com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric/help/recursive']"))
-                .getAttribute("tooltip");
+        return recursiveHelp.getAttribute("tooltip");
     }
 
     public FolderConfigurationPage clickRecursiveTooltip() {
-        getDriver().findElement(By.xpath("//a[@tooltip='Help']")).click();
+        recursiveTooltip.click();
 
         return this;
     }
 
     public String getRecursiveTooltipText() {
-        return getDriver().findElement(By.xpath(".//div[contains(text(), 'Controls whether items')]"))
-                .getText()
-                .trim();
+        return recursiveTooltipContent.getText().trim();
+    }
+
+    public String getBreadcrumbItem() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//span[contains(text(),'Configuration')]"))).getText();
     }
 }

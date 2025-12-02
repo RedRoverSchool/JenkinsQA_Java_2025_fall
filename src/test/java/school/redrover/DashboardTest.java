@@ -2,13 +2,16 @@ package school.redrover;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
 import school.redrover.page.ArchitectingforScalePage;
+import school.redrover.page.CloudsPage;
 import school.redrover.page.EditViewPage;
 import school.redrover.page.HomePage;
+import school.redrover.page.NewNodePage;
 import school.redrover.testdata.Page;
 import school.redrover.testdata.TestDataProvider;
 
@@ -48,7 +51,7 @@ public class DashboardTest extends BaseTest {
 
     @Test(dataProvider = "Links", dataProviderClass = TestDataProvider.class)
     public void testContentBlockLinks(String linkText, String expectedUrlEndpoint, Page page) {
-        BasePage resultPage = new HomePage(getDriver()).openPage(linkText, page.createPage(getDriver()));
+        BasePage resultPage = new HomePage(getDriver()).openProject(linkText, () -> page.createPage(getDriver()));
 
         Assert.assertTrue(Objects.requireNonNull(resultPage.getCurrentUrl()).contains(expectedUrlEndpoint));
     }
@@ -82,11 +85,11 @@ public class DashboardTest extends BaseTest {
     public void testSearchCreatedJobs() {
         String searchResults = new HomePage(getDriver())
                 .clickSearchButton()
-                .searchFor(CREATED_JOBS_NAME.get(1))
+                .searchFor(CREATED_JOBS_NAME.get(0))
                 .moveAndClickResult()
                 .getHeadingText();
 
-        Assert.assertEquals(searchResults, CREATED_JOBS_NAME.get(1));
+        Assert.assertEquals(searchResults, CREATED_JOBS_NAME.get(0));
     }
 
     @Test
@@ -124,11 +127,19 @@ public class DashboardTest extends BaseTest {
     }
 
     @Test
+    public void testLogo() {
+        String logoText = new HomePage(getDriver())
+                .getlogoText();
+
+        Assert.assertEquals(logoText, "Jenkins", "Надпись рядом с логотипом должна быть 'Jenkins'");
+    }
+
+    @Test
     public void testGoToManageJenkinsPage() {
         final String expectedTitle = "Manage Jenkins";
 
         String actualTitle = new HomePage(getDriver())
-                .clickManageJenkinsIcon()
+                .clickGearManageJenkinsButton()
                 .getHeadingText();
 
         Assert.assertEquals(actualTitle, expectedTitle);
@@ -137,9 +148,22 @@ public class DashboardTest extends BaseTest {
     @Test
     public void testAddColumnsInListViewOnDashboard() {
         final String listViewName = "ListView_01";
+        final List<String> expectedColumnList = List.of(
+                "Status",
+                "Weather",
+                "Name",
+                "Last Success",
+                "Last Failure",
+                "Last Duration",
+                "Build Button",
+                "Last Stable",
+                "Git Branches",
+                "Project description"
+        );
 
         HomePage homePage = new HomePage(getDriver());
-        homePage.clickCreateJob()
+        homePage
+                .clickCreateJob()
                 .sendName(PIPELINE_NAME)
                 .selectItemTypeAndSubmitAndGoHome("Pipeline")
                 .clickPlusToCreateView()
@@ -149,28 +173,16 @@ public class DashboardTest extends BaseTest {
                 .clickAddColumnDropDownButton();
 
         EditViewPage editViewPage = new EditViewPage(getDriver());
-        List<String> currentColumnListText = editViewPage.getCurrentColumnList();
+        List<String> actualColumnList = editViewPage
+                .addColumnInListView()
+                .getCurrentColumnList();
 
-        Set<String> addColumnSet = new HashSet<>();
-
-        List<WebElement> columnListForAdd = editViewPage.getAddColumnList();
-        Assert.assertNotEquals(columnListForAdd.size(), 0);
-        for (WebElement element : columnListForAdd) {
-            String columnName = element.getText().trim();
-            addColumnSet.add(columnName);
-            if (!currentColumnListText.contains(columnName)) {
-                TestUtils.mouseEnterJS(getDriver(), element);
-                TestUtils.clickJS(getDriver(), element);
-            }
-        }
-
-        List<String> addedColumnList = editViewPage.getCurrentColumnList();
-        Assert.assertNotEquals(addedColumnList.size(), 0);
-        Assert.assertTrue(addedColumnList.containsAll(addColumnSet));
+        Assert.assertNotEquals(actualColumnList.size(), 0);
+        Assert.assertEquals(actualColumnList, expectedColumnList);
 
         editViewPage.clickSubmitButton();
         int actualCountDisplayedColumns = homePage.getCountOfDisplayedColumnsOnDashboard();
-        Assert.assertEquals(actualCountDisplayedColumns, addedColumnList.size());
+        Assert.assertEquals(actualCountDisplayedColumns, actualColumnList.size());
     }
 
     @Test(dependsOnMethods = "testAddColumnsInListViewOnDashboard")
@@ -195,5 +207,23 @@ public class DashboardTest extends BaseTest {
 
         int actualCountDisplayedColumns = homePage.getCountOfDisplayedColumnsOnDashboard();
         Assert.assertEquals(actualCountDisplayedColumns, initialCountDisplayedColumns - 1);
+    }
+
+    @Test
+    public void testSetUpAgent() {
+        NewNodePage newNodePage = new HomePage(getDriver())
+                .openProject("Set up an agent", () -> new NewNodePage(getDriver()));
+
+        Assert.assertEquals(newNodePage.getHeadingText(), "New node");
+        Assert.assertTrue(newNodePage.isFormDisplayed(), "New Node form is not visible");
+    }
+
+    @Test
+    public void testConfigureCloudIntegration() {
+        CloudsPage cloudsPage = new HomePage(getDriver())
+                .openProject("Configure a cloud", () -> new CloudsPage(getDriver()));
+
+        Assert.assertEquals(cloudsPage.getHeadingText(), "Clouds");
+        Assert.assertEquals(cloudsPage.getParagraphText(), "There is no plugin installed that supports clouds.");
     }
 }

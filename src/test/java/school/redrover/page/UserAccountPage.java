@@ -10,22 +10,12 @@ import school.redrover.common.BasePage;
 public class UserAccountPage extends BasePage {
 
     private static final By FULL_NAME_FIELD = By.name("_.fullName");
+    private static final By EMAIL_FIELD = By.xpath("//*[@id='main-panel']//section[4]/div[4]/div[1]/input");
 
     public UserAccountPage(WebDriver driver) {
         super(driver);
     }
 
-    public String getUserName() {
-        return getWait10()
-                .until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")))
-                .getText();
-    }
-
-    public String getUserID() {
-        return getDriver().findElement(By
-                        .xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
-                .getText().substring(17);
-    }
 
     public UserAccountPage sendFullName(String fullName) {
         WebElement fullNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(FULL_NAME_FIELD));
@@ -41,9 +31,28 @@ public class UserAccountPage extends BasePage {
         return returnedPage;
     }
 
-    public RestApiPage clickRestApiLink(){
-        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+    public UserAccountPage editDescription(String text) {
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).sendKeys(text);
+        getDriver().findElement(By.name("Submit")).click();
 
-        return new RestApiPage(getDriver());
+        return this;
+    }
+
+    public String getDescriptionText() {
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
+    }
+
+    public UserAccountPage editEmail(String EMAIL) {
+        WebElement emailField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD));
+        emailField.clear();
+        emailField.sendKeys(EMAIL);
+        getDriver().findElement(By.name("Apply")).click();
+
+        return this;
+    }
+
+    public String getEmailText() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD)).getAttribute("value");
     }
 }

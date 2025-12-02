@@ -5,13 +5,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
-public class RenameFolderPage extends BasePage {
 
-    public RenameFolderPage(WebDriver driver) {
+public class FolderRenamingPage extends BasePage {
+
+    public FolderRenamingPage(WebDriver driver) {
         super(driver);
     }
 
-    public RenameFolderPage sendNewName (String name) {
+    public FolderRenamingPage sendNewName (String name) {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName"))).sendKeys(name);
 
         return this;
@@ -23,7 +24,7 @@ public class RenameFolderPage extends BasePage {
         return new FolderPage(getDriver());
     }
 
-    public RenameFolderPage clearName () {
+    public FolderRenamingPage clearName () {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName"))).clear();
 
         return this;
