@@ -25,9 +25,15 @@ public class UserStatusPage extends BasePage {
                 .getText();
     }
 
+    public String getUserNameAdminInBreadcrumbs() {
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                        .xpath("//a[@href='/user/admin/']")))
+                .getText();
+    }
+
     public String getUserID() {
-        return getDriver().findElement(By
-                        .xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
+        return getDriver().findElement(By.xpath("//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]"))
                 .getText().substring(17);
     }
 

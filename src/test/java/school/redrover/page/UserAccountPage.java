@@ -16,7 +16,6 @@ public class UserAccountPage extends BasePage {
         super(driver);
     }
 
-
     public UserAccountPage sendFullName(String fullName) {
         WebElement fullNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(FULL_NAME_FIELD));
         fullNameField.clear();
@@ -29,18 +28,6 @@ public class UserAccountPage extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
 
         return returnedPage;
-    }
-
-    public UserAccountPage editDescription(String text) {
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(text);
-        getDriver().findElement(By.name("Submit")).click();
-
-        return this;
-    }
-
-    public String getDescriptionText() {
-        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
     }
 
     public UserAccountPage editEmail(String EMAIL) {
