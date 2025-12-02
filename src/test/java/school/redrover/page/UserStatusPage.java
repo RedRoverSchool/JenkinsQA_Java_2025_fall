@@ -18,6 +18,13 @@ public class UserStatusPage extends BasePage {
                 .getText();
     }
 
+    public String getUserNameAdminInBreadcrumbs(String userName) {
+
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//a[@href='/user/%s/']")))
+                .getText();
+    }
+
     public String getUserNameAdminInBreadcrumbs() {
 
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(
