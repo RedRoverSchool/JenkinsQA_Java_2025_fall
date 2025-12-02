@@ -267,11 +267,12 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(homePage.getHeadingText(), expectedHeadingText);
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test
     public void testParametersForParameterizationOfBuildsIsDisplayed() {
         List<String> actualParameterList = new HomePage(getDriver())
-                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
-                .clickConfigureLinkInSideMenu()
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
                 .selectCheckbox(PARAMETRIZATION_CHECKBOX)
                 .clickAddParameterDropDownButton()
                 .getAddParameterList();
@@ -279,13 +280,14 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualParameterList, PARAMETER_EXPECTED);
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test
     public void testAddParameterForParameterizationOfBuilds() {
         String parameterName = PARAMETER_EXPECTED.get(0);
 
         List<String> selectedParameterList = new HomePage(getDriver())
-                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
-                .clickConfigureLinkInSideMenu()
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
                 .selectCheckbox(PARAMETRIZATION_CHECKBOX)
                 .clickAddParameterDropDownButton()
                 .selectParameterInDropDownButton(parameterName)
