@@ -40,8 +40,11 @@ public class UserAccountPage extends BasePage {
 
     public UserAccountPage sendEmail(String email) {
         emailField.clear();
-        emailField.sendKeys(email);
-        public <P extends BasePage> P clickSave(P returnedPage) {
+        emailField.sendKeys(email); 
+        return this;  
+    }
+   
+    public <P extends BasePage> P clickSave(P returnedPage) {
         getWait5().until(ExpectedConditions.visibilityOf(saveButton)).click();
         return returnedPage;
     }
