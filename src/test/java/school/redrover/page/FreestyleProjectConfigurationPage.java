@@ -241,6 +241,8 @@ public class FreestyleProjectConfigurationPage extends BasePage {
 
         new Actions(getDriver()).moveToElement(addParameterDropDownButton).click().perform();
 
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//button[@class='jenkins-dropdown__item ']")));
         return this;
     }
 
@@ -265,7 +267,7 @@ public class FreestyleProjectConfigurationPage extends BasePage {
                 System.out.println("Параметр " + parameterName + " не найден");
         }
 
-        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
+        getWait10().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By
                 .xpath("//div[@name ='parameterDefinitions']//div[@class= 'repeated-chunk__header']")));
         return this;
     }
