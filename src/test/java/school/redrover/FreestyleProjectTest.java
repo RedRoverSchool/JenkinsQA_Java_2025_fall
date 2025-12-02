@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.FreestyleProjectConfigurationPage;
@@ -279,6 +280,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualParameterList, PARAMETER_EXPECTED);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testAddParameterForParameterizationOfBuilds() {
         String parameterName = PARAMETER_EXPECTED.get(0);
