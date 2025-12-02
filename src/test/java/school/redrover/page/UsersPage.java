@@ -22,9 +22,6 @@ public class UsersPage extends BasePage {
     @FindBy(xpath = "(//button[@class='jenkins-menu-dropdown-chevron'])[2]")
     private static WebElement chevronButton;
 
-    @FindBy(xpath = "//a[@href='addUser']")
-    private WebElement createUserButton;
-
     public UsersPage(WebDriver driver) {
         super(driver);
     }
