@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
@@ -74,7 +73,7 @@ public class PipelineTest extends BaseTest {
                 "IntelliJ IDEA GDSL"
         );
 
-        List <String> actualSideMenu = new HomePage(getDriver())
+        List<String> actualSideMenu = new HomePage(getDriver())
                 .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
                 .clickPipelineSyntax()
                 .getListOfButtonsInSideMenu();
@@ -96,7 +95,7 @@ public class PipelineTest extends BaseTest {
                 "IntelliJ IDEA GDSL"
         );
 
-        List <String> actualSideMenu = new HomePage(getDriver())
+        List<String> actualSideMenu = new HomePage(getDriver())
                 .openDropdownMenu(PIPELINE_NAME)
                 .clickPipelineSyntaxInDropdownMenu()
                 .getListOfButtonsInSideMenu();
@@ -131,7 +130,7 @@ public class PipelineTest extends BaseTest {
 
     }
 
-    @Ignore //Test failed on CI
+
     @Test(dependsOnMethods = "testCreateNewPipeline")
     public void testAddDescription() {
         final String textDescription = "@0*8nFP'cRU0k.|6Gz-wO*se h~OtJ4kz0!)cl0ZAE3vN>q";
@@ -146,7 +145,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(descriptionText, textDescription);
     }
 
-    @Ignore
+
     @Test(dependsOnMethods = "testAddDescription")
     public void testEditDescription() {
         final String textDescription = "D0XVcGo8k(=D7myr/.YC6umm>]\"gY)?X_E|#HPku6T5im[oYHD-\\|B`";
@@ -221,7 +220,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(new PipelineConfigurationPage(getDriver()).getNotificationSaveMessage(),
                 "Saved");
         Assert.assertTrue(textAreaValidationMessage.matches(
-                "(?s)Would last have run at .*; would next run at .*"),
+                        "(?s)Would last have run at .*; would next run at .*"),
                 "Alias " + validTimePeriod + " не прошёл валидацию");
     }
 

@@ -66,7 +66,7 @@ public class PipelinePage extends BasePage {
     }
 
     public String getDescription() {
-        return descriptionContent.getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(descriptionContent)).getText();
     }
 
     public PipelinePage clearDescription() {
