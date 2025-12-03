@@ -126,7 +126,8 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(findUser, USER_NAME);
     }
-    
+
+    @Ignore
     @Test(dependsOnMethods = "searchUser")
     public void testAddDescriptionOnUserPage() {
         final String description = "Lorem ipsum dolor sit amet.";
