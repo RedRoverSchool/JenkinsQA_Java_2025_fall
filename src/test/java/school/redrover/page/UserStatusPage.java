@@ -75,7 +75,7 @@ public class UserStatusPage extends BasePage {
         descriptionField.sendKeys(text);
         submitButton.click();
 
-        //getWait5().until(ExpectedConditions.visibilityOf(description));
+        getWait5().until(ExpectedConditions.visibilityOf(description));
         return this;
     }
 
