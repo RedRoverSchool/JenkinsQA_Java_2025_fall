@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
-public class MultibranchPipelineConfigurationPage extends BasePage {
+public class MultibranchPipelineConfigurationPage extends BaseSideMenuItemPage {
 
     @FindBy(name = "_.description")
     private WebElement descriptionField;
@@ -22,8 +22,21 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     @FindBy(id = "toggle-switch-enable-disable-project")
     private WebElement toggleTooltipOnHover;
 
+    @FindBy(tagName = "h1")
+    private WebElement headingText;
+
     public MultibranchPipelineConfigurationPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected void waitUntilPageLoad() {
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
+    }
+
+    @Override
+    public String getHeadingText() {
+        return headingText.getText();
     }
 
     public MultibranchPipelineConfigurationPage sendDisplayName(String name) {

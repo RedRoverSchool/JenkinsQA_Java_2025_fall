@@ -9,7 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
-public class MultiConfigurationProjectPage extends BasePage {
+public class MultiConfigurationProjectPage extends BaseProjectPage {
 
     @FindBy(name = "Submit")
     private WebElement submitButton;
@@ -41,15 +41,23 @@ public class MultiConfigurationProjectPage extends BasePage {
     @FindBy(id = "configuration-matrix")
     private WebElement configurationMatrix;
 
+    @FindBy(tagName = "h1")
+    private WebElement headingText;
+
     public MultiConfigurationProjectPage(WebDriver driver) {
         super(driver);
     }
 
-    public MultiConfigurationProjectPage clickConfigureLinkInSideMenu() {
+    @Override
+    public String getHeadingText() {
+        return headingText.getText();
+    }
+
+    public MultiConfigurationProjectConfigurationPage clickConfigureLinkInSideMenu() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//a[contains(@href, '/configure')]"))).click();
 
-        return new MultiConfigurationProjectPage(getDriver());
+        return new MultiConfigurationProjectConfigurationPage(getDriver());
     }
 
     public MultiConfigurationProjectPage clickSubmit() {
