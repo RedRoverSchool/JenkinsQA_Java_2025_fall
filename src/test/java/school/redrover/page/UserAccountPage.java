@@ -13,7 +13,7 @@ public class UserAccountPage extends BasePage {
     private static final By FULL_NAME_FIELD = By.name("_.fullName");
     private static final By EMAIL_FIELD = By.xpath("//input[@name='email.address']");
 
-    @FindBy(name = "_.fullName");
+    @FindBy(name = "_.fullName")
     private WebElement fullNameField;
 
     @FindBy(xpath = "//input[@name='email.address']")
