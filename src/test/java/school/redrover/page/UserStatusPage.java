@@ -10,11 +10,20 @@ import school.redrover.common.BasePage;
 
 public class UserStatusPage extends BasePage {
 
+    @FindBy(xpath = "//div//h1")
+    private WebElement userName;
+
+    @FindBy(xpath = "//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]")
+    private WebElement userId;
+
+    @FindBy(id = "description-content")
+    private WebElement description;
+  
     @FindBy(xpath = "//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]")
     private WebElement userIDElement;
 
     @FindBy(id = "description-link")
-    private WebElement descriptionLink;
+    private WebElement editDescriptionButton;
 
     @FindBy(name = "description")
     private WebElement descriptionField;
@@ -50,11 +59,28 @@ public class UserStatusPage extends BasePage {
     }
 
     public String getUserID() {
-        return userIDElement.getText().substring(17);
+
+        return userId.getText().substring(17);
+    }
+
+    public UserStatusPage clickEditDescription() {
+        editDescriptionButton.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(descriptionField));
+
+        return this;
+    }
+
+    public UserStatusPage sendDescriptionAndSave(String text) {
+        descriptionField.clear();
+        descriptionField.sendKeys(text);
+        submitButton.click();
+
+        getWait5().until(ExpectedConditions.visibilityOf(description));
+        return this;
     }
 
     public UserStatusPage editDescription(String text) {
-        descriptionLink.click();
+        editDescriptionButton.click();
         descriptionField.sendKeys(text);
         submitButton.click();
 

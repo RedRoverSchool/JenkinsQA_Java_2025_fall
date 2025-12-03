@@ -51,4 +51,12 @@ public class UsersPage extends BasePage {
 
         return new UserAccountPage(getDriver());
     }
+
+    public UserStatusPage clickUserLink(String userName) {
+        getDriver().findElement(By.xpath("//a[text()='%s']".formatted(userName))).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
+
+        return new UserStatusPage(getDriver());
+    }
 }

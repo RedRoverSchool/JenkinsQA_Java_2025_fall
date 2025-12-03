@@ -13,6 +13,13 @@ public class UserAccountPage extends BasePage {
     private static final By FULL_NAME_FIELD = By.name("_.fullName");
     private static final By EMAIL_FIELD = By.xpath("//input[@name='email.address']");
 
+    @FindBy(name = "_.fullName")
+    private WebElement fullNameField;
+
+    @FindBy(xpath = "//input[@name='email.address']")
+    private WebElement emailField;
+    
+    
     @FindBy(xpath = "//button[@name='Apply']")
     private WebElement applyButton;
 
@@ -24,13 +31,26 @@ public class UserAccountPage extends BasePage {
     }
 
     public UserAccountPage sendFullName(String fullName) {
-        WebElement fullNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(FULL_NAME_FIELD));
         fullNameField.clear();
         fullNameField.sendKeys(fullName);
 
         return this;
     }
 
+    public UserStatusPage clickSave() {
+        saveButton.click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
+
+        return new UserStatusPage(getDriver());
+    }
+
+    public UserAccountPage sendEmail(String email) {
+        emailField.clear();
+        emailField.sendKeys(email); 
+        return this;  
+    }
+   
     public <P extends BasePage> P clickSave(P returnedPage) {
         getWait5().until(ExpectedConditions.visibilityOf(saveButton)).click();
         return returnedPage;

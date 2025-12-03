@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -11,40 +12,61 @@ import java.util.List;
 
 public class UserCreatingPage extends BasePage {
 
+    @FindBy(id = "username")
+    private WebElement userNameField;
+
+    @FindBy(name = "password1")
+    private WebElement passwordField;
+
+    @FindBy(name = "password2")
+    private WebElement confirmPasswordField;
+
+    @FindBy(name = "email")
+    private WebElement emailField;
+
+    @FindBy(name = "Submit")
+    private WebElement createButton;
+
+    @FindBy(xpath = "//*[@class='error jenkins-!-margin-bottom-2']")
+    private List<WebElement> errorsList;
+
     public UserCreatingPage(WebDriver driver) {
         super(driver);
     }
 
     public UserCreatingPage sendUserName(String userName) {
-        getDriver().findElement(By.id("username")).sendKeys(userName);
+        userNameField.sendKeys(userName);
 
         return this;
     }
 
     public UserCreatingPage sendPassword(String password) {
-        getDriver().findElement(By.name("password1")).sendKeys(password);
+        passwordField.sendKeys(password);
+
         return this;
     }
 
     public UserCreatingPage sendConfirmPassword(String password) {
-        getDriver().findElement(By.name("password2")).sendKeys(password);
+        confirmPasswordField.sendKeys(password);
+
         return this;
     }
 
     public UserCreatingPage sendEmail(String email) {
-        getDriver().findElement(By.name("email")).sendKeys(email);
+        emailField.sendKeys(email);
+
         return this;
     }
 
     public UsersPage clickCreateAndGoToUsersPage() {
-        getDriver().findElement(By.name("Submit")).click();
+        createButton.click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(.,'Users')]")));
 
         return new UsersPage(getDriver());
     }
 
     public UserCreatingPage clickCreateAndKeepUserCreatingPage() {
-        getDriver().findElement(By.name("Submit")).click();
+        createButton.click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Create User']")));
 
         return this;
@@ -52,14 +74,9 @@ public class UserCreatingPage extends BasePage {
 
     public List<String> getAllErrors() {
 
-        return getDriver()
-                .findElements(By.xpath("//*[@class='error jenkins-!-margin-bottom-2']"))
+        return errorsList
                 .stream()
                 .map(WebElement::getText)
                 .toList();
     }
-
-    public String checkCreatedUser() {
-        return getDriver().findElement(By.cssSelector("div.error.jenkins-\\!-margin-bottom-2")).getText();
-    }
-    }
+}
