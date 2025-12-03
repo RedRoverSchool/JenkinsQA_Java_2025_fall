@@ -85,7 +85,7 @@ public class UserStatusPage extends BasePage {
         saveButton.click();
 
         getWait5().until(ExpectedConditions.visibilityOf(description));
-        return userIDElement.getText().substring(17);
+        return this;
     }
 
     public UserStatusPage editDescription(String text) {
