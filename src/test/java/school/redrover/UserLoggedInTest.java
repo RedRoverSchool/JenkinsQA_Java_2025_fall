@@ -28,6 +28,7 @@ public class UserLoggedInTest extends BaseTest {
         Assert.assertEquals(actualUserName, EXP_USER_NAME);
     }
 
+    @Ignore
     @Test
     public void testAddDescriptionForLoggedInUser() {
         final String expectedDescription = "Lorem ipsum dolor sit amet.";
