@@ -127,7 +127,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(findUser, USER_NAME);
     }
     
-    @Ignore
+   @Ignore
    @Test(dependsOnMethods = "searchUser")
     public void testAddDescriptionOnUserPage() {
         final String description = "Lorem ipsum dolor sit amet.";
@@ -158,7 +158,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualEmailText, email);
     }
 
-    @Test(dependsOnMethods = "testAddDescriptionOnUserPage")
+    @Test(dependsOnMethods = "testChangeEmailOnUserPage")
     public void testChangeUserName() {
         final String expFullUserName = "User Full Name";
 
