@@ -16,15 +16,6 @@ public class UserStatusPage extends BasePage {
     @FindBy(xpath = "//div[@id='main-panel']/descendant::div[contains(text(),'User ID:')]")
     private WebElement userId;
 
-    @FindBy(id = "description-link")
-    private WebElement editDescriptionButton;
-
-    @FindBy(name = "description")
-    private WebElement descriptionTextBox;
-
-    @FindBy(name = "Submit")
-    private WebElement saveButton;
-
     @FindBy(id = "description-content")
     private WebElement description;
   
@@ -32,7 +23,7 @@ public class UserStatusPage extends BasePage {
     private WebElement userIDElement;
 
     @FindBy(id = "description-link")
-    private WebElement descriptionLink;
+    private WebElement editDescriptionButton;
 
     @FindBy(name = "description")
     private WebElement descriptionField;
@@ -80,16 +71,16 @@ public class UserStatusPage extends BasePage {
     }
 
     public UserStatusPage sendDescriptionAndSave(String text) {
-        descriptionTextBox.clear();
-        descriptionTextBox.sendKeys(text);
-        saveButton.click();
+        descriptionField.clear();
+        descriptionField.sendKeys(text);
+        submitButton.click();
 
         getWait5().until(ExpectedConditions.visibilityOf(description));
         return this;
     }
 
     public UserStatusPage editDescription(String text) {
-        descriptionLink.click();
+        editDescriptionButton.click();
         descriptionField.sendKeys(text);
         submitButton.click();
 
