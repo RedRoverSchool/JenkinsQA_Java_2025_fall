@@ -10,16 +10,12 @@ import school.redrover.common.BasePage;
 
 public class UserAccountPage extends BasePage {
 
-    private static final By FULL_NAME_FIELD = By.name("_.fullName");
-    private static final By EMAIL_FIELD = By.xpath("//input[@name='email.address']");
-
     @FindBy(name = "_.fullName")
     private WebElement fullNameField;
 
     @FindBy(xpath = "//input[@name='email.address']")
     private WebElement emailField;
-    
-    
+
     @FindBy(xpath = "//button[@name='Apply']")
     private WebElement applyButton;
 
@@ -57,7 +53,6 @@ public class UserAccountPage extends BasePage {
     }
 
     public UserAccountPage editEmail(String EMAIL) {
-        WebElement emailField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD));
         emailField.clear();
         emailField.sendKeys(EMAIL);
         applyButton.click();
@@ -66,7 +61,6 @@ public class UserAccountPage extends BasePage {
     }
 
     public String getEmailText() {
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD))
-                .getAttribute("value");
+       return emailField.getAttribute("value");
     }
 }
