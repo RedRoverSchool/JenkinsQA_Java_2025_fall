@@ -6,6 +6,8 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.OrganizationFolderPage;
 
+import java.util.List;
+
 public class OrganizationFolderConfigurationTest extends BaseTest {
 
     private static final String FOLDER_NAME = "Organization Folder %d".formatted(System.currentTimeMillis());
@@ -42,5 +44,24 @@ public class OrganizationFolderConfigurationTest extends BaseTest {
                 .getDisplayNameTooltipLink();
 
         Assert.assertEquals(displayNameTooltipLink, expectedExternalLink);
+    }
+
+    @Test
+    public void testRepositorySourcesFilterByNamePart() {
+        String searchString = "github";
+        String expectedRepositorySourceName = "GitHub Organization";
+
+        List<String> repositorySourcesList = new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(FOLDER_NAME)
+                .selectOrganizationFolderAndSubmit()
+                .filterRepositorySources(searchString)
+                .getRepositorySourceNames();
+
+        Assert.assertEquals(repositorySourcesList.size(), 1);
+        Assert.assertListContainsObject(
+                repositorySourcesList,
+                expectedRepositorySourceName,
+                "No <%s> in list".formatted(expectedRepositorySourceName));
     }
 }
