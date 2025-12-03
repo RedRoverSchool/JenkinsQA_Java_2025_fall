@@ -21,18 +21,12 @@ public class UserAccountPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement createButton;
 
-    @FindBy(xpath = "//h1[text()='Create User']")
-    private WebElement createUserHeader;
-
     /***
      * WebElements from different Pages to wait before Page return
      */
 
     @FindBy(id = "description-link")
     private WebElement userStatusPageEditDescriptionButton;
-
-    @FindBy(xpath = "//h1[contains(text(),'Users')]")
-    private WebElement usersPageHeader;
 
 
     public UserAccountPage(WebDriver driver) {
