@@ -126,22 +126,23 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(findUser, USER_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateUser")
+   @Test(dependsOnMethods = "searchUser")
     public void testAddDescriptionOnUserPage() {
-        final String expectedDescription = "Lorem ipsum dolor sit amet.";
+        final String description = "Lorem ipsum dolor sit amet.";
 
-        String actualDescription = new HomePage(getDriver())
+        String actualDescriptionText = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickUserButton()
-                .clickUserLink(USER_NAME)
-                .clickEditDescription()
-                .sendDescriptionAndSave(expectedDescription)
+                .clickSignOut()
+                .signIn(USER_NAME, USER_PASSWORD)
+                .clickUserAccountIcon()
+                .editDescription(description)
                 .getDescriptionText();
 
-        Assert.assertEquals(actualDescription, expectedDescription);
+        Assert.assertEquals(actualDescriptionText, description);
     }
 
-    @Test(dependsOnMethods = "testCreateUser")
+   @Test(dependsOnMethods = "searchUser")
     public void testChangeEmailOnUserPage() {
         final String email = "gkg@kgk.kgk";
 
@@ -149,13 +150,13 @@ public class UserTest extends BaseTest {
                 .clickGearManageJenkinsButton()
                 .clickUserButton()
                 .clickAccountMenuItem(USER_NAME)
-                .sendEmail(email)
+                .editEmail(email)
                 .getEmailText();
 
         Assert.assertEquals(actualEmailText, email);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testAddDescriptionOnUserPage")
     public void testChangeUserName() {
         final String expFullUserName = "User Full Name";
 
@@ -172,6 +173,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actFullUserName, expFullUserName);
     }
 
+    @Test(dependsOnMethods = "testChangeUserName")
     private void createUser() {
         new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
