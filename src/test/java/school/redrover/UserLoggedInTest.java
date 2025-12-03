@@ -28,7 +28,6 @@ public class UserLoggedInTest extends BaseTest {
 
         Assert.assertEquals(actualUserName, EXP_USER_NAME);
     }
-
     
     @Test
     public void testAddDescriptionForLoggedInUser() {
