@@ -81,6 +81,7 @@ public class UserStatusPage extends BasePage {
 
     public UserStatusPage editDescription(String text) {
         editDescriptionButton.click();
+        descriptionField.clear();
         descriptionField.sendKeys(text);
         submitButton.click();
 
@@ -88,7 +89,7 @@ public class UserStatusPage extends BasePage {
     }
 
     public String getDescriptionText() {
-        return getWait5().until(ExpectedConditions.visibilityOf(descriptionContent))
-                .getText();
-    }
+       return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
+                .id("description-content"))).getText();
+       }
 }

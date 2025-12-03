@@ -2,10 +2,8 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.testng.annotations.Ignore;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
-import school.redrover.page.UserStatusPage;
 import java.util.List;
 
 
@@ -127,8 +125,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(findUser, USER_NAME);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "searchUser")
+  @Test(dependsOnMethods = "searchUser")
     public void testAddDescriptionOnUserPage() {
         final String description = "Lorem ipsum dolor sit amet.";
 
