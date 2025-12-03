@@ -1,13 +1,14 @@
 package school.redrover.page;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.common.BasePage;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
 
-public class BuildHistoryOfJenkinsPage extends BasePage {
+public class BuildHistoryOfJenkinsPage extends BaseSideMenuItemPage {
 
     @FindBy(xpath = "//table[@id='projectStatus']/tbody/tr")
     private List<WebElement> buildHistoryTableRows;
@@ -15,8 +16,21 @@ public class BuildHistoryOfJenkinsPage extends BasePage {
     @FindBy(css = "thead th a.sortheader")
     private List<WebElement> tableHeaders;
 
+    @FindBy(tagName = "h1")
+    private WebElement headingText;
+
     public BuildHistoryOfJenkinsPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected void waitUntilPageLoad() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+    }
+
+    @Override
+    public String getHeadingText() {
+        return headingText.getText();
     }
 
     public boolean isBuildHistoryEmpty() {
@@ -31,4 +45,5 @@ public class BuildHistoryOfJenkinsPage extends BasePage {
                         .trim())
                 .toList();
     }
+
 }
