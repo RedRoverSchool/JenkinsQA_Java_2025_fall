@@ -126,9 +126,9 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(findUser, USER_NAME);
     }
-    
-   @Ignore
-   @Test(dependsOnMethods = "searchUser")
+
+    @Ignore
+    @Test(dependsOnMethods = "searchUser")
     public void testAddDescriptionOnUserPage() {
         final String description = "Lorem ipsum dolor sit amet.";
 
@@ -146,7 +146,7 @@ public class UserTest extends BaseTest {
 
    @Test(dependsOnMethods = "searchUser")
     public void testChangeEmailOnUserPage() {
-        final String email = "gkg@kgk.kgk";
+        final String email = "gkgk@kgk.kgk";
 
         String actualEmailText = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
