@@ -160,8 +160,6 @@ public class UserTest extends BaseTest {
     public void testChangeUserName() {
         final String expFullUserName = "User Full Name";
 
-        createUser();
-
         String actFullUserName = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickUserButton()
