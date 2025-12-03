@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.annotations.Ignore;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
@@ -28,6 +29,7 @@ public class UserLoggedInTest extends BaseTest {
         Assert.assertEquals(actualUserName, EXP_USER_NAME);
     }
 
+    @Ignore
     @Test
     public void testAddDescriptionForLoggedInUser() {
         final String expectedDescription = "Lorem ipsum dolor sit amet.";

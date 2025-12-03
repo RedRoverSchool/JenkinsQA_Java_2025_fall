@@ -51,7 +51,6 @@ public class UserStatusPage extends BasePage {
 
         getWait5().until(ExpectedConditions.elementToBeClickable(descriptionTextBox));
 
-//        return new UserStatusPage(getDriver());
         return this;
     }
 
