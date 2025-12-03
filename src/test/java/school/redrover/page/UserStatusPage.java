@@ -65,7 +65,7 @@ public class UserStatusPage extends BasePage {
 
     public UserStatusPage clickEditDescription() {
         editDescriptionButton.click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(descriptionTextBox));
+        getWait5().until(ExpectedConditions.elementToBeClickable(descriptionField));
 
         return this;
     }
