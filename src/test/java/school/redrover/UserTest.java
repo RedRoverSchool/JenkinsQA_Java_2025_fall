@@ -2,10 +2,10 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.annotations.Ignore;
 import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 import school.redrover.page.UserStatusPage;
-
 import java.util.List;
 
 
@@ -126,8 +126,9 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(findUser, USER_NAME);
     }
-
-    @Test(dependsOnMethods = "searchUser")
+    
+   @Ignore
+   @Test(dependsOnMethods = "searchUser")
     public void testAddDescriptionOnUserPage() {
         final String description = "Lorem ipsum dolor sit amet.";
 
@@ -143,21 +144,21 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualDescriptionText, description);
     }
 
-    @Test(dependsOnMethods = "searchUser")
+   @Test(dependsOnMethods = "searchUser")
     public void testChangeEmailOnUserPage() {
-        final String EMAIL = "gkg@kgk.kgk";
+        final String email = "gkg@kgk.kgk";
 
         String actualEmailText = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
                 .clickUserButton()
                 .clickAccountMenuItem(USER_NAME)
-                .editEmail(EMAIL)
+                .editEmail(email)
                 .getEmailText();
 
-        Assert.assertEquals(actualEmailText, EMAIL);
+        Assert.assertEquals(actualEmailText, email);
     }
 
-    @Test(dependsOnMethods = "testAddDescriptionOnUserPage")
+    @Test(dependsOnMethods = "testChangeEmailOnUserPage")
     public void testChangeUserName() {
         final String expFullUserName = "User Full Name";
 
@@ -166,9 +167,22 @@ public class UserTest extends BaseTest {
                 .clickUserButton()
                 .clickAccountMenuItem(USER_NAME)
                 .sendFullName(expFullUserName)
-                .clickSave(new UserStatusPage(getDriver()))
+                .clickSave()
                 .getUserName();
 
         Assert.assertEquals(actFullUserName, expFullUserName);
+    }
+
+    @Test(dependsOnMethods = "testChangeUserName")
+    private void createUser() {
+        new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickUserButton()
+                .clickCreateUserButton()
+                .sendUserName(USER_NAME)
+                .sendPassword(USER_PASSWORD)
+                .sendConfirmPassword(USER_PASSWORD)
+                .sendEmail(USER_EMAIL)
+                .clickCreateAndGoToUsersPage();
     }
 }

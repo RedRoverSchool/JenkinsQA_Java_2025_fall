@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.FreestyleProjectConfigurationPage;
 import school.redrover.page.HomePage;
 
 import java.util.List;
@@ -56,17 +57,18 @@ public class ConfigurationMatrixTest extends BaseTest {
 
     @Test
     public void testSetUpEnvironmentAfterRefresh() {
+        new HomePage(getDriver())
+                .clickCreateJob()
+                .sendName(PROJECT_NAME)
+                .selectFreestyleProjectAndSubmit()
+                .clickEnvironmentMenuOption();
 
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys("NewFreestyleProject");
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@data-section-id='environment']")).click();
+        String urlBeforeRefresh = new FreestyleProjectConfigurationPage(getDriver())
+                .getConfigUrl();
 
-        String urlBeforeRefresh = getDriver().getCurrentUrl();
-        getDriver().navigate().refresh();
-        String urlAfterRefresh = getDriver().getCurrentUrl();
-        getWait10().until(ExpectedConditions.urlToBe(urlBeforeRefresh));
+        String urlAfterRefresh = new FreestyleProjectConfigurationPage(getDriver())
+                .refreshPage()
+                .getConfigUrl();
 
         Assert.assertEquals(urlAfterRefresh, urlBeforeRefresh);
     }

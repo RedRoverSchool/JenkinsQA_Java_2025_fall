@@ -21,6 +21,9 @@ public abstract class BasePage extends BaseModel {
     @FindBy(xpath = "//a[@href='api/']")
     private WebElement restApiLink;
 
+    @FindBy(css = ".page-footer__links > button")
+    private WebElement jenkinsVersion;
+
     public BasePage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
@@ -51,6 +54,15 @@ public abstract class BasePage extends BaseModel {
         return new UserStatusPage(getDriver());
     }
 
+    public String getUserAccountNameViaDropDownMenu() {
+        Actions actions = new Actions(getDriver());
+
+        actions.moveToElement(getDriver().findElement(By.id("root-action-UserAction"))).perform();
+        return getWait10().until(ExpectedConditions.
+                visibilityOfElementLocated(By.cssSelector(".jenkins-dropdown__item:first-child"))).getText();
+
+    }
+
     public SearchModalPage clickSearchButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("root-action-SearchAction")))).click();
 
@@ -67,7 +79,7 @@ public abstract class BasePage extends BaseModel {
     }
 
     public String getJenkinsVersion() {
-        return getDriver().findElement(By.cssSelector(".page-footer__links > button")).getText();
+        return jenkinsVersion.getText();
     }
 
     public FooterDropdownPage clickJenkinsVersion() {
@@ -97,12 +109,12 @@ public abstract class BasePage extends BaseModel {
 
     public UserStatusPage clickUserAccountIcon() {
         userAccountIcon.click();
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
+        getWait10().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
 
         return new UserStatusPage(getDriver());
     }
 
-    public String getlogoText() {
+    public String getLogoText() {
         return getWait5().until(ExpectedConditions.
                 visibilityOfElementLocated(By.className("app-jenkins-logo"))).getText();
     }

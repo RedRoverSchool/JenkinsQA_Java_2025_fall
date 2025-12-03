@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -10,49 +11,62 @@ import school.redrover.common.BasePage;
 public class UserAccountPage extends BasePage {
 
     private static final By FULL_NAME_FIELD = By.name("_.fullName");
-    private static final By EMAIL_FIELD = By.xpath("//*[@id='main-panel']//section[4]/div[4]/div[1]/input");
+    private static final By EMAIL_FIELD = By.xpath("//input[@name='email.address']");
+
+    @FindBy(name = "_.fullName")
+    private WebElement fullNameField;
+
+    @FindBy(xpath = "//input[@name='email.address']")
+    private WebElement emailField;
+    
+    
+    @FindBy(xpath = "//button[@name='Apply']")
+    private WebElement applyButton;
+
+    @FindBy(name = "Submit")
+    private WebElement saveButton;
 
     public UserAccountPage(WebDriver driver) {
         super(driver);
     }
 
-
     public UserAccountPage sendFullName(String fullName) {
-        WebElement fullNameField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(FULL_NAME_FIELD));
         fullNameField.clear();
         fullNameField.sendKeys(fullName);
 
         return this;
     }
 
+    public UserStatusPage clickSave() {
+        saveButton.click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
+
+        return new UserStatusPage(getDriver());
+    }
+
+    public UserAccountPage sendEmail(String email) {
+        emailField.clear();
+        emailField.sendKeys(email); 
+        return this;  
+    }
+   
     public <P extends BasePage> P clickSave(P returnedPage) {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.name("Submit"))).click();
-
+        getWait5().until(ExpectedConditions.visibilityOf(saveButton)).click();
         return returnedPage;
-    }
-
-    public UserAccountPage editDescription(String text) {
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(text);
-        getDriver().findElement(By.name("Submit")).click();
-
-        return this;
-    }
-
-    public String getDescriptionText() {
-        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
     }
 
     public UserAccountPage editEmail(String EMAIL) {
         WebElement emailField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD));
         emailField.clear();
         emailField.sendKeys(EMAIL);
-        getDriver().findElement(By.name("Apply")).click();
+        applyButton.click();
 
         return this;
     }
 
     public String getEmailText() {
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD)).getAttribute("value");
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD))
+                .getAttribute("value");
     }
 }
