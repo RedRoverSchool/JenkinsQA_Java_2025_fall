@@ -4,10 +4,23 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class MultibranchPipelineConfigurationPage extends BasePage {
+
+    @FindBy(name = "_.description")
+    private WebElement descriptionField;
+
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
+
+    @FindBy(css = "[data-title='Disabled']")
+    private WebElement toggleSwitcher;
+
+    @FindBy(id = "toggle-switch-enable-disable-project")
+    private WebElement toggleTooltipOnHover;
 
     public MultibranchPipelineConfigurationPage(WebDriver driver) {
         super(driver);
@@ -20,7 +33,7 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     }
 
     public MultibranchPipelineProjectPage clickSaveButton() {
-        getDriver().findElement(By.name("Submit")).click();
+        submitButton.click();
         getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                 By.cssSelector(".empty-state-section h2")));
 
@@ -39,7 +52,7 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     }
 
     public MultibranchPipelineConfigurationPage clickToggle() {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-title='Disabled']"))).click();
+        toggleSwitcher.click();
 
         return this;
     }
@@ -55,17 +68,13 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     }
 
     public String getToggleTooltipTextOnHover() {
-        WebElement toggleElement = getDriver().findElement(By.id("toggle-switch-enable-disable-project"));
-
-        new Actions(getDriver()).moveToElement(toggleElement).perform();
+        new Actions(getDriver()).moveToElement(toggleTooltipOnHover).perform();
 
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
                 .getText();
     }
 
     public MultibranchPipelineConfigurationPage sendDescription(String description) {
-        WebElement descriptionField = getDriver().findElement(By.name("_.description"));
-
         descriptionField.clear();
         descriptionField.sendKeys(description);
 
@@ -77,5 +86,10 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
 
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("textarea-preview")))
                 .getText();
+    }
+
+    public String getBreadcrumbItem() {
+        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .xpath("//span[contains(text(),'Configuration')]"))).getText();
     }
 }

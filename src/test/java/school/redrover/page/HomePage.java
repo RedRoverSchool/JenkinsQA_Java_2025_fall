@@ -5,15 +5,39 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 
 public class HomePage extends BasePage {
+
+    @FindBy(xpath = "//a[@href='/view/all/newJob']")
+    private WebElement sidebarNewItem;
+
+    @FindBy(css = "[href='/newView']")
+    private WebElement createNewItem;
+
+    @FindBy(css = "[class*=\"job-status\"] td:first-child svg")
+    private WebElement statusTooltipProjectIcon;
+
+    @FindBy(xpath = "//div[@class='tabBar']/div")
+    private List<WebElement> viewNameList;
+
+    @FindBy(xpath = "//div/section[2]/ul/li[1]/a")
+    private WebElement setUpAnAgentButton;
+
+    @FindBy(linkText = "Build Executor Status")
+    private WebElement buildExecutorStatusButton;
+
+    @FindBy(xpath = "//div[2]/span/a")
+    private WebElement buildHistoryButton;
+
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -26,8 +50,9 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItemOnLeftMenu() {
-        getDriver().findElement(By.linkText("New Item")).click();
+        sidebarNewItem.click();
 
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
         return new NewItemPage(getDriver());
     }
 
@@ -44,15 +69,17 @@ public class HomePage extends BasePage {
         return new FolderPage(getDriver());
     }
 
-    public <T extends BasePage> T openPage(String jobName, T resultPage) {
+    public <T extends BasePage> T openProject(String jobName, Supplier<T> resultPage) {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
 
-        return resultPage;
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
+        return resultPage.get();
     }
 
     public NewItemPage clickSidebarNewItem() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        sidebarNewItem.click();
 
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
         return new NewItemPage(getDriver());
     }
 
@@ -88,16 +115,23 @@ public class HomePage extends BasePage {
         return new MovePage(getDriver());
     }
 
+    public PipelineSyntaxPage clickPipelineSyntaxInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@class, 'jenkins-dropdown__item') and contains(., 'Pipeline Syntax')]"))).click();
+
+        return new PipelineSyntaxPage(getDriver());
+    }
+
+
     public HomePage clickDeleteItemInDropdownMenu() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'jenkins-dropdown__item') and contains(., 'Delete')]"))).click();
 
         return this;
     }
 
-    public RenameFolderPage clickRenameItemInDropdownMenu() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='tippy-content']//div[@class='jenkins-dropdown']//a[normalize-space()='Rename']"))).click();
+    public FreestyleProjectConfigurationPage clickConfigureInDropdownMenu() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@href,'configure')]"))).click();
 
-        return new RenameFolderPage(getDriver());
+        return new FreestyleProjectConfigurationPage(getDriver());
     }
 
     public HomePage confirmDelete() {
@@ -127,7 +161,7 @@ public class HomePage extends BasePage {
     }
 
     public CreateViewPage clickPlusToCreateView() {
-        getDriver().findElement(By.cssSelector("[href='/newView']")).click();
+        createNewItem.click();
 
         return new CreateViewPage(getDriver());
     }
@@ -157,8 +191,6 @@ public class HomePage extends BasePage {
     }
 
     public int getSizeOfViewNameList() {
-        List<WebElement> viewNameList = getDriver().findElements(By.xpath("//div[@class='tabBar']/div"));
-
         return viewNameList.size();
     }
 
@@ -188,18 +220,12 @@ public class HomePage extends BasePage {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-content"))).getText();
     }
 
-    public ManageJenkinsPage clickManageJenkinsIcon() {
-        getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
-
-        return new ManageJenkinsPage(getDriver());
-    }
-
     public HomePage clearTextDescription() {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("description"))).clear();
         return this;
     }
 
-    public WebElement getRestApiLink(){
+    public WebElement getRestApiLink() {
 
         return getDriver().findElement(By.xpath("//a[@href='api/']"));
     }
@@ -250,44 +276,45 @@ public class HomePage extends BasePage {
     }
 
     public String getStatusProjectIconTooltipTextOnHover() {
-        WebElement statusIcon = getDriver().findElement(By.cssSelector("[class*=\"job-status\"] td:first-child svg"));
-
-        new Actions(getDriver()).moveToElement(statusIcon).perform();
+        new Actions(getDriver()).moveToElement(statusTooltipProjectIcon).perform();
 
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("tippy-content")))
                 .getText();
     }
 
-    public EditViewPage clickEditViewButton(String listViewName){
+    public EditViewPage clickEditViewButton(String listViewName) {
         getWait10().until(ExpectedConditions.elementToBeClickable(By
                 .xpath(".//a[@href='/view/%s/configure']".formatted(listViewName)))).click();
 
         return new EditViewPage(getDriver());
     }
 
-    public String getTitle () {
+    public String getTitle() {
         return getDriver().getTitle();
     }
 
-    public NewNodePage clickSetUpAnAgent(){
-        getDriver().findElement(By.xpath("//div/section[2]/ul/li[1]/a")).click();
+    public NewNodePage clickSetUpAnAgent() {
+        setUpAnAgentButton.click();
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new NewNodePage(getDriver());
     }
 
-    public NodesPage clickBuildExecutorStatus(){
-        getDriver().findElement(By.linkText("Build Executor Status")).click();
+    public NodesPage clickBuildExecutorStatus() {
+        buildExecutorStatusButton.click();
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new NodesPage(getDriver());
     }
 
-    public BuildHistoryOfJenkinsPage clickBuildHistory(){
-    getDriver().findElement(By.xpath("//div[2]/span/a")).click();
+    public BuildHistoryOfJenkinsPage clickBuildHistory() {
+        buildHistoryButton.click();
 
-    return new BuildHistoryOfJenkinsPage(getDriver());
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
+        return new BuildHistoryOfJenkinsPage(getDriver());
     }
 
-    public ArchitectingforScalePage clickLearnMoreAboutDistributedBuildsLink(){
+    public ArchitectingforScalePage clickLearnMoreAboutDistributedBuildsLink() {
         getDriver().findElement(By.xpath(".//a[span[text()='Learn more about distributed builds']]"))
                 .click();
         Object[] windowHandles = getDriver().getWindowHandles().toArray();
@@ -295,6 +322,11 @@ public class HomePage extends BasePage {
 
         getWait2().until(ExpectedConditions.urlContains("architecting-for-scale"));
 
-        return new ArchitectingforScalePage (getDriver());
+        return new ArchitectingforScalePage(getDriver());
+    }
+
+    public boolean isBuildButtonVisible(String projectName) {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("(//a[@title='Schedule a Build for %s'])[1]".formatted(projectName)))).isDisplayed();
     }
 }

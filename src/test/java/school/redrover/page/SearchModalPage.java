@@ -4,6 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BaseModel;
+import school.redrover.common.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,12 +60,12 @@ public class SearchModalPage extends BaseModel {
         return searchResultsTexts;
     }
 
-    public UserAccountPage searchForUser(String userName) {
+    public UserStatusPage searchForUser(String userName) {
         getWait2().until(ExpectedConditions.elementToBeClickable(inputField));
         getDriver().findElement(By.id("command-bar")).sendKeys(userName);
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#search-results [href='/user/%s']".formatted(userName).toLowerCase())));
         getDriver().findElement(By.id("command-bar")).sendKeys(Keys.ENTER);
-        return new UserAccountPage(getDriver());
+        return new UserStatusPage(getDriver());
     }
 
     public List<String> searchResults() {
@@ -78,11 +79,14 @@ public class SearchModalPage extends BaseModel {
     public FreestyleProjectPage moveAndClickResult(){
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.className("jenkins-command-palette__results__heading")));
 
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(searchResults), 0, 0)
-                .click()
-                .perform();
+        TestUtils.clickJS(getDriver(), getDriver().findElement(searchResults));
 
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new FreestyleProjectPage(getDriver());
+    }
+
+    public SearchModalPage waitForTextOfResults() {
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.className("jenkins-command-palette__results__heading")));
+        return this;
     }
 }

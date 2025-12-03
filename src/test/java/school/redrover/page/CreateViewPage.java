@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -10,18 +11,24 @@ import java.util.List;
 
 public class CreateViewPage extends BasePage {
 
+    @FindBy(id = "name")
+    private WebElement nameField;
+
+    @FindBy(xpath = "//label[text() = 'My View']")
+    private WebElement clickMyView;
+
     public CreateViewPage(WebDriver driver) {
         super(driver);
     }
 
     public CreateViewPage sendViewName(String name){
-        getDriver().findElement(By.id("name")).sendKeys(name);
+        nameField.sendKeys(name);
 
         return this;
     }
 
     public CreateViewPage clickMyViewName(){
-        getDriver().findElement(By.xpath("//label[text() = 'My View']")).click();
+        clickMyView.click();
 
         return this;
     }

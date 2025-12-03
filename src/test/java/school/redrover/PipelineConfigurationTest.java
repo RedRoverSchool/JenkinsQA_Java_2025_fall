@@ -1,7 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -32,8 +30,8 @@ public class PipelineConfigurationTest extends BaseTest {
     public void testDisableProject() {
 
         String toggleLabelText = new HomePage(getDriver())
-                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickToggle()
                 .getToggleUncheckedLabelText();
 
@@ -44,10 +42,10 @@ public class PipelineConfigurationTest extends BaseTest {
     public void testActivityStatusProject() {
 
         String actualProjectStatus = new HomePage(getDriver())
-                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickToggle()
-                .clickSaveButton()
+                .clickSubmitButton()
                 .gotoHomePage()
                 .getProjectStatus(PIPELINE_NAME);
 
@@ -62,7 +60,7 @@ public class PipelineConfigurationTest extends BaseTest {
                 .sendName(PIPELINE_NAME)
                 .selectPipelineAndSubmit()
                 .clickToggle()
-                .clickSaveButton()
+                .clickSubmitButton()
                 .getWarningMessage();
 
         Assert.assertEquals(warningMessage, "This project is currently disabled\n" +
@@ -85,8 +83,8 @@ public class PipelineConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testNavigationToAdvancedByScrollingDown")
     public void testNavigationToAdvancedBySideMenu() {
         String actualAdvancedSectionTitle = new HomePage(getDriver())
-                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickAdvancedLinkInSideMenu()
                 .getAdvancedTitleText();
 
@@ -96,8 +94,8 @@ public class PipelineConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testNavigationToAdvancedByScrollingDown")
     public void testAdvancedSectionQuietPeriodElements() {
         String actualQuietPeriodLabel = new HomePage(getDriver())
-                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .getQuietPeriodLabelText();
 
@@ -109,8 +107,8 @@ public class PipelineConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testNavigationToAdvancedByScrollingDown")
     public void testAdvancedSectionDisplayNameFieldElements() {
         String actualDisplayNameLabel = new HomePage(getDriver())
-                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .getDisplayNameLabelText();
 
@@ -122,8 +120,8 @@ public class PipelineConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testAdvancedSectionQuietPeriodElements")
     public void testAdvancedSectionQuietPeriodElementsAfterSelecting() {
         String actualNumberOfSecondsLabel = new HomePage(getDriver())
-                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .clickQuitePeriod()
                 .getNumberOfSecondsLabelText();
@@ -132,11 +130,11 @@ public class PipelineConfigurationTest extends BaseTest {
         Assert.assertTrue(new PipelineConfigurationPage(getDriver())
                 .quietPeriodCheckboxIsSelected(), "Checkbox should be selected");
         Assert.assertTrue(new PipelineConfigurationPage(getDriver())
-                .getNumberOfSecondsInput().isDisplayed());
+                .isNumberOfSecondsInputDisplayed());
     }
 
     @Test
-    public void testAdvancedSectionSetDisplayName() {
+    public void testAdvancedSectionSendDisplayName() {
         final String displayName = "PL_01";
 
         String actualDisplayNameInStatus = new HomePage(getDriver())
@@ -144,8 +142,8 @@ public class PipelineConfigurationTest extends BaseTest {
                 .sendName(PIPELINE_NAME_FOR_CHANGE)
                 .selectPipelineAndSubmit()
                 .clickAdvancedButton()
-                .setDisplayName(displayName)
-                .clickSaveButton()
+                .sendDisplayName(displayName)
+                .clickSubmitButton()
                 .getDisplayNameInStatus();
 
         Assert.assertEquals(actualDisplayNameInStatus, displayName);
@@ -166,8 +164,8 @@ public class PipelineConfigurationTest extends BaseTest {
                 "Help for feature: Display Name");
 
         List<String> actualTooltipList = new HomePage(getDriver())
-                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .getTooltipList();
 
@@ -176,17 +174,12 @@ public class PipelineConfigurationTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAdvancedSectionVerifyTooltips")
     public void testAdvancedSectionHelpAreaIsDisplayed() {
-        List<WebElement> tooltipList = new HomePage(getDriver())
-                .openPage(PIPELINE_NAME, new PipelinePage(getDriver()))
-                .clickConfigureInSideMenu(PIPELINE_NAME)
+        boolean isHelpElementDisplayed = new HomePage(getDriver())
+                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
-                .getTooltipListWeb();
+                .isHelpElementDisplayed();
 
-        Assert.assertNotEquals(tooltipList.size(), 0);
-        for (WebElement webElement : tooltipList) {
-            new Actions(getDriver()).moveToElement(webElement).click().perform();
-
-            Assert.assertTrue(new PipelineConfigurationPage(getDriver()).getHelpElement().isDisplayed());
-        }
+        Assert.assertTrue(isHelpElementDisplayed);
     }
 }

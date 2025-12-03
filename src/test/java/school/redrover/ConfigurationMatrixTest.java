@@ -2,39 +2,39 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.common.TestUtils;
+import school.redrover.page.HomePage;
+
 import java.util.List;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElementsLocatedBy;
 
+
 public class ConfigurationMatrixTest extends BaseTest {
 
+    private static final String PROJECT_NAME = "Multiconfiguration project name";
+
     private void createConfigurationMatrix() {
-
-        String jobName = "test-" + System.currentTimeMillis();
-
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(jobName);
-        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
+        new HomePage(getDriver())
+                .clickSidebarNewItem()
+                .sendName(PROJECT_NAME)
+                .selectMultiConfigurationProjectAndSubmit();
     }
 
     @Test
     public void testSectionDisplayed() {
+        String configurationMatrixText = new HomePage(getDriver())
+                .clickSidebarNewItem()
+                .sendName(PROJECT_NAME)
+                .selectMultiConfigurationProjectAndSubmit()
+                .getConfigurationMatrixText();
 
-        createConfigurationMatrix();
-
-        WebElement matrixHeader = getDriver().findElement(By.id("configuration-matrix"));
-        new Actions(getDriver()).moveToElement(matrixHeader).perform();
-
-        Assert.assertTrue(matrixHeader.isDisplayed(), "Configuration Matrix header is not visible");
-
+        Assert.assertEquals(configurationMatrixText, "Configuration Matrix",
+                "Configuration Matrix header is not visible");
     }
 
     @Test
@@ -52,5 +52,22 @@ public class ConfigurationMatrixTest extends BaseTest {
         Assert.assertEquals(items.size(), 1, "Dropdown should contain exactly one item");
         Assert.assertEquals(items.get(0).getText().trim(), "User-defined Axis",
                 "The only option must be 'User-defined Axis'");
+    }
+
+    @Test
+    public void testSetUpEnvironmentAfterRefresh() {
+
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys("NewFreestyleProject");
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@data-section-id='environment']")).click();
+
+        String urlBeforeRefresh = getDriver().getCurrentUrl();
+        getDriver().navigate().refresh();
+        String urlAfterRefresh = getDriver().getCurrentUrl();
+        getWait10().until(ExpectedConditions.urlToBe(urlBeforeRefresh));
+
+        Assert.assertEquals(urlAfterRefresh, urlBeforeRefresh);
     }
 }

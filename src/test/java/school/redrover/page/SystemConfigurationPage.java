@@ -4,10 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
 public class SystemConfigurationPage extends BasePage {
+
+    @FindBy(tagName = "h1")
+    private WebElement headingText;
 
     public SystemConfigurationPage(WebDriver driver) {
         super(driver);
@@ -59,4 +63,7 @@ public class SystemConfigurationPage extends BasePage {
         saveButton.click();
     }
 
+    public String getHeadingText() {
+        return headingText.getText().trim();
+    }
 }

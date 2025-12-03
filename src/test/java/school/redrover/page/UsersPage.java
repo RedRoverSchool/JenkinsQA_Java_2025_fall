@@ -1,0 +1,55 @@
+package school.redrover.page;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.common.BasePage;
+
+import java.time.Duration;
+
+
+public class UsersPage extends BasePage {
+
+    @FindBy(xpath = "//a[contains(., 'Account')]")
+    private static WebElement accountMenuItem;
+
+    @FindBy(xpath = "//a[@href='addUser']")
+    private static WebElement createUserButton;
+
+    @FindBy(xpath = "(//button[@class='jenkins-menu-dropdown-chevron'])[2]")
+    private static WebElement chevronButton;
+
+    public UsersPage(WebDriver driver) {
+        super(driver);
+    }
+
+    public UserCreatingPage clickCreateUserButton() {
+        createUserButton.click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Create User']")));
+
+        return new UserCreatingPage(getDriver());
+    }
+
+    public String getUserName(String userName) {
+
+        return getDriver().findElement(By.xpath("//td[text()='%s']".formatted(userName))).getText();
+    }
+
+    public UserAccountPage clickAccountMenuItem(String userName) {
+        new Actions(getDriver())
+                .moveToElement(getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='%s']".formatted(userName)))))
+                .pause(Duration.ofSeconds(2))
+                .perform();
+
+        chevronButton.sendKeys(Keys.ENTER);
+        getWait5().until(ExpectedConditions.elementToBeClickable(accountMenuItem)).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Account']")));
+
+        return new UserAccountPage(getDriver());
+    }
+}
