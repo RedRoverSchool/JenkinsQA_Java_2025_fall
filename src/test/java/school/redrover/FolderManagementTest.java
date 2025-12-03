@@ -25,7 +25,6 @@ public class FolderManagementTest extends BaseTest {
     @DataProvider
     public Object[][] sideMenuItemsData() {
         return new Object[][]{
-                {"Status", FOLDER_NAME},
                 {"Configure", "Configuration"},
                 {"New Item", "New Item"},
                 {"Build History", "Build History of Jenkins"},

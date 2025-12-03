@@ -7,10 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.common.BasePage;
 import java.util.List;
 
-public class FolderConfigurationPage extends BasePage {
+public class FolderConfigurationPage extends BaseSideMenuItemPage {
 
     @FindBy(css = "button[data-section-id='health-metrics']")
     private WebElement healthMetricSidebarLink;
@@ -66,8 +65,21 @@ public class FolderConfigurationPage extends BasePage {
     @FindBy(name ="_.description")
     private WebElement description;
 
+    @FindBy(tagName = "h1")
+    private WebElement headingText;
+
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected void waitUntilPageLoad() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+    }
+
+    @Override
+    public String getHeadingText() {
+        return headingText.getText();
     }
 
     public FolderConfigurationPage setDisplayName(String name) {

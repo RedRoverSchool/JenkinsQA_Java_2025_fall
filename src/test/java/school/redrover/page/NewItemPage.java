@@ -5,12 +5,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
 import java.util.Objects;
 
-public class NewItemPage extends BasePage {
+public class NewItemPage extends BaseSideMenuItemPage {
 
     @FindBy(id = "name")
     private WebElement nameField;
@@ -33,8 +32,21 @@ public class NewItemPage extends BasePage {
     @FindBy(xpath = "//*[contains(@class, 'WorkflowJob')]")
     private WebElement pipelineTypeCheck;
 
+    @FindBy(tagName = "h1")
+    private WebElement headingText;
+
     public NewItemPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected void waitUntilPageLoad() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+    }
+
+    @Override
+    public String getHeadingText() {
+        return headingText.getText();
     }
 
     public NewItemPage sendName(String name) {
@@ -188,11 +200,6 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.id("from"));
 
         return this;
-    }
-
-    public String getHeadingText() {
-
-        return getDriver().findElement(By.tagName("h1")).getText();
     }
 
     public String getNameDataValid() {
