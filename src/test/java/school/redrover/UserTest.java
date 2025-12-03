@@ -143,7 +143,7 @@ public class UserTest extends BaseTest {
 
    @Test(dependsOnMethods = "searchUser")
     public void testChangeEmailOnUserPage() {
-        final String email = "gkg@kgk.kgk";
+        final String email = "gkgk@kgk.kgk";
 
         String actualEmailText = new HomePage(getDriver())
                 .clickGearManageJenkinsButton()
