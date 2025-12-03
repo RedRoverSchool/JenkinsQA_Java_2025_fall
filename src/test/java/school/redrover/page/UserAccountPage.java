@@ -1,6 +1,5 @@
 package school.redrover.page;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,21 +9,31 @@ import school.redrover.common.BasePage;
 
 public class UserAccountPage extends BasePage {
 
-    private static final By FULL_NAME_FIELD = By.name("_.fullName");
-    private static final By EMAIL_FIELD = By.xpath("//input[@name='email.address']");
-
     @FindBy(name = "_.fullName")
     private WebElement fullNameField;
 
     @FindBy(xpath = "//input[@name='email.address']")
     private WebElement emailField;
     
-    
     @FindBy(xpath = "//button[@name='Apply']")
     private WebElement applyButton;
 
     @FindBy(name = "Submit")
-    private WebElement saveButton;
+    private WebElement createButton;
+
+    @FindBy(xpath = "//h1[text()='Create User']")
+    private WebElement createUserHeader;
+
+    /***
+     * WebElements from different Pages to wait before Page return
+     */
+
+    @FindBy(id = "description-link")
+    private WebElement userStatusPageEditDescriptionButton;
+
+    @FindBy(xpath = "//h1[contains(text(),'Users')]")
+    private WebElement usersPageHeader;
+
 
     public UserAccountPage(WebDriver driver) {
         super(driver);
@@ -38,9 +47,9 @@ public class UserAccountPage extends BasePage {
     }
 
     public UserStatusPage clickSave() {
-        saveButton.click();
+        createButton.click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
+        getWait5().until(ExpectedConditions.visibilityOf(userStatusPageEditDescriptionButton));
 
         return new UserStatusPage(getDriver());
     }
@@ -48,25 +57,19 @@ public class UserAccountPage extends BasePage {
     public UserAccountPage sendEmail(String email) {
         emailField.clear();
         emailField.sendKeys(email); 
-        return this;  
-    }
-   
-    public <P extends BasePage> P clickSave(P returnedPage) {
-        getWait5().until(ExpectedConditions.visibilityOf(saveButton)).click();
-        return returnedPage;
+
+        return this;
     }
 
-    public UserAccountPage editEmail(String EMAIL) {
-        WebElement emailField = getWait5().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD));
+    public UserAccountPage editEmail(String email) {
         emailField.clear();
-        emailField.sendKeys(EMAIL);
+        emailField.sendKeys(email);
         applyButton.click();
 
         return this;
     }
 
     public String getEmailText() {
-        return getWait10().until(ExpectedConditions.visibilityOfElementLocated(EMAIL_FIELD))
-                .getAttribute("value");
+        return emailField.getAttribute("value");
     }
 }

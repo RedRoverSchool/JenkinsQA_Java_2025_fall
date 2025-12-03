@@ -30,6 +30,16 @@ public class UserCreatingPage extends BasePage {
     @FindBy(xpath = "//*[@class='error jenkins-!-margin-bottom-2']")
     private List<WebElement> errorsList;
 
+    /***
+     * WebElements from different Pages to wait before Page return
+     */
+
+    @FindBy(xpath = "//h1[contains(text(),'Users')]")
+    private WebElement usersPageHeader;
+
+    @FindBy(xpath = "//h1[text()='Create User']")
+    private WebElement userCreatingPageHeader;
+
     public UserCreatingPage(WebDriver driver) {
         super(driver);
     }
@@ -60,14 +70,14 @@ public class UserCreatingPage extends BasePage {
 
     public UsersPage clickCreateAndGoToUsersPage() {
         createButton.click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(.,'Users')]")));
+        getWait5().until(ExpectedConditions.visibilityOf(usersPageHeader));
 
         return new UsersPage(getDriver());
     }
 
     public UserCreatingPage clickCreateAndKeepUserCreatingPage() {
         createButton.click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Create User']")));
+        getWait5().until(ExpectedConditions.visibilityOf(userCreatingPageHeader));
 
         return this;
     }
