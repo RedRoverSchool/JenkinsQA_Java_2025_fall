@@ -28,7 +28,7 @@ public class ConfigureSystemTest extends BaseTest {
     public void testCreateSystemMessage() {
 
         new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .clickConfigurationSystem()
                 .clearSystemMessage()
                 .setSystemMessage(SYSTEM_MESSAGE)
@@ -49,7 +49,7 @@ public class ConfigureSystemTest extends BaseTest {
         final String addToPreviewMessage = " This is the best project!";
 
         String actualPreviewMessage = new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .clickConfigurationSystem()
                 .setSystemMessage(addToPreviewMessage)
                 .getPreviewSystemMessage();
@@ -63,7 +63,7 @@ public class ConfigureSystemTest extends BaseTest {
         final String addToSystemMessage = "!";
 
         new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .clickConfigurationSystem()
                 .setSystemMessage(addToSystemMessage)
                 .clickSave();
@@ -82,7 +82,7 @@ public class ConfigureSystemTest extends BaseTest {
         final String numberOfExecutors = "5";
 
         new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .clickConfigurationSystem()
                 .setNumberOfExecutors(numberOfExecutors)
                 .clickSave();
@@ -98,7 +98,7 @@ public class ConfigureSystemTest extends BaseTest {
     public void testTooltips(String tooltipName) {
 
         Integer actualNumberOfTooltip = new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .clickConfigurationSystem()
                 .clickTooltip(tooltipName)
                 .getNumberOfOpenTooltips();

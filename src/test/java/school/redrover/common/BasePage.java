@@ -35,7 +35,7 @@ public abstract class BasePage extends BaseModel {
         return new HomePage(getDriver());
     }
 
-    public JenkinsManagementPage clickGearManageJenkinsButton() {
+    public JenkinsManagementPage clickManageJenkinsGear() {
         manageJenkinsButton.click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(),'Manage Jenkins')]")));
 

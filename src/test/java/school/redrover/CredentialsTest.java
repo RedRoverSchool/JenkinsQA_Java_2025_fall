@@ -18,7 +18,7 @@ public class CredentialsTest extends BaseTest {
         final String expectedName = String.format("%s/****** (%s)", username, description);
 
         List<WebElement> credentialsListBeforeCreateNewOne = new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .clickCredentialsLink()
                 .clickGlobalLink()
                 .getGlobalCredentialsList();
@@ -26,7 +26,7 @@ public class CredentialsTest extends BaseTest {
         int beforeCount = credentialsListBeforeCreateNewOne.size();
 
         List<WebElement> credentialsListAfterCreateNewOne = new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .clickCredentialsLink()
                 .clickGlobalLink()
                 .clickAddCredentialsButton()

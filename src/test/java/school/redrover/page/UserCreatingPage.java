@@ -1,9 +1,9 @@
 package school.redrover.page;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -29,6 +29,16 @@ public class UserCreatingPage extends BasePage {
 
     @FindBy(xpath = "//*[@class='error jenkins-!-margin-bottom-2']")
     private List<WebElement> errorsList;
+
+    /***
+     * WebElements from different Pages to wait before Page return
+     */
+
+    @FindBy(xpath = "//h1[contains(text(),'Users')]")
+    private WebElement usersPageHeader;
+
+    @FindBy(className = "error")
+    private WebElement userCreatingPageError;
 
     public UserCreatingPage(WebDriver driver) {
         super(driver);
@@ -60,14 +70,15 @@ public class UserCreatingPage extends BasePage {
 
     public UsersPage clickCreateAndGoToUsersPage() {
         createButton.click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(.,'Users')]")));
+
+        getWait5().until(ExpectedConditions.visibilityOf(usersPageHeader));
 
         return new UsersPage(getDriver());
     }
 
     public UserCreatingPage clickCreateAndKeepUserCreatingPage() {
         createButton.click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Create User']")));
+        getWait5().until(ExpectedConditions.visibilityOf(userCreatingPageError));
 
         return this;
     }

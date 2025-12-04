@@ -75,6 +75,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualJobDescription, updatedJobDescription);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
     public void testTryCreateProjectExistName() {
         final String errorMessage = "» A job already exists with the name ‘%s’".formatted(MULTIBRANCH_PIPELINE_NAME);

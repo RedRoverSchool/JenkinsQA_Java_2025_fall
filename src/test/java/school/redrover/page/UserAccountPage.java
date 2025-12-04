@@ -1,6 +1,5 @@
 package school.redrover.page;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -15,12 +14,20 @@ public class UserAccountPage extends BasePage {
 
     @FindBy(xpath = "//input[@name='email.address']")
     private WebElement emailField;
-
+    
     @FindBy(xpath = "//button[@name='Apply']")
     private WebElement applyButton;
 
     @FindBy(name = "Submit")
     private WebElement saveButton;
+
+    /***
+     * WebElements from different Pages to wait before Page return
+     */
+
+    @FindBy(id = "description-link")
+    private WebElement userStatusPageEditDescriptionButton;
+
 
     public UserAccountPage(WebDriver driver) {
         super(driver);
@@ -36,7 +43,7 @@ public class UserAccountPage extends BasePage {
     public UserStatusPage clickSave() {
         saveButton.click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
+        getWait5().until(ExpectedConditions.visibilityOf(userStatusPageEditDescriptionButton));
 
         return new UserStatusPage(getDriver());
     }
@@ -44,23 +51,19 @@ public class UserAccountPage extends BasePage {
     public UserAccountPage sendEmail(String email) {
         emailField.clear();
         emailField.sendKeys(email); 
-        return this;  
-    }
-   
-    public <P extends BasePage> P clickSave(P returnedPage) {
-        getWait5().until(ExpectedConditions.visibilityOf(saveButton)).click();
-        return returnedPage;
+
+        return this;
     }
 
-    public UserAccountPage editEmail(String EMAIL) {
+    public UserAccountPage editEmail(String email) {
         emailField.clear();
-        emailField.sendKeys(EMAIL);
+        emailField.sendKeys(email);
         applyButton.click();
 
         return this;
     }
 
     public String getEmailText() {
-       return emailField.getAttribute("value");
+        return emailField.getAttribute("value");
     }
 }

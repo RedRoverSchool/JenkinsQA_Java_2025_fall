@@ -97,7 +97,7 @@ public class JenkinsManagementTest extends BaseTest {
     @Test
     public void testCheckAccessDashboardFromLogo() {
         String title = new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .gotoHomePage()
                 .getTitle();
 
@@ -107,7 +107,7 @@ public class JenkinsManagementTest extends BaseTest {
     @Test
     public void testSearchResultsList() {
         List<String> searchResults = new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .sendTitle(SETTING_TITLE)
                 .getSearchResults();
 
@@ -118,7 +118,7 @@ public class JenkinsManagementTest extends BaseTest {
     @Test
     public void testSearchAndOpenSetting() {
         String searchHeading = new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .sendTitle(SETTING_TITLE)
                 .clickSearchResult()
                 .getHeadingText();

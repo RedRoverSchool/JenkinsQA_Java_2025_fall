@@ -14,13 +14,26 @@ import java.time.Duration;
 public class UsersPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(., 'Account')]")
-    private static WebElement accountMenuItem;
+    private WebElement accountMenuItem;
 
     @FindBy(xpath = "//a[@href='addUser']")
-    private static WebElement createUserButton;
+    private WebElement createUserButton;
 
     @FindBy(xpath = "(//button[@class='jenkins-menu-dropdown-chevron'])[2]")
-    private static WebElement chevronButton;
+    private WebElement chevronButton;
+
+    /***
+     * WebElements from different Pages to wait before Page return
+     */
+
+    @FindBy(xpath = "//h1[text()='Create User']")
+    private WebElement userCreatingPageHeader;
+
+    @FindBy(xpath = "//h1[text()='Account']")
+    private WebElement userAccountPageHeader;
+
+    @FindBy(id = "description-link")
+    private WebElement userStatusPageEditDescriptionButton;
 
     public UsersPage(WebDriver driver) {
         super(driver);
@@ -28,7 +41,7 @@ public class UsersPage extends BasePage {
 
     public UserCreatingPage clickCreateUserButton() {
         createUserButton.click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Create User']")));
+        getWait5().until(ExpectedConditions.visibilityOf(userCreatingPageHeader));
         
         return new UserCreatingPage(getDriver());
     }
@@ -41,13 +54,13 @@ public class UsersPage extends BasePage {
     public UserAccountPage clickAccountMenuItem(String userName) {
         new Actions(getDriver())
                 .moveToElement(getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='%s']".formatted(userName)))))
-                .pause(Duration.ofSeconds(2))
+                .pause(Duration.ofSeconds(1))
                 .perform();
 
         chevronButton.sendKeys(Keys.ENTER);
         getWait5().until(ExpectedConditions.elementToBeClickable(accountMenuItem)).click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Account']")));
+        getWait5().until(ExpectedConditions.visibilityOf(userAccountPageHeader));
 
         return new UserAccountPage(getDriver());
     }
@@ -55,7 +68,7 @@ public class UsersPage extends BasePage {
     public UserStatusPage clickUserLink(String userName) {
         getDriver().findElement(By.xpath("//a[text()='%s']".formatted(userName))).click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link")));
+        getWait5().until(ExpectedConditions.visibilityOf(userStatusPageEditDescriptionButton));
 
         return new UserStatusPage(getDriver());
     }

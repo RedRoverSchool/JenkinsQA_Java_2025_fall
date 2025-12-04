@@ -45,14 +45,11 @@ public class UserLoggedInTest extends BaseTest {
 
     @Test
     public void testUserNameInUserStatusBreadcrumbs() {
-        String expectedUserName = new HomePage(getDriver())
-                .getUserAccountNameViaDropDownMenu();
-
         String actualUserName = new HomePage(getDriver())
-                .clickUserAccountViaDropDownMenu(expectedUserName)
-                .getUserNameAdminInBreadcrumbs();
+                .clickUserAccountViaDropDownMenu(EXP_USER_NAME)
+                .getUserNameInBreadcrumbs(EXP_USER_NAME);
 
-        Assert.assertTrue(actualUserName.contains(expectedUserName));
+        Assert.assertEquals(actualUserName, EXP_USER_NAME);
     }
 
     @Test

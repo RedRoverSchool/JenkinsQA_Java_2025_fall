@@ -13,7 +13,7 @@ public class ConfigureAppearanceTest extends BaseTest {
     public void testDarkSystemThemeAndApplyButtonPopUp() {
         String expectedText = "Saved";
         String popUpApplyButtonText = new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .clickAppearanceLink()
                 .clickDarkSystemTheme()
                 .clickApplyButton()
@@ -26,7 +26,7 @@ public class ConfigureAppearanceTest extends BaseTest {
     public void testChangeDarkThemeAndSaveButton() {
         String expectedTeg = "dark";
         String themaHtmlText = new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .clickAppearanceLink()
                 .clickDarkTheme()
                 .checkAllowTheme()
@@ -39,7 +39,7 @@ public class ConfigureAppearanceTest extends BaseTest {
     @Test(dependsOnMethods = "testChangeDarkThemeAndSaveButton")
     public void changeTheme() {
         String checking = new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .clickAppearanceLink()
                 .changeTheme(THEME)
                 .clickDoNotAllowDifferentTheme()
@@ -53,7 +53,7 @@ public class ConfigureAppearanceTest extends BaseTest {
     public void changeThemeLight() {
         String finalTheme = "Saved";
         String checkingLight = new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .clickAppearanceLink()
                 .clickLightTheme()
                 .checkAllowTheme()
