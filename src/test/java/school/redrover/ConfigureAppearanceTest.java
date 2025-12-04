@@ -10,21 +10,20 @@ public class ConfigureAppearanceTest extends BaseTest {
     private final String THEME = "dark";
 
    @Test
-    public void testThemesAndApplyButtonPopUp() {
+    public void testDarkSystemThemeAndApplyButtonPopUp() {
         String expectedText = "Saved";
         String popUpApplyButtonText = new HomePage(getDriver())
                 .clickManageJenkinsGear()
                 .clickAppearanceLink()
                 .clickDarkSystemTheme()
-                .clickLightTheme()
                 .clickApplyButton()
                 .getPopUpApplyButtonText();
 
         Assert.assertEquals(popUpApplyButtonText, expectedText);
     }
 
-   @Test(dependsOnMethods = "testThemesAndApplyButtonPopUp")
-    public void testChangeThemeAndSaveButton() {
+   @Test(dependsOnMethods = "testDarkSystemThemeAndApplyButtonPopUp")
+    public void testChangeDarkThemeAndSaveButton() {
         String expectedTeg = "dark";
         String themaHtmlText = new HomePage(getDriver())
                 .clickManageJenkinsGear()
@@ -37,7 +36,7 @@ public class ConfigureAppearanceTest extends BaseTest {
         Assert.assertEquals(themaHtmlText, expectedTeg);
     }
 
-    @Test(dependsOnMethods = "testThemesAndApplyButtonPopUp")
+    @Test(dependsOnMethods = "testChangeDarkThemeAndSaveButton")
     public void changeTheme() {
         String checking = new HomePage(getDriver())
                 .clickManageJenkinsGear()
@@ -48,5 +47,19 @@ public class ConfigureAppearanceTest extends BaseTest {
                 .getHTMLAttributeThemeText();
 
         Assert.assertEquals(checking, THEME);
+    }
+
+    @Test(dependsOnMethods = "changeTheme")
+    public void changeThemeLight() {
+        String finalTheme = "Saved";
+        String checkingLight = new HomePage(getDriver())
+                .clickGearManageJenkinsButton()
+                .clickAppearanceLink()
+                .clickLightTheme()
+                .checkAllowTheme()
+                .clickApplyButton()
+                .getPopUpApplyButtonText();
+
+        Assert.assertEquals(checkingLight, finalTheme);
     }
 }

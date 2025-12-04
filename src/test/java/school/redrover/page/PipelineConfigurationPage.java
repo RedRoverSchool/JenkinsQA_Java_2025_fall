@@ -12,7 +12,7 @@ import school.redrover.common.BasePage;
 
 import java.util.List;
 
-public class PipelineConfigurationPage extends BasePage {
+public class PipelineConfigurationPage extends BaseSideMenuItemPage {
 
     @FindBy(id = "advanced")
     private WebElement advancedTitle;
@@ -67,6 +67,17 @@ public class PipelineConfigurationPage extends BasePage {
 
     public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected void waitUntilPageLoad() {
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
+    }
+
+    @Override
+    public String getHeadingText() {
+        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.
+                tagName("h1"))).getText().trim();
     }
 
     public PipelinePage clickSubmitButton() {
@@ -205,11 +216,6 @@ public class PipelineConfigurationPage extends BasePage {
                 .xpath("//span[contains(text(),'Configuration')]"))).getText();
     }
 
-    public String getHeadingText() {
-        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.
-                tagName("h1"))).getText().trim();
-    }
-
     public PipelineConfigurationPage clickTriggersSectionButton() {
         triggersSectionButton.click();
 
@@ -250,5 +256,24 @@ public class PipelineConfigurationPage extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOf(errorDescriptionModalWindow));
 
         return errorDescriptionModalWindow.getText();
+    }
+
+    public WebElement[] selectAllTriggers() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
+       WebElement trigger1 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Build after other projects are built']")));
+       WebElement trigger2 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Build periodically']")));
+       WebElement trigger3 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='GitHub hook trigger for GITScm polling']")));
+       WebElement trigger4 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Poll SCM']")));
+       WebElement trigger5 = getWait10().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input/following-sibling::label[text()='Trigger builds remotely (e.g., from scripts)']")));
+
+       WebElement[] triggers = {trigger1, trigger2, trigger3, trigger4, trigger5};
+
+        for (WebElement trigger : triggers) {
+            js.executeScript("arguments[0].scrollIntoView({block: 'center'});", trigger);
+            getWait10().until(ExpectedConditions.elementToBeClickable(trigger));
+            trigger.click();
+        }
+        return triggers;
     }
 }

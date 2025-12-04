@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class FreestyleProjectConfigurationPage extends BasePage {
+public class FreestyleProjectConfigurationPage extends BaseSideMenuItemPage {
 
     @FindBy(name = "description")
     private WebElement descriptionInput;
@@ -59,8 +59,21 @@ public class FreestyleProjectConfigurationPage extends BasePage {
     @FindBy(xpath = "//div[@name ='parameterDefinitions']//div[@class= 'repeated-chunk__header']")
     private List<WebElement> selectedParameterList;
 
+    @FindBy(tagName = "h1")
+    private WebElement headingText;
+
     public FreestyleProjectConfigurationPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected void waitUntilPageLoad() {
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
+    }
+
+    @Override
+    public String getHeadingText() {
+        return headingText.getText();
     }
 
     public FreestyleProjectConfigurationPage setDescription(String description) {

@@ -12,9 +12,8 @@ import school.redrover.common.TestUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 
-public class FolderPage extends BasePage {
+public class FolderPage extends BaseProjectPage{
 
     @FindBy(xpath = "//a[contains(@href, '/configure')]")
     private WebElement configureMenuItem;
@@ -34,6 +33,8 @@ public class FolderPage extends BasePage {
     @FindBy(xpath = "//span[text()='Credentials']/ancestor::a")
     private WebElement credentialsMenuItem;
 
+    @FindBy(tagName = "h1")
+    private WebElement headingText;
 
     public FolderPage(WebDriver driver) {
         super(driver);
@@ -44,6 +45,10 @@ public class FolderPage extends BasePage {
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
         return new FolderConfigurationPage(getDriver());
+    }
+
+    public String getHeadingText() {
+        return headingText.getText();
     }
 
     public FolderInfo getInfo() {
@@ -274,33 +279,31 @@ public class FolderPage extends BasePage {
                 .isDisplayed();
     }
 
-    public <T extends BasePage> T openItemPage(String itemName, T itemPage) {
+    public <T extends BaseProjectPage> T openItemPage(String itemName, T itemPage) {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(itemName.trim())));
 
         return itemPage;
     }
 
-    public <T extends BasePage> T openSideMenuItemPage(WebElement menuItem, Supplier<T> resultPage) {
+    public <T extends BaseSideMenuItemPage> T openSideMenuItemPage(WebElement menuItem, T resultPage) {
         TestUtils.clickJS(getDriver(), menuItem);
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
-        return resultPage.get();
+        resultPage.waitUntilPageLoad();
+        return resultPage;
     }
 
-    public BasePage goToSideMenuItemPage(String menuItemName) {
+    public BaseSideMenuItemPage goToSideMenuItemPage(String menuItemName) {
         switch (menuItemName) {
-            case "Status":
-                return openSideMenuItemPage(statusMenuItem, () -> new FolderPage(getDriver()));
             case "Configure":
-                return openSideMenuItemPage(configureMenuItem, () -> new FolderConfigurationPage(getDriver()));
+                return openSideMenuItemPage(configureMenuItem, new FolderConfigurationPage(getDriver()));
             case "New Item":
-                return openSideMenuItemPage(newItemOfMenuItem, () -> new NewItemPage(getDriver()));
+                return openSideMenuItemPage(newItemOfMenuItem, new NewItemPage(getDriver()));
             case "Build History":
-                return openSideMenuItemPage(buildHistoryMenuItem, () -> new BuildHistoryOfJenkinsPage(getDriver()));
+                return openSideMenuItemPage(buildHistoryMenuItem, new BuildHistoryOfJenkinsPage(getDriver()));
             case "Rename":
-                return openSideMenuItemPage(renameMenuItem, () -> new FolderRenamingPage(getDriver()));
+                return openSideMenuItemPage(renameMenuItem, new FolderRenamingPage(getDriver()));
             case "Credentials":
-                return openSideMenuItemPage(credentialsMenuItem, () -> new FolderCredentialsPage(getDriver()));
+                return openSideMenuItemPage(credentialsMenuItem, new FolderCredentialsPage(getDriver()));
             default:
                 throw new IllegalArgumentException("Unknown item type: " + menuItemName);
         }

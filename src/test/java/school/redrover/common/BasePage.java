@@ -21,9 +21,6 @@ public abstract class BasePage extends BaseModel {
     @FindBy(xpath = "//a[@href='api/']")
     private WebElement restApiLink;
 
-    @FindBy(tagName = "h1")
-    private WebElement headingText;
-
     @FindBy(css = ".page-footer__links > button")
     private WebElement jenkinsVersion;
 
@@ -120,9 +117,5 @@ public abstract class BasePage extends BaseModel {
     public String getLogoText() {
         return getWait5().until(ExpectedConditions.
                 visibilityOfElementLocated(By.className("app-jenkins-logo"))).getText();
-    }
-
-    public String getHeadingText() {
-        return headingText.getText();
     }
 }
