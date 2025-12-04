@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import school.redrover.common.BasePage;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class GlobalCredentialsPage extends BasePage {
 
@@ -21,5 +22,11 @@ public class GlobalCredentialsPage extends BasePage {
 
     public List<WebElement> getGlobalCredentialsList() {
         return getDriver().findElements(By.xpath("//table[contains(@class,'jenkins-table')]//tbody//tr/td[3]"));
+    }
+
+    public GlobalCredentialsPage getGlobalCredentialsList(Consumer<List<WebElement>> listConsumer) {
+        listConsumer.accept(getGlobalCredentialsList());
+
+        return this;
     }
 }

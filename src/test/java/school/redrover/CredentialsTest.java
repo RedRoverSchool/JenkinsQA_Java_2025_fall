@@ -7,6 +7,7 @@ import school.redrover.common.BaseTest;
 import school.redrover.page.HomePage;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CredentialsTest extends BaseTest {
 
@@ -17,15 +18,12 @@ public class CredentialsTest extends BaseTest {
         final String description = "Test Create Username with password kind";
         final String expectedName = String.format("%s/****** (%s)", username, description);
 
-        List<WebElement> credentialsListBeforeCreateNewOne = new HomePage(getDriver())
+        AtomicReference<List<WebElement>> credentialsListBeforeCreateNewOne = new AtomicReference<>();
+        List<WebElement> credentialsListAfterCreateNewOne = new HomePage(getDriver())
                 .clickManageJenkinsGear()
                 .clickCredentialsLink()
                 .clickGlobalLink()
-                .getGlobalCredentialsList();
-
-        int beforeCount = credentialsListBeforeCreateNewOne.size();
-
-        List<WebElement> credentialsListAfterCreateNewOne = new HomePage(getDriver())
+                .getGlobalCredentialsList(credentialsListBeforeCreateNewOne::set)
                 .clickManageJenkinsGear()
                 .clickCredentialsLink()
                 .clickGlobalLink()
@@ -36,16 +34,16 @@ public class CredentialsTest extends BaseTest {
                 .clickCreateButton()
                 .getGlobalCredentialsList();
 
-        Assert.assertEquals(
-                credentialsListAfterCreateNewOne.size(),
-                beforeCount + 1,
-                "Количество credentials должно увеличиться на 1");
-
         boolean actualName = credentialsListAfterCreateNewOne
                 .stream()
                 .map(WebElement::getText)
                 .map(String::trim)
                 .anyMatch(text -> text.equals(expectedName));
+
+        Assert.assertEquals(
+                credentialsListAfterCreateNewOne.size(),
+                credentialsListBeforeCreateNewOne.get().size() + 1,
+                "Количество credentials должно увеличиться на 1");
 
         Assert.assertTrue(
                 actualName,
