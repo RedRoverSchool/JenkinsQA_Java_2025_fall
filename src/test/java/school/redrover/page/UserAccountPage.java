@@ -19,7 +19,7 @@ public class UserAccountPage extends BasePage {
     private WebElement applyButton;
 
     @FindBy(name = "Submit")
-    private WebElement createButton;
+    private WebElement saveButton;
 
     /***
      * WebElements from different Pages to wait before Page return
@@ -41,7 +41,7 @@ public class UserAccountPage extends BasePage {
     }
 
     public UserStatusPage clickSave() {
-        createButton.click();
+        saveButton.click();
 
         getWait5().until(ExpectedConditions.visibilityOf(userStatusPageEditDescriptionButton));
 
