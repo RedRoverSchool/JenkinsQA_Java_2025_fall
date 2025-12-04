@@ -16,6 +16,9 @@ public class OrganizationFolderConfigurationPage extends BaseSideMenuItemPage {
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
+    @FindBy(xpath = "//span[text()='Delete Organization Folder']/ancestor::a")
+    private WebElement deleteMenuItem;
+
     public OrganizationFolderConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -32,7 +35,7 @@ public class OrganizationFolderConfigurationPage extends BaseSideMenuItemPage {
 
     public OrganizationFolderPage clickSave() {
         submitButton.click();
-        getWait5().until(ExpectedConditions.invisibilityOf(submitButton));
+        getWait10().until(ExpectedConditions.visibilityOf(deleteMenuItem));
 
         return new OrganizationFolderPage(getDriver());
     }
