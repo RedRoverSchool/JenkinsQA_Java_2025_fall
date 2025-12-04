@@ -69,11 +69,18 @@ public class HomePage extends BasePage {
         return new FolderPage(getDriver());
     }
 
-    public <T extends BasePage> T openProject(String jobName, Supplier<T> resultPage) {
+    public <T extends BaseProjectPage> T openProject(String jobName, T resultPage) {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(jobName.trim())));
 
+        resultPage.waitUntilPageLoad();
+        return resultPage;
+    }
+
+    public <T extends BasePage> T openPage(String pageName, T resultPage) {
+        TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(pageName.trim())));
+
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
-        return resultPage.get();
+        return resultPage;
     }
 
     public NewItemPage clickSidebarNewItem() {

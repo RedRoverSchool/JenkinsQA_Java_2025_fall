@@ -12,20 +12,36 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//a[contains(@href, '/configure')]")
     private WebElement configureMenuItem;
 
+    @FindBy(xpath = "//span[text()='Delete Project']/ancestor::a")
+    private WebElement deleteMenuItem;
+
     @FindBy(tagName = "h1")
     private WebElement headingText;
 
     @FindBy(id = "description-content")
     private WebElement descriptionText;
 
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
+
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    public String getHeadingText() {
+        return headingText.getText();
+    }
+
+    @Override
+    protected void waitUntilPageLoad() {
+        getWait10().until(ExpectedConditions.visibilityOf(deleteMenuItem));
     }
 
     public FreestyleProjectConfigurationPage clickConfigureLinkInSideMenu() {
         configureMenuItem.click();
 
-        getWait2().until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
+        getWait10().until(ExpectedConditions.visibilityOf(submitButton));
         return new FreestyleProjectConfigurationPage(getDriver());
     }
 
@@ -33,10 +49,6 @@ public class FreestyleProjectPage extends BaseProjectPage {
         getDriver().findElement(By.xpath("//div[@id='tasks']/div[4]/span/a")).click();
 
         return this;
-    }
-
-    public String getHeadingText() {
-        return headingText.getText();
     }
 
     public String getDescription() {

@@ -41,7 +41,7 @@ public class NewItemPage extends BaseSideMenuItemPage {
 
     @Override
     protected void waitUntilPageLoad() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+        getWait10().until(ExpectedConditions.visibilityOf(nameField));
     }
 
     @Override
@@ -207,13 +207,13 @@ public class NewItemPage extends BaseSideMenuItemPage {
         return getDriver().findElement(By.id("name")).getAttribute("data-valid");
     }
 
-    public MultiConfigurationProjectPage selectMultiConfigurationProjectAndSubmit() {
+    public MultiConfigurationProjectConfigurationPage selectMultiConfigurationProjectAndSubmit() {
         multiConfigurationProject.click();
         getWait2().until(ExpectedConditions.elementToBeClickable(okButton)).click();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("general")));
 
-        return new MultiConfigurationProjectPage(getDriver());
+        return new MultiConfigurationProjectConfigurationPage(getDriver());
     }
 
     public NewItemPage clickOkButton() {

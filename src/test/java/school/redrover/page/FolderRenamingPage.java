@@ -11,13 +11,19 @@ public class FolderRenamingPage extends BaseSideMenuItemPage {
     @FindBy(tagName = "h1")
     private WebElement headingText;
 
+    @FindBy(name = "newName")
+    private WebElement newNameField;
+
+    @FindBy(name = "Submit")
+    private WebElement renameButton;
+
     public FolderRenamingPage(WebDriver driver) {
         super(driver);
     }
 
     @Override
     protected void waitUntilPageLoad() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+        getWait10().until(ExpectedConditions.visibilityOf(renameButton));
     }
 
     @Override
@@ -26,19 +32,19 @@ public class FolderRenamingPage extends BaseSideMenuItemPage {
     }
 
     public FolderRenamingPage sendNewName (String name) {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName"))).sendKeys(name);
+        getWait2().until(ExpectedConditions.visibilityOf(newNameField)).sendKeys(name);
 
         return this;
     }
 
     public FolderPage renameButtonClick () {
-        getDriver().findElement(By.name("Submit")).click();
+        renameButton.click();
 
         return new FolderPage(getDriver());
     }
 
     public FolderRenamingPage clearName () {
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.name("newName"))).clear();
+        getWait2().until(ExpectedConditions.visibilityOf(newNameField)).clear();
 
         return this;
     }

@@ -55,7 +55,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreate")
     public void testScheduleBuild() {
         String actualNotificationBuildScheduled = new HomePage(getDriver())
-                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
+                .openProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickBuildNow()
                 .getNotificationBuildScheduled();
 
@@ -65,7 +65,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testScheduleBuild")
     public void testAddDescription() {
         String actualDescriptionText = new HomePage(getDriver())
-                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
+                .openProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .setDescription(PROJECT_DESCRIPTION_EXPECTED)
                 .clickSave()
@@ -89,7 +89,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testDisableProjectViaConfigureDropdownMenu")
     public void testEnableProjectViaMainMenuConfigure() {
         boolean visibleBuildButtonForEnabledProject = new HomePage(getDriver())
-                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
+                .openProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .clickEnableDisableProject()
                 .clickSave()
@@ -103,7 +103,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testBuildStepsFilterNames() {
 
         FreestyleProjectConfigurationPage configPage = new HomePage(getDriver())
-                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
+                .openProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .clickBuildStepMenuOption();
 
@@ -168,7 +168,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .sendName(PROJECT_NAME)
                 .selectFreestyleProjectAndSubmit()
                 .gotoHomePage()
-                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
+                .openProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .getSCMTitleText();
 
@@ -216,7 +216,7 @@ public class FreestyleProjectTest extends BaseTest {
         final String expectedDescription = "Set up automated actions that start your build based on specific events, like code changes or scheduled times.";
 
         String triggersDescription = new HomePage(getDriver())
-                .openProject(PROJECT_NAME, () -> new FreestyleProjectPage(getDriver()))
+                .openProject(PROJECT_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .clickTriggersLinkInSideMenu()
                 .getTriggersDescriptionText();

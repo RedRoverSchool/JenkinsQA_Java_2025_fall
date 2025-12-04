@@ -13,13 +13,16 @@ public class OrganizationFolderConfigurationPage extends BaseSideMenuItemPage {
     @FindBy(tagName = "h1")
     private WebElement headingText;
 
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
+
     public OrganizationFolderConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
     @Override
     protected void waitUntilPageLoad() {
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
+        getWait5().until(ExpectedConditions.visibilityOf(submitButton));
     }
 
     @Override
@@ -28,9 +31,8 @@ public class OrganizationFolderConfigurationPage extends BaseSideMenuItemPage {
     }
 
     public OrganizationFolderPage clickSave() {
-        WebElement button = getDriver().findElement(By.name("Submit"));
-        button.click();
-        getWait5().until(ExpectedConditions.invisibilityOf(button));
+        submitButton.click();
+        getWait5().until(ExpectedConditions.invisibilityOf(submitButton));
 
         return new OrganizationFolderPage(getDriver());
     }

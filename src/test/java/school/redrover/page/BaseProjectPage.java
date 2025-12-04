@@ -12,4 +12,6 @@ public abstract class BaseProjectPage extends BasePage {
     public abstract <P extends BaseSideMenuItemPage> P clickConfigureLinkInSideMenu();
 
     public abstract String getHeadingText();
+
+    protected abstract void waitUntilPageLoad();
 }

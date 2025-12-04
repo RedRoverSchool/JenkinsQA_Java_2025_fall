@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
 import java.util.ArrayList;
@@ -24,6 +23,9 @@ public class FolderPage extends BaseProjectPage{
     @FindBy(xpath = "//a[contains(@href, '/newJob')]")
     private WebElement newItemOfMenuItem;
 
+    @FindBy(xpath = "//span[text()='Delete Folder']/ancestor::a")
+    private WebElement deleteMenuItem;
+
     @FindBy(xpath = "//span[text()='Build History']/ancestor::a")
     private WebElement buildHistoryMenuItem;
 
@@ -36,19 +38,28 @@ public class FolderPage extends BaseProjectPage{
     @FindBy(tagName = "h1")
     private WebElement headingText;
 
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
+
     public FolderPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    public String getHeadingText() {
+        return headingText.getText();
+    }
+
+    @Override
+    protected void waitUntilPageLoad() {
+        getWait10().until(ExpectedConditions.visibilityOf(deleteMenuItem));
     }
 
     public FolderConfigurationPage clickConfigureLinkInSideMenu() {
         configureMenuItem.click();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+        getWait10().until(ExpectedConditions.visibilityOf(submitButton));
         return new FolderConfigurationPage(getDriver());
-    }
-
-    public String getHeadingText() {
-        return headingText.getText();
     }
 
     public FolderInfo getInfo() {
@@ -279,7 +290,7 @@ public class FolderPage extends BaseProjectPage{
                 .isDisplayed();
     }
 
-    public <T extends BaseProjectPage> T openItemPage(String itemName, T itemPage) {
+    public <T extends BaseProjectPage> T openSubItemPage(String itemName, T itemPage) {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(itemName.trim())));
 
         return itemPage;

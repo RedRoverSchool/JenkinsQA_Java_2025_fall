@@ -11,13 +11,16 @@ public class FolderCredentialsPage extends BaseSideMenuItemPage {
     @FindBy(tagName = "h1")
     private WebElement headingText;
 
+    @FindBy(xpath = "//h1[contains(text(), 'Credentials')]")
+    private WebElement credentialsTitle;
+
     public FolderCredentialsPage(WebDriver driver) {
         super(driver);
     }
 
     @Override
     protected void waitUntilPageLoad() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
+        getWait10().until(ExpectedConditions.visibilityOf(credentialsTitle));
     }
 
     @Override
