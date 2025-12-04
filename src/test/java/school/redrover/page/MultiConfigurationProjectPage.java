@@ -26,6 +26,9 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
     @FindBy(css = "a[href$='/confirm-rename']")
     private WebElement sidebarRenameLink;
 
+    @FindBy(xpath = "//span[text()='Delete Multi-configuration project']/ancestor::a")
+    private WebElement deleteMenuItem;
+
     @FindBy(xpath = "//*[contains(@class, 'hoverable-children-model-link')]")
     private WebElement hoverElement;
 
@@ -34,12 +37,6 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
 
     @FindBy(name = "newName")
     private WebElement nameField;
-
-    @FindBy(tagName = "h1")
-    private WebElement pageHeading;
-
-    @FindBy(id = "configuration-matrix")
-    private WebElement configurationMatrix;
 
     @FindBy(tagName = "h1")
     private WebElement headingText;
@@ -53,19 +50,17 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
         return headingText.getText();
     }
 
+    @Override
+    protected void waitUntilPageLoad() {
+        getWait10().until(ExpectedConditions.visibilityOf(deleteMenuItem));
+    }
+
     public MultiConfigurationProjectConfigurationPage clickConfigureLinkInSideMenu() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//a[contains(@href, '/configure')]"))).click();
 
+        getWait10().until(ExpectedConditions.visibilityOf(submitButton));
         return new MultiConfigurationProjectConfigurationPage(getDriver());
-    }
-
-    public MultiConfigurationProjectPage clickSubmit() {
-        submitButton.click();
-        getWait5().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                By.className("permalinks-header")));
-
-        return this;
     }
 
     public MultiConfigurationProjectPage clearDescriptionField() {
@@ -112,16 +107,8 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
         return this;
     }
 
-    public String getHeading() {
-        return pageHeading.getText();
-    }
-
     public String getBreadcrumbItem() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//span[contains(text(),'Configuration')]"))).getText();
-    }
-
-    public String getConfigurationMatrixText() {
-        return getWait5().until(ExpectedConditions.visibilityOf(configurationMatrix)).getText().trim();
     }
 }

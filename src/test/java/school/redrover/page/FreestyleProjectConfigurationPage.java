@@ -62,13 +62,16 @@ public class FreestyleProjectConfigurationPage extends BaseSideMenuItemPage {
     @FindBy(tagName = "h1")
     private WebElement headingText;
 
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
+
     public FreestyleProjectConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
     @Override
     protected void waitUntilPageLoad() {
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
+        getWait5().until(ExpectedConditions.visibilityOf(submitButton));
     }
 
     @Override
@@ -117,7 +120,7 @@ public class FreestyleProjectConfigurationPage extends BaseSideMenuItemPage {
     }
 
     public FreestyleProjectPage clickSave() {
-        getDriver().findElement(By.name("Submit")).click();
+        submitButton.click();
 
         getWait5().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
         return new FreestyleProjectPage(getDriver());

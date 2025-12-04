@@ -30,7 +30,7 @@ public class PipelinePage extends BaseProjectPage {
     @FindBy(xpath = "//a[@data-build-success='Build scheduled']")
     private WebElement buildNow;
 
-    @FindBy(className = "confirmation-link")
+    @FindBy(xpath = "//span[text()='Delete Pipeline']/ancestor::a")
     private WebElement deletePipeline;
 
     @FindBy(xpath = "//a[@href='/job/PipelineName/pipeline-syntax']")
@@ -38,6 +38,9 @@ public class PipelinePage extends BaseProjectPage {
 
     @FindBy(tagName = "h1")
     private WebElement headingText;
+
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
 
     public PipelinePage(WebDriver driver) {
         super(driver);
@@ -48,10 +51,15 @@ public class PipelinePage extends BaseProjectPage {
         return headingText.getText();
     }
 
+    @Override
+    protected void waitUntilPageLoad() {
+        getWait10().until(ExpectedConditions.visibilityOf(deletePipeline));
+    }
+
     public PipelineConfigurationPage clickConfigureLinkInSideMenu() {
         configureMenuItem.click();
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(By.name("Submit")));
+        getWait10().until(ExpectedConditions.visibilityOf(submitButton));
         return new PipelineConfigurationPage(getDriver());
     }
 

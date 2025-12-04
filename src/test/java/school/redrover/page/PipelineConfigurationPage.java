@@ -71,7 +71,7 @@ public class PipelineConfigurationPage extends BaseSideMenuItemPage {
 
     @Override
     protected void waitUntilPageLoad() {
-        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
+        getWait5().until(ExpectedConditions.visibilityOf(submitButton));
     }
 
     @Override

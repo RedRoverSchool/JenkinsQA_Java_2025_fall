@@ -30,6 +30,12 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
     @FindBy(tagName = "h1")
     private WebElement headingText;
 
+    @FindBy(xpath = "//span[text()='Delete Multibranch Pipeline']/ancestor::a")
+    private WebElement deleteMenuItem;
+
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
+
     public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -39,10 +45,16 @@ public class MultibranchPipelineProjectPage extends BaseProjectPage {
         return headingText.getText();
     }
 
+    @Override
+    protected void waitUntilPageLoad() {
+        getWait10().until(ExpectedConditions.visibilityOf(deleteMenuItem));
+    }
+
     public MultibranchPipelineConfigurationPage clickConfigureLinkInSideMenu() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='./configure']")))
                 .click();
 
+        getWait10().until(ExpectedConditions.visibilityOf(submitButton));
         return new MultibranchPipelineConfigurationPage(getDriver());
     }
 

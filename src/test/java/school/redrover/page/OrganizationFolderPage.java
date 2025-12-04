@@ -12,6 +12,12 @@ public class OrganizationFolderPage extends BaseProjectPage {
     @FindBy(tagName = "h1")
     private WebElement headingText;
 
+    @FindBy(xpath = "//span[text()='Delete Organization Folder']/ancestor::a")
+    private WebElement deleteMenuItem;
+
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
+
     public OrganizationFolderPage(WebDriver driver) {
         super(driver);
     }
@@ -19,6 +25,11 @@ public class OrganizationFolderPage extends BaseProjectPage {
     @Override
     public String getHeadingText() {
         return headingText.getText();
+    }
+
+    @Override
+    protected void waitUntilPageLoad() {
+        getWait10().until(ExpectedConditions.visibilityOf(deleteMenuItem));
     }
 
     public String getDisplayNameOrganizationFolder() {
@@ -47,6 +58,7 @@ public class OrganizationFolderPage extends BaseProjectPage {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//a[contains(@href, '/configure')]"))).click();
 
+        getWait10().until(ExpectedConditions.visibilityOf(submitButton));
         return new OrganizationFolderConfigurationPage(getDriver());
     }
 }

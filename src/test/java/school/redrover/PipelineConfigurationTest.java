@@ -30,7 +30,7 @@ public class PipelineConfigurationTest extends BaseTest {
     public void testDisableProject() {
 
         String toggleLabelText = new HomePage(getDriver())
-                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .openProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .clickToggle()
                 .getToggleUncheckedLabelText();
@@ -42,7 +42,7 @@ public class PipelineConfigurationTest extends BaseTest {
     public void testActivityStatusProject() {
 
         String actualProjectStatus = new HomePage(getDriver())
-                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .openProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .clickToggle()
                 .clickSubmitButton()
@@ -83,7 +83,7 @@ public class PipelineConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testNavigationToAdvancedByScrollingDown")
     public void testNavigationToAdvancedBySideMenu() {
         String actualAdvancedSectionTitle = new HomePage(getDriver())
-                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .openProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .clickAdvancedLinkInSideMenu()
                 .getAdvancedTitleText();
@@ -94,7 +94,7 @@ public class PipelineConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testNavigationToAdvancedByScrollingDown")
     public void testAdvancedSectionQuietPeriodElements() {
         String actualQuietPeriodLabel = new HomePage(getDriver())
-                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .openProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .getQuietPeriodLabelText();
@@ -107,7 +107,7 @@ public class PipelineConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testNavigationToAdvancedByScrollingDown")
     public void testAdvancedSectionDisplayNameFieldElements() {
         String actualDisplayNameLabel = new HomePage(getDriver())
-                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .openProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .getDisplayNameLabelText();
@@ -120,7 +120,7 @@ public class PipelineConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testAdvancedSectionQuietPeriodElements")
     public void testAdvancedSectionQuietPeriodElementsAfterSelecting() {
         String actualNumberOfSecondsLabel = new HomePage(getDriver())
-                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .openProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .clickQuitePeriod()
@@ -164,7 +164,7 @@ public class PipelineConfigurationTest extends BaseTest {
                 "Help for feature: Display Name");
 
         List<String> actualTooltipList = new HomePage(getDriver())
-                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .openProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .getTooltipList();
@@ -175,7 +175,7 @@ public class PipelineConfigurationTest extends BaseTest {
     @Test(dependsOnMethods = "testAdvancedSectionVerifyTooltips")
     public void testAdvancedSectionHelpAreaIsDisplayed() {
         boolean isHelpElementDisplayed = new HomePage(getDriver())
-                .openProject(PIPELINE_NAME, () -> new PipelinePage(getDriver()))
+                .openProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickConfigureLinkInSideMenu()
                 .clickAdvancedButton()
                 .isHelpElementDisplayed();

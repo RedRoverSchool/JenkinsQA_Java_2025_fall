@@ -20,7 +20,7 @@ public class BreadcrumbsDropDownTest extends BaseTest {
                 .sendName(PARENT_FOLDER)
                 .selectFolderAndSubmit()
                 .gotoHomePage()
-                .openProject(PARENT_FOLDER, () -> new FolderPage(getDriver()))
+                .openProject(PARENT_FOLDER, new FolderPage(getDriver()))
                 .clickNewItem()
                 .sendName(CHILD_FOLDER)
                 .selectFolderAndSubmit()
@@ -34,7 +34,7 @@ public class BreadcrumbsDropDownTest extends BaseTest {
     @Test (dependsOnMethods = {"testDisplayBreadcrumbsDropDownMenu"})
     public void clickableBreadcrumbsDropDownMenu() {
         String title = new HomePage(getDriver())
-                .openProject(PARENT_FOLDER, () -> new FolderPage(getDriver()))
+                .openProject(PARENT_FOLDER, new FolderPage(getDriver()))
                 .openFolderPage(CHILD_FOLDER)
                 .clickBreadcrumbsItem(PARENT_FOLDER)
                 .getInfo()

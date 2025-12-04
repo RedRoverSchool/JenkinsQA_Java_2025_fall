@@ -46,7 +46,7 @@ public class DashboardTest extends BaseTest {
 
     @Test(dataProvider = "Links", dataProviderClass = TestDataProvider.class)
     public void testContentBlockLinks(String linkText, String expectedUrlEndpoint, Page page) {
-        BasePage resultPage = new HomePage(getDriver()).openProject(linkText, () -> page.createPage(getDriver()));
+        BasePage resultPage = new HomePage(getDriver()).openPage(linkText, page.createPage(getDriver()));
 
         Assert.assertTrue(Objects.requireNonNull(resultPage.getCurrentUrl()).contains(expectedUrlEndpoint));
     }
@@ -207,7 +207,7 @@ public class DashboardTest extends BaseTest {
     @Test
     public void testSetUpAgent() {
         NewNodePage newNodePage = new HomePage(getDriver())
-                .openProject("Set up an agent", () -> new NewNodePage(getDriver()));
+                .openPage("Set up an agent", new NewNodePage(getDriver()));
 
         Assert.assertEquals(newNodePage.getHeadingText(), "New node");
         Assert.assertTrue(newNodePage.isFormDisplayed(), "New Node form is not visible");
@@ -216,7 +216,7 @@ public class DashboardTest extends BaseTest {
     @Test
     public void testConfigureCloudIntegration() {
         CloudsPage cloudsPage = new HomePage(getDriver())
-                .openProject("Configure a cloud", () -> new CloudsPage(getDriver()));
+                .openPage("Configure a cloud", new CloudsPage(getDriver()));
 
         Assert.assertEquals(cloudsPage.getHeadingText(), "Clouds");
         Assert.assertEquals(cloudsPage.getParagraphText(), "There is no plugin installed that supports clouds.");
