@@ -113,7 +113,7 @@ public abstract class BasePage extends BaseModel {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(userAccountIcon).perform();
 
-        return getWait5().until(ExpectedConditions.
+        return getWait10().until(ExpectedConditions.
                 visibilityOfElementLocated(By.cssSelector(".jenkins-dropdown__item:first-child"))).getText();
 
     }
