@@ -59,7 +59,7 @@ public class UserStatusPage extends BasePage {
         descriptionTextBox.sendKeys(text);
         saveButton.click();
 
-        getWait10().until(ExpectedConditions.visibilityOf(description));
+        getWait2().until(ExpectedConditions.invisibilityOf(saveButton));
 
         return this;
     }

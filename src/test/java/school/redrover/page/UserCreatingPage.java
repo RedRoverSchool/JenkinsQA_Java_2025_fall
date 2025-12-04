@@ -3,6 +3,7 @@ package school.redrover.page;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
@@ -36,8 +37,8 @@ public class UserCreatingPage extends BasePage {
     @FindBy(xpath = "//h1[contains(text(),'Users')]")
     private WebElement usersPageHeader;
 
-    @FindBy(xpath = "//h1[text()='Create User']")
-    private WebElement userCreatingPageHeader;
+    @FindBy(className = "error")
+    private WebElement userCreatingPageError;
 
     public UserCreatingPage(WebDriver driver) {
         super(driver);
@@ -69,6 +70,7 @@ public class UserCreatingPage extends BasePage {
 
     public UsersPage clickCreateAndGoToUsersPage() {
         createButton.click();
+
         getWait5().until(ExpectedConditions.visibilityOf(usersPageHeader));
 
         return new UsersPage(getDriver());
@@ -76,7 +78,7 @@ public class UserCreatingPage extends BasePage {
 
     public UserCreatingPage clickCreateAndKeepUserCreatingPage() {
         createButton.click();
-        getWait5().until(ExpectedConditions.visibilityOf(userCreatingPageHeader));
+        getWait5().until(ExpectedConditions.visibilityOf(userCreatingPageError));
 
         return this;
     }
