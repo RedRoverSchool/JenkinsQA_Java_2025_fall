@@ -329,4 +329,13 @@ public class HomePage extends BasePage {
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("(//a[@title='Schedule a Build for %s'])[1]".formatted(projectName)))).isDisplayed();
     }
+
+    public boolean isIconTableVisible (String projectName) {
+        return getWait5().until((ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#job_%s > td:nth-child(1)".formatted(projectName))))).isDisplayed();
+    }
+
+    public JobPage clickJob (String projectName) {
+        getDriver().findElement(By.cssSelector("#job_%s > td:nth-child(3) > a".formatted(projectName))).click();
+        return new JobPage(getDriver());
+    }
 }
