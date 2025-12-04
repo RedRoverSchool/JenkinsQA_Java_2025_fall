@@ -53,7 +53,7 @@ public class ConfigureAppearanceTest extends BaseTest {
     public void changeThemeLight() {
         String finalTheme = "Saved";
         String checkingLight = new HomePage(getDriver())
-                .clickGearManageJenkinsButton()
+                .clickManageJenkinsGear()
                 .clickAppearanceLink()
                 .clickLightTheme()
                 .checkAllowTheme()
