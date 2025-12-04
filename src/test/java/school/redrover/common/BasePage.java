@@ -110,12 +110,13 @@ public abstract class BasePage extends BaseModel {
     }
 
     public String getUserNameFromDropDownMenu() {
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(userAccountIcon).perform();
+        WebElement userIcon = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
+        TestUtils.mouseEnterJS(getDriver(), userIcon);
 
-        return getWait10().until(ExpectedConditions.
-                visibilityOfElementLocated(By.cssSelector(".jenkins-dropdown__item:first-child"))).getText();
+        WebElement userInDropDown = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .cssSelector(".jenkins-dropdown__item:first-child")));
 
+        return TestUtils.getTextJS(getDriver(), userInDropDown);
     }
 
     public String getLogoText() {
