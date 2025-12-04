@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class FolderPage extends BasePage{
+public class FolderPage extends BaseProjectPage{
 
     @FindBy(xpath = "//a[contains(@href, '/configure')]")
     private WebElement configureMenuItem;
@@ -279,7 +279,7 @@ public class FolderPage extends BasePage{
                 .isDisplayed();
     }
 
-    public <T extends BasePage> T openItemPage(String itemName, T itemPage) {
+    public <T extends BaseProjectPage> T openItemPage(String itemName, T itemPage) {
         TestUtils.clickJS(getDriver(), By.xpath("//span[text()='%s']".formatted(itemName.trim())));
 
         return itemPage;

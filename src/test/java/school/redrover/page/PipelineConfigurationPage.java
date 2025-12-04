@@ -12,7 +12,7 @@ import school.redrover.common.BasePage;
 
 import java.util.List;
 
-public class PipelineConfigurationPage extends BasePage {
+public class PipelineConfigurationPage extends BaseSideMenuItemPage {
 
     @FindBy(id = "advanced")
     private WebElement advancedTitle;
@@ -67,6 +67,17 @@ public class PipelineConfigurationPage extends BasePage {
 
     public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected void waitUntilPageLoad() {
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.name("Submit")));
+    }
+
+    @Override
+    public String getHeadingText() {
+        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.
+                tagName("h1"))).getText().trim();
     }
 
     public PipelinePage clickSubmitButton() {
@@ -203,11 +214,6 @@ public class PipelineConfigurationPage extends BasePage {
     public String getBreadcrumbItem() {
         return getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
                 .xpath("//span[contains(text(),'Configuration')]"))).getText();
-    }
-
-    public String getHeadingText() {
-        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.
-                tagName("h1"))).getText().trim();
     }
 
     public PipelineConfigurationPage clickTriggersSectionButton() {

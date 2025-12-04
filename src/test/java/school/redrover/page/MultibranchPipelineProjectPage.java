@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.BasePage;
 
-public class MultibranchPipelineProjectPage extends BasePage {
+public class MultibranchPipelineProjectPage extends BaseProjectPage {
 
     @FindBy(id = "view-message")
     private WebElement description;
@@ -27,8 +27,16 @@ public class MultibranchPipelineProjectPage extends BasePage {
     @FindBy(id = "disabled-message")
     private WebElement disabledMessage;
 
+    @FindBy(tagName = "h1")
+    private WebElement headingText;
+
     public MultibranchPipelineProjectPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    public String getHeadingText() {
+        return headingText.getText();
     }
 
     public MultibranchPipelineConfigurationPage clickConfigureLinkInSideMenu() {

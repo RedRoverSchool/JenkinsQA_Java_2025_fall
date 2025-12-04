@@ -5,6 +5,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
 import school.redrover.page.*;
+import school.redrover.testdata.ProjectPage;
+import school.redrover.testdata.TestDataProvider;
 
 public class FolderManagementTest extends BaseTest {
 
@@ -79,58 +81,21 @@ public class FolderManagementTest extends BaseTest {
         Assert.assertEquals(actualHeadingText, "Configure");
     }
 
-    @Test(dataProvider = "itemsData")
-    public void testNavigateToConfigurationViaSideMenuForEachJob(String itemName, String itemType) {
-        final String expectedBreadcrumbItem = "Configuration";
-
+    @Test(dataProvider = "ConfigurationMenuItem", dataProviderClass = TestDataProvider.class)
+    public void testNavigateToConfigurationViaSideMenuForEachJob(String itemName, String itemType, String expectedHeading, ProjectPage page) {
         createFolder();
 
-        new HomePage(getDriver())
+        String actualHeadingText = new HomePage(getDriver())
                 .clickFolder(FOLDER_NAME)
                 .clickSidebarNewItem()
                 .sendName(itemName)
                 .selectItemTypeAndSubmitAndGoHome(itemType)
-                .clickFolder(FOLDER_NAME);
+                .clickFolder(FOLDER_NAME)
+                .openItemPage(itemName, page.createProjectPage(getDriver()))
+                .clickConfigureLinkInSideMenu()
+                .getHeadingText();
 
-        String actualBreadcrumbItem = getBreadcrumbItem(itemName, itemType);
-        Assert.assertEquals(actualBreadcrumbItem, expectedBreadcrumbItem);
-    }
-
-    private String getBreadcrumbItem(String itemName, String itemType) {
-        switch (itemType) {
-            case "Freestyle project":
-                return new FolderPage(getDriver())
-                        .openItemPage(itemName, new FreestyleProjectPage(getDriver()))
-                        .clickConfigureLinkInSideMenu()
-                        .getBreadcrumbItem();
-            case "Pipeline":
-                return new FolderPage(getDriver())
-                        .openItemPage(itemName, new PipelinePage(getDriver()))
-                        .clickConfigureLinkInSideMenu()
-                        .getBreadcrumbItem();
-            case "Multi-configuration project":
-                return new FolderPage(getDriver())
-                        .openItemPage(itemName, new MultiConfigurationProjectPage(getDriver()))
-                        .clickConfigureLinkInSideMenu()
-                        .getBreadcrumbItem();
-            case "Folder":
-                return new FolderPage(getDriver())
-                        .openItemPage(itemName, new FolderPage(getDriver()))
-                        .clickConfigureLinkInSideMenu()
-                        .getBreadcrumbItem();
-            case "Multibranch Pipeline":
-                return new FolderPage(getDriver())
-                        .openItemPage(itemName, new MultibranchPipelineProjectPage(getDriver()))
-                        .clickConfigureLinkInSideMenu()
-                        .getBreadcrumbItem();
-            case "Organization Folder":
-                return new FolderPage(getDriver())
-                        .openItemPage(itemName, new OrganizationFolderPage(getDriver()))
-                        .clickConfigureLinkInSideMenu()
-                        .getBreadcrumbItem();
-            default:
-                throw new IllegalArgumentException("Unknown item type: " + itemType);
-        }
+        Assert.assertEquals(actualHeadingText, expectedHeading);
     }
 
     @Test(dataProvider = "sideMenuItemsData")
