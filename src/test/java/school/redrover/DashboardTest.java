@@ -20,11 +20,19 @@ public class DashboardTest extends BaseTest {
 
     private static final List<String> CREATED_JOBS_NAME = List.of(
             "FreestyleName1",
-            "FreestyleName2",
-            "FreestyleName3",
-            "FreestyleName4",
-            "FreestyleName5"
+            "FreestyleName2"
     );
+
+    @DataProvider
+    public Object[][] projectsName() {
+        return new String[][]{
+                {"FreestyleName1"},
+                {"FreestyleName2"},
+                {"FreestyleName3"},
+                {"FreestyleName4"},
+                {"FreestyleName5"}
+        };
+    }
 
     private static final String PIPELINE_NAME = "Pipeline_01";
 
@@ -69,20 +77,8 @@ public class DashboardTest extends BaseTest {
         Assert.assertTrue(resultPage.getCurrentUrl().contains("architecting-for-scale"));
     }
 
-    @DataProvider
-    public Object[][] projectsName() {
-        return new String[][]{
-                {"FreestyleName1"},
-                {"FreestyleName2"},
-                {"FreestyleName3"},
-                {"FreestyleName4"},
-                {"FreestyleName5"}
-        };
-    }
-
     @Test(dataProvider = "projectsName")
     public void testCheckCreatedJobsOnDashboard(String projectName) {
-
         String actualJobs = new HomePage(getDriver())
                 .clickNewItemOnLeftMenu()
                 .sendName(projectName)
@@ -90,30 +86,13 @@ public class DashboardTest extends BaseTest {
                 .gotoHomePage()
                 .getProjectName();
 
-        Assert.assertFalse(actualJobs.isEmpty(), "Project's don't exists!");
         Assert.assertEquals(actualJobs, projectName, "Имена созданных проектов не совпадают!");
-
-        //        createProject(projectName);  // создал отдельно метод для создания проектоа
-//
-//        String actualJobs = new HomePage(getDriver()) // проверки
-//                .getProjectName();
-
-//        HomePage homePage = new HomePage(getDriver());
-//
-//        for (int i = 0; i < CREATED_JOBS_NAME.size(); i++) {
-//            homePage
-//                    .clickNewItemOnLeftMenu()
-//                    .sendName(CREATED_JOBS_NAME.get(i))
-//                    .selectFreestyleProjectAndSubmit()
-//                    .gotoHomePage();
-//        }
-//        List<String> actualJobs = homePage.getProjectList();
-//        Assert.assertFalse(actualJobs.isEmpty(), "Project's don't exists!");
-//        Assert.assertEquals(actualJobs, projectName, "Имена созданных проектов не совпадают!");
     }
 
-    @Test(dependsOnMethods = "testCheckCreatedJobsOnDashboard")
+    @Test
     public void testSearchCreatedJobs() {
+        createProject(CREATED_JOBS_NAME.get(0));
+
         String searchResults = new HomePage(getDriver())
                 .clickSearchButton()
                 .searchFor(CREATED_JOBS_NAME.get(0))
