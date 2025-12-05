@@ -65,9 +65,6 @@ public class FolderConfigurationPage extends BaseSideMenuItemPage {
     @FindBy(name ="_.description")
     private WebElement description;
 
-    @FindBy(tagName = "h1")
-    private WebElement headingText;
-
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
@@ -78,11 +75,6 @@ public class FolderConfigurationPage extends BaseSideMenuItemPage {
     @Override
     protected void waitUntilPageLoad() {
         getWait10().until(ExpectedConditions.visibilityOf(submitButton));
-    }
-
-    @Override
-    public String getHeadingText() {
-        return headingText.getText();
     }
 
     public FolderConfigurationPage setDisplayName(String name) {

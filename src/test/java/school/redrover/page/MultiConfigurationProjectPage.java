@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.common.BasePage;
 
 public class MultiConfigurationProjectPage extends BaseProjectPage {
 
@@ -38,16 +37,8 @@ public class MultiConfigurationProjectPage extends BaseProjectPage {
     @FindBy(name = "newName")
     private WebElement nameField;
 
-    @FindBy(tagName = "h1")
-    private WebElement headingText;
-
     public MultiConfigurationProjectPage(WebDriver driver) {
         super(driver);
-    }
-
-    @Override
-    public String getHeadingText() {
-        return headingText.getText();
     }
 
     @Override

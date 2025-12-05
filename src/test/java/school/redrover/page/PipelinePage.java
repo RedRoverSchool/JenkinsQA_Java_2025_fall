@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.common.BasePage;
 
 public class PipelinePage extends BaseProjectPage {
 
@@ -36,19 +35,11 @@ public class PipelinePage extends BaseProjectPage {
     @FindBy(xpath = "//a[@href='/job/PipelineName/pipeline-syntax']")
     private WebElement pipelineSyntax;
 
-    @FindBy(tagName = "h1")
-    private WebElement headingText;
-
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
     public PipelinePage(WebDriver driver) {
         super(driver);
-    }
-
-    @Override
-    public String getHeadingText() {
-        return headingText.getText();
     }
 
     @Override

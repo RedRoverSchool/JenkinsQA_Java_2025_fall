@@ -9,7 +9,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import school.redrover.common.BasePage;
 import school.redrover.common.TestUtils;
 
 import java.time.Duration;
@@ -59,9 +58,6 @@ public class FreestyleProjectConfigurationPage extends BaseSideMenuItemPage {
     @FindBy(xpath = "//div[@name ='parameterDefinitions']//div[@class= 'repeated-chunk__header']")
     private List<WebElement> selectedParameterList;
 
-    @FindBy(tagName = "h1")
-    private WebElement headingText;
-
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
@@ -72,11 +68,6 @@ public class FreestyleProjectConfigurationPage extends BaseSideMenuItemPage {
     @Override
     protected void waitUntilPageLoad() {
         getWait5().until(ExpectedConditions.visibilityOf(submitButton));
-    }
-
-    @Override
-    public String getHeadingText() {
-        return headingText.getText();
     }
 
     public FreestyleProjectConfigurationPage setDescription(String description) {

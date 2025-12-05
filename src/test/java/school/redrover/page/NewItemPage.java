@@ -32,9 +32,6 @@ public class NewItemPage extends BaseSideMenuItemPage {
     @FindBy(xpath = "//*[contains(@class, 'WorkflowJob')]")
     private WebElement pipelineTypeCheck;
 
-    @FindBy(tagName = "h1")
-    private WebElement headingText;
-
     public NewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -42,11 +39,6 @@ public class NewItemPage extends BaseSideMenuItemPage {
     @Override
     protected void waitUntilPageLoad() {
         getWait10().until(ExpectedConditions.visibilityOf(nameField));
-    }
-
-    @Override
-    public String getHeadingText() {
-        return headingText.getText();
     }
 
     public NewItemPage sendName(String name) {

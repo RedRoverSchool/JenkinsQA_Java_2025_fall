@@ -8,7 +8,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import school.redrover.common.BasePage;
 
 import java.util.List;
 
@@ -72,12 +71,6 @@ public class PipelineConfigurationPage extends BaseSideMenuItemPage {
     @Override
     protected void waitUntilPageLoad() {
         getWait5().until(ExpectedConditions.visibilityOf(submitButton));
-    }
-
-    @Override
-    public String getHeadingText() {
-        return getWait5().until(ExpectedConditions.presenceOfElementLocated(By.
-                tagName("h1"))).getText().trim();
     }
 
     public PipelinePage clickSubmitButton() {
