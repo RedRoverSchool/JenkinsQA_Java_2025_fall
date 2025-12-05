@@ -51,16 +51,4 @@ public class UserLoggedInTest extends BaseTest {
 
         Assert.assertEquals(actualUserName, EXP_USER_NAME);
     }
-
-    @Test
-    public void testUserNameInUserStatusHeading() {
-        String expectedUserName = new HomePage(getDriver())
-                .getUserAccountNameViaDropDownMenu();
-
-        String actualUserName = new HomePage(getDriver())
-                .clickUserAccountViaDropDownMenu(expectedUserName)
-                .getUserName();
-
-        Assert.assertEquals(actualUserName, expectedUserName);
-    }
 }

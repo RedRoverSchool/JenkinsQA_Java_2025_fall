@@ -9,7 +9,7 @@ import org.openqa.selenium.Keys;
 public class TestUtils {
 
     public static void clickJS(WebDriver driver, WebElement element) {
-        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
         executor.executeScript("arguments[0].click();", element);
     }
 
@@ -26,5 +26,10 @@ public class TestUtils {
         ((JavascriptExecutor) driver).executeScript("arguments[0].focus();", element);
         WebElement activeElement = driver.switchTo().activeElement();
         activeElement.sendKeys(Keys.ENTER);
+    }
+
+    public static String getTextJS(WebDriver driver, WebElement element) {
+        return (String) ((JavascriptExecutor) driver)
+                .executeScript("return arguments[0].innerText;", element);
     }
 }

@@ -24,6 +24,10 @@ public abstract class BasePage extends BaseModel {
     @FindBy(css = ".page-footer__links > button")
     private WebElement jenkinsVersion;
 
+    @FindBy(css = ".jenkins-dropdown__item:last-child")
+    private WebElement signOutButton;
+
+
     public BasePage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
@@ -54,15 +58,6 @@ public abstract class BasePage extends BaseModel {
         return new UserStatusPage(getDriver());
     }
 
-    public String getUserAccountNameViaDropDownMenu() {
-        Actions actions = new Actions(getDriver());
-
-        actions.moveToElement(getDriver().findElement(By.id("root-action-UserAction"))).perform();
-        return getWait10().until(ExpectedConditions.
-                visibilityOfElementLocated(By.cssSelector(".jenkins-dropdown__item:first-child"))).getText();
-
-    }
-
     public SearchModalPage clickSearchButton() {
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.id("root-action-SearchAction")))).click();
 
@@ -72,8 +67,8 @@ public abstract class BasePage extends BaseModel {
     public LoginPage clickSignOut() {
         Actions actions = new Actions(getDriver());
 
-        actions.moveToElement(getDriver().findElement(By.id("root-action-UserAction"))).perform();
-        getDriver().findElement(By.cssSelector(".jenkins-dropdown__item:last-child")).click();
+        actions.moveToElement(userAccountIcon).perform();
+        signOutButton.click();
 
         return new LoginPage(getDriver());
     }
@@ -112,6 +107,16 @@ public abstract class BasePage extends BaseModel {
         getWait10().until(ExpectedConditions.presenceOfElementLocated(By.tagName("h1")));
 
         return new UserStatusPage(getDriver());
+    }
+
+    public String getUserNameFromDropDownMenu() {
+        WebElement userIcon = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.id("root-action-UserAction")));
+        TestUtils.mouseEnterJS(getDriver(), userIcon);
+
+        WebElement userInDropDown = getWait10().until(ExpectedConditions.visibilityOfElementLocated(By
+                .cssSelector(".jenkins-dropdown__item:first-child")));
+
+        return TestUtils.getTextJS(getDriver(), userInDropDown);
     }
 
     public String getLogoText() {
