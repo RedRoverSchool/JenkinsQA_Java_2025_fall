@@ -96,6 +96,11 @@ public class HomePage extends BasePage {
                 .getText();
     }
 
+    public String getProjectName() {
+        return getWait2().until(ExpectedConditions.presenceOfElementLocated(
+                        By.cssSelector(".jenkins-table__link >span:first-child"))).getText();
+    }
+
     public WebElement findItem(String itemName) {
         return getDriver().findElement(By.xpath("//a[@href='job/" + itemName + "/']"));
     }
