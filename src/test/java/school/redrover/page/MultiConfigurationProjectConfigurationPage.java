@@ -6,10 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class MultiConfigurationProjectConfigurationPage extends BaseSideMenuItemPage {
-
-    @FindBy(tagName = "h1")
-    private WebElement headingText;
+public class MultiConfigurationProjectConfigurationPage extends BaseSideMenuItemPage{
 
     @FindBy(name = "Submit")
     private WebElement submitButton;
@@ -24,11 +21,6 @@ public class MultiConfigurationProjectConfigurationPage extends BaseSideMenuItem
     @Override
     protected void waitUntilPageLoad() {
         getWait5().until(ExpectedConditions.visibilityOf(submitButton));
-    }
-
-    @Override
-    public String getHeadingText() {
-        return headingText.getText();
     }
 
     public MultiConfigurationProjectPage clickSubmit() {

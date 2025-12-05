@@ -209,7 +209,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickSaveButton()
                 .clickRenameLinkInSideMenu()
                 .renameMultibranchPipeline(RENAMED_MULTIBRANCH_PIPELINE)
-                .getHeading();
+                .getHeadingText();
 
         Assert.assertEquals(actualRenamedMultibranchPipeline, RENAMED_MULTIBRANCH_PIPELINE);
     }

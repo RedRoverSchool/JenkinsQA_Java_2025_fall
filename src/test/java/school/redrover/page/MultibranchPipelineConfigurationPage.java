@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.common.BasePage;
 
 public class MultibranchPipelineConfigurationPage extends BaseSideMenuItemPage {
 
@@ -22,9 +21,6 @@ public class MultibranchPipelineConfigurationPage extends BaseSideMenuItemPage {
     @FindBy(id = "toggle-switch-enable-disable-project")
     private WebElement toggleTooltipOnHover;
 
-    @FindBy(tagName = "h1")
-    private WebElement headingText;
-
     public MultibranchPipelineConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -32,11 +28,6 @@ public class MultibranchPipelineConfigurationPage extends BaseSideMenuItemPage {
     @Override
     protected void waitUntilPageLoad() {
         getWait5().until(ExpectedConditions.visibilityOf(submitButton));
-    }
-
-    @Override
-    public String getHeadingText() {
-        return headingText.getText();
     }
 
     public MultibranchPipelineConfigurationPage sendDisplayName(String name) {

@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.common.BasePage;
 
 public class FreestyleProjectPage extends BaseProjectPage {
 
@@ -15,9 +14,6 @@ public class FreestyleProjectPage extends BaseProjectPage {
     @FindBy(xpath = "//span[text()='Delete Project']/ancestor::a")
     private WebElement deleteMenuItem;
 
-    @FindBy(tagName = "h1")
-    private WebElement headingText;
-
     @FindBy(id = "description-content")
     private WebElement descriptionText;
 
@@ -26,11 +22,6 @@ public class FreestyleProjectPage extends BaseProjectPage {
 
     public FreestyleProjectPage(WebDriver driver) {
         super(driver);
-    }
-
-    @Override
-    public String getHeadingText() {
-        return headingText.getText();
     }
 
     @Override

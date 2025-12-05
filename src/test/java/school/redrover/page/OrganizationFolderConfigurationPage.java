@@ -10,9 +10,6 @@ import java.util.List;
 
 public class OrganizationFolderConfigurationPage extends BaseSideMenuItemPage {
 
-    @FindBy(tagName = "h1")
-    private WebElement headingText;
-
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
@@ -26,11 +23,6 @@ public class OrganizationFolderConfigurationPage extends BaseSideMenuItemPage {
     @Override
     protected void waitUntilPageLoad() {
         getWait5().until(ExpectedConditions.visibilityOf(submitButton));
-    }
-
-    @Override
-    public String getHeadingText() {
-        return headingText.getText();
     }
 
     public OrganizationFolderPage clickSave() {

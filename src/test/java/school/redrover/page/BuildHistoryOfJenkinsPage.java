@@ -16,9 +16,6 @@ public class BuildHistoryOfJenkinsPage extends BaseSideMenuItemPage {
     @FindBy(css = "thead th a.sortheader")
     private List<WebElement> tableHeaders;
 
-    @FindBy(tagName = "h1")
-    private WebElement headingText;
-
     public BuildHistoryOfJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -26,11 +23,6 @@ public class BuildHistoryOfJenkinsPage extends BaseSideMenuItemPage {
     @Override
     protected void waitUntilPageLoad() {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
-    }
-
-    @Override
-    public String getHeadingText() {
-        return headingText.getText();
     }
 
     public boolean isBuildHistoryEmpty() {
@@ -45,5 +37,4 @@ public class BuildHistoryOfJenkinsPage extends BaseSideMenuItemPage {
                         .trim())
                 .toList();
     }
-
 }

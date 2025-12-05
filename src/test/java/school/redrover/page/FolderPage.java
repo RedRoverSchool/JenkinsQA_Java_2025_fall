@@ -7,12 +7,11 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.common.TestUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class FolderPage extends BaseProjectPage{
+public class FolderPage extends BaseProjectPage {
 
     @FindBy(xpath = "//a[contains(@href, '/configure')]")
     private WebElement configureMenuItem;
@@ -35,19 +34,11 @@ public class FolderPage extends BaseProjectPage{
     @FindBy(xpath = "//span[text()='Credentials']/ancestor::a")
     private WebElement credentialsMenuItem;
 
-    @FindBy(tagName = "h1")
-    private WebElement headingText;
-
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
     public FolderPage(WebDriver driver) {
         super(driver);
-    }
-
-    @Override
-    public String getHeadingText() {
-        return headingText.getText();
     }
 
     @Override
