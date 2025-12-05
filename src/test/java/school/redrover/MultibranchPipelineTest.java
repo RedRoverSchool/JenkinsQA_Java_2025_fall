@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -17,6 +18,15 @@ public class MultibranchPipelineTest extends BaseTest {
     private static final String MULTIBRANCH_JOB_DESCRIPTION = "This is a job description";
     private static final String SECOND_DESCRIPTION = "Second Description";
     private static final String MULTIBRANCH_PIPELINE_DISPLAY_NAME = "Multibranch_Pipeline_Display";
+
+
+    @DataProvider
+    public Object[][] providerSpecialCharacters() {
+        return new String[][]{
+                {"!"}, {"&"}, {"#"}, {"@"}, {"%"},{"*"},
+                {"$"},{"?"},{"^"},{"|"},{"/"},{"]"},{"["}
+        };
+    }
 
     @Test
     public void testCreateMultibranchPipeline() {
@@ -75,7 +85,6 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualJobDescription, updatedJobDescription);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateMultibranchPipeline")
     public void testTryCreateProjectExistName() {
         final String errorMessage = "» A job already exists with the name ‘%s’".formatted(MULTIBRANCH_PIPELINE_NAME);
@@ -118,7 +127,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(actualDisableText.contains(disableText));
     }
 
-    @Test(invocationCount = 5)
+    @Test
     public void testVerifyEnableToggleTooltip() {
         final String tooltipText =
                 "(No new builds within this Multibranch Pipeline will be executed until it is re-enabled)";
@@ -158,23 +167,17 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualSavedMessage, "Saved", "Message isn't correct");
     }
 
-    @Test
-    public void testCreateItemWithSpecialCharacters() {
-        final String[] specialCharacters = {"!", "&", "#", "@", "%", "*", "$", "?", "^", "|", "/", "]", "["};
+    @Test(dataProvider = "providerSpecialCharacters")
+    public void testCreateItemWithSpecialCharacters(String specialCharacters) {
+        String actualErrorMessage = new HomePage(getDriver())
+                .clickNewItemOnLeftMenu()
+                .clearSendName()
+                .sendName("multib" + specialCharacters + "ranch")
+                .getDuplicateOrUnsafeCharacterErrorMessage();
 
-        NewItemPage newItemPage = new HomePage(getDriver())
-                .clickNewItemOnLeftMenu();
-
-        for (String specChar : specialCharacters) {
-            String expectedErrorMessage = "» ‘%s’ is an unsafe character".formatted(specChar);
-
-            String actualErrorMessage = newItemPage
-                    .clearSendName()
-                    .sendName("multib" + specChar + "ranch")
-                    .getDuplicateOrUnsafeCharacterErrorMessage();
-
-            Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "Error message isn't displayed");
-        }
+        Assert.assertEquals(actualErrorMessage,
+                "» ‘%s’ is an unsafe character".formatted(specialCharacters),
+                "Error message isn't displayed");
     }
 
     @Test

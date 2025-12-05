@@ -82,10 +82,7 @@ public class DashboardTest extends BaseTest {
 
     @Test(dataProvider = "projectsName")
     public void testCheckCreatedJobsOnDashboard(String projectName) {
-//        createProject(projectName);
-//
-//        String actualJobs = new HomePage(getDriver())
-//                .getProjectName();
+
         String actualJobs = new HomePage(getDriver())
                 .clickNewItemOnLeftMenu()
                 .sendName(projectName)
@@ -95,6 +92,12 @@ public class DashboardTest extends BaseTest {
 
         Assert.assertFalse(actualJobs.isEmpty(), "Project's don't exists!");
         Assert.assertEquals(actualJobs, projectName, "Имена созданных проектов не совпадают!");
+
+        //        createProject(projectName);  // создал отдельно метод для создания проектоа
+//
+//        String actualJobs = new HomePage(getDriver()) // проверки
+//                .getProjectName();
+
 //        HomePage homePage = new HomePage(getDriver());
 //
 //        for (int i = 0; i < CREATED_JOBS_NAME.size(); i++) {
