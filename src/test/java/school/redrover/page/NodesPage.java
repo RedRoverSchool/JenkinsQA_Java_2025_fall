@@ -105,7 +105,6 @@ public class NodesPage  extends BasePage {
        WebElement  item = getDriver().findElement(By.xpath("//a[@href='../computer/" + name + "/']"));
 
        return item.getText();
-
     }
 
 
