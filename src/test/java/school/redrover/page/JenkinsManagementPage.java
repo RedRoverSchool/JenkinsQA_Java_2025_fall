@@ -109,4 +109,10 @@ public class JenkinsManagementPage extends BasePage {
         appearanceLink.click();
         return new AppearancePage(getDriver());
     }
+
+    public NodesPage clickNodeConfigurationSystem() {
+        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
+
+        return new NodesPage(getDriver());
+    }
 }
