@@ -52,7 +52,5 @@ public class NodeTest extends BaseTest {
                 .findNodesInList(NODE_NAME);
 
         Assert.assertEquals(nodeName,  NODE_NAME);
-
-
     }
 }
