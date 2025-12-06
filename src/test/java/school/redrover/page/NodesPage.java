@@ -106,8 +106,5 @@ public class NodesPage  extends BasePage {
 
        return item.getText();
     }
-
-
-
 }
 
