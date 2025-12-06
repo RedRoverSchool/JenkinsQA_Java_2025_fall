@@ -6,6 +6,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.common.BaseTest;
@@ -17,6 +18,19 @@ import java.time.Duration;
 public class JenkinsManagementTest extends BaseTest {
     private final String TITLE_TEXT = "Dashboard - Jenkins";
     private static final String SETTING_TITLE = "System";
+
+
+    @DataProvider
+    public Object[][] systemConfigurationItems() {
+        return new String[][]{
+                {"System"},
+                {"Tools"},
+                {"Plugins"},
+                {"Nodes"},
+                {"Clouds"},
+                {"Appearance"}
+        };
+    }
 
     private void openGlobalProperties() {
         getDriver().findElement(By.id("root-action-ManageJenkinsAction")).click();
@@ -112,6 +126,16 @@ public class JenkinsManagementTest extends BaseTest {
                 .getSearchResults();
 
         Assert.assertEquals(searchResults, List.of("System", "System Information", "System Log"));
+    }
+
+    @Test(dataProvider = "systemConfigurationItems")
+    public void testSearchDropdownItemsSystemConfiguration(String itemName){
+        String dropdownResult = new HomePage(getDriver())
+                .clickManageJenkinsGear()
+                .sendTitle(itemName)
+                .getSearchResultName();
+
+        Assert.assertEquals(dropdownResult, itemName, "Названия пунктов настроек не совпадают");
     }
 
     @Ignore

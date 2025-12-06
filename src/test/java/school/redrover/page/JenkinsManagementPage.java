@@ -100,6 +100,11 @@ public class JenkinsManagementPage extends BasePage {
                 .toList();
     }
 
+    public String getSearchResultName() {
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.className("jenkins-dropdown__item"))).getText();
+    }
+
     public AppearancePage clickAppearanceLink() {
         appearanceLink.click();
         return new AppearancePage(getDriver());
