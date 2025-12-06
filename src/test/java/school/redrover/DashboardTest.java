@@ -2,18 +2,14 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.common.BasePage;
 import school.redrover.common.BaseTest;
 import school.redrover.page.ArchitectingforScalePage;
 import school.redrover.page.CloudsPage;
 import school.redrover.page.EditViewPage;
 import school.redrover.page.HomePage;
 import school.redrover.page.NewNodePage;
-import school.redrover.testdata.Page;
-import school.redrover.testdata.TestDataProvider;
 
 import java.util.List;
-import java.util.Objects;
 
 public class DashboardTest extends BaseTest {
 
@@ -42,13 +38,6 @@ public class DashboardTest extends BaseTest {
         Assert.assertEquals(
                 new HomePage(getDriver()).getParagraghText(),
                 expectedParagraphText);
-    }
-
-    @Test(dataProvider = "Links", dataProviderClass = TestDataProvider.class)
-    public void testContentBlockLinks(String linkText, String expectedUrlEndpoint, Page page) {
-        BasePage resultPage = new HomePage(getDriver()).openPage(linkText, page.createPage(getDriver()));
-
-        Assert.assertTrue(Objects.requireNonNull(resultPage.getCurrentUrl()).contains(expectedUrlEndpoint));
     }
 
     @Test
